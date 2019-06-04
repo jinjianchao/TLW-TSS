@@ -1,0 +1,1019 @@
+﻿#lan=default
+#split=//
+default//制造商//Factory
+default//安装者//Installer
+default//生产商//Factory
+default//普通用户//User
+default//切换用户//Switch User
+default//起始IP//Start IP
+default//结束IP//End IP
+default//模块地址//Module Address
+default//整屏参数设置//Configurations
+default//控制器//LVI
+default//控制器行//LVI Row
+default//控制器列//LVI Column
+default//输出口1//Output 1
+default//输出口2//Output 2
+default//输出口3//Output 3
+default//输出口4//Output 4
+default//行//Row
+default//列//Column
+default//箱体行//Cabinet Row
+default//箱体列//Cabinet Column
+default//应用//Set
+default//起始地址//Start Addr
+default//结束地址//End Addr
+default//继续分配//Continue
+default//启用备份//Enable backup
+default//设置//Set
+default//屏幕信息设置//Configurations
+default//IP预分配(备)//IP Pre-allocated(Backup)
+default//色彩调节//Color Adjust
+default//百分比//Intensity
+default//色温//Color Temp.
+default//高级//Advance
+default//亮度调节//Color Temp And Brightness Adjustment
+default//RGB三色//RGB
+default//简单设置//Simple
+default//文件设置//File
+default//自定义//Customize
+default//Gamma设置//Gamma
+default//色彩风格//Color Profiles
+default//功能调试//Function
+default//工作模式设置//Operation Mode
+default//测试模式(无信号状态)//Test Pattern(No Signal)
+default//黑场时间//Black Burst Time
+default//行消隐时间//Line Blanking Time
+default//阴影消除//Shadow Erase
+default//信号同步//Sync Signal
+default//开启//ON
+default//关闭//OFF
+default//打开//ON
+default//输出开关//Signal ON/OFF
+default//红色//Red
+default//绿色//Green
+default//蓝色//Blue
+default//等待时间设置//Multi. Package
+default//亮度调节(原始亮度)//Light
+default//多包间隔//MultiPackage
+default//发送后等待//Command Wait
+default//多包命令延时//Mutil PackageData Delay
+default//箱体监控//System Monitor
+default//温度//Temp.
+default//电压//Voltage
+default//预警温度//Early Temp.
+default//报警温度//Warn Temp.
+default//时间间隔(分)//Polling(Min)
+default//报警温度、读取时间//Settings
+default//启动//Start
+default//启动停止//ON/OFF
+default//系统设置//Wall Layouts
+default//导入//Import
+default//导出//Export
+default//保存//Save
+default//导入导出//Import/Exporat
+default//缩放//Zoom
+default//停止发送//Stop
+default//成功//Success
+default//失败//Failed
+default//等待命令//Wait Command
+default//正在发送...//Sending...
+default//发送亮度//Send Light
+default//错误//ERROR
+default//发送Gamma//Send Gamma
+default//发送色彩风格//Send Color Style
+default//发送工作模式//Send Operation Mode
+default//发送箱体显示基色//Send Cabinet Base Color
+default//发送黑场时间//Send Black Burst Time
+default//发送行消隐时间//Send Line Blanking Time
+default//发送3D信号同步命令//Send 3D Signal Sync
+default//发送输出口开关命令//Send Output ON/OFF
+default//读取参数//Read Para.
+default//设置右下角坐标//Set RightBottom Cordination
+default//设置前端坐标//Set Front Cordination
+default//上一个命令正在执行，请稍后再试//Pre command is running,Please wait.
+default//提示//Tip
+default//温度://Temp:
+default//位置关系//Releationship:
+default//左右//Left To Right
+default//右左//Right To Left
+default//上下//Top To Bottom
+default//下上//Bottom To Top
+default//未使用//No Used
+default//确定要移除此Player吗?//Remove LVI will change current layout. Are you sure?
+default//显示模式//Normal Display
+default//显示模式设置//Set Display Mode
+default//校正模式//Test Pattern
+default//单点校正开//CAL. ON
+default//单点校正关//CAL. OFF
+default//非缩放//No Zoom
+default//测试线模式//NS Test Pattern
+default//黑屏模式//NS Black Screen
+default//奇数行//IN1
+default//偶数行//IN2
+default//全部//All
+default//黑//Black
+default//蓝//Blue
+default//绿//Green
+default//蓝绿//Cyan
+default//红//Red
+default//紫//Magenta
+default//黄//Yellow
+default//白//White
+default//内同步//Internal
+default//外同步//External
+default//所有输出口//All
+default//50 Player//50 Player
+default//重新设置将导致当前数据丢失，是否继续?//Change configuration, All current settings will be lost. Confirm to proceed?
+default//起始IP地址不能为空//Start IP can not be null
+default//结束IP地址不能为空//End IP can not be null
+default//结束地址不能小于开始地址//End IP can not be less than start IP
+default//要生成的IP地址数量多于当前Player个数，将自动截取掉多于地址,是否继续?//The IP count more than current player Count.Are you continue?
+default//配置文件导入失败,将加载上次配置信息//Config file error,Will load preFile
+default//未设置//Not Set
+default//Gamma文件不能为空//Gamma file can not be null
+default//Gamma文件不存在//Gamma file not exist
+default//Gamma文件格式错误//Gamma file format error
+default//必须选择一种色彩风格//Must select a color style
+default//停止//Stop
+default//上一命令正在执行,不能进行页面切换.请待命令执行完毕在进行切换操作//Pre command is running,can not switch to other page.Please wait command finish.
+default//数据保存成功//Save Success
+default//监控项设置//Monitor Item
+default//左右关系时行数必须相同//Left to right row must be the same
+default//右左关系时行数必须相同//right to Left row must be the same
+default//上下关系时列数必须相同//Top to bottom column must be the same
+default//下上关系时列数必须相同//Bottom to top column must be the same
+default//输入全关//All IN OFF
+default//输入全开//All IN ON
+default//输入1开,输入2关//IN 1 ON,IN 2 OFF
+default//输入1关,输入2开//IN 1 OFF,IN 2 ON
+default//文件格式错误//File error!
+default//编辑//Edit
+default//网络测试//Net Test
+default//网络测试(备路)//Net Test(Backup)
+default//移除//Remove
+default//控制命令//Command
+default//控制命令(备路)//Command(Backup)
+default//定位//Location
+default//开//ON
+default//关//OFF
+default//输入信号//Output ON/OFF
+default//备信号//Backup
+default//未指定//Undefined
+default//程序下载//Firmware Upload
+default//主路//Primary
+default//备路//Backup
+default//外部图像//External IMG
+default//内部图像//Internal IMG
+default//1区//Zone 1
+default//2区//Zone 2
+default//3区//Zone 3
+default//下载//Upload
+default//区域切换//FPGA Zone
+default//切换//Switch
+default//FPGA文件不能为空//FPGA file can not be empty
+default//FPGA文件不存在//FPGA file does't exist
+default//设置箱体FPGA//Cabinet FPGA
+default//设置显示模式//IMG Mode
+default//切换箱体FPGA//Switch Cabinet FPGA
+default//箱体FPGA固件下载//Cabinet FPGA Firmware Upload
+default//控制器FPGA固件下载//LVI FPGA Firmware
+default//信号选择//Source Select
+default//HDMI信号输入//Input Source
+default//自动//Auto
+default//HDMI1//HDMI1
+default//HDMI2//HDMI2
+default//HDMI信号输入选择//HDMI Signal Select
+default//色温高是冷色调，低是暖色调//High colour temperature is cold tonal, low is warm color to move
+default//RGB单色//RGB Settings
+default//切换区域需要等待一段时间，并且箱体会处于黑屏状态，需等待箱体重新点亮后在做其它操作，是否继续？//Switching zone need to wait for a period of time, and the cabinet will be in a state of black screen, after waiting for to light up again in doing other operations, whether to continue? 
+default//警告：此操作具有一定危险性,非专业人员谨慎处理，是否继续?//Warning: this operation has certain risk, non-professional staff handled carefully, whether to continue? 
+default//统一变化//Change Simultaneously
+default//至少需要选择一个输出口// Need to select at least one output
+default//网络通讯//Network
+default//串口通讯//Serial Port
+default//串口分配//Assign Serial Port
+default//起始串口//Start Serial Port
+default//箱体布线//Cabinet Wiring
+default//选择校正数据//Select Correct Data
+default//箱体//Cabinet
+default//入口//Entrance
+default//是//Yes
+default//否//No
+default//IP//IP
+default//主板FPGA://MB.FPGA:
+default//主板MCU://MB.MCU:
+default//左→右//L→R
+default//上→下//T→B
+default//右→左//R→L
+default//下→上//B→T
+default//确定要开始读取校正数据吗?//Sure you want to start read calibration data?
+default//请先将显示屏打开在进行操作//Please open the screen for operate
+default//关闭DC//Close DC
+default//开启DC//Open DC
+default//关闭RAM//Close RAM
+default//开启RAM//Open RAM
+default//播放视频//Normal Mode
+default//播放工装//Test Pattern
+default//开关屏//Open&Close Screen
+default//开屏//Open
+default//关屏//Close
+default//起始IP地址不能为空//Start IP can not be empty
+default//结束IP地址不能为空//End IP can not be empty
+default//低速//Low Speed
+default//高速//High Speed
+default//左上角//Top Left
+default//右上角//Top Right
+default//左下角//Left Bottom
+default//右下角//Right Bottom
+default//确定要下载文件:\r\n{0}吗?//Are you sure to download file: \r\n {0}?
+default//提示:停止监控大概需要等待30秒的时间//Tip: To stop monitoring need to wait for about 30 seconds
+default//开始//Start
+default//完成布线操作前不能进行切换操作//Before completing the wiring operation can't switch operation
+default//MCU文件不能为空//MCU file cannot be empty
+default//MCU文件不存在//MCU file cannot be empty
+default//同一组中不能设置多个入口//In the same group can not set up multiple entrance
+default//拆分后将同时移除布线数据，是否继续?//After break up will also remove the wiring data, whether to continue?
+default//文件夹不存在//Folder does not exist
+default//将重新计算箱体坐标，是否继续?//Coordinates will be recalculated enclosure, whether to continue?
+default//确定要开始下载校正数据吗?//Sure you want to start calibration data download?
+default//行//Row
+default//列//Column
+default//组管理//Group
+default//合并//Merge
+default//拆分//Split
+default//布线//Wiring
+default//自动布线//AUTO Wiring
+default//手动布线//Manual Wiring
+default//IP预分配//IP Pre-allocated
+default//起始点//Start
+default//布线数据处理//Wiring Data Process
+default//图像偏移//IMG Offset
+default//地址分配方式//ADDR. Allocate
+default//箱体类型//Cabinet
+default//计算坐标//Calculate
+default//发送坐标//Set
+default//信号//Signal
+default//亮度//Light
+default//校正开关//Switch Correction
+default//重新加载//Reload
+default//固件检测//Firmware Test
+default//主板FPGA固件下载//MB.FPGA Firmware
+default//主板MCU下载//MB. MCU Firmware
+default//校正数据下载//Upload Calibration Data
+default//校正数据读取//Read Calibration Data
+default//读取//Read
+default//导出画面//Export Image
+default//设置IP//Set IP
+default//设置入口//Set Entrance
+default//取消入口//Cancel Entrance
+default//布线方案1//Wiring Plan 1
+default//布线方案2//Wiring Plan 2
+default//手动布线//Manual Wiring
+default//取消布线//Cancel Wiring
+default//坐标设置//Set Coordinate
+default//图像偏移//IMG. Offset
+default//网络测试//Net Test
+default//坐标发送成功//Send coordinate sucess.
+default//坐标发送失败//Send coordinate failed.
+default//确定//OK
+default//取消//Cancel
+default//输出口//Output
+default//箱体地址//Cabinet Address
+default//横/纵坐标全0：表示整块显示屏.\r\n;横/纵坐标全255：表示使用串口直接连接单个箱体，并且此箱体不能和其它箱体级联.\r\n;针对整屏中某个箱体单独控制采用如下方式：\r\n;箱体地址从右下角开始算起，Y从10开始，向上依次累加。如：10，11,12..... X向左依次累加.如：10，11,12....//Horizontal/vertical all 0：full screen.\r\nHorizontal/vertical all255：connect one unit with serialport，and the unit can't connect with other unit.For one unit in screen：\r\nAddr start from right corner，start value 10，accumulate in turn upwards。\r\neg：10，11,12....，To left:start value is 10。accumulate in turn left eg：10，11,12....
+default//图像拼接//IMG.Mosaicing
+default//校正数据//Calibration Data
+default//固件下载//Firmware Upload
+default//主板FPGA//MB FPGA Firmware
+default//主板MCU//MCU Firmware
+default//其它//Other
+default//参数读取//Read Parameter
+default//工作模式切换//Switch Work Mode
+default//工装颜色设置//Test Color
+default//下载主板校正数据//Donwload MB.correction data
+default//读取主板校正数据//Read MB. correction data
+default//停止//Stop
+default//校正数据文件不能为空//Correction file can't be empty
+default//校正数据文件不存在//Correction data file not exist
+default//确定要下载文件:{0}{1}吗?//Are sure to donwload:{0}{1}?
+default//文件存放路径不能为空//File path can't be empty
+default//版本信息//Version
+default//IP://IP:
+default//网关://Gateway:
+default//子网掩码://Mask:
+default//截取坐标(x,y)://Coordinate(x,y):
+default//----------MCU参数-------------\r\n//----------MCU Parameter-------------\r\n
+default//MAC://MAC:
+default//视频、工装模式://Normal、Test Mode:
+default//视频//Normal
+default//工装模式//Test Pattern
+default//信号输出状态://Output Signal State:
+default//校正状态://Calibration State:
+default//灰度//Gray
+default//未知//Unknown
+default//测试项目(初始化框架参数)//Test Project(Init. framework parameter)
+default//制造商//Factory
+default//安装者//Installer
+default//用户//User
+default//设置MAC很危险!!//Set mac very dangerous!!
+default//请选择GAMA文件！//Please select a GAMA3 file！
+default//请填写一个数值！//Please fill in a value！
+default//命令需要执行一段时间//The command needs to perform a period of time
+default//设置显像基色成功//Set display primary success
+default//设置显像基色失败//Set display primary fail
+default//黑边模式设置成功//black side mode set success
+default//黑边模式设置失败//black side mode set fail
+default//黑色模式分辨率设置成功//Black mode resolution set success
+default//黑色模式分辨率设置失败//Black mode resolution set fail
+default//FPGA {0} 切换成功 //FPGA {0} switch success 
+default//FPGA {0} 切换失败 //FPGA {0} switch fail 
+default//命令需要执行一段时间 //The command needs to perform a period of time 
+default//信息 //Information 
+default//正在执行【{0}】命令//Being performed '{0}' command 
+default//请输入FPGA文件路径//Please enter the FPGA file path 
+default//{0}区FPGA下载成功//Section {0} FPGA download successfully 
+default//{0}区FPGA下载失败//Section {0} FPGA download failed 
+default//FPGA区//FPGA
+default//TV前端//TV Front
+default//自动侦测//Auto detect
+default//内部同步方式//Internal synchronously
+default//外部同步方式//External synchronously
+default//1区//1 Zone
+default//2区//2 Zone
+default//3区//3 Zone
+default//设置失败// Set Fail
+default//设置成功// Set Success
+default//失败// Fail
+default//成功// Success
+default//没有检测到可用串口!//Did not detect an available serial port!
+default//通讯方式IP错误//Communication ip error
+default//IP Mask错误//IP mask error
+default//IP错误//IP error
+default//Mask错误//Mask error
+default//Mac错误//Mac error
+default//Mac设置//Mac set
+default//确定要格式化吗?//Are you sure to format?
+default//提示//Prompt
+default//格式化中，请稍后.....//Formatting, please wait .....
+default//格式化FLASH//Formatting FLASH
+default//参数读取//Read parameters
+default//版本信息读取//Read the version information
+default//TV前端视频升级MCU//TV front-end video upgrade MCU
+default//TV前端视频信号输出开关//TV front-end video signal output
+default//FPGA源文件(*.fpga)|*.fpga|所有文件(*.*)|*.*//FPGA File(*.fpga)|*.fpga|All(*.*)|*.*
+default//FPGA硬件类型:TV Player, //FPGA hardware type:TV Player,
+default//FPGA硬件类型:3G Player, //FPGA hardware type:3G Player,
+default//FPGA硬件类型:保留, //FPGA hardware type:Retained,
+default//FPGA硬件版本号://FPGA hardware version:
+default//版本类型:正式下发版, //version type:Official,
+default//版本类型:工程项目版, //version type:Project,
+default//版本类型:保留, //version type:Retained,
+default//FPGA固件版本号://FPGA firmware version:
+default//密码输入错误！//password input error！
+default//MCU硬件类型:TV Player,//MCU hardware type:TV Player,
+default//MCU硬件类型:3G Player,//MCU hardware type:3G Player,
+default//MCU硬件类型:保留,//MCU hardware type:Retained,
+default//MCU固件版本号://MCU firmware version:
+default//MCU版本说明:正式下发版,//MCU Imprint:Official,
+default//MCU版本说明:工程项目版,//MCU Imprint:Project,
+default//MCU版本说明:保留版本,//MCU Imprint:Retained,
+default//MCU版本号://MCU version:
+default//Mac地址：//Mac address：
+default//IP地址：//IP address：
+default//网关：//Gateway：
+default//子网掩码：//Subnet Mask：
+default//截取图像起始坐标 //Image coordinates: 
+default//2D/3D模式：//2D/3D mode：
+default//2D模式//2D mode
+default//2D参数错误//2D parameter error
+default//3D模式：//3D mode：
+default//左眼输入源为HDMI-0//L-eye:HDMI-0
+default//左眼输入源为HDMI-1//L-eye:HDMI-1
+default//左眼输入源为HDMI-2//L-eye:HDMI-2
+default//左眼输入源为HDMI-3//L-eye:HDMI-3
+default//左眼输入源参数错误//L-eye:parameter error
+default//,右眼输入源为HDMI-0//,R-eye:HDMI-0
+default//,右眼输入源为HDMI-1//,R-eye:HDMI-1
+default//,右眼输入源为HDMI-2//,R-eye:HDMI-2
+default//,右眼输入源为HDMI-3//,R-eye:HDMI-3
+default//,右眼输入源参数错误//,R-eye:parameter error
+default//参数错误!//parameter error!
+default//奇偶极性：//Parity polarity：
+default//正极//positive
+default//负极//negative
+default//3D测试信号：//3D test signal：
+default//外部//External
+default//内部//Internal
+default//扫描方式：//Scan way：
+default//逐行显示//progressive
+default//隔行显示//Interlaced 
+default//3D同步信号传输方式：//3D synchronous signal transmission mode ：
+default//视频工装模式：//Normal pattern mode：
+default//视频//Normal
+default//工装//Test Pattern
+default//LVDS视频输出开关：//LVDS video output switch：
+default//视频控制信号延时：//Video control signal delay：
+default//视频数据信号延时：//Video data signal delay：
+default//正在执行【下载FPGA】操作,是否强制停止！//Uploading FPGA,are you sure to force to stop！
+default//正在执行【LVDS输出切换】操作,您的请求不能被执行！//Switching LVDS Output,Your request is not allowed！
+default//请使用软件LMFlashProgrammer.msi下载MCU,否则需要对箱体复位//Please download MCU use LMFlashProgrammer.msi software,Otherwise need to reset the TV Player
+default//请拔掉网线，使用串口发送此命令//Please unplug the network cable，using the serial port to send this command
+default//正在执行【{0}】命//Other command is processing, pls wait
+default//读取//Read
+default//写入//Write
+default//红色//Red
+default//绿色//Green
+default//蓝色//Blue
+default//情景模式文件(*.tvs)|*.tvs|所有文件(*.*)|*.*//Profile file(*.tvs)|*.tvs|All Files(*.*)|*.*
+default//模式//Mode
+default//正在执行【{0}】操作,是否强制停止//Other command is processing,whether force to stop 
+default//下载MAP//Upload MAP
+default//下载Gamma//Upload Gamma
+default//Flash格式化//Format Flash
+default//下载FPGA//Program FPGA
+default//IP及MASK设置//IP&MASK
+default//Gamma {0}下载失败//Upload Gamma {0} Failed
+default//Gamma {0}下载成功//Upload Gamma {0} Success
+default//GAMMA文件错误//GAMMA file error
+default//请选择Gamma文件//Please select a Gamma file
+default//获取视频分辨率失败//Failed to get the video resolution 
+default//获取视频分辨率成功//Success to get the video resolution
+default//请确认FPGA文件是否正确//Please Make Sure The FPGA File Is Correct 
+default//右下角显示坐标设置//Panel quantity set
+default//显示模式//Normal Display
+default//校正模式//Testing Pattern
+default//单点校正关//Calibration Off
+default//单点校正开//Calibration On
+default//测试线模式//No Signal Testing Pattern
+default//2D显示//2D
+default//3D显示//3D
+default//60Hz//60Hz
+default//50Hz//50Hz
+default//工作模式设置成功//Working state set successfully
+default//工作模式设置失败//Working state set failed 
+default//GAMMA 文件//GAMMA File
+default//发送 GAMMA:{0} 成功//Send GAMMA:{0} success
+default//发送 GAMMA:{0} 失败//Send GAMMA:{0} failed
+default//生成Gamma3文件成功//Create Gamma3 file sucess
+default//生成Gamma3文件失败//Create Gamma3 file failed
+default//请根据需要，打开黑边模式//Please according to the need,open black mode
+default//输出口//port
+default//写//Write
+default//读//Read
+default//50Hz的头//50Hz header
+default//50Hz的尾//50Hz footer
+default//60Hz的头//60Hz header
+default//60Hz的尾//60Hz footer
+default//箱体FPGA附加信息写入成功//FPGA additional information write successful
+default//箱体FPGA附加信息写入失败//FPGA additional information write failed
+default//箱体FPGA附加信息读取成功//FPGA additional information read successful
+default//箱体FPGA附加信息读取失败//FPGA additional information read failed
+default//设备将重启连接，约5秒钟，是否继续//Device will be restart and reconnect，maybe 5's,are you continue?
+default//如果有接入备路信号，强烈建议将备路连接板拔掉，不然可能导致箱体坐标错乱//Suggest Cut off the backup connect board,Or the corrdinate will be insanity
+default//区//Zone
+default//非缩放//No Zoom
+default//缩放//Zoom
+default//HDMI输入//HDMI Input
+default//命令已停止//Command has stopped
+default//生产工具软件(工程师模式)//Product Tools(Engineer)
+default//用户名//User Name
+default//密码//Password
+default//用户名或密码错误//User name or password error
+default//登录//Login
+default//取消//Cancel
+default//工程师登录//Enginner
+default//加载配置信息...//Loading...
+default//检查许可文件...//Check the license file...
+default//加载许可文件...//Loading license file...
+default//权限管理//Authority Management
+default//许可文件"license.dat"不存在//License agreement file "license.dat" does not exist
+default//许可文件加载失败.\r\n异常信息://License file loading failure.\r\nError:
+default//文件夹不存在//Folder does not exist
+default//是否还原为默认数据?//Are you sure reset to default values?
+default//注意//WARNING
+default//串口打开失败//Open Serial Port  failed!
+default//IP地址//IP Address
+default//请修改//Please fix it!
+default//网络打开失败//Open network is failed!
+default//没有设置通讯方式//Have not select a communication way
+default//发送//Send
+default//接收//Recieve
+default//数值输入//Input value
+default//箱体显示开/关//Display Power
+default//HDMI输入选择//HDMI Input
+default//箱体亮度调节//Set Color Temperature and Brightness
+default//色温值//Color Temperature
+default//配置//Config
+default//获取箱体参数//Refresh Parameters
+default//色温参数设置//Color Temperature Configuration
+default//红灯//Red Light
+default//绿灯//Green Light
+default//蓝灯//Blue Light
+default//默认值//Default
+default//亮度//Brightness
+default//色坐标Cx//Color Coordinates x
+default//色坐标Cy//Color coordinates y
+default//亮度(nit)//Brightness(nit)
+default//上传//Program
+default//白色//White
+default//黑色//Black
+default//连接测试//Detect Cabinets
+default//测试//Detect
+default//箱体Gamma调节//GAMMA
+default//FPGA硬件版本号//FPGA Hardware Version
+default//FPGA软件版本号//FPGA Software Version
+default//MCU硬件版本号//MCU Hardware Version
+default//MCU软件版本号//MCU Software Version
+default//主板参数读取成功//Read MB. Parameters Success
+default//主板参数读取失败//Read MB. Parameters Failed
+default//主板硬件版本信息读取成功//Read MB. Hardware Version Success
+default//主板硬件版本信息读取失败//Read MB. Hardware Version Failed
+default//获取参数//Read Selected Cabinet
+default//校正开/关//Calibration
+default//Gamma 下载//Write Gamma
+default//写入GAMMA标记//Write Gamma Flag
+default//主板3D同步//MB.3D Sync
+default//显示/工装模式切换//Normal Display/Test Pattern
+default//50Hz/60Hz切换//HDMI Frame Rate
+default//恢复出厂参数//Restore Factory Setting
+default//或//or
+default//箱体寻址//Assign Address To Cabinets
+default//寻址//Assign
+default//箱体网络参数设置//Cabinet Network Parameters
+default//IP地址//IP address
+default//网关//Gateway
+default//子网掩码//Mask
+default//箱体坐标//Top Left Pixel Position
+default//IP选择//Select IP
+default//所有模块//All Modules
+default//截取坐标X//Coordinate X
+default//箱体检测//Cabinet Detect
+default//截取坐标Y//Coordinate Y
+default//图像模式//Display Mode
+default//图像状态//Display State
+default//打开视频//Normal
+default//亮度R//Brightness R
+default//亮度G//Brightness G
+default//亮度B//Brightness B
+default//校正状态//Calibration State
+default//校正关//Calibration Off
+default//模块50/60Hz刷新率//Module Refresh Rate
+default//高刷新黑场//High Refresh Rate Black Burst
+default//高刷新消隐//Low Refresh Rate HBlank
+default//主板级联状态//MB. Cascade State
+default//箱体地址X//Cabinet Address X
+default//箱体地址Y//Cabinet Address Y
+default//主板50/60Hz刷新率//Frame Rate
+default//50Hz高刷新黑场//High Refresh 50Hz Black Burst
+default//50Hz高刷新消隐//Hight Refresh 50Hz HBlank
+default//主板波特率//MB. Boardrate
+default//主板刷新率//MB. Refresh Rate
+default//60Hz高刷新黑场//High Refresh 60Hz Black Burst
+default//60Hz高刷新消隐//High Refresh 60Hz HBlank
+default//50Hz低刷新黑场//Low Refresh 50Hz Black Burst
+default//50Hz低刷新消隐//Low Refresh 50Hz HBlank
+default//语言//Language
+default//模块60HZ//Module 60Hz
+default//显示//Normal
+default//箱体显示模式设置成功//Set Display Mode Success
+default//箱体显示模式设置失败//Set Display Mode Failed
+default//箱体工装模式设置成功//Set Test Pattern Success
+default//箱体工装模式设置失败//Set Test Pattern Failed
+default//GAMM//GAMMA value ERROR
+default//GAMM//GAMMA value ERROR
+default//GAMMA数值有误//GAMMA Value ERROR
+default//设置GAMMA//Set GAMMA
+default//GAMMA输入错误//GAMMA Value Input ERROR
+default//网关地址//Gateway Address
+default//子网掩码//Mask
+default//截取坐标//Origin postion
+default//主板//Controller
+default//工装颜色//Test Color
+default//视频输出//Signal Output
+default//高刷新率//High Refresh Rate
+default//低刷新率//Low Refresh Rate
+default//主板级联//Controller Cascade
+default//波特率//BaudRate
+default//模块高/低刷新率//Cabinet High/Low Refresh Rate
+default//液晶面板语言//LCD Language
+default//参数解析//Analysis Parameters ERROR
+default//读取MCU版本//Read MCU Firmware Version
+default//读取主板FPGA版本//Read Controller FPGA
+default//模块地址为广播地址//Module address is broadcast address
+default//读取当前模块版本号//Read Module FPGA
+default//读取所有模块版本号//Read All Modules
+default//模块//Module
+default//主板参数//Controller Parameters
+default//校正//Calibration
+default//英文//English
+default//箱体空余位置填充的校正数据//The Calibration data  for padding in the rest of Cabinet
+default//模块校正数据文件//Module Calibration Data File
+default//文件打开失败//Open file failed
+default//文件大小有误//File length is ERROR
+default//是否清空所有已选的文件//Empty all selected files
+default//模块位置是从屏体背面看吗//From the rear
+default//模块位置是从屏体正面看吗//From the front
+default//{0}行 {1}列 模块 与 {2}行 {3}列 模块 文件相同//Row={0} Col=l{1} file is the same with Row={2} Col={3}
+default//模块文件相同是否继续?//Module files are the same,Continue?
+default//校正数据文件//Calibration File
+default//创建//Create
+default//选择模块校正数据文件//Choose Module Calibration File
+default//选择模块校正数据文件(双击模块位置或鼠标拖拽文件到对应位置)//Choose Module Calibration File(Double Click or Drag and Drop)
+default//请选择模块校正数据目录//Please Choose A  Folder
+default//未选择文件夹//Not Select A Folder
+default//未选择路径//Have Not Select A File Path
+default//文件不能为空!//File Can Not Be Empty
+default//主板FPGA上传//Program Controller FPGA
+default//请点击//Please Press 
+default//按钮//Button
+default//主板校正数据文件//Controller Calibration File
+default//校正打开//Calibration ON
+default//校正关闭//Calibration OFF
+default//重新加载主板FPGA//Reload Controller FPGA
+default//读取时间码时不能用广播地址!//Reading Serial Number Can Not Use Broadcast Address!
+default//模块地址错误//Module Address ERROR
+default//读取第{0}行 第{1}列 时间码//Reading Row={0} Col={1} Serial Number
+default//时间码错误//Serial Number ERROR
+default//开始读取所有模块的时间码//Reading All Module's Serial Numbers
+default//时间码读取完毕//Reading Serial Number Complete
+default//第{0}行 第{1}列模块://Module Row={0} Col={1}:
+default//序列号格式有误//Serial Number Content ERROR
+default//读取失败//Read Failed
+default//正在读取所有模块的时间码//Reading All Module's Serial Numbers
+default//结束//Complete
+default//写入模块时间码不能用广播地址//Writing Serial Number Can Not Use Broadcast Address
+default//写入第{0}行 第{1}列 时间码//Writing Cabinet Serial Number ( Row={0} Col={1} )
+default//开始写入所有模块的时间码//Writing All Module's Serial Numbers
+default//时间码写入完毕//Writing Serial Number Complete
+default//时间码写入失败//Write Serial Number Failed
+default//正在写入所有模块的时间码//Writing All Module's Serial Numbers
+default//修改时间码可能会找不到原有的校正数据文件，是否继续?//Change Serial Number Will Make Orign File Can Not Be Found,Continue?
+default//是否给箱体所有模块写入时间码//Whether to Write Serial Number to All Modules
+default//读取模块校正数据 行:{0} 列:{1}//Reading Calibration Data  in Module Row={0} Col={1}
+default//请确认当前箱体类型是否正确?//Verify the Selected Cabinet Family and Pitch are Correct
+default//写入单个模块校正数据不能用广播地址//Write Module Calibration Data Can Not Use Broadcast Address
+default//写入模块校正数据 行:{0} 列:{1}//Write Module Calibration Data Row={0} Col={1}
+default//是否读取模块序列号?//Reading All Module Serial Numbers?
+default//请选择目录//Please Choose A Folder
+default//模块序列号从箱体正面看//Module Serial Numbers From The Font
+default//模块时间码读取有误//Reading Module Serial Number ERROR
+default//请选择目标文件夹//Please Choose A  Folder
+default//箱体校正数据拆分//Split Cabinet Calibration Data File
+default//这个操作会改变主板校正数据,是否继续?//This Operation Will Change Controller  Calibration data,Continue?
+default//临时文件夹创建失败//Create Temp Folder Failed
+default//用户终止//User Cancel
+default//开始写入校正数据//Writing Calibration Data
+default//校正数据写入主板失败!//Writing Calibration Data to Controller Failed !
+default//校正数据写入主板成功!//Writing Calibration Data to Controller Success!
+default//箱体工装模式设置失败!//Set Cabinet Test Pattern Failed!
+default//写入所有模块文件到模块FLASH//Write All Module Calibration Data File To All Module's FLASH Chip
+default//未选择任何模块校正数据文件//Have Not  Select Any Module Calibration Data File
+default//OE配置文件//OE Config File
+default//开始调节红灯OE寄存器值//Writing Red Light OE Register
+default//开始调节绿灯OE寄存器值//Writing Green Light OE Register
+default//开始调节蓝灯OE寄存器值//Writing Blue Light OE Register
+default//设置OE寄存器值//Writing OE Register Values
+default//读取全部模块校正数据完毕//Reading All Module's Calibration Data Complete!
+default//写入单个模块//Write Selected Module
+default//写入多个模块//Write Modules Files
+default//读取单个模块//Read Selected Module
+default//箱体校正文件写入所有模块//Write Controller Data to Modules
+default//读取所有模块校正数据//Read All Modules
+default//校正数据处理//Calibration Data Process
+default//设置电流增益//Set Current Gain
+default//OE调节//OE Config
+default//写入OE//Write OE
+default//读取OE//Read OE
+default//重新加载FPGA//Reset FPGA
+default//替换模块数据//Replace Modules
+default//主板MCU上传//Program Controller MCU
+default//写入主板校正数据文件//Write Cal Data to Controller
+default//读取主板校正数据文件//Read Cal Data from Controller
+default//模块FPGA上传//Program Module FPGA
+default//序列号//Module Serial Number
+default//读取单个模块序列号//Read Selected
+default//读取所有模块序列号//Read All
+default//写入单个模块序列号//Write Selected
+default//写入所有模块序列号//Write All
+default//写入多个模块序列号//Write All
+default//读取所有模块到主板//Write Data from Modules to Controller
+default//颜色//Color
+default//创建GAMMA文件//Save GAMMA File
+default//上传GAMMA文件//Upload GAMMA File
+default//刷新参数//Read Selected Cabinet/Module
+default//读取FPGA版本//Read FPGA Firmware Version
+default//温度读取成功//Read Temperature Success.
+default//温度读取失败//Read Temperature Failed.
+default//从屏体背面看//View From Rear
+default//从屏体正面看//View From The Front
+default//模块数据分析//Module Analysis
+default//生成文件//Create File
+default//快速添加//Fast Add
+default//清空已选文件//Clear All
+default//该命令箱体不能使用广播地址//This command does not support using (0, 0) cabinet address.
+default//写入多个模块文件//Write All Modules
+default//箱体右下角坐标//Cabinet Location Right Bottom
+default//坐标X//X
+default//坐标Y//Y
+default//主板输出//MB. Output
+default//红色电流//Red current
+default//绿色电流//Green current
+default//蓝色电流//Blue current
+default//灯板FPGA://Module FPGA Firmware:
+default//获取//Read Parameters
+default//用户切换//Password Level
+default//IP预分配(主)//IP Pre-allocated(Primary)
+default//色域调节//Color Region
+default//3D同步信号传输方式//3D Synchronous Signal Transmission Mode
+default//行消隐及黑场时间设置//default//Line Blanking Time And Shadow Erase
+default//MCU下载//Program Controller MCU
+default//箱体FPGA下载//Program Cabinet FPGA
+default//IP自动配置(主)//IP Pre-allocated(Primary)
+default//密码错误//Password Error
+default//选项//Option
+default//参数读取失败//Read Parameters Failed
+default//新亮度设置命令//New Brightness
+default//设置最大亮度值//Max Brightness Limit
+default//设置亮度百分比//Brightness Percent
+default//箱体列数//Screen Cabinet Columns
+default//箱体行数//Screen Cabinet Rows
+default//级联方式//Looping Scheme
+default//标准连接//Normal
+default//X方向级联//X Direction
+default//Y方向级联//Y Direction
+default//60Hz黑场//Low Refresh 60 Hz Black Burst Time
+default//60Hz消隐//60Hz Line Blanking Time
+default//50Hz消隐//50Hz Line Blanking Time
+default//50Hz黑场//Low Refresh 50 Hz Black Burst Time
+default//最大亮度值R//Max Brightness Limit R
+default//最大亮度值G//Max Brightness Limit G
+default//最大亮度值B//Max Brightness Limit B
+default//开始读取所有模块FPGA版本号//Reading All Modules FPGA Firmware Version...
+default//所有模块FPGA版本号读取完毕//Reading All Modules FPGA Firmware Version are Complete
+default//正在读取所有模块FPGA版本号//Reading All Modules FPGA Firmware Version
+default//读取所有模块FPGA版本号//Reading All Modules FPGA Firmware Version
+default//设置模块寄存器值//Set Module Register
+default//地址//Address
+default//数值//Value
+default//零行亮暗线调节//Zero Dim/Bright Line Adjust
+default//暗线//Dim
+default//亮线//Bright
+default//灰度级//Gray Level
+default//设置充电时间//Set Charge Time
+default//MY9552寄存器调节//Set MY9552 Register
+default//大小电流选择//Select Current
+default//大电流//Large Current
+default//小电流//Small Current
+default//低灰度补偿//Low Gray Level Compensation
+default//第一扫补偿//First Scan Compensation
+default//鬼影消除电压//Clear Ghost Shadow Voltage
+default//主板亮度调节//Brightness
+default//自定义亮度//Custom Brightness
+default//参数设置//Parameters
+default//布线方式示意图//Cabinet looping scheme diagrams
+default//正面视图//View from front
+default//标准连接(X,Y依次递增)//Normal Model(X,Y all increase)
+default//X方向级联(Y=1,X依次递增)//X Direction Model(Y=1,X increase)
+default//Y方向级联(X=1,Y依次递增)//Y Direction Model(X=1,Y increase)
+default//60Hz红色电流//60Hz Red current
+default//60Hz绿色电流//60Hz Green current
+default//60Hz蓝色电流//60Hz Blue current
+default//50Hz红色电流//50Hz Red current
+default//50Hz绿色电流//50Hz Green current
+default//50Hz蓝色电流//50Hz Blue current
+default//亮度阈值//Max Brightness Limit
+default//读取色温//Read Color Temperature
+default//写入色温//Write Color Temperature
+default//读取参数失败!//Read Parameters Failed.
+default//有头箱体校正数据文件//Old Format
+default//文件大小错误!请检查箱体类型//File Length Error!Please Check The Cabinet Type!
+default//输出文件创建失败//Output File Error
+default//文件转换完毕//File Transform Is Complete
+default//恢复出厂设置//Restore Default Settings
+default//恢复//Restore
+default//请手动点击[寻址]按钮进行地址分配//Please click "Assign" button to Assign Address
+default//IP地址,网关,子网掩码必须在同一个网段//The IP address, gateway, subnet mask must be in the same network segment
+default//色温调节//Color Temperature
+default//正在读取//Reading
+default//寄存器OE值//Register OE Values
+default//确定恢复出厂参数?//Are You Sure To Restore Default Settings?
+default//提示：\r\n1.(255,255)表示调节网线连接的单个箱体\r\n2.(x,y)表示调节指定地址的单个箱体//Tips:\r\n1.(255,255):Single cabinet for connected with ethernet cable\r\n2.(x,y):Single cabinet for the given address
+default//提示：\r\n1.(x,y)表示调节指定地址的单个模块//Tips:\r\n1.(x,y)Single module for the given address
+default//选择箱体地址//Select Cabinet Address
+default//选择模块地址//Select Module Address
+default//最大亮度值//Max Brightness Limit
+default//模块地址必须同时为0或者同时不为0//The module address must be either 0 or not 0 at the same time.
+default//未定义//undefined
+default//电流//Gains
+default//最大亮度//Max Brightness Limit
+default//当前色温//Color Temp
+default//IP地址格式错误//IP address error.
+default//起始IP和结束IP必须在同一地址段//Start IP and end IP must be in the same address segment
+default//请断电重启箱体//Please Power Off Cabinet And Power On Again
+default//预览//Preview
+default//设置还原点//Save Restore Point
+default//使用还原点//Recall Restore Point
+default//低灰麻点消除设置//Reduce Low Gray Level Pockmark
+default//低灰麻点反向补偿//Reverse Compensation
+default//低灰麻点校正数据平均值//Calibration Data Average Values
+default//低灰麻点临界值//Set Critical Point 
+default//2D/3D选择//Switch 2D/3D
+default//3D同步//3D Sync Mode
+default//回读参数//Read Back
+default//输入//Input
+default//自动同步//Auto Sync
+default//箱体显示打开//Display Power Open
+default//箱体显示关闭//Display Power Close
+default//主板亮度//Brightness
+default//输入1//Input1
+default//输入2//Input2
+default//内同步6//Internal6
+default//内同步7//Internal7
+default//打开校正数据文件//Open Calibration File
+default//导入校正系数文件//Open Coeff File
+default//校正系数文件//Coeff File
+default//校正系数文件已保存至//Coeff File Save To
+default//校正数据文件已保存至//Calibration File Save To 
+default//校正数据预览开//Calibration Preview ON
+default//校正数据预览关//Calibration Preview OFF
+default//导入校正文件预览//Import Calibration File And Preview
+default//导入系数生成文件//Import Coeff File And Convert
+default//生成新文件//Create New File
+default//校正数据写入//Write Calibration File
+default//复位//Reset
+default//上一步//Last Step
+default//下一步//Next Step
+default//MY9553寄存器调节//MY9553 Register Setting
+default//第一扫偏暗补偿//First Scan Compensation
+default//低灰补偿//Low Gray Level Compensation
+default//通道关闭预锁电压//Channel Closing Pre-Lock Voltage
+default//开启速度//Open Speed
+default//关闭速度//Close Speed
+default//导通宽度//On-Time Width
+default//消影拉力//Clear Ghost Shadow Tension
+default//电流增益//Current Gain
+default//LED选择//LED Selection
+default//Rext范围//Rext
+default//全部发送//All Send
+default//MY9553文件//MY9553 Config File
+default//批量发送//Batch
+default//批量设置寄存器值文件//Batch Write Register File
+default//对比度和BlackLevel复位//Reset Contrast And Black Level Values
+default//对比度//Contrast
+default//回读模块导通宽度数据到主板//Reading Constant-Current Source Data Back to Controller Board
+default//导通宽度操作//Constant-Current Source Data Oper
+default//回读到主板//Read Back to Controller
+default//主板8bit/10bit切换//HDMI Cascade Bit Width
+default//高刷60Hz//High Refresh Rate 60Hz
+default//高刷50Hz//High Refresh Rate 50Hz
+default//读取GAMMA文件//Read GAMMA File
+default//设置MY9553寄存器//Set MY9553 Register
+default//数值//Value
+default//箱体状态//Cabinet Status
+default//3D黑场//3D Black Burst
+default1//色温值//Color Temp
+default1//电流增益//Current Gains
+default1//高刷新率//High Refresh
+default1//低刷新率//Low Refresh
+default//调节//Adjust
+default//旋转方式//Rotate
+default//标准//Normal
+default//顺时针90度//90 degrees clockwise
+default//附加参数//Extra Data
+default//还未设置//No Setting
+default//箱体类型//Cabinet Type
+default//模块数量//Module Totals
+default//输入参数错误//Input value ERROR
+default//控制板参数设置//Controller Board Setting
+default//灯板数量//Module Totals
+default//附加数据(32位十六进制数)//Extra Data(32bit HEX)
+default//FPGA视频延时设置//FPGA Video Delay Time
+default//最大值位数//MaxValue Bit
+default//模块寄存器设置//Set Module Register
+default//16bit寄存器地址//16bit Address
+default//批量写入//Batch Write
+default//构造/分析校正数据//Create/Analysis Calibration File
+default//导入文件//Import File
+default//输出文件//Export File
+default//行号//Row
+default//列号//Col
+default//修改数据//Modify Data
+default//将数据应用到整行//Apply Data To Rows
+default//应用到指定行//Apply To some Rows
+default//应用到整箱体//Apply To All Rows
+default//从//From
+default//到//To
+default//高级亮度调节//Advance Brightness Control
+default//读取待机状态//Get DC Status
+default//读取HDMI状态//Get HDMI Status
+default//帧同步/帧间隔//Frame Sync/Frame Interval
+default//帧同步//Frame Sync
+default//帧间隔//Frame Interval
+default//刷新组数//Refresh Group
+default//行扫//Line Scan
+default//低灰麻点优化//Low Gray Level Pockmark Reduce
+default//每行显示时间//DisplayTime Per Line
+default//计算//Calc
+default//PWM展宽调节//PWM Widening Modify
+default//全部设置//Set All
+default//灰度和白平衡调节1//Gray Level And White Balance 1
+default//灰度和白平衡调节2//Gray Level And White Balance 2
+default//灰度和白平衡调节3//Gray Level And White Balance 3
+default//电流增益调节//Current Gain
+default//高低灰耦合和跨板色差//High Low Gray Level Coupling And Chromatic Aberration
+default//GAMMA数据操作//GAMMA 
+default//发送文件//Send File
+default//创建文件//Create File
+default//导出文件//Export File
+default//恢复默认值//Restore Default Value
+default//2072简化界面//2072 Simple Form
+default//2072(预览用,断电丢失)//2072 Preview Form(Parameters No Save)
+default//箱体尺寸//Cabinet Pixel Size
+default//输入错误//Input Value ERROR
+default//最大灰度级数//Max Gray Level 
+default//GAMMA最大值位数//Max Value Bit Length
+default//GAMMA数据位数//GAMMA Data Bit 
+default//将导入50Hz参数//Import 50Hz Parameters
+default//将导入60Hz参数//Import 60Hz Parameters
+default//将导出50Hz参数//Export 50Hz Parameters
+default//将导出60Hz参数//Export 60Hz Parameters
+default//写入多个2072寄存器//Write Multi 2072 Registers
+default//将全部发送50Hz参数//Send All 50Hz Parameters
+default//将全部发送60Hz参数//Send All 60Hz Parameters
+default//GAMMA文件//GAMMA File
+default//将要修改寄存器数值数组到默认值，并刷新当前界面显示，是否继续?//This Operation Will Restore All 2072 Parameters To Default Values,Continue?
+default//GAMMA长度//GAMMA Length
+default//写入文件//Write File
+default//寄存器地址//Register Address
+default//起始位//Start Bit
+default//终止位//End Bit
+default//循环测试//Cycle Test
+default//循环测试结束  测试总次数:{0} 错误总数:{1}//Cycle Test is Complete. Total:{0} ,ERROR:{1}
+default//模块{0}行 第{1}列//Module Row={0} Col={1}
+default//设置模块{0}行 第{1}列//Set Module Row={0} Col={1}
+default//读取模块{0}行 第{1}列//Read Module Row={0} Col={1}
+default//设置所有模块寄存器值//Set All Modules Register
+default//DC当前状态//DC Status
+default//HDMI状态//HDMI Status
+default//信号状态//Signal Status
+default//连接状态//Connect Status
+default//无信号//No Signal
+default//1口信号//HDMI1 Only
+default//2口信号//HDMI2 Only
+default//数据错误//Data ERROR
+default//未连接//Disconnected
+default//1口已连接//HDMI1 Connected
+default//2口已连接//HDMI2 Connected
+default//1口2口已连接//HDMI1 and HDMI2 Both Connected
+default//全部颜色//All Colors
+default//校正数据文件大小有误//Calibration File Length ERROR
+default//行号有误//Row Number ERROR
+default//2019寄存器设置//2019 Register Config
+default//时钟上沿起点//Clock Rising Edge Start Point
+default//消隐强度//Blanking Intensity
+default//信号下沿终点//Signal Fall Edge End Point
+default//数据上沿起点//Data Rising Edge Start Point
+default//PWM显示时间//PWM Display Time
+default//创建文件:{0} 最大值位数:{1}//Create File:{0} Max Value Bit Length:{1}
+default//读取GAMMA//Read GAMMA
+default//输入值有误//Input Value ERROR
+default//特殊寄存器设置//Write Special Register
+default//数值//Value
+default//参数合规性检查//Parameters Validity Check
+default//2072配置文件//2072 Config File
+default//参数//Parameters
+default//文件创建失败//Create File ERROR
+default//2072工厂界面//2072 Factory Form
+default//新色域调节功能//New Color Region
+default//局部系数//Local Coefficient
+default//整体系数//Global Coefficient
+default//色域功能开关//New Color Region ON/OFF
+default//写入13bit GAMMA//Write 13bit GAMMA
+default//EDID文件//EDID File
+default//文件大小错误//File Length ERROR
+default//普通EDID//Normal EDID
+default//外部控制卡EDID//External Card EDID
+default//EDID读写操作//Write Read EDID
+default//箱体显示状态不是:{0} 是否继续?//Cabinet Display Status is not {0}, Continue?
+default//验证输入参数//Input Parameters validity check
+default//数据//Data
+default//电源//AC/DC Power Supply
+default//已连接//Connected
+default//已断开//Disconnected
+default//读取箱体电源状态//Read Cabinet AC/DC Power Supply Status
+default//主板FPGA寄存器设置//Mainboard FPGA Register Config
+default//保存到FLASH//Save to Flash
+default//不保存//Not Save
+default//主路同步信号//Primary Sync Signal
+default//备路同步信号//Backup Sync Signal
+default//发射器控制//Emitter Control
+default//备路同步信号(主板无RJ-25)//Backup Sync Signal(No RJ-25)
+default//3D极性翻转//3D Polarity Flip
+default//3D外同步信号选择//3D External Sync
+default//3D发射器控制/备路同步信号//3D Emitter/Backup Sync
+default//使用随机数据//Using Randomize Data
+default//进行的是写入操作(Y),读取操作(N),还是取消?//Write(Y),Read(N) or Cancel?
+default//HDR文件//HDR File
+default//校正数据文件数量错误//Calibration Files Number ERROR
+default//请选择多个模块校正数据文件(如:0_0.zdat或0_0_20190102030405123.zdat)//Please Select All the Module Calibration Files(E.g.:0_0.zdat or 0_0_20190102030405123.zdat)
+default//选择错误将会损坏模块FPGA程序和时间码!//Select Wrong Type will damage the Module Firmware and Serial Number!

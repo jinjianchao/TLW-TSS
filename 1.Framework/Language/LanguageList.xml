@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<AppConfig>
+  
+  <Area id="1">
+    <Language>2052</Language>
+    <TitleName>语言(Language)</TitleName>
+    <List>
+      <Item key="2052">简体中文[CN]</Item>
+      <Item key="0">英文[EN]</Item>
+    </List>
+  </Area>
+  <Area id="2">
+    <Language>0</Language>
+    <TitleName>Language</TitleName>
+    <List>
+      <Item key="0">English[EN]</Item>
+      <Item key="2052">Chinese[CN]</Item>
+    </List>
+  </Area>
+</AppConfig>

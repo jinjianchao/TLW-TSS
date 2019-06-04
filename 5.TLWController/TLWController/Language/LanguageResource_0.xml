@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Resource>
+  <Form>
+    <Name>MainForm</Name>
+    <Controls>
+    </Controls>
+    <Codes>
+      <Code name="tabCommonCommand" text="Normal commands"/>
+      <Code name="gbBrightness" text="Brightness"/>
+      <Code name="btnApplyBrightness" text="Set"/>
+      <Code name="btnAdvanceBrightness" text="Advance"/>
+      <Code name="initsyslibfailed" text="Initial system liberay failed."/>
+      <Code name="Send" text="Send"/>
+      <Code name="Read" text="Read"/>
+    </Codes>
+  </Form>
+</Resource>

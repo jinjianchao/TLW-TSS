@@ -1,0 +1,111 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Resource>
+  <Form>
+    <Name>StartForm</Name>
+    <Controls>
+    </Controls>
+    <Codes>
+      <Code name="title" text="Leyard LED Control 1.0.0.6"/>
+      <Code name="buttonItem1" text="日志" />
+      <Code name="buttonItem2" text="高级" />
+      <Code name="buttonItem3" text="插件管理" />
+      <Code name="expandablePanel1" text="通讯方式" />
+      <Code name="lblControlMode" text="控制方式" />
+      <Code name="lblrs232" text="串口" />
+      <Code name="rbCom" text="串口" />
+      <Code name="rbNet" text="网络" />
+      <Code name="rs232" text="RS232"/>
+      <Code name="label3" text="端口" />
+      <Code name="lblPort" text="端口" />
+      <Code name="ckCommuSinglSave" text="单独保存" />
+      <Code name="btbComDetect" text="重新搜索" />
+      <Code name="btnCommApply" text="应用" />
+      <Code name="expandablePanel2" text="箱体类型" />
+      <Code name="label4" text="主型号" />
+      <Code name="label5" text="子型号" />
+      <Code name="label6" text="模块数" />
+      <Code name="label9" text="模块像素数" />
+      <Code name="ckTypeSinglSave" text="单独保存" />
+      <Code name="buttonX1" text="自定义" />
+      <Code name="btnTypeApply" text="应用" />
+      <Code name="dockContainerItem2" text="导航" />
+      <Code name="dockContainerItem5" text=" 其它" />
+      <Code name="labelItem1" text="就绪" />
+      <Code name="lblProcess" text="进度" />
+      <Code name="btnClear" text="清除" />
+      <Code name="dockContainerItem3" text="输出" />
+      <Code name="dockContainerItem4" text="工作区" />
+      <Code name="expandablePanel4" text="控制器类型选择" />
+      <Code name="expandablePanel3" text="箱体地址" />
+      <Code name="label7" text="箱体地址" />
+      <Code name="btn_addr" text="应用" />
+      <Code name="label8" text="通讯间隔时间(ms)" />
+      <Code name="label10" text="通讯等待时间(ms)" />
+      <Code name="unitX" text="列(X)"/>
+      <Code name="unitY" text="行(Y)"/>
+      <Code name="btn_time" text="应用" />
+      <Code name="expandablePanel5" text="参数设置" />
+      <Code name="checkBoxX1" text="显示数据包" />
+      <Code name="label1" text="时间" />
+      <Code name="groupPanel1" text="Player类型设置" />
+      <Code name="groupPanel2" text="输出口设置" />
+      <Code name="commuFailed" text="通讯方式加载失败"/>
+      <Code name="panelTypeFailed" text="箱体类型加载失败"/>
+      <Code name="pluginFailed" text="插件加载失败:"/>
+      <Code name="buttonX4" text="刷新"/>
+      <Code name="label13" text="控制器类型"/>
+      <Code name="label14" text="输出口"/>
+      <Code name="buttonX2" text="广播地址"/>
+      <Code name="buttonX3" text="单箱体"/>
+      <Code name="TVControlCard" text="电视控制板"/>
+      <Code name="D202" text="D202"/>
+      <Code name="TVII" text="二代电视"/>
+      <Code name="restart" text="切换语言将重启软件，确定要切换吗？"/>
+      <Code name="player30" text="早期Player"/>
+      <Code name="player50" text="50版 Player"/>
+      <Code name="quit" text="确定要退出程序吗？"/>
+      <Code name="commandRunning" text="当前有命令正在执行，暂时不能退出程序"/>
+      <Code name="singleUnitTips" text="当前是否直接连接一个箱体，否则会造成箱体混乱，箱体失控"/>
+      <Code name="unitAddrTips" text="横/纵坐标全0：表示整块显示屏.横/纵坐标全255：表示使用串口直接连接单个箱体，并且此箱体不能和其它箱体级联.针对整屏中某个箱体单独控制采用如下方式：.箱体地址从右下角开始算起，Y从10开始，向上依次累加。如：10，11,12..... X向左依次累加。如：10，11,12.... "/>
+      <Code name="outputName" text="输出口"/>
+      <Code name="allOutput" text="所有输出口"/>
+      <Code name="TWS10" text="TW-S10"/>
+      <Code name="TWS30" text="TW-S30"/>
+      <Code name="bar4" text="输出日志"/>
+      <Code name="groupAddress" text="组地址"/>
+      <Code name="serial" text="系列"/>
+    </Codes>
+  </Form>
+  <Form>
+    <Name>PanelTypeAdvance</Name>
+    <Controls>
+
+    </Controls>
+    <Codes>
+      <Code name="labelX1" text="自定义箱体类型"/>
+      <Code name="btnRemove" text="删除"/>
+      <Code name="btnSave" text="保存"/>
+      <Code name="btnCancel" text="取消"/>
+      <Code name="PanelTypeCheck" text="请检查数据的完整性,箱体类型不能为空"/>
+      <Code name="PanelSizeCheck" text="请检查数据的完整性,模块行、列，模块像素宽，高不能为空"/>
+      <Code name="SaveSuccess" text="保存成功" />
+      <Code name="mName" text="名称"/>
+      <Code name="mModuleWidth" text="模块宽"/>
+      <Code name="mModuleHeight" text="模块高"/>
+      <Code name="mPixeWidth" text="模块像素宽"/>
+      <Code name="mPixeHeight" text="模块像素高"/>
+    </Codes>
+  </Form>
+  <Form>
+    <Name>PassswordForm</Name>
+    <Controls>
+      <Control name="label1" text="为保证系统功能正常使用，请输入确认密码"/>
+      <Control name="btnOk" text="确定"/>
+      <Control name="btnCancel" text="取消"/>
+    </Controls>
+    <Codes>
+      <Code name="title" text="" />
+      <Code name="passworderror" text="密码错误，请重新输入"/>
+    </Codes>
+  </Form>
+</Resource>

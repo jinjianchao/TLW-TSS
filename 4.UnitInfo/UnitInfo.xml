@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<units>
+  <unit name="TV" id="8">
+    <subType>
+      <!-- modalXCount宽    modalYCount高 -->
+      <item id="0" name="TV1.6" modalXCount="2" modalYCount="2" modalXPixelCount="120" modalYPixelCount="90"/>
+      <item id="1" name="TV1.9" modalXCount="2" modalYCount="2" modalXPixelCount="104" modalYPixelCount="78"/>
+      <item id="2" name="TV2.5" modalXCount="2" modalYCount="2" modalXPixelCount="80" modalYPixelCount="60"/>
+      <item id="3" name="TV3.125" modalXCount="2" modalYCount="2" modalXPixelCount="64" modalYPixelCount="48"/>
+      <item id="4" name="TV4" modalXCount="2" modalYCount="1" modalXPixelCount="50" modalYPixelCount="75"/>
+    </subType>
+  </unit>
+  <unit name="TVH" id="9">
+    <subType>
+      <!-- modalXCount宽    modalYCount高 -->
+      <item id="0" name="TVH1.6" modalXCount="2" modalYCount="2" modalXPixelCount="120" modalYPixelCount="90"/>
+      <item id="1" name="TVH1.9" modalXCount="2" modalYCount="2" modalXPixelCount="104" modalYPixelCount="78"/>
+      <item id="2" name="TVH2.5" modalXCount="2" modalYCount="2" modalXPixelCount="80" modalYPixelCount="60"/>
+      <item id="3" name="TVH3.125" modalXCount="2" modalYCount="2" modalXPixelCount="64" modalYPixelCount="48"/>
+      <item id="4" name="TVH4" modalXCount="2" modalYCount="1" modalXPixelCount="50" modalYPixelCount="75"/>
+    </subType>
+  </unit>
+  <unit name="TW" id="10">
+    <subType>
+      <item id="0" name="TW0.9" modalXCount="10" modalYCount="4" modalXPixelCount="128" modalYPixelCount="180"/>
+      <item id="1" name="TW1.25" modalXCount="5" modalYCount="4" modalXPixelCount="192" modalYPixelCount="135"/>
+      <item id="2" name="TW1.45" modalXCount="5" modalYCount="4" modalXPixelCount="165" modalYPixelCount="116"/>
+      <item id="3" name="TW1.49" modalXCount="5" modalYCount="4" modalXPixelCount="161" modalYPixelCount="113"/>
+      <item id="4" name="TW1.67" modalXCount="5" modalYCount="4" modalXPixelCount="144" modalYPixelCount="101"/>
+      <item id="5" name="TW1.875" modalXCount="5" modalYCount="4" modalXPixelCount="128" modalYPixelCount="90"/>
+      <item id="6" name="TW2.5" modalXCount="5" modalYCount="2" modalXPixelCount="96" modalYPixelCount="135"/>
+    </subType>
+  </unit>
+  <unit name="TWA" id="11">
+    <subType>
+      <item id="0" name="TWA0.9" modalXCount="10" modalYCount="4" modalXPixelCount="128" modalYPixelCount="180"/>
+      <item id="1" name="TWA1.2" modalXCount="5" modalYCount="4" modalXPixelCount="192" modalYPixelCount="135"/>
+      <item id="2" name="TWA1.4" modalXCount="5" modalYCount="4" modalXPixelCount="161" modalYPixelCount="113"/>
+      <item id="3" name="TWA1.6" modalXCount="5" modalYCount="4" modalXPixelCount="144" modalYPixelCount="101"/>
+      <item id="4" name="TWA1.8" modalXCount="5" modalYCount="4" modalXPixelCount="128" modalYPixelCount="90"/>
+      <item id="5" name="TWA2.5" modalXCount="5" modalYCount="2" modalXPixelCount="96" modalYPixelCount="135"/>
+    </subType>
+  </unit>
+  <unit name="Customize" id="12" customize="true">
+    <subType>
+    </subType>
+  </unit>
+</units>

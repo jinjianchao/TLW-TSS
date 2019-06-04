@@ -1,0 +1,113 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Resource>
+  <Form>
+    <Name>StartForm</Name>
+    <Controls>
+    </Controls>
+    <Codes>
+      <Code name="title" text="Leyard LED Control 1.0.0.6"/>
+      <Code name="buttonItem1" text="Log" />
+      <Code name="buttonItem2" text="Advance" />
+      <Code name="buttonItem3" text="Plugin Manager" />
+      <Code name="expandablePanel1" text="Communication" />
+      <Code name="lblControlMode" text="Control Mode" />
+      <Code name="lblrs232" text="Serial Port" />
+      <Code name="rbCom" text="Serial port" />
+      <Code name="rbNet" text="Network" />
+      <Code name="rs232" text="RS232"/>
+      <Code name="label3" text="Port" />
+      <Code name="lblPort" text="Port" />
+      <Code name="ckCommuSinglSave" text="Save single" />
+      <Code name="btbComDetect" text="Re-Search" />
+      <Code name="btnCommApply" text="Apply" />
+      <Code name="expandablePanel2" text="Cabinet Type" />
+      <Code name="label4" text="Family" />
+      <Code name="label5" text="Pitch" />
+      <Code name="label6" text="Cabinet Count" />
+      <Code name="label9" text="Cabinet Pixel" />
+      <Code name="ckTypeSinglSave" text="Save single" />
+      <Code name="buttonX1" text="Custom" />
+      <Code name="btnTypeApply" text="Apply" />
+      <Code name="dockContainerItem2" text="Navigat" />
+      <Code name="dockContainerItem5" text=" Settings" />
+      <Code name="labelItem1" text="Ready" />
+      <Code name="lblProcess" text="Progress" />
+      <Code name="btnClear" text="Clear" />
+      <Code name="dockContainerItem3" text="Log" />
+      <Code name="dockContainerItem4" text="Workspace" />
+      <Code name="expandablePanel4" text="Select Controller" />
+      <Code name="expandablePanel3" text="Cabinet Address" />
+      <Code name="label7" text="Cabinet Address" />
+      <Code name="btn_addr" text="Apply" />
+      <Code name="label8" text="Packet Delay(msec)" />
+      <Code name="label10" text="Timeout(msec)" />
+      <Code name="unitX" text="Column (X)"/>
+      <Code name="unitY" text="Row (Y)"/>
+      <Code name="btn_time" text="Apply" />
+      <Code name="expandablePanel5" text="Parameter" />
+      <Code name="checkBoxX1" text="Show data package" />
+      <Code name="label1" text="Time" />
+      <Code name="groupPanel1" text="Player Type" />
+      <Code name="groupPanel2" text="Output" />
+      <Code name="commuFailed" text="Load communication type failed!"/>
+      <Code name="panelTypeFailed" text="Load Cabinet type failed!"/>
+      <Code name="pluginFailed" text="Load plugin failed:"/>
+      <Code name="nity" text="Refresh"/>
+      <Code name="label13" text="Controller Type"/>
+      <Code name="label14" text="Output"/>
+      <Code name="buttonX2" text="All Cabinets"/>
+      <Code name="buttonX3" text="First Cabinet Only"/>
+      <Code name="TVControlCard" text="TV Control board"/>
+      <Code name="restart" text="Switching language will restart software, sure you want to switch? "/>
+      <Code name="player30" text="Early Player"/>
+      <Code name="player50" text="50 Version Player"/>
+      <Code name="quit" text="Exit control software. Are you sure?"/>
+      <Code name="commandRunning" text="Command is running,can't exit"/>
+      <Code name="unitAddrTips" text="Horizontal/vertical all 0：full screen.Horizontal/vertical all255：connect one Cabinet with serialport，and the Cabinet can't connect with other Cabinet.For one Cabinet in screen：Addr start from right  corner，start value 10，accumulate in turn upwards。eg：10，11,12....，To left:start value is 10。accumulate in turn left eg：10，11,12...."/>
+      <Code name="outputName" text="Output"/>
+      <Code name="singleUnitTips" text="Whether the current connected directly to a box body, otherwise cause disorder box, box body is out of control"/>
+      <Code name="allOutput" text="All"/>
+      <Code name="D202" text="D202"/>
+      <Code name="TVII" text="TV II"/>
+      <Code name="TWS10" text="TWS10"/>
+      <Code name="TWS30" text="TWS30"/>
+      <Code name="bar4" text="Log"/>
+      <Code name="buttonX4" text="Refresh"/>
+      <Code name="groupAddress" text="Group Address"/>
+      <Code name="serial" text="Serial"/>
+    </Codes>
+  </Form>
+  <Form>
+    <Name>PanelTypeAdvance</Name>
+    <Controls>
+     
+    </Controls>
+    <Codes>
+      <Code name="labelX1" text="Custom Panel Type"/>
+      <Code name="btnRemove" text="Remove"/>
+      <Code name="btnSave" text="Save"/>
+      <Code name="btnCancel" text="Cancel"/>
+      <Code name="PanelTypeCheck" text="Please check the data integrity, box type cannot be empty"/>
+      <Code name="PanelSizeCheck" text="Please check the data integrity, Cabinet, Cabinet line pixel row pixels can't be empty, and only for value"/>
+      <Code name="SaveSuccess" text="Save successfully" />
+      <Code name="Tip" text="Tips"/>
+      <Code name="mName" text="Name"/>
+      <Code name="mModuleWidth" text="Cabinet Width"/>
+      <Code name="mModuleHeight" text="Cabinet Height"/>
+      <Code name="mPixeWidth" text="Cabinet Pixel Width"/>
+      <Code name="mPixeHeight" text="Cabinet Pixel Height"/>
+    </Codes>
+  </Form>
+  <Form>
+    <Name>PassswordForm</Name>
+    <Controls>
+      <Control name="label1" text="Please input the password!"/>
+      <Control name="btnOk" text="OK"/>
+      <Control name="btnCancel" text="Cancel"/>
+    </Controls>
+    <Codes>
+      <Code name="title" text="" />
+      <Code name="passworderror" text="Password error!"/>
+    </Codes>
+  </Form>
+</Resource>

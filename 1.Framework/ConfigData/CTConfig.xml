@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<config>
+  <items>
+    <item Key="3200K" Value="3"/>
+    <item Key="6500K" Value="1"/>
+    <item Key="8500K" Value="4"/>
+    <item Key="9300K" Value="0"/>
+    <item Key="Custom" Value="2"/>
+  </items>
+</config>

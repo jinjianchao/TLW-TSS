@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<units>
+  <serial>
+    <!--<item name="TWA" title="TWA"/>
+    <item name="CE" title="CE"/>-->
+    <item name="TWS" title="TWS/DL2"/>
+  </serial>
+  <unit name="BCC" id="3" title="新版" serial="TWS">
+    <subType>
+      <item id="1" name="0.7mm" title="0.7mm" modalXCount="4" modalYCount="2" modalXPixelCount="192" modalYPixelCount="216"/>
+      <item id="2" name="0.9mm" title="0.9mm" modalXCount="4" modalYCount="2" modalXPixelCount="160" modalYPixelCount="180"/>
+      <item id="3" name="0.9mm(A)" title="0.9mm(A)" modalXCount="4" modalYCount="2" modalXPixelCount="160" modalYPixelCount="180"/>
+      <item id="4" name="1.2mm" title="1.2mm" modalXCount="2" modalYCount="2" modalXPixelCount="240" modalYPixelCount="135"/>
+      <item id="5" name="1.5mm" title="1.5mm" modalXCount="2" modalYCount="2" modalXPixelCount="192" modalYPixelCount="108"/>
+      <item id="6" name="1.8mm" title="1.8mm" modalXCount="2" modalYCount="2" modalXPixelCount="160" modalYPixelCount="90"/>
+      <item id="7" name="2.5mm" title="2.5mm" modalXCount="2" modalYCount="1" modalXPixelCount="120" modalYPixelCount="135"/>
+      <item id="8" name="2.5mm(A)" title="2.5mm(A)" modalXCount="2" modalYCount="1" modalXPixelCount="120" modalYPixelCount="135"/>
+    </subType>
+  </unit>
+  <unit name="Customize" title="Customize" id="7" customize="true" serial="Customize">
+    <subType>
+
+    </subType>
+  </unit>
+</units>

@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<menus>
+  <menu id="0" text="TWS" lan_2052="TWS" lan_0="TWS">
+    <menu id="0" guid="{4A67BEE2-4E24-4ED4-BF1D-7DCDA636C1E3}" />
+    <menu id="1" guid="{1729A20E-B989-4FA3-9B81-EA1DCFE62CCA}" />
+    <menu id="2" guid="{2F4B3A6C-F082-4227-A629-E3176923DA3C}" />
+    <menu id="3" guid="{15372C1B-5502-4416-879A-93F9FD6AB8E7}" />
+    <menu id="4" guid="{F781A010-E14A-3201-B9AA-DC62FB212072}" />
+  </menu>
+</menus>

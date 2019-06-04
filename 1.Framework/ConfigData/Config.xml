@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<config>
+  <system>
+    <preplugin funname="0" subfunguid="{1728A20E-B989-4FA3-9B81-EA1DCFE62CCA}" />
+    <communication type="1">
+      <network>
+        <ip>192.168.0.32</ip>
+        <endip>192.168.0.32</endip>
+        <localport>8769</localport>
+        <remoteport>8001</remoteport>
+      </network>
+      <serialport>
+        <port>COM3</port>
+        <baudrate>115200</baudrate>
+      </serialport>
+    </communication>
+    <paneltype>
+      <serial>TWS/DL2</serial>
+      <main>新版</main>
+      <sub>0.9mm</sub>
+      <modal>
+        <h>4</h>
+        <v>2</v>
+      </modal>
+      <modalpixel>
+        <h>160</h>
+        <v>180</v>
+      </modalpixel>
+    </paneltype>
+    <unitAddr x="0" y="0" />
+    <moduleAddr x="0" y="0" />
+    <unitTime send="5" receive="5" />
+    <showDataPackage value="True" />
+    <bit value="10" />
+    <BetaVersion visible="false" text1="研发内部测试版本,慎重使用!" text2="此处填写备注信息" author="某某某" telphone="13888888888" />
+  </system>
+</config>
