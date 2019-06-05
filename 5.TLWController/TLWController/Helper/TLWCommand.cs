@@ -230,6 +230,8 @@ namespace TLWController.Helper
 
         #region 控制命令
 
+        #region 异步执行
+
         public void tlw_SetBrightness(ushort addrMB, ushort id, ushort mode, ushort r, ushort g, ushort b, Dictionary<string, int> ips, Action<ReturnParam[]> action)
         {
             Task<ReturnParam[]> task = new Task<ReturnParam[]>(obj =>
@@ -262,37 +264,6 @@ namespace TLWController.Helper
                 action(t.Result);
             });
             task.Start();
-        }
-
-        /// <summary>
-        /// 擦除FLASH
-        /// </summary>
-        /// <param name="hDevice"></param>
-        /// <param name="addrMB"></param>
-        /// <param name="id"></param>
-        /// <param name="startAddr"></param>
-        /// <returns>0 成功 ,其他值 失败</returns>
-        private int tlw_FLASH_EraseSector(int hDevice, ushort addrMB, ushort id, byte chipPos, UInt32 startAddr, UInt32 SectorSize, int dataLen)
-        {
-            int sectorCount = 0;
-            if (dataLen % SectorSize == 0)
-            {
-                sectorCount = (int)(dataLen / SectorSize);
-            }
-            else
-            {
-                sectorCount = (int)(dataLen / SectorSize) + 1;
-            }
-            for (int i = 0; i < sectorCount; i++)
-            {
-                startAddr += (uint)(i * SectorSize);
-                int result = _Command.tlw_FLASH_EraseSector(hDevice, addrMB, id, 0, startAddr);
-                if (result != 0)
-                {
-                    return 1;
-                }
-            }
-            return 0;
         }
 
         /// <summary>
@@ -398,6 +369,7 @@ namespace TLWController.Helper
             task.Start();
         }
 
+
         /// <summary>
         /// 数据写入SDRAM
         /// </summary>
@@ -495,6 +467,73 @@ namespace TLWController.Helper
             });
             task.Start();
         }
+
+        #endregion
+
+        #region 同步执行
+
+        /// <summary>
+        /// 擦除FLASH
+        /// </summary>
+        /// <param name="hDevice"></param>
+        /// <param name="addrMB"></param>
+        /// <param name="id"></param>
+        /// <param name="startAddr"></param>
+        /// <returns>0 成功 ,其他值 失败</returns>
+        private int tlw_FLASH_EraseSector(int hDevice, ushort addrMB, ushort id, byte chipPos, UInt32 startAddr, UInt32 SectorSize, int dataLen)
+        {
+            int sectorCount = 0;
+            if (dataLen % SectorSize == 0)
+            {
+                sectorCount = (int)(dataLen / SectorSize);
+            }
+            else
+            {
+                sectorCount = (int)(dataLen / SectorSize) + 1;
+            }
+            for (int i = 0; i < sectorCount; i++)
+            {
+                startAddr += (uint)(i * SectorSize);
+                int result = _Command.tlw_FLASH_EraseSector(hDevice, addrMB, id, 0, startAddr);
+                if (result != 0)
+                {
+                    return 1;
+                }
+            }
+            return 0;
+        }
+
+        public int tlw_FLASH_Write(int device, ushort addrMB, ushort id, byte chipPos, UInt32 startAddr, byte[] pData, uint sectorSize)
+        {
+            int result = 0;
+            if (pData.Length <= 1024)
+            {
+                result = _Command.tlw_FLASH_Write(device, addrMB, 0, chipPos, startAddr, pData, 0, pData.Length);
+            }
+            else
+            {
+                result = _Command.tlw_FLASH_BatchWrite(device, addrMB, 0, chipPos, startAddr, pData, 0, pData.Length, ProgressCallBackFunc);
+            }
+            return result;
+        }
+
+        public int tlw_FLASH_Read(int device, ushort addrMB, ushort id, byte chipPos, UInt32 startAddr, byte[] pData, uint sectorSize)
+        {
+            int result = 0;
+            if (pData.Length <= 1024)
+            {
+                result = _Command.tlw_FLASH_Read(device, addrMB, id, chipPos, startAddr, pData, 0, pData.Length);
+            }
+            else
+            {
+                result = _Command.tlw_FLASH_BatchRead(device, addrMB, id, chipPos, startAddr, pData, 0, pData.Length, ProgressCallBackFunc);
+            }
+            return result;
+        }
+
+
+        #endregion
+
         #endregion
     }
 }

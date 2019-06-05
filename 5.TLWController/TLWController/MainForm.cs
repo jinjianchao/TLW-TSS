@@ -19,25 +19,38 @@ namespace TLWController
     {
         #region 私有变量
 
-        Dictionary<string, int> _DevIP = new Dictionary<string, int>();
-        TLWCommand _TLWCommand = null;
-        bool _isBusy = false;
+        private Dictionary<string, int> _DevIP = new Dictionary<string, int>();
+        private TLWCommand _TLWCommand = null;
+        private bool _isBusy = false;
+        private InterfaceData _InterfaceData = null;
+        private string registerAddressFile = string.Empty;
+
 
         #endregion
 
         #region 内部结构
-        class ListItem
+        private class ListItem
         {
             public int Value { get; set; }
             public string Text { get; set; }
         }
+
         #endregion
 
         private void MainForm_Load(object sender, EventArgs e)
         {
+            registerAddressFile = System.IO.Path.Combine(Path, @"Config\Param2055.txt");
             MultiLanguage.GetNames(this, lang, Path + @"\Language");
             BindBrightnessColor();
             BindChipPos();
+            BindParam2055Color();
+            BindParam2055Hz();
+            WriteOrReadInterfaceData(false); ;
+            if (!Import2055Param(registerAddressFile))
+            {
+                MessageBox.Show(this, "导入2055参数失败");
+                return;
+            }
             TransForm();
             _TLWCommand = new TLWCommand();
             if (!_TLWCommand.Sys_Initial(Path))
@@ -92,7 +105,7 @@ namespace TLWController
 
         #region 数据绑定
 
-        void BindBrightnessColor()
+        private void BindBrightnessColor()
         {
             List<ListItem> items = new List<ListItem>()
             {
@@ -106,7 +119,7 @@ namespace TLWController
             cbBrightnessColor.DataSource = items;
         }
 
-        void BindChipPos()
+        private void BindChipPos()
         {
             List<ListItem> items = new List<ListItem>()
             {
@@ -120,9 +133,67 @@ namespace TLWController
             cbChipPos.DataSource = items;
         }
 
+        private void BindParam2055Color()
+        {
+            List<ListItem> items = new List<ListItem>()
+            {
+                new ListItem(){ Value=0, Text="全部" },
+                new ListItem(){ Value=1, Text="红色" },
+                new ListItem(){ Value=2, Text="绿色" },
+                new ListItem(){ Value=3, Text="蓝色" }
+            };
+            cbParam2055Color.ValueMember = "Value";
+            cbParam2055Color.DisplayMember = "Text";
+            cbParam2055Color.DataSource = items;
+        }
+
+        private void BindParam2055Hz()
+        {
+            List<ListItem> items = new List<ListItem>()
+            {
+                new ListItem(){ Value=0, Text="50Hz" },
+                new ListItem(){ Value=1, Text="60Hz" }
+            };
+            cbParam2055Refreshrate.ValueMember = "Value";
+            cbParam2055Refreshrate.DisplayMember = "Text";
+            cbParam2055Refreshrate.DataSource = items;
+        }
+
         #endregion
 
         #region 辅助方法
+
+        private void WriteOrReadInterfaceData(bool isWrite)
+        {
+            string file = $@"{Path}\Config\data.dat";
+            if (isWrite)
+            {
+                _InterfaceData.BrightnessColor = cbBrightnessColor.SelectedIndex;
+                _InterfaceData.BrightnessValue = (int)numBrightness.Value;
+                _InterfaceData.ChipPosition = cbChipPos.SelectedIndex;
+                _InterfaceData.FLASHAddress = (int)numRegAddr.Value;
+                _InterfaceData.FLASHDataLength = (int)numFlashDataLen.Value;
+                _InterfaceData.SDRAMAddress = (int)numSDRAMAddr.Value;
+                _InterfaceData.SDRAMDataLength = (int)numSDRAMDataLength.Value;
+
+                _InterfaceData.SerializeXML<InterfaceData>(file);
+            }
+            else
+            {
+                if (File.Exists(file))
+                    _InterfaceData = file.DeserializeXML<InterfaceData>();
+                else
+                    _InterfaceData = new InterfaceData();
+
+                cbBrightnessColor.SelectedIndex = _InterfaceData.BrightnessColor;
+                numBrightness.Value = tbBrightness.Value = _InterfaceData.BrightnessValue;
+                cbChipPos.SelectedIndex = _InterfaceData.ChipPosition;
+                numRegAddr.Value = _InterfaceData.FLASHAddress;
+                numFlashDataLen.Value = _InterfaceData.FLASHDataLength;
+                numSDRAMAddr.Value = _InterfaceData.SDRAMAddress;
+                numSDRAMDataLength.Value = _InterfaceData.SDRAMDataLength;
+            }
+        }
 
         bool CheckIsBusy()
         {
@@ -189,15 +260,22 @@ namespace TLWController
 
         void WriteTextFile(string file, string text)
         {
-            byte[] bytes = text.ToBytes();
             string str = "";
-            for (int i=0;i<bytes.Length;i++)
+            try
             {
-                str += " " + bytes[i].ToString("X2");
-                if((i+1)%1024==0)
+                byte[] bytes = text.ToBytes();
+                for (int i = 0; i < bytes.Length; i++)
                 {
-                    str += "\r\n";
+                    str += " " + bytes[i].ToString("X2");
+                    if ((i + 1) % 1024 == 0)
+                    {
+                        str += "\r\n";
+                    }
                 }
+            }
+            catch
+            {
+                str = text;
             }
             TextWriter textWriter = new StreamWriter(file, false);
             textWriter.Write(str);
@@ -229,6 +307,7 @@ namespace TLWController
 
         ushort GetCardAddress()
         {
+            return 257;
             Point addr = GetUnitAddr();
 
             if (addr.X == 0x00 && addr.Y == 0x00)
@@ -340,6 +419,35 @@ namespace TLWController
 
         }
 
+        private bool Import2055Param(string file)
+        {
+            Register register = RegisterHelper.LoadRegister(file);
+            if (register == null) return false;
+            if (lang == "2052")
+            {
+                grid2055.Columns["ColENDescription"].Visible = false;
+                grid2055.Columns["ColCNDescription"].Width = 500;
+            }
+            else
+            {
+                grid2055.Columns["ColCNDescription"].Visible = false;
+                grid2055.Columns["ColENDescription"].Width = 500;
+            }
+            grid2055.Columns["ColDescription"].Visible = false;
+            grid2055.Columns["ColRegisterAddress"].Visible = false;
+            grid2055.Columns["ColRedAddress"].Visible = false;
+            grid2055.Columns["ColGreenAddress"].Visible = false;
+            grid2055.Columns["ColBlueAddress"].Visible = false;
+            grid2055.Columns["ColStartBit"].Visible = false;
+            grid2055.Columns["ColStopBit"].Visible = false;
+            grid2055.DataSource = register.RegisterItemList;
+
+            cbParam2055Refreshrate.SelectedIndex = register.RefreshRate;
+            ckDebugMode.Checked = register.IsDebug;
+
+            return true;
+        }
+
         #endregion
 
         #region 回调事件
@@ -376,6 +484,16 @@ namespace TLWController
             SetPrograss("", "", e.Percent);
         }
 
+        private DialogResult MainForm_FormClosing()
+        {
+            if (CheckIsBusy())
+            {
+                return DialogResult.No;
+            }
+            WriteOrReadInterfaceData(true);
+            return DialogResult.Yes;
+        }
+
         #endregion
 
         #region 按钮事件
@@ -397,7 +515,7 @@ namespace TLWController
         }
 
         //亮度设置
-        private  void btnApplyBrightness_Click(object sender, EventArgs e)
+        private void btnApplyBrightness_Click(object sender, EventArgs e)
         {
             if (CheckIsBusy()) return;
             if (!CheckDeviceAddr())
@@ -417,6 +535,37 @@ namespace TLWController
            });
         }
 
+        //导入2055参数
+        private void btnLoad2055Param_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog openFileDlg = new OpenFileDialog();
+            openFileDlg.Filter = "*.txt|*.txt";
+            if (openFileDlg.ShowDialog(this) == DialogResult.Cancel) return;
+            if (!Import2055Param(openFileDlg.FileName))
+            {
+                MessageBox.Show(this, "导入2055参数失败");
+                return;
+            }
+        }
+
+        private void btnExport2055Param_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Filter = "*.txt|*.txt";
+            if (saveFileDialog.ShowDialog(this) == DialogResult.Cancel) return;
+            Register reg = new Register();
+            reg.RegisterItemList = grid2055.DataSource as List<RegisterItem>;
+            reg.RefreshRate = (byte)cbParam2055Refreshrate.SelectedIndex;
+            reg.IsDebug = ckDebugMode.Checked;
+            reg.SpecialRegister = new RegisterSpectialItem();
+            reg.SpecialRegister.StartBit = 0;
+            reg.SpecialRegister.StopBit = 15;
+            reg.SpecialRegister.RegisterAddress = "80";
+            reg.SpecialRegister.Value = 80;
+
+            RegisterHelper.SavevRegister(reg, saveFileDialog.FileName);
+
+        }
         #endregion
 
         #region 测试页相关内容
@@ -843,5 +992,101 @@ namespace TLWController
         }
 
         #endregion
+
+        private void btnReadAndWriteFlash_Click(object sender, EventArgs e)
+        {
+            string ip = GetCommunicationType().StartIPAddress;
+            string folder = @"D:\测试文件夹\TSS\error_Write_Flash_Read_Flash";
+            if (System.IO.Directory.Exists(folder)) System.IO.Directory.Delete(folder, true);
+            System.IO.Directory.CreateDirectory(folder);
+
+
+            int errCount = 0;
+            int currentCount = 0;
+            isStop = false;
+            int delay = (int)numTimeDelay.Value;
+
+            uint sectorSize = (uint)numFlashDataLen.Value;
+            uint regAddr = (uint)numRegAddr.Value;
+            byte chipPos = (byte)cbChipPos.SelectedValue.ToString().ToByte();
+
+            EnableControl(sender as Control, false);
+            InvokeAsync(() =>
+            {
+
+                while (!isStop)
+                {
+                    foreach (var item in _DevIP)
+                    {
+                        byte[] bytesWrite = new byte[(int)numFlashDataLen.Value];
+                        byte[] bytesRead = new byte[(int)numFlashDataLen.Value];
+
+                        Random rnd = new Random();
+                        rnd.NextBytes(bytesWrite);
+                        string compare = bytesWrite.ToString(" ");
+
+                        int result = _TLWCommand.tlw_FLASH_Write(item.Value, GetCardAddress(), GetId(), chipPos, regAddr, bytesWrite, sectorSize);
+                        System.Threading.Thread.Sleep(1000);
+                        if (result == 0)
+                        {
+                            result = _TLWCommand.tlw_FLASH_Read(item.Value, GetCardAddress(), GetId(), chipPos, regAddr, bytesRead, sectorSize);
+                            if (result == 0)
+                            {
+                                if (compare.ToUpper() != bytesRead.ToString(" ").ToUpper())
+                                {
+                                    errCount++;
+                                    WriteMessage("错误:" + errCount.ToString());
+                                    string writeData = $"{compare.ToUpper()}\r\n{bytesRead.ToString(" ").ToUpper()}";
+
+                                    byte[] b1 = compare.ToBytes();
+                                    byte[] b2 = bytesRead;
+                                    string msg = "";
+                                    if (b1.Length != b2.Length)
+                                    {
+                                        msg = "长度不同";
+                                    }
+                                    else
+                                    {
+                                        for (int i = 0; i < b1.Length; i++)
+                                        {
+                                            if (b1[i] != b2[i])
+                                            {
+                                                msg += $"index:{i} write1:{b1[i]} read:{b2[i]}";
+                                            }
+                                        }
+                                    }
+                                    WriteTextFile($@"{folder}\error_{errCount}_.txt", msg);
+
+
+                                }
+                            }
+                            else
+                            {
+                                errCount++;
+                                WriteMessage("读取失败");
+                                WriteTestMessage($"稳定性测试:当前次数:{currentCount},错误次数:{errCount}");
+                                WriteTextFile($@"{folder}\error_{errCount}.txt", "读取失败");
+                                continue;
+                            }
+                            currentCount++;
+                            WriteTestMessage($"稳定性测试:当前次数:{currentCount},错误次数:{errCount}");
+                            System.Threading.Thread.Sleep(delay);
+                        }
+                        else
+                        {
+                            errCount++;
+                            currentCount++;
+                            WriteTestMessage($"稳定性测试:当前次数:{currentCount},错误次数:{errCount}");
+                            continue;
+                        }
+                    }
+                }
+                EnableControl(sender as Control, true);
+
+            });
+
+        }
+
+
     }
 }

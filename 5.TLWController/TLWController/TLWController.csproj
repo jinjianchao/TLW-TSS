@@ -36,6 +36,10 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DevComponents.DotNetBar2, Version=10.9.0.4, Culture=neutral, PublicKeyToken=c39c3242a43eee2b, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\1.Release\DevComponents.DotNetBar2.dll</HintPath>
+    </Reference>
     <Reference Include="LanguageLib, Version=3.0.0.1, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Lib\LanguageLib.dll</HintPath>
@@ -61,6 +65,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Events\TLWEvent.cs" />
+    <Compile Include="Extentions\ObjectExtention.cs" />
     <Compile Include="Extentions\SimpleTypeExtention.cs" />
     <Compile Include="FrmSectionSet.cs">
       <SubType>Form</SubType>
@@ -68,6 +73,8 @@
     <Compile Include="FrmSectionSet.Designer.cs">
       <DependentUpon>FrmSectionSet.cs</DependentUpon>
     </Compile>
+    <Compile Include="Helper\InterfaceDataHelper.cs" />
+    <Compile Include="Helper\RegisterHelper.cs" />
     <Compile Include="Helper\TLWCommand.cs" />
     <Compile Include="Helper\UDPHelper.cs" />
     <Compile Include="MainForm.cs">
@@ -116,12 +123,13 @@
     <None Include="Lib\tlw.dll" />
     <None Include="Lib\TLWComm.dll" />
     <None Include="Lib\UnitInfo.dll" />
+    <Content Include="Config\Param2055.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Plugin.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Config\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
