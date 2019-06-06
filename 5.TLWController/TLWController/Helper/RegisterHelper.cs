@@ -44,6 +44,7 @@ namespace TLWController.Helper
         public string Description { get; set; }
         public string ChineseDescription { get; set; }
         public string EnglishDescription { get; set; }
+        public String Send { get; set; } = "Send";
     }
 
     public class Register

@@ -682,7 +682,7 @@ namespace TLWController
             EnableControl(sender as Control, false);
             _TLWCommand.tlw_SDRAM_WriteToFLASH(GetCardAddress(), GetId(), _DevIP, (param) =>
            {
-               Array.ForEach(param, t => WriteOutput(t, "写入SDRAM"));
+               Array.ForEach(param, t => WriteOutput(t, "SDRAM写入FLASH"));
                EnableControl(sender as Control, true);
            });
 
