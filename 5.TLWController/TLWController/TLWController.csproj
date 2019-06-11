@@ -65,6 +65,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Events\TLWEvent.cs" />
+    <Compile Include="Extentions\BytesExtention.cs" />
     <Compile Include="Extentions\ObjectExtention.cs" />
     <Compile Include="Extentions\SimpleTypeExtention.cs" />
     <Compile Include="FrmSectionSet.cs">

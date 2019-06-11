@@ -22,7 +22,7 @@ namespace TLWController.Helper
 {
     public class RegisterSpectialItem
     {
-        public string RegisterAddress { get; set; }
+        public int RegisterAddress { get; set; }
         public byte StartBit { get; set; }
         public byte StopBit { get; set; }
         public byte Value { get; set; }
@@ -32,6 +32,7 @@ namespace TLWController.Helper
     /// </summary>
     public class RegisterItem
     {
+        public bool IsSelected { get; set; }
         public string RegisterAddress { get; set; }
         public string RedAddress { get; set; }
         public string GreenAddress { get; set; }
@@ -45,6 +46,8 @@ namespace TLWController.Helper
         public string ChineseDescription { get; set; }
         public string EnglishDescription { get; set; }
         public String Send { get; set; } = "Send";
+        public byte MinValue { get; set; }
+        public byte MaxValue { get; set; }
     }
 
     public class Register
@@ -77,7 +80,7 @@ namespace TLWController.Helper
         //第一行：序号 刷新率    是否调试模式(0:否，1：是)
         //第二行：//序号 起始位 结束位 特殊地址 特殊值
         //第三行开始往下：
-        //序号    FPGA红色地址    FPGA绿色地址    FPGA蓝色地址    恒流源地址   起始位 结束位  红色值     绿色纸     蓝色值     说明     中文说明    英文说明
+        //序号    FPGA红色地址    FPGA绿色地址    FPGA蓝色地址    恒流源地址   起始位 结束位    最小值   最大值   红色值     绿色纸     蓝色值     说明     中文说明    英文说明
         #endregion
 
         public static Register LoadRegister(string file)
@@ -135,14 +138,18 @@ namespace TLWController.Helper
                             return null;
                         }
                         specialFPGA.StopBit = endBit;
-                        specialFPGA.RegisterAddress = data[3];
+                        if (!int.TryParse(data[3], NumberStyles.HexNumber, CultureInfo.InvariantCulture, out int addr))
+                        {
+                            return null;
+                        }
+                        specialFPGA.RegisterAddress = addr;
                         specialFPGA.Value = byte.Parse(data[4]);
                         reg.SpecialRegister = specialFPGA;
                     }
                     else
                     {
                         RegisterItem registerItem = new RegisterItem();
-                        if (data.Length != 13)
+                        if (data.Length != 15)
                         {
                             return null;
                         }
@@ -184,26 +191,38 @@ namespace TLWController.Helper
                         }
                         registerItem.StopBit = endBit;
 
-                        if (!byte.TryParse(data[7], NumberStyles.HexNumber, CultureInfo.InvariantCulture, out byte redValue))
+                        if (!byte.TryParse(data[7], NumberStyles.HexNumber, CultureInfo.InvariantCulture, out byte minValue))
+                        {
+                            return null;
+                        }
+                        registerItem.MinValue = minValue;
+
+                        if (!byte.TryParse(data[8], NumberStyles.HexNumber, CultureInfo.InvariantCulture, out byte maxValue))
+                        {
+                            return null;
+                        }
+                        registerItem.MaxValue = maxValue;
+
+                        if (!byte.TryParse(data[9], NumberStyles.HexNumber, CultureInfo.InvariantCulture, out byte redValue))
                         {
                             return null;
                         }
                         registerItem.RedValue = redValue;
 
-                        if (!byte.TryParse(data[8], NumberStyles.HexNumber, CultureInfo.InvariantCulture, out byte greenValue))
+                        if (!byte.TryParse(data[10], NumberStyles.HexNumber, CultureInfo.InvariantCulture, out byte greenValue))
                         {
                             return null;
                         }
                         registerItem.GreenValue = greenValue;
 
-                        if (!byte.TryParse(data[9], NumberStyles.HexNumber, CultureInfo.InvariantCulture, out byte blueValue))
+                        if (!byte.TryParse(data[11], NumberStyles.HexNumber, CultureInfo.InvariantCulture, out byte blueValue))
                         {
                             return null;
                         }
                         registerItem.BlueValue = blueValue;
-                        registerItem.Description = data[10];
-                        registerItem.ChineseDescription = data[11];
-                        registerItem.EnglishDescription = data[12];
+                        registerItem.Description = data[12];
+                        registerItem.ChineseDescription = data[13];
+                        registerItem.EnglishDescription = data[14];
                         reg.RegisterItemList.Add(registerItem);
                     }
                     lineIndex++;
@@ -223,8 +242,8 @@ namespace TLWController.Helper
                 cx++;
                 foreach (var item in register.RegisterItemList)
                 {
-                    //序号    FPGA红色地址    FPGA绿色地址    FPGA蓝色地址    恒流源地址   起始位 结束位  红色值     绿色纸     蓝色值     说明     中文说明    英文说明
-                    writer.WriteLine($"{cx}\t{item.RedAddress}\t{item.GreenAddress}\t{item.BlueAddress}\t{item.RegisterAddress}\t{item.StartBit}\t{item.StopBit}\t{item.RedValue}\t{item.GreenValue}\t{item.BlueValue}\t{item.Description}\t{item.ChineseDescription}\t{item.EnglishDescription}");
+                    //序号    FPGA红色地址    FPGA绿色地址    FPGA蓝色地址    恒流源地址   起始位 结束位  最小值   最大值  红色值     绿色纸     蓝色值     说明     中文说明    英文说明
+                    writer.WriteLine($"{cx}\t{item.RedAddress}\t{item.GreenAddress}\t{item.BlueAddress}\t{item.RegisterAddress}\t{item.StartBit}\t{item.StopBit}\t{item.MinValue}\t{item.MaxValue}\t{item.RedValue}\t{item.GreenValue}\t{item.BlueValue}\t{item.Description}\t{item.ChineseDescription}\t{item.EnglishDescription}");
                     cx++;
                 }
             }

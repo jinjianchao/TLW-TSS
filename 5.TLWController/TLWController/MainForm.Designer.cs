@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tabCommonCommand = new System.Windows.Forms.TabPage();
             this.gbBrightness = new System.Windows.Forms.GroupBox();
             this.cbBrightnessColor = new System.Windows.Forms.ComboBox();
@@ -55,6 +55,7 @@
             this.label4 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.gpTest = new System.Windows.Forms.GroupBox();
+            this.btnReadAndWriteFlash = new System.Windows.Forms.Button();
             this.btnTest3 = new System.Windows.Forms.Button();
             this.btnReadWriteSend = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
@@ -64,15 +65,19 @@
             this.numTimeDelay = new System.Windows.Forms.NumericUpDown();
             this.button2 = new System.Windows.Forms.Button();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.btnLoad2055Param = new System.Windows.Forms.Button();
-            this.grid2055 = new System.Windows.Forms.DataGridView();
-            this.btnReadAndWriteFlash = new System.Windows.Forms.Button();
-            this.btnExport2055Param = new System.Windows.Forms.Button();
-            this.label8 = new System.Windows.Forms.Label();
-            this.cbParam2055Refreshrate = new System.Windows.Forms.ComboBox();
-            this.ckDebugMode = new System.Windows.Forms.CheckBox();
+            this.ckParamAll = new System.Windows.Forms.CheckBox();
+            this.btnSendAll = new System.Windows.Forms.Button();
             this.cbParam2055Color = new System.Windows.Forms.ComboBox();
             this.label9 = new System.Windows.Forms.Label();
+            this.ckDebugMode = new System.Windows.Forms.CheckBox();
+            this.cbParam2055Refreshrate = new System.Windows.Forms.ComboBox();
+            this.label8 = new System.Windows.Forms.Label();
+            this.btnExport2055Param = new System.Windows.Forms.Button();
+            this.btnLoad2055Param = new System.Windows.Forms.Button();
+            this.grid2055 = new System.Windows.Forms.DataGridView();
+            this.CoCheckBox = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.ColMinValue = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColMaxValue = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColCNDescription = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColENDescription = new DevComponents.DotNetBar.Controls.DataGridViewLabelXColumn();
             this.ColDescription = new DevComponents.DotNetBar.Controls.DataGridViewLabelXColumn();
@@ -86,6 +91,18 @@
             this.ColGreenValue = new DevComponents.DotNetBar.Controls.DataGridViewIntegerInputColumn();
             this.ColBlueValue = new DevComponents.DotNetBar.Controls.DataGridViewIntegerInputColumn();
             this.ColSend = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.btnWriteSdramReadSdram = new System.Windows.Forms.Button();
+            this.label10 = new System.Windows.Forms.Label();
+            this.numSpecialAddr = new System.Windows.Forms.NumericUpDown();
+            this.numSpecialStartBit = new System.Windows.Forms.NumericUpDown();
+            this.label11 = new System.Windows.Forms.Label();
+            this.numSpecialStopBit = new System.Windows.Forms.NumericUpDown();
+            this.label12 = new System.Windows.Forms.Label();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.btnSpecialSet = new System.Windows.Forms.Button();
+            this.numSpectionValue = new System.Windows.Forms.NumericUpDown();
+            this.label13 = new System.Windows.Forms.Label();
+            this.button3 = new System.Windows.Forms.Button();
             this.tabCommonCommand.SuspendLayout();
             this.gbBrightness.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numBrightness)).BeginInit();
@@ -104,6 +121,11 @@
             ((System.ComponentModel.ISupportInitialize)(this.numTimeDelay)).BeginInit();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.grid2055)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numSpecialAddr)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numSpecialStartBit)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numSpecialStopBit)).BeginInit();
+            this.groupBox4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numSpectionValue)).BeginInit();
             this.SuspendLayout();
             // 
             // tabCommonCommand
@@ -394,6 +416,8 @@
             // 
             // gpTest
             // 
+            this.gpTest.Controls.Add(this.button3);
+            this.gpTest.Controls.Add(this.btnWriteSdramReadSdram);
             this.gpTest.Controls.Add(this.btnReadAndWriteFlash);
             this.gpTest.Controls.Add(this.btnTest3);
             this.gpTest.Controls.Add(this.btnReadWriteSend);
@@ -409,6 +433,16 @@
             this.gpTest.TabIndex = 9;
             this.gpTest.TabStop = false;
             this.gpTest.Text = "稳定性测试";
+            // 
+            // btnReadAndWriteFlash
+            // 
+            this.btnReadAndWriteFlash.Location = new System.Drawing.Point(6, 82);
+            this.btnReadAndWriteFlash.Name = "btnReadAndWriteFlash";
+            this.btnReadAndWriteFlash.Size = new System.Drawing.Size(113, 23);
+            this.btnReadAndWriteFlash.TabIndex = 8;
+            this.btnReadAndWriteFlash.Text = "写flash->读flash";
+            this.btnReadAndWriteFlash.UseVisualStyleBackColor = true;
+            this.btnReadAndWriteFlash.Click += new System.EventHandler(this.btnReadAndWriteFlash_Click);
             // 
             // btnTest3
             // 
@@ -505,6 +539,9 @@
             // tabPage1
             // 
             this.tabPage1.BackColor = System.Drawing.SystemColors.Control;
+            this.tabPage1.Controls.Add(this.groupBox4);
+            this.tabPage1.Controls.Add(this.ckParamAll);
+            this.tabPage1.Controls.Add(this.btnSendAll);
             this.tabPage1.Controls.Add(this.cbParam2055Color);
             this.tabPage1.Controls.Add(this.label9);
             this.tabPage1.Controls.Add(this.ckDebugMode);
@@ -519,10 +556,88 @@
             this.tabPage1.Size = new System.Drawing.Size(1392, 583);
             this.tabPage1.TabIndex = 2;
             this.tabPage1.Text = "2055参数下载";
+            this.tabPage1.Click += new System.EventHandler(this.tabPage1_Click);
+            // 
+            // ckParamAll
+            // 
+            this.ckParamAll.AutoSize = true;
+            this.ckParamAll.Location = new System.Drawing.Point(16, 69);
+            this.ckParamAll.Name = "ckParamAll";
+            this.ckParamAll.Size = new System.Drawing.Size(15, 14);
+            this.ckParamAll.TabIndex = 9;
+            this.ckParamAll.UseVisualStyleBackColor = true;
+            // 
+            // btnSendAll
+            // 
+            this.btnSendAll.Location = new System.Drawing.Point(977, 10);
+            this.btnSendAll.Name = "btnSendAll";
+            this.btnSendAll.Size = new System.Drawing.Size(75, 23);
+            this.btnSendAll.TabIndex = 8;
+            this.btnSendAll.Text = "全部设置";
+            this.btnSendAll.UseVisualStyleBackColor = true;
+            // 
+            // cbParam2055Color
+            // 
+            this.cbParam2055Color.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbParam2055Color.FormattingEnabled = true;
+            this.cbParam2055Color.Location = new System.Drawing.Point(77, 33);
+            this.cbParam2055Color.Name = "cbParam2055Color";
+            this.cbParam2055Color.Size = new System.Drawing.Size(97, 20);
+            this.cbParam2055Color.TabIndex = 7;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(9, 37);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(41, 12);
+            this.label9.TabIndex = 6;
+            this.label9.Text = "颜色：";
+            // 
+            // ckDebugMode
+            // 
+            this.ckDebugMode.AutoSize = true;
+            this.ckDebugMode.Location = new System.Drawing.Point(180, 8);
+            this.ckDebugMode.Name = "ckDebugMode";
+            this.ckDebugMode.Size = new System.Drawing.Size(72, 16);
+            this.ckDebugMode.TabIndex = 5;
+            this.ckDebugMode.Text = "调试模式";
+            this.ckDebugMode.UseVisualStyleBackColor = true;
+            // 
+            // cbParam2055Refreshrate
+            // 
+            this.cbParam2055Refreshrate.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbParam2055Refreshrate.FormattingEnabled = true;
+            this.cbParam2055Refreshrate.Items.AddRange(new object[] {
+            "50Hz",
+            "60Hz"});
+            this.cbParam2055Refreshrate.Location = new System.Drawing.Point(77, 6);
+            this.cbParam2055Refreshrate.Name = "cbParam2055Refreshrate";
+            this.cbParam2055Refreshrate.Size = new System.Drawing.Size(97, 20);
+            this.cbParam2055Refreshrate.TabIndex = 4;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(9, 10);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(53, 12);
+            this.label8.TabIndex = 3;
+            this.label8.Text = "刷新率：";
+            // 
+            // btnExport2055Param
+            // 
+            this.btnExport2055Param.Location = new System.Drawing.Point(896, 37);
+            this.btnExport2055Param.Name = "btnExport2055Param";
+            this.btnExport2055Param.Size = new System.Drawing.Size(75, 23);
+            this.btnExport2055Param.TabIndex = 2;
+            this.btnExport2055Param.Text = "导出";
+            this.btnExport2055Param.UseVisualStyleBackColor = true;
+            this.btnExport2055Param.Click += new System.EventHandler(this.btnExport2055Param_Click);
             // 
             // btnLoad2055Param
             // 
-            this.btnLoad2055Param.Location = new System.Drawing.Point(1061, 14);
+            this.btnLoad2055Param.Location = new System.Drawing.Point(896, 10);
             this.btnLoad2055Param.Name = "btnLoad2055Param";
             this.btnLoad2055Param.Size = new System.Drawing.Size(75, 23);
             this.btnLoad2055Param.TabIndex = 1;
@@ -537,13 +652,16 @@
             this.grid2055.AllowUserToOrderColumns = true;
             this.grid2055.AllowUserToResizeColumns = false;
             this.grid2055.AllowUserToResizeRows = false;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.grid2055.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.grid2055.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle2;
             this.grid2055.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.grid2055.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.grid2055.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.CoCheckBox,
+            this.ColMinValue,
+            this.ColMaxValue,
             this.ColCNDescription,
             this.ColENDescription,
             this.ColDescription,
@@ -557,84 +675,40 @@
             this.ColGreenValue,
             this.ColBlueValue,
             this.ColSend});
+            this.grid2055.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
             this.grid2055.EnableHeadersVisualStyles = false;
-            this.grid2055.Location = new System.Drawing.Point(6, 43);
+            this.grid2055.Location = new System.Drawing.Point(6, 66);
             this.grid2055.MultiSelect = false;
             this.grid2055.Name = "grid2055";
             this.grid2055.RowHeadersVisible = false;
             this.grid2055.RowTemplate.Height = 23;
             this.grid2055.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.grid2055.Size = new System.Drawing.Size(1378, 532);
+            this.grid2055.Size = new System.Drawing.Size(1378, 509);
             this.grid2055.TabIndex = 0;
+            this.grid2055.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.grid2055_CellBeginEdit);
+            this.grid2055.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(this.grid2055_EditingControlShowing);
             // 
-            // btnReadAndWriteFlash
+            // CoCheckBox
             // 
-            this.btnReadAndWriteFlash.Location = new System.Drawing.Point(6, 82);
-            this.btnReadAndWriteFlash.Name = "btnReadAndWriteFlash";
-            this.btnReadAndWriteFlash.Size = new System.Drawing.Size(113, 23);
-            this.btnReadAndWriteFlash.TabIndex = 8;
-            this.btnReadAndWriteFlash.Text = "写flash->读flash";
-            this.btnReadAndWriteFlash.UseVisualStyleBackColor = true;
-            this.btnReadAndWriteFlash.Click += new System.EventHandler(this.btnReadAndWriteFlash_Click);
+            this.CoCheckBox.DataPropertyName = "IsSelected";
+            this.CoCheckBox.Frozen = true;
+            this.CoCheckBox.HeaderText = "";
+            this.CoCheckBox.Name = "CoCheckBox";
+            this.CoCheckBox.Width = 30;
             // 
-            // btnExport2055Param
+            // ColMinValue
             // 
-            this.btnExport2055Param.Location = new System.Drawing.Point(1143, 14);
-            this.btnExport2055Param.Name = "btnExport2055Param";
-            this.btnExport2055Param.Size = new System.Drawing.Size(75, 23);
-            this.btnExport2055Param.TabIndex = 2;
-            this.btnExport2055Param.Text = "导出";
-            this.btnExport2055Param.UseVisualStyleBackColor = true;
-            this.btnExport2055Param.Click += new System.EventHandler(this.btnExport2055Param_Click);
+            this.ColMinValue.DataPropertyName = "MinValue";
+            this.ColMinValue.Frozen = true;
+            this.ColMinValue.HeaderText = "最小值";
+            this.ColMinValue.Name = "ColMinValue";
             // 
-            // label8
+            // ColMaxValue
             // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(8, 20);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(53, 12);
-            this.label8.TabIndex = 3;
-            this.label8.Text = "刷新率：";
-            // 
-            // cbParam2055Refreshrate
-            // 
-            this.cbParam2055Refreshrate.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbParam2055Refreshrate.FormattingEnabled = true;
-            this.cbParam2055Refreshrate.Items.AddRange(new object[] {
-            "50Hz",
-            "60Hz"});
-            this.cbParam2055Refreshrate.Location = new System.Drawing.Point(76, 16);
-            this.cbParam2055Refreshrate.Name = "cbParam2055Refreshrate";
-            this.cbParam2055Refreshrate.Size = new System.Drawing.Size(97, 20);
-            this.cbParam2055Refreshrate.TabIndex = 4;
-            // 
-            // ckDebugMode
-            // 
-            this.ckDebugMode.AutoSize = true;
-            this.ckDebugMode.Location = new System.Drawing.Point(400, 18);
-            this.ckDebugMode.Name = "ckDebugMode";
-            this.ckDebugMode.Size = new System.Drawing.Size(72, 16);
-            this.ckDebugMode.TabIndex = 5;
-            this.ckDebugMode.Text = "调试模式";
-            this.ckDebugMode.UseVisualStyleBackColor = true;
-            // 
-            // cbParam2055Color
-            // 
-            this.cbParam2055Color.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbParam2055Color.FormattingEnabled = true;
-            this.cbParam2055Color.Location = new System.Drawing.Point(283, 16);
-            this.cbParam2055Color.Name = "cbParam2055Color";
-            this.cbParam2055Color.Size = new System.Drawing.Size(97, 20);
-            this.cbParam2055Color.TabIndex = 7;
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(215, 20);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(41, 12);
-            this.label9.TabIndex = 6;
-            this.label9.Text = "颜色：";
+            this.ColMaxValue.DataPropertyName = "MaxValue";
+            this.ColMaxValue.Frozen = true;
+            this.ColMaxValue.HeaderText = "最大值";
+            this.ColMaxValue.Name = "ColMaxValue";
             // 
             // ColCNDescription
             // 
@@ -717,6 +791,7 @@
             this.ColRedValue.HeaderText = "红色值";
             this.ColRedValue.Name = "ColRedValue";
             this.ColRedValue.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.ColRedValue.ShowUpDown = true;
             this.ColRedValue.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             // 
             // ColGreenValue
@@ -730,6 +805,8 @@
             this.ColGreenValue.Frozen = true;
             this.ColGreenValue.HeaderText = "绿色值";
             this.ColGreenValue.Name = "ColGreenValue";
+            this.ColGreenValue.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.ColGreenValue.ShowUpDown = true;
             // 
             // ColBlueValue
             // 
@@ -742,6 +819,8 @@
             this.ColBlueValue.Frozen = true;
             this.ColBlueValue.HeaderText = "蓝色值";
             this.ColBlueValue.Name = "ColBlueValue";
+            this.ColBlueValue.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.ColBlueValue.ShowUpDown = true;
             // 
             // ColSend
             // 
@@ -752,6 +831,137 @@
             this.ColSend.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.ColSend.Text = "发送";
             this.ColSend.UseColumnTextForButtonValue = true;
+            // 
+            // btnWriteSdramReadSdram
+            // 
+            this.btnWriteSdramReadSdram.Location = new System.Drawing.Point(129, 82);
+            this.btnWriteSdramReadSdram.Name = "btnWriteSdramReadSdram";
+            this.btnWriteSdramReadSdram.Size = new System.Drawing.Size(110, 23);
+            this.btnWriteSdramReadSdram.TabIndex = 9;
+            this.btnWriteSdramReadSdram.Text = "写SDRAM->读SDRAM";
+            this.btnWriteSdramReadSdram.UseVisualStyleBackColor = true;
+            this.btnWriteSdramReadSdram.Click += new System.EventHandler(this.btnWriteSdramReadSdram_Click);
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(22, 26);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(41, 12);
+            this.label10.TabIndex = 10;
+            this.label10.Text = "地址：";
+            // 
+            // numSpecialAddr
+            // 
+            this.numSpecialAddr.Location = new System.Drawing.Point(69, 22);
+            this.numSpecialAddr.Maximum = new decimal(new int[] {
+            99999999,
+            0,
+            0,
+            0});
+            this.numSpecialAddr.Name = "numSpecialAddr";
+            this.numSpecialAddr.Size = new System.Drawing.Size(73, 21);
+            this.numSpecialAddr.TabIndex = 11;
+            // 
+            // numSpecialStartBit
+            // 
+            this.numSpecialStartBit.Location = new System.Drawing.Point(201, 22);
+            this.numSpecialStartBit.Maximum = new decimal(new int[] {
+            99999999,
+            0,
+            0,
+            0});
+            this.numSpecialStartBit.Name = "numSpecialStartBit";
+            this.numSpecialStartBit.Size = new System.Drawing.Size(73, 21);
+            this.numSpecialStartBit.TabIndex = 13;
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(148, 26);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(53, 12);
+            this.label11.TabIndex = 12;
+            this.label11.Text = "起始位：";
+            // 
+            // numSpecialStopBit
+            // 
+            this.numSpecialStopBit.Location = new System.Drawing.Point(340, 22);
+            this.numSpecialStopBit.Maximum = new decimal(new int[] {
+            99999999,
+            0,
+            0,
+            0});
+            this.numSpecialStopBit.Name = "numSpecialStopBit";
+            this.numSpecialStopBit.Size = new System.Drawing.Size(73, 21);
+            this.numSpecialStopBit.TabIndex = 15;
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(286, 26);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(53, 12);
+            this.label12.TabIndex = 14;
+            this.label12.Text = "终止位：";
+            // 
+            // groupBox4
+            // 
+            this.groupBox4.Controls.Add(this.numSpectionValue);
+            this.groupBox4.Controls.Add(this.label13);
+            this.groupBox4.Controls.Add(this.btnSpecialSet);
+            this.groupBox4.Controls.Add(this.label11);
+            this.groupBox4.Controls.Add(this.numSpecialStopBit);
+            this.groupBox4.Controls.Add(this.label10);
+            this.groupBox4.Controls.Add(this.label12);
+            this.groupBox4.Controls.Add(this.numSpecialAddr);
+            this.groupBox4.Controls.Add(this.numSpecialStartBit);
+            this.groupBox4.Location = new System.Drawing.Point(258, 6);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Size = new System.Drawing.Size(630, 54);
+            this.groupBox4.TabIndex = 16;
+            this.groupBox4.TabStop = false;
+            this.groupBox4.Text = "特殊寄存器";
+            // 
+            // btnSpecialSet
+            // 
+            this.btnSpecialSet.Location = new System.Drawing.Point(540, 21);
+            this.btnSpecialSet.Name = "btnSpecialSet";
+            this.btnSpecialSet.Size = new System.Drawing.Size(75, 23);
+            this.btnSpecialSet.TabIndex = 16;
+            this.btnSpecialSet.Text = "设置";
+            this.btnSpecialSet.UseVisualStyleBackColor = true;
+            // 
+            // numSpectionValue
+            // 
+            this.numSpectionValue.Location = new System.Drawing.Point(454, 22);
+            this.numSpectionValue.Maximum = new decimal(new int[] {
+            99999999,
+            0,
+            0,
+            0});
+            this.numSpectionValue.Name = "numSpectionValue";
+            this.numSpectionValue.Size = new System.Drawing.Size(73, 21);
+            this.numSpectionValue.TabIndex = 18;
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(418, 26);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(23, 12);
+            this.label13.TabIndex = 17;
+            this.label13.Text = "值:";
+            // 
+            // button3
+            // 
+            this.button3.Location = new System.Drawing.Point(246, 81);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(75, 23);
+            this.button3.TabIndex = 10;
+            this.button3.Text = "button3";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
             // MainForm
             // 
@@ -787,6 +997,12 @@
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.grid2055)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numSpecialAddr)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numSpecialStartBit)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numSpecialStopBit)).EndInit();
+            this.groupBox4.ResumeLayout(false);
+            this.groupBox4.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numSpectionValue)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -837,6 +1053,11 @@
         private System.Windows.Forms.ComboBox cbParam2055Color;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.CheckBox ckDebugMode;
+        private System.Windows.Forms.Button btnSendAll;
+        private System.Windows.Forms.CheckBox ckParamAll;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn CoCheckBox;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ColMinValue;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ColMaxValue;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColCNDescription;
         private DevComponents.DotNetBar.Controls.DataGridViewLabelXColumn ColENDescription;
         private DevComponents.DotNetBar.Controls.DataGridViewLabelXColumn ColDescription;
@@ -850,6 +1071,18 @@
         private DevComponents.DotNetBar.Controls.DataGridViewIntegerInputColumn ColGreenValue;
         private DevComponents.DotNetBar.Controls.DataGridViewIntegerInputColumn ColBlueValue;
         private System.Windows.Forms.DataGridViewButtonColumn ColSend;
+        private System.Windows.Forms.Button btnWriteSdramReadSdram;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.GroupBox groupBox4;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.NumericUpDown numSpecialStopBit;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.NumericUpDown numSpecialAddr;
+        private System.Windows.Forms.NumericUpDown numSpecialStartBit;
+        private System.Windows.Forms.Button btnSpecialSet;
+        private System.Windows.Forms.NumericUpDown numSpectionValue;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.Button button3;
     }
 }
 

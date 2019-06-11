@@ -12,13 +12,15 @@ using TLWController.Helper;
 using TLWController.Extentions;
 using System.IO;
 using System.Threading.Tasks;
+using System.Runtime.InteropServices;
 
 namespace TLWController
 {
     public partial class MainForm : BaseFormV2
     {
         #region 私有变量
-
+        private int _CurrentGridRowIndex = 0;
+        private int _CurrentGridColumnIndex = 0;
         private Dictionary<string, int> _DevIP = new Dictionary<string, int>();
         private TLWCommand _TLWCommand = null;
         private bool _isBusy = false;
@@ -307,7 +309,6 @@ namespace TLWController
 
         ushort GetCardAddress()
         {
-            return 257;
             Point addr = GetUnitAddr();
 
             if (addr.X == 0x00 && addr.Y == 0x00)
@@ -440,10 +441,13 @@ namespace TLWController
             grid2055.Columns["ColBlueAddress"].Visible = false;
             grid2055.Columns["ColStartBit"].Visible = false;
             grid2055.Columns["ColStopBit"].Visible = false;
+            grid2055.Columns["ColMinValue"].Visible = false;
+            grid2055.Columns["ColMaxValue"].Visible = false;
             grid2055.DataSource = register.RegisterItemList;
 
             cbParam2055Refreshrate.SelectedIndex = register.RefreshRate;
             ckDebugMode.Checked = register.IsDebug;
+            numSpecialAddr.Value = register.SpecialRegister.RegisterAddress;
 
             return true;
         }
@@ -558,10 +562,10 @@ namespace TLWController
             reg.RefreshRate = (byte)cbParam2055Refreshrate.SelectedIndex;
             reg.IsDebug = ckDebugMode.Checked;
             reg.SpecialRegister = new RegisterSpectialItem();
-            reg.SpecialRegister.StartBit = 0;
-            reg.SpecialRegister.StopBit = 15;
-            reg.SpecialRegister.RegisterAddress = "80";
-            reg.SpecialRegister.Value = 80;
+            reg.SpecialRegister.StartBit = (byte)numSpecialStartBit.Value;
+            reg.SpecialRegister.StopBit = (byte)numSpecialStopBit.Value;
+            reg.SpecialRegister.RegisterAddress = (int)numSpecialAddr.Value;
+            reg.SpecialRegister.Value = (byte)numSpectionValue.Value;
 
             RegisterHelper.SavevRegister(reg, saveFileDialog.FileName);
 
@@ -654,6 +658,15 @@ namespace TLWController
             Random rnd = new Random();
             byte[] data = new byte[(int)numFlashDataLen.Value];
             rnd.NextBytes(data);
+
+            byte val = 1;
+            for (int i = 1; i <= numFlashDataLen.Value; i++)
+            {
+                if (val > 255 || val == 0) val = 1;
+                data[i - 1] = val;
+                val++;
+            }
+
             SaveFileDialog saveFileDialog = new SaveFileDialog();
             saveFileDialog.Filter = "*.txt|*.txt";
             saveFileDialog.Title = "保存测试数据";
@@ -663,7 +676,7 @@ namespace TLWController
 
             byte chipPos = (byte)cbChipPos.SelectedValue.ToString().ToByte();
             EnableControl(sender as Control, false);
-            _TLWCommand.tlw_SDRAM_Write(GetCardAddress(), GetId(), chipPos, (uint)numSDRAMAddr.Value, data, _DevIP, (param) =>
+            _TLWCommand.tlw_SDRAM_Write(GetCardAddress(), GetId(), (uint)numSDRAMAddr.Value, data, _DevIP, (param) =>
             {
                 Array.ForEach(param, t => WriteOutput(t, "写入SDRAM"));
                 EnableControl(sender as Control, true);
@@ -709,15 +722,18 @@ namespace TLWController
             //compare += "f3 00 f4 00 f5 00 f6 00 f7 00 f8 00 f9 00 fa 00 fb 00 fc 00 fd 00 fe 00 ff";
             //aa 8e 41 51 04 00 00 00 20 00 00 00 00 0e 0f 10 11 12  --- 0d  4轮  FE 75 55 71 BE
 
-            compare = "aa 8e 41 51 04 00 00 00 20 00 00 00 00 ";
-            for (int j = 0; j < 4; j++)
-            {
-                for (int i = 0x00; i <= 0xff; i++)
-                {
-                    compare += i.ToString("x2") + " ";
-                }
-            }
-            compare += "FE 75 55 71 BE";
+            //            compare = "aa 8e 42 04 19 01 01 00 00 00 03 00 00 00 00 00 01 00 01 01 00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15 16 17 18 19 1a 1b 1c 1d 1e 1f 20 21 22 23 24 25 26 27 28 29 2a 2b 2c 2d 2e 2f 30 31 32 33 ";
+            //            compare += "34 35 36 37 38 39 3a 3b 3c 3d 3e 3f 40 41 42 43 44 45 46 47 48 49 4a 4b 4c 4d 4e 4f 50 51 52 53 54 55 56 57 58 59 5a 5b 5c 5d 5e 5f 60 61 62 63 64 65 66 67 68 69 6a 6b 6c 6d 6e 6f 70 71 72 73 74 75 76 77 78 79 7a 7b ";
+            //            compare += "7c 7d 7e 7f 80 81 82 83 84 85 86 87 88 89 8a 8b 8c 8d 8e 8f 90 91 92 93 94 95 96 97 98 99 9a 9b 9c 9d 9e 9f a0 a1 a2 a3 a4 a5 a6 a7 a8 a9 aa ab ac ad ae af b0 b1 b2 b3 b4 b5 b6 b7 b8 b9 ba bb bc bd be bf c0 c1 c2 c3 ";
+            //            compare += "c4 c5 c6 c7 c8 c9 ca cb cc cd ce cf d0 d1 d2 d3 d4 d5 d6 d7 d8 d9 da db dc dd de df e0 e1 e2 e3 e4 e5 e6 e7 e8 e9 ea eb ec ed ee ef f0 f1 f2 f3 f4 f5 f6 f7 f8 f9 fa fb fc fd fe ff 00 01 02 03 04 05 06 07 08 09 0a 0b ";
+            //            compare += "0c 0d 0e 0f 10 11 12 13 14 15 16 17 18 19 1a 1b 1c 1d 1e 1f 20 21 22 23 24 25 26 27 28 29 2a 2b 2c 2d 2e 2f 30 31 32 33 34 35 36 37 38 39 3a 3b 3c 3d 3e 3f 40 41 42 43 44 45 46 47 48 49 4a 4b 4c 4d 4e 4f 50 51 52 53 54 ";
+            //            compare += "55 56 57 58 59 5a 5b 5c 5d 5e 5f 60 61 62 63 64 65 66 67 68 69 6a 6b 6c 6d 6e 6f 70 71 72 73 74 75 76 77 78 79 7a 7b 7c 7d 7e 7f 80 81 82 83 84 85 86 87 88 89 8a 8b 8c 8d 8e 8f 90 91 92 93 94 95 96 97 98 99 9a 9b 9c 9d ";
+            //            compare += "9e 9f a0 a1 a2 a3 a4 a5 a6 a7 a8 a9 aa ab ac ad ae af b0 b1 b2 b3 b4 b5 b6 b7 b8 b9 ba bb bc bd be bf c0 c1 c2 c3 c4 c5 c6 c7 c8 c9 ca cb cc cd ce cf d0 d1 d2 d3 d4 d5 d6 d7 d8 d9 da db dc dd de df e0 e1 e2 e3 e4 e5 e6 ";
+            //            compare += "e7 e8 e9 ea eb ec ed ee ef f0 f1 f2 f3 f4 f5 f6 f7 f8 f9 fa fb fc fd fe ff 00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15 16 17 18 19 1a 1b 1c 1d 1e 1f 20 21 22 23 24 25 26 27 28 29 2a 2b 2c 2d 2e 2f ";
+            //            compare += "30 31 32 33 34 35 36 37 38 39 3a 3b 3c 3d 3e 3f 40 41 42 43 44 45 46 47 48 49 4a 4b 4c 4d 4e 4f 50 51 52 53 54 55 56 57 58 59 5a 5b 5c 5d 5e 5f 60 61 62 63 64 65 66 67 68 69 6a 6b 6c 6d 6e 6f 70 71 72 73 74 75 76 77 78 ";
+            //            compare += "79 7a 7b 7c 7d 7e 7f 80 81 82 83 84 85 86 87 88 89 8a 8b 8c 8d 8e 8f 90 91 92 93 94 95 96
+            //97 98 99 9a 9b 9c 9d 9e 9f a0 a1 a2 a3 a4 a5 a6 a7 a8 a9 aa ab ac ad ae af b0 b1 b2 b3 b4 b5 b6 b7 b8 b9 ba bb bc bd be bf c0 c1 c2 c3 c4 c5 c6 c7 c8 c9 ca cb cc cd ce cf d0 d1 d2 d3 d4 d5 d6 d7 d8 d9 da db dc dd de df e0 e1 e2 e3 e4 e5 e6 e7 e8 e9 ea eb ec ed ee ef f0 f1 f2 f3 f4 f5 f6 f7 f8 f9 fa fb fc fd fe ff 00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15 16 17 18 19 1a 1b 1c 1d 1e 1f 20 21 22 23 24 25 26 27 28 29 2a 2b 2c 2d 2e 2f 30 31 32 33 34 35 36 37 38 39 3a 3b 3c 3d 3e 3f 40 41 42 43 44 45 46 47 48 49 4a 4b 4c 4d 4e 4f 50 51 52 53 54 55 56 57 58 59 5a 5b 5c 5d 5e 5f 60 61 62 63 64 65 66 67 68 69 6a 6b 6c 6d 6e 6f 70 71 72 73 74 75 76 77 78 79 7a 7b 7c 7d 7e 7f 80 81 82 83 84 85 86 87 88 89 8a 8b 8c 8d 8e 8f 90 91 92 93 94 95 96 97 98 99 9a 9b 9c 9d 9e 9f a0 a1 a2 a3 a4 a5 a6 a7 a8 a9 aa ab ac ad ae af b0 b1 b2 b3 b4 b5 b6 b7 b8 b9 ba bb bc bd be bf c0 c1 c2 c3 c4 c5 c6 c7 c8 c9 ca cb cc cd ce cf d0 d1 d2 d3 d4 d5 d6 d7 d8 d9 da db dc dd de df e0 e1 e2 e3 e4 e5 e6 e7 e8 e9 ea eb ec
+            // ed ee ef f0 f1 f2 f3 f4 f5 f6 f7 f8 f9 fa fb fc fd";
 
             //compare += "aa 8e 41 51 04 00 00 00 20 00 1e 00 00 00 00 00 01 00 02 00 03 00 04 00 05 00 06 00 07 00 08 00 09 00 0a 00 0b 00 0c 00 0d 00 0e 00 0f 00 10 00 11 00";
             //compare += "12 00 13 00 14 00 15 00 16 00 17 00 18 00 19 00 1a 00 1b 00 1c 00 1d 00 1e 00 1f 00 20 00 21 00 22 00 23 00 24 00 25 00 26 00 27 00 28 00 29 00 2a 00";
@@ -731,7 +747,7 @@ namespace TLWController
             //compare += "da 00 db 00 dc 00 dd 00 de 00 df 00 e0 00 e1 00 e2 00 e3 00 e4 00 e5 00 e6 00 e7 00 e8 00 e9 00 ea 00 eb 00 ec 00 ed 00 ee 00 ef 00 f0 00 f1 00 f2 00";
             //compare += "f3 00 f4 00 f5 00 f6 00 f7 00 f8 00 f9 00 fa 00 fb 00 fc 00 fd 00 fe 00 ff";
 
-            byte[] readFlash = "65 00 2D 00 01 01 01 00 00 00 00 00 00 00 55 00 1D 00 00 04 10 00 00 00 00 FF FF FF FF FF FF 00 00 00 00 00 00 00 00 00 00 2B AA 85 F8".ToBytes();
+            byte[] readFlash = "AA 8E 42 00 1D 01 01 00 00 00 03 00 00 00 00 00 01 00 01 00 02 3E 80 00 00 E4 55 71 BD".ToBytes();
             int errCount = 0;
             int currentCount = 0;
             isStop = false;
@@ -740,10 +756,12 @@ namespace TLWController
 
             InvokeAsync(() =>
             {
+                int index = 0;
                 EnableControl(sender as Control, false);
                 while (!isStop)
                 {
-                    int revLen = UDPHelper.Send(readFlash, ip, out byte[] revReadFlash, 100);
+                    byte[] revReadFlash = null;
+                    int revLen = UDPHelper.Send(readFlash, ip, out revReadFlash, 100);
                     if (revLen == 0)
                     {
                         errCount++;
@@ -753,23 +771,19 @@ namespace TLWController
                         WriteTextFile($@"{folder}\error_{errCount}.txt", "没有收到返回数据");
                         continue;
                     }
-
-                    byte[] newData = new byte[readDataLen];
-                    for (int i = 0; i < readDataLen; i++)
+                    if (index == 0)
                     {
-                        if (revReadFlash[i] == 0xaa && revReadFlash[i + 1] == 0x8e && revReadFlash[i + 2] == 0x41)
-                        {
-                            Array.Copy(revReadFlash, i, newData, 0, readDataLen);
-                            break;
-                        }
+                        compare = revReadFlash.ToString(" ").ToUpper();
+                        index++;
+                        continue;
                     }
 
-                    string revData = newData.ToString(" ").ToLower();
-                    if (revData != compare)
+                    string newStr = revReadFlash.ToString(" ").ToUpper();
+                    if (newStr != compare)
                     {
                         errCount++;
                         WriteMessage("错误:" + errCount.ToString());
-                        string writeData = $"{compare.ToUpper()}\r\n{revData.ToUpper()}";
+                        string writeData = $"{compare.ToUpper()}\r\n{newStr.ToUpper()}";
                         WriteTextFile($@"{folder}\error_{errCount}.txt", writeData);
                     }
                     currentCount++;
@@ -1044,6 +1058,7 @@ namespace TLWController
                                     if (b1.Length != b2.Length)
                                     {
                                         msg = "长度不同";
+                                        WriteTestMessage(msg);
                                     }
                                     else
                                     {
@@ -1056,8 +1071,8 @@ namespace TLWController
                                         }
                                     }
                                     WriteTextFile($@"{folder}\error_{errCount}_.txt", msg);
-
-
+                                    WriteTestMessage(msg);
+                                    isStop = true;//2019-06-11 错误立刻停止
                                 }
                             }
                             else
@@ -1087,6 +1102,239 @@ namespace TLWController
 
         }
 
+        private void grid2055_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
+        {
+            //(e.Control as DevComponents.DotNetBar.Controls.DataGridViewIntegerInputEditingControl).MinValue
+            //grid2055.Rows[grid2055.SelectedRows[0].Index].DataBoundItem as TLWController.Helper.RegisterItem
+            if (grid2055.SelectedRows.Count == 1)
+            {
+                RegisterItem regItemData = grid2055.Rows[grid2055.SelectedRows[0].Index].DataBoundItem as TLWController.Helper.RegisterItem;
+                //grid2055.selected
+                DevComponents.DotNetBar.Controls.DataGridViewIntegerInputEditingControl ctr = (e.Control as DevComponents.DotNetBar.Controls.DataGridViewIntegerInputEditingControl);
+                ctr.MinValue = regItemData.MinValue;
+                ctr.MaxValue = regItemData.MaxValue;
+            }
+        }
 
+        private void grid2055_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
+        {
+            _CurrentGridRowIndex = e.RowIndex;
+            _CurrentGridColumnIndex = e.ColumnIndex;
+        }
+
+        private void btnWriteSdramReadSdram_Click(object sender, EventArgs e)
+        {
+            string ip = GetCommunicationType().StartIPAddress;
+            string folder = @"D:\测试文件夹\TSS\error_Write_SDRAM_Read_SDRAM";
+            try
+            { 
+                if (System.IO.Directory.Exists(folder)) System.IO.Directory.Delete(folder, true);
+                System.IO.Directory.CreateDirectory(folder);
+            }
+            catch  
+            {
+                MessageBox.Show("请关闭文件再试！");
+                return;
+            }
+
+            string compare = "AA 8E 42 04 19 00 00 00 00 00 03 00 00 00 00 00 01 00 01 01 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F 10 11 12 13 14 15 16 17 18 19 1A 1B 1C 1D 1E 1F 20 21 22 23 24 25 26 27 28 29 2A 2B 2C 2D 2E 2F 30 31 32 33 34 35 36 37 38 39 3A 3B 3C 3D 3E 3F 40 41 42 43 44 45 46 47 48 49 4A 4B 4C 4D 4E 4F 50 51 52 53 54 55 56 57 58 59 5A 5B 5C 5D 5E 5F 60 61 62 63 64 65 66 67 68 69 6A 6B 6C 6D 6E 6F 70 71 72 73 74 75 76 77 78 79 7A 7B 7C 7D 7E 7F 80 81 82 83 84 85 86 87 88 89 8A 8B 8C 8D 8E 8F 90 91 92 93 94 95 96 97 98 99 9A 9B 9C 9D 9E 9F A0 A1 A2 A3 A4 A5 A6 A7 A8 A9 AA AB AC AD AE AF B0 B1 B2 B3 B4 B5 B6 B7 B8 B9 BA BB BC BD BE BF C0 C1 C2 C3 C4 C5 C6 C7 C8 C9 CA CB CC CD CE CF D0 D1 D2 D3 D4 D5 D6 D7 D8 D9 DA DB DC DD DE DF E0 E1 E2 E3 E4 E5 E6 E7 E8 E9 EA EB EC ED EE EF F0 F1 F2 F3 F4 F5 F6 F7 F8 F9 FA FB FC FD FE FF 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F 10 11 12 13 14 15 16 17 18 19 1A 1B 1C 1D 1E 1F 20 21 22 23 24 25 26 27 28 29 2A 2B 2C 2D 2E 2F 30 31 32 33 34 35 36 37 38 39 3A 3B 3C 3D 3E 3F 40 41 42 43 44 45 46 47 48 49 4A 4B 4C 4D 4E 4F 50 51 52 53 54 55 56 57 58 59 5A 5B 5C 5D 5E 5F 60 61 62 63 64 65 66 67 68 69 6A 6B 6C 6D 6E 6F 70 71 72 73 74 75 76 77 78 79 7A 7B 7C 7D 7E 7F 80 81 82 83 84 85 86 87 88 89 8A 8B 8C 8D 8E 8F 90 91 92 93 94 95 96 97 98 99 9A 9B 9C 9D 9E 9F A0 A1 A2 A3 A4 A5 A6 A7 A8 A9 AA AB AC AD AE AF B0 B1 B2 B3 B4 B5 B6 B7 B8 B9 BA BB BC BD BE BF C0 C1 C2 C3 C4 C5 C6 C7 C8 C9 CA CB CC CD CE CF D0 D1 D2 D3 D4 D5 D6 D7 D8 D9 DA DB DC DD DE DF E0 E1 E2 E3 E4 E5 E6 E7 E8 E9 EA EB EC ED EE EF F0 F1 F2 F3 F4 F5 F6 F7 F8 F9 FA FB FC FD FE FF 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F 10 11 12 13 14 15 16 17 18 19 1A 1B 1C 1D 1E 1F 20 21 22 23 24 25 26 27 28 29 2A 2B 2C 2D 2E 2F 30 31 32 33 34 35 36 37 38 39 3A 3B 3C 3D 3E 3F 40 41 42 43 44 45 46 47 48 49 4A 4B 4C 4D 4E 4F 50 51 52 53 54 55 56 57 58 59 5A 5B 5C 5D 5E 5F 60 61 62 63 64 65 66 67 68 69 6A 6B 6C 6D 6E 6F 70 71 72 73 74 75 76 77 78 79 7A 7B 7C 7D 7E 7F 80 81 82 83 84 85 86 87 88 89 8A 8B 8C 8D 8E 8F 90 91 92 93 94 95 96 97 98 99 9A 9B 9C 9D 9E 9F A0 A1 A2 A3 A4 A5 A6 A7 A8 A9 AA AB AC AD AE AF B0 B1 B2 B3 B4 B5 B6 B7 B8 B9 BA BB BC BD BE BF C0 C1 C2 C3 C4 C5 C6 C7 C8 C9 CA CB CC CD CE CF D0 D1 D2 D3 D4 D5 D6 D7 D8 D9 DA DB DC DD DE DF E0 E1 E2 E3 E4 E5 E6 E7 E8 E9 EA EB EC ED EE EF F0 F1 F2 F3 F4 F5 F6 F7 F8 F9 FA FB FC FD FE FF 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F 10 11 12 13 14 15 16 17 18 19 1A 1B 1C 1D 1E 1F 20 21 22 23 24 25 26 27 28 29 2A 2B 2C 2D 2E 2F 30 31 32 33 34 35 36 37 38 39 3A 3B 3C 3D 3E 3F 40 41 42 43 44 45 46 47 48 49 4A 4B 4C 4D 4E 4F 50 51 52 53 54 55 56 57 58 59 5A 5B 5C 5D 5E 5F 60 61 62 63 64 65 66 67 68 69 6A 6B 6C 6D 6E 6F 70 71 72 73 74 75 76 77 78 79 7A 7B 7C 7D 7E 7F 80 81 82 83 84 85 86 87 88 89 8A 8B 8C 8D 8E 8F 90 91 92 93 94 95 96 97 98 99 9A 9B 9C 9D 9E 9F A0 A1 A2 A3 A4 A5 A6 A7 A8 A9 AA AB AC AD AE AF B0 B1 B2 B3 B4 B5 B6 B7 B8 B9 BA BB BC BD BE BF C0 C1 C2 C3 C4 C5 C6 C7 C8 C9 CA CB CC CD CE CF D0 D1 D2 D3 D4 D5 D6 D7 D8 D9 DA DB DC DD DE DF E0 E1 E2 E3 E4 E5 E6 E7 E8 E9 EA EB EC ED EE EF F0 F1 F2 F3 F4 F5 F6 F7 F8 F9 FA FB FC FD FE FF 01 02 03 04 FE 2D 55 71 BD";
+
+            byte[] writeSDRAM = "AA 8E 42 04 1C 00 00 00 00 00 06 00 00 00 00 00 01 00 01 00 00 00 00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F 10 11 12 13 14 15 16 17 18 19 1A 1B 1C 1D 1E 1F 20 21 22 23 24 25 26 27 28 29 2A 2B 2C 2D 2E 2F 30 31 32 33 34 35 36 37 38 39 3A 3B 3C 3D 3E 3F 40 41 42 43 44 45 46 47 48 49 4A 4B 4C 4D 4E 4F 50 51 52 53 54 55 56 57 58 59 5A 5B 5C 5D 5E 5F 60 61 62 63 64 65 66 67 68 69 6A 6B 6C 6D 6E 6F 70 71 72 73 74 75 76 77 78 79 7A 7B 7C 7D 7E 7F 80 81 82 83 84 85 86 87 88 89 8A 8B 8C 8D 8E 8F 90 91 92 93 94 95 96 97 98 99 9A 9B 9C 9D 9E 9F A0 A1 A2 A3 A4 A5 A6 A7 A8 A9 AA AB AC AD AE AF B0 B1 B2 B3 B4 B5 B6 B7 B8 B9 BA BB BC BD BE BF C0 C1 C2 C3 C4 C5 C6 C7 C8 C9 CA CB CC CD CE CF D0 D1 D2 D3 D4 D5 D6 D7 D8 D9 DA DB DC DD DE DF E0 E1 E2 E3 E4 E5 E6 E7 E8 E9 EA EB EC ED EE EF F0 F1 F2 F3 F4 F5 F6 F7 F8 F9 FA FB FC FD FE FF 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F 10 11 12 13 14 15 16 17 18 19 1A 1B 1C 1D 1E 1F 20 21 22 23 24 25 26 27 28 29 2A 2B 2C 2D 2E 2F 30 31 32 33 34 35 36 37 38 39 3A 3B 3C 3D 3E 3F 40 41 42 43 44 45 46 47 48 49 4A 4B 4C 4D 4E 4F 50 51 52 53 54 55 56 57 58 59 5A 5B 5C 5D 5E 5F 60 61 62 63 64 65 66 67 68 69 6A 6B 6C 6D 6E 6F 70 71 72 73 74 75 76 77 78 79 7A 7B 7C 7D 7E 7F 80 81 82 83 84 85 86 87 88 89 8A 8B 8C 8D 8E 8F 90 91 92 93 94 95 96 97 98 99 9A 9B 9C 9D 9E 9F A0 A1 A2 A3 A4 A5 A6 A7 A8 A9 AA AB AC AD AE AF B0 B1 B2 B3 B4 B5 B6 B7 B8 B9 BA BB BC BD BE BF C0 C1 C2 C3 C4 C5 C6 C7 C8 C9 CA CB CC CD CE CF D0 D1 D2 D3 D4 D5 D6 D7 D8 D9 DA DB DC DD DE DF E0 E1 E2 E3 E4 E5 E6 E7 E8 E9 EA EB EC ED EE EF F0 F1 F2 F3 F4 F5 F6 F7 F8 F9 FA FB FC FD FE FF 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F 10 11 12 13 14 15 16 17 18 19 1A 1B 1C 1D 1E 1F 20 21 22 23 24 25 26 27 28 29 2A 2B 2C 2D 2E 2F 30 31 32 33 34 35 36 37 38 39 3A 3B 3C 3D 3E 3F 40 41 42 43 44 45 46 47 48 49 4A 4B 4C 4D 4E 4F 50 51 52 53 54 55 56 57 58 59 5A 5B 5C 5D 5E 5F 60 61 62 63 64 65 66 67 68 69 6A 6B 6C 6D 6E 6F 70 71 72 73 74 75 76 77 78 79 7A 7B 7C 7D 7E 7F 80 81 82 83 84 85 86 87 88 89 8A 8B 8C 8D 8E 8F 90 91 92 93 94 95 96 97 98 99 9A 9B 9C 9D 9E 9F A0 A1 A2 A3 A4 A5 A6 A7 A8 A9 AA AB AC AD AE AF B0 B1 B2 B3 B4 B5 B6 B7 B8 B9 BA BB BC BD BE BF C0 C1 C2 C3 C4 C5 C6 C7 C8 C9 CA CB CC CD CE CF D0 D1 D2 D3 D4 D5 D6 D7 D8 D9 DA DB DC DD DE DF E0 E1 E2 E3 E4 E5 E6 E7 E8 E9 EA EB EC ED EE EF F0 F1 F2 F3 F4 F5 F6 F7 F8 F9 FA FB FC FD FE FF 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F 10 11 12 13 14 15 16 17 18 19 1A 1B 1C 1D 1E 1F 20 21 22 23 24 25 26 27 28 29 2A 2B 2C 2D 2E 2F 30 31 32 33 34 35 36 37 38 39 3A 3B 3C 3D 3E 3F 40 41 42 43 44 45 46 47 48 49 4A 4B 4C 4D 4E 4F 50 51 52 53 54 55 56 57 58 59 5A 5B 5C 5D 5E 5F 60 61 62 63 64 65 66 67 68 69 6A 6B 6C 6D 6E 6F 70 71 72 73 74 75 76 77 78 79 7A 7B 7C 7D 7E 7F 80 81 82 83 84 85 86 87 88 89 8A 8B 8C 8D 8E 8F 90 91 92 93 94 95 96 97 98 99 9A 9B 9C 9D 9E 9F A0 A1 A2 A3 A4 A5 A6 A7 A8 A9 AA AB AC AD AE AF B0 B1 B2 B3 B4 B5 B6 B7 B8 B9 BA BB BC BD BE BF C0 C1 C2 C3 C4 C5 C6 C7 C8 C9 CA CB CC CD CE CF D0 D1 D2 D3 D4 D5 D6 D7 D8 D9 DA DB DC DD DE DF E0 E1 E2 E3 E4 E5 E6 E7 E8 E9 EA EB EC ED EE EF F0 F1 F2 F3 F4 F5 F6 F7 F8 F9 FA FB FC FD FE FF 01 02 03 04 FE 32 55 71 BD".ToBytes();
+            byte[] readSDRAM = "AA 8E 42 00 1D 00 00 00 00 00 03 00 00 00 00 00 01 00 01 00 00 00 00 00 00 22 55 71 BD".ToBytes();
+
+            int errCount = 0;
+            int currentCount = 0;
+            isStop = false;
+            int delay = (int)numTimeDelay.Value;
+            int readDataLen = (int)numTestDataLen.Value;
+            InvokeAsync(() =>
+            {
+                EnableControl(sender as Control, false);
+                while (!isStop)
+                {
+                    int revLen = UDPHelper.Send(writeSDRAM, ip, out byte[] revWriteSDRAM);
+                    if (revLen == 0)
+                    {
+                        errCount++;
+                        currentCount++;
+                        WriteMessage("没有收到返回数据");
+                        WriteTestMessage($"稳定性测试:当前次数:{currentCount},错误次数:{errCount}");
+                        WriteTextFile($@"{folder}\error_{errCount}.txt", "写FLASH没有收到返回数据");
+                        continue;
+                    }
+                    System.Threading.Thread.Sleep(100);
+
+                    revLen = UDPHelper.Send(readSDRAM, ip, out byte[] revReadSDRAM);
+                    if (revLen == 0)
+                    {
+                        errCount++;
+                        currentCount++;
+                        WriteMessage("没有收到返回数据");
+                        WriteTestMessage($"稳定性测试:当前次数:{currentCount},错误次数:{errCount}");
+                        WriteTextFile($@"{folder}\error_{errCount}.txt", "读FLASH没有收到返回数据");
+                        continue;
+                    }
+                    string revStr = revReadSDRAM.ToString(" ").ToUpper();
+                    if (revStr != compare)
+                    {
+                        //errCount++;
+                        //WriteMessage("错误:" + errCount.ToString());
+                        //string writeData = $"{compare.ToUpper()}\r\n{revStr.ToUpper()}";
+                        //WriteTextFile($@"{folder}\error_{errCount}.txt", writeData);
+
+
+                        errCount++;
+                        WriteMessage("错误:" + errCount.ToString());
+                        string writeData = $"{compare.ToUpper()}\r\n{revReadSDRAM.ToString(" ").ToUpper()}";
+
+                        byte[] b1 = compare.ToBytes();
+                        byte[] b2 = revReadSDRAM;
+                        string msg = "";
+                        if (b1.Length != b2.Length)
+                        {
+                            msg = "数据包长度不同";
+                            WriteMessage(msg);
+                        }
+                        else
+                        {
+                            msg += "\tLeft Side:(send)\t Right Side:(recieve)\r\n";
+
+                            bool bFindERROR = false;
+                            for (int i = 0; i < b1.Length; i++)
+                            {
+                                string szLine = string.Format("\t[{0}]\t{1:X2}\t{2:X2}\r\n", i, b1[i], b2[i]);
+                                
+                                if ((bFindERROR == false) && (b1[i] != b2[i]))
+                                {
+                                    //msg += $"index:{i} write1:{b1[i]} read:{b2[i]}";
+                                    WriteMessage(string.Format("diff pos={0}/{1} (src,recv)(0x{2:X2},0x{3:X2})", i, b1.Length,b1[i], b2[i]));
+                                    szLine = string.Format("======>>[{0}]\t{1:X2}\t{2:X2}<<==================\r\n", i, b1[i], b2[i]);
+                                    //break;
+                                    bFindERROR = true;
+                                }
+                                msg += szLine;
+                       
+                            }
+                            if (bFindERROR)
+                                isStop = true;
+
+                            //msg += "\r\n";
+                            //msg += b1.ToString(" ") + "\r\n";
+                            //msg += b2.ToString(" ") + "\r\n";
+
+                            WriteTextFile($@"{folder}\error_{errCount}_.txt", msg);
+                        }
+                    }
+                    currentCount++;
+                    WriteTestMessage($"稳定性测试:当前次数:{currentCount},错误次数:{errCount}");
+                    System.Threading.Thread.Sleep(delay);
+                }
+                EnableControl(sender as Control, true);
+            });
+        }
+
+        private void tabPage1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        byte[] CreateHeader()
+        {
+            return new byte[20];
+        }
+
+        byte[] CreaterFooter()
+        {
+            return new byte[5];
+        }
+
+        void SetCmdHeader(byte[] header, uint cmdNum)
+        {
+            byte[] bytes = cmdNum.GetBytes();
+            Array.Copy(bytes, 0, header, 0, bytes.Length - 1);
+        }
+
+        void SetDevAddr(byte[] header, ushort devAddr)
+        {
+            byte[] bytes = devAddr.GetBytes();
+            Array.Copy(bytes, 5, header, 0, bytes.Length);
+        }
+
+        void SetId(byte[] header, ushort id)
+        {
+            byte[] bytes = id.GetBytes();
+            Array.Copy(bytes, 7, header, 0, bytes.Length);
+        }
+
+        void SetCmdNum(byte[] header, ushort cmdNum)
+        {
+            byte[] bytes = cmdNum.GetBytes();
+            Array.Copy(bytes, 9, header, 0, bytes.Length);
+        }
+
+        void SetPackageCount(byte[] header, ushort count)
+        {
+            byte[] bytes = count.GetBytes();
+            Array.Copy(bytes, 15, header, 0, bytes.Length);
+        }
+
+        void SetPackageIndex(byte[] header, ushort index)
+        {
+            byte[] bytes = index.GetBytes();
+            Array.Copy(bytes, 17, header, 0, bytes.Length);
+        }
+
+        void SetCommandState(byte[] header, byte state)
+        {
+            byte[] bytes = state.GetBytes();
+            Array.Copy(bytes, 17, header, 0, bytes.Length);
+        }
+
+        void SetDataLength(byte allData,ushort dataLength)
+        {
+        }
+
+        byte[] CombinData(byte[] header, byte[] data, byte[] footer)
+        {
+            int pos = 0;
+            byte[] result = new byte[header.Length + data.Length + footer.Length];
+            Array.Copy(header, 0, result, pos, header.Length);
+            pos += header.Length;
+            Array.Copy(data, 0, result, pos, data.Length);
+            pos += data.Length;
+            Array.Copy(footer, 0, result, pos, footer.Length);
+            return result;
+        }
+
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            List<byte> content = new List<byte>();
+            byte[] sdramAddr = new byte[3];
+            Array.Copy(((uint)numSDRAMAddr.Value).GetBytes(), 0, sdramAddr, 0, 3);
+            content.AddRange(sdramAddr);
+            byte val = 0;
+            for (int i = 1; i <= 1024; i++)
+            {
+                if (val > 255 || val == 0) val = 1;
+                content.Add(val);
+                val++;
+            }
+
+            byte[] header = CreateHeader();
+            byte[] footer = CreaterFooter();
+            SetCmdHeader(header, 0xAA8E42);
+            SetDevAddr(header, GetCardAddress());
+            SetId(header, GetId());
+            SetCmdNum(header, 0x0006);
+            SetPackageCount(header, 1);
+            SetPackageIndex(header, 1);
+            SetCommandState(header, 1);
+
+
+            byte[] allData = CombinData(header, content.ToArray(), footer);
+
+
+        }
     }
 }

@@ -379,7 +379,7 @@ namespace TLWController.Helper
         /// <param name="startAddr">SDRAM地址</param>
         /// <param name="pData">数组指针</param>
         /// <returns></returns>        
-        public void tlw_SDRAM_Write(int hDevice, ushort addr, ushort id, UInt32 startAddr, byte[] pData, Dictionary<string, int> ips, Action<ReturnParam[]> action)
+        public void tlw_SDRAM_Write(ushort addr, ushort id, UInt32 startAddr, byte[] pData, Dictionary<string, int> ips, Action<ReturnParam[]> action)
         {
             //return _Command.tlw_SDRAM_Write(hDevice, addr, id, startAddr, pData, offset, pData.Length);
 
