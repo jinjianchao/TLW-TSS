@@ -1122,6 +1122,16 @@ namespace TLWController
             _CurrentGridColumnIndex = e.ColumnIndex;
         }
 
+        ushort CheckSum16(byte[] dat, int offset, int len)
+        {
+            ushort tmp = 0;
+            for (int i=0;i<len;i++)
+            {
+                tmp += dat[offset + i];
+            }
+            return tmp;
+        }
+
         private void btnWriteSdramReadSdram_Click(object sender, EventArgs e)
         {
             string ip = GetCommunicationType().StartIPAddress;
@@ -1142,6 +1152,14 @@ namespace TLWController
             byte[] writeSDRAM = "AA 8E 42 04 1C 00 00 00 00 00 06 00 00 00 00 00 01 00 01 00 00 00 00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F 10 11 12 13 14 15 16 17 18 19 1A 1B 1C 1D 1E 1F 20 21 22 23 24 25 26 27 28 29 2A 2B 2C 2D 2E 2F 30 31 32 33 34 35 36 37 38 39 3A 3B 3C 3D 3E 3F 40 41 42 43 44 45 46 47 48 49 4A 4B 4C 4D 4E 4F 50 51 52 53 54 55 56 57 58 59 5A 5B 5C 5D 5E 5F 60 61 62 63 64 65 66 67 68 69 6A 6B 6C 6D 6E 6F 70 71 72 73 74 75 76 77 78 79 7A 7B 7C 7D 7E 7F 80 81 82 83 84 85 86 87 88 89 8A 8B 8C 8D 8E 8F 90 91 92 93 94 95 96 97 98 99 9A 9B 9C 9D 9E 9F A0 A1 A2 A3 A4 A5 A6 A7 A8 A9 AA AB AC AD AE AF B0 B1 B2 B3 B4 B5 B6 B7 B8 B9 BA BB BC BD BE BF C0 C1 C2 C3 C4 C5 C6 C7 C8 C9 CA CB CC CD CE CF D0 D1 D2 D3 D4 D5 D6 D7 D8 D9 DA DB DC DD DE DF E0 E1 E2 E3 E4 E5 E6 E7 E8 E9 EA EB EC ED EE EF F0 F1 F2 F3 F4 F5 F6 F7 F8 F9 FA FB FC FD FE FF 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F 10 11 12 13 14 15 16 17 18 19 1A 1B 1C 1D 1E 1F 20 21 22 23 24 25 26 27 28 29 2A 2B 2C 2D 2E 2F 30 31 32 33 34 35 36 37 38 39 3A 3B 3C 3D 3E 3F 40 41 42 43 44 45 46 47 48 49 4A 4B 4C 4D 4E 4F 50 51 52 53 54 55 56 57 58 59 5A 5B 5C 5D 5E 5F 60 61 62 63 64 65 66 67 68 69 6A 6B 6C 6D 6E 6F 70 71 72 73 74 75 76 77 78 79 7A 7B 7C 7D 7E 7F 80 81 82 83 84 85 86 87 88 89 8A 8B 8C 8D 8E 8F 90 91 92 93 94 95 96 97 98 99 9A 9B 9C 9D 9E 9F A0 A1 A2 A3 A4 A5 A6 A7 A8 A9 AA AB AC AD AE AF B0 B1 B2 B3 B4 B5 B6 B7 B8 B9 BA BB BC BD BE BF C0 C1 C2 C3 C4 C5 C6 C7 C8 C9 CA CB CC CD CE CF D0 D1 D2 D3 D4 D5 D6 D7 D8 D9 DA DB DC DD DE DF E0 E1 E2 E3 E4 E5 E6 E7 E8 E9 EA EB EC ED EE EF F0 F1 F2 F3 F4 F5 F6 F7 F8 F9 FA FB FC FD FE FF 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F 10 11 12 13 14 15 16 17 18 19 1A 1B 1C 1D 1E 1F 20 21 22 23 24 25 26 27 28 29 2A 2B 2C 2D 2E 2F 30 31 32 33 34 35 36 37 38 39 3A 3B 3C 3D 3E 3F 40 41 42 43 44 45 46 47 48 49 4A 4B 4C 4D 4E 4F 50 51 52 53 54 55 56 57 58 59 5A 5B 5C 5D 5E 5F 60 61 62 63 64 65 66 67 68 69 6A 6B 6C 6D 6E 6F 70 71 72 73 74 75 76 77 78 79 7A 7B 7C 7D 7E 7F 80 81 82 83 84 85 86 87 88 89 8A 8B 8C 8D 8E 8F 90 91 92 93 94 95 96 97 98 99 9A 9B 9C 9D 9E 9F A0 A1 A2 A3 A4 A5 A6 A7 A8 A9 AA AB AC AD AE AF B0 B1 B2 B3 B4 B5 B6 B7 B8 B9 BA BB BC BD BE BF C0 C1 C2 C3 C4 C5 C6 C7 C8 C9 CA CB CC CD CE CF D0 D1 D2 D3 D4 D5 D6 D7 D8 D9 DA DB DC DD DE DF E0 E1 E2 E3 E4 E5 E6 E7 E8 E9 EA EB EC ED EE EF F0 F1 F2 F3 F4 F5 F6 F7 F8 F9 FA FB FC FD FE FF 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F 10 11 12 13 14 15 16 17 18 19 1A 1B 1C 1D 1E 1F 20 21 22 23 24 25 26 27 28 29 2A 2B 2C 2D 2E 2F 30 31 32 33 34 35 36 37 38 39 3A 3B 3C 3D 3E 3F 40 41 42 43 44 45 46 47 48 49 4A 4B 4C 4D 4E 4F 50 51 52 53 54 55 56 57 58 59 5A 5B 5C 5D 5E 5F 60 61 62 63 64 65 66 67 68 69 6A 6B 6C 6D 6E 6F 70 71 72 73 74 75 76 77 78 79 7A 7B 7C 7D 7E 7F 80 81 82 83 84 85 86 87 88 89 8A 8B 8C 8D 8E 8F 90 91 92 93 94 95 96 97 98 99 9A 9B 9C 9D 9E 9F A0 A1 A2 A3 A4 A5 A6 A7 A8 A9 AA AB AC AD AE AF B0 B1 B2 B3 B4 B5 B6 B7 B8 B9 BA BB BC BD BE BF C0 C1 C2 C3 C4 C5 C6 C7 C8 C9 CA CB CC CD CE CF D0 D1 D2 D3 D4 D5 D6 D7 D8 D9 DA DB DC DD DE DF E0 E1 E2 E3 E4 E5 E6 E7 E8 E9 EA EB EC ED EE EF F0 F1 F2 F3 F4 F5 F6 F7 F8 F9 FA FB FC FD FE FF 01 02 03 04 FE 32 55 71 BD".ToBytes();
             byte[] readSDRAM = "AA 8E 42 00 1D 00 00 00 00 00 03 00 00 00 00 00 01 00 01 00 00 00 00 00 00 22 55 71 BD".ToBytes();
 
+            byte[] arrCompare = compare.ToBytes();
+            //前面20字节是附加内容
+            //数据部分data[20] - data[1043]
+            //校验是data[len - 5] data[len - 4]
+            //尾data[len - 3] data[len - 2] data[len - 1]   
+
+            byte[] arrSendDataSection = new byte[1024];
+            
             int errCount = 0;
             int currentCount = 0;
             isStop = false;
@@ -1150,84 +1168,125 @@ namespace TLWController
             InvokeAsync(() =>
             {
                 EnableControl(sender as Control, false);
+
+                int nPacketLen = writeSDRAM.Length;
+                byte[] arrRandomWriteSDRAM = new byte[nPacketLen];
+
+                int nRecvLen = arrCompare.Length;
+                byte[] arrRandomCompareSDRAM = new byte[nRecvLen];
+
                 while (!isStop)
                 {
-                    int revLen = UDPHelper.Send(writeSDRAM, ip, out byte[] revWriteSDRAM);
+                    Random r1 = new Random((int)DateTime.Now.Ticks);
+                    //随机填充数据区
+                    r1.NextBytes(arrSendDataSection);
+
+                    //-------------构造发送数据包
+                    Array.Copy(writeSDRAM, arrRandomWriteSDRAM, writeSDRAM.Length);
+
+                    //复制数据区
+                    Array.Copy(arrSendDataSection, 0, arrRandomWriteSDRAM, 23, 1024);
+
+                    //计算校验值
+                    ushort ck = CheckSum16(arrRandomWriteSDRAM, 3, 1044);
+
+                    arrRandomWriteSDRAM[nPacketLen - 5] = (byte)((ck >> 8) & 0xFF);
+                    arrRandomWriteSDRAM[nPacketLen - 4] = (byte)(ck & 0xFF);
+
+                    //--------------构造接收数据包
+                    Array.Copy(arrCompare, arrRandomCompareSDRAM, nRecvLen);
+
+                    //复制数据区
+                    Array.Copy(arrSendDataSection,0, arrRandomCompareSDRAM, 20, 1024);
+
+                    //替换校验值
+                    ushort ck1 = CheckSum16(arrRandomCompareSDRAM, 3, 1041);
+
+                    arrRandomCompareSDRAM[nRecvLen - 5] = (byte)((ck1 >> 8) & 0xFF);
+                    arrRandomCompareSDRAM[nRecvLen - 4] = (byte)(ck1 & 0xFF);
+
+                    //compare = arrRandomCompareSDRAM.ToString(" ").ToUpper();
+
+                    int revLen = UDPHelper.Send(arrRandomWriteSDRAM, ip, out byte[] revWriteSDRAM);
                     if (revLen == 0)
                     {
                         errCount++;
                         currentCount++;
-                        WriteMessage("没有收到返回数据");
+                        WriteMessage(string.Format("当前测试次数{0} 发送写入数据包后，没有收到返回数据",currentCount));
                         WriteTestMessage($"稳定性测试:当前次数:{currentCount},错误次数:{errCount}");
                         WriteTextFile($@"{folder}\error_{errCount}.txt", "写FLASH没有收到返回数据");
                         continue;
                     }
-                    System.Threading.Thread.Sleep(100);
+                    if (delay >0 )
+                    System.Threading.Thread.Sleep(delay);
 
                     revLen = UDPHelper.Send(readSDRAM, ip, out byte[] revReadSDRAM);
                     if (revLen == 0)
                     {
                         errCount++;
                         currentCount++;
-                        WriteMessage("没有收到返回数据");
+                        WriteMessage(string.Format("当前测试次数{0} 发送读取包后，没有收到返回数据", currentCount));
                         WriteTestMessage($"稳定性测试:当前次数:{currentCount},错误次数:{errCount}");
                         WriteTextFile($@"{folder}\error_{errCount}.txt", "读FLASH没有收到返回数据");
                         continue;
                     }
-                    string revStr = revReadSDRAM.ToString(" ").ToUpper();
-                    if (revStr != compare)
-                    {
+                    //string revStr = revReadSDRAM.ToString(" ").ToUpper();
+                    //if (revStr != compare)
+                    //{
                         //errCount++;
                         //WriteMessage("错误:" + errCount.ToString());
                         //string writeData = $"{compare.ToUpper()}\r\n{revStr.ToUpper()}";
                         //WriteTextFile($@"{folder}\error_{errCount}.txt", writeData);
 
 
+                        //errCount++;
+                        //WriteMessage("错误:" + errCount.ToString());
+                        //string writeData = $"{compare.ToUpper()}\r\n{revReadSDRAM.ToString(" ").ToUpper()}";
+
+                    //比较数据内容
+                    byte[] b1 = arrRandomCompareSDRAM;// compare.ToBytes();
+                    byte[] b2 = revReadSDRAM;
+                    string msg = "";
+                    if (b1.Length != b2.Length)
+                    {
+                        msg = "数据包长度不同";
+                        WriteMessage(msg);
+
                         errCount++;
                         WriteMessage("错误:" + errCount.ToString());
-                        string writeData = $"{compare.ToUpper()}\r\n{revReadSDRAM.ToString(" ").ToUpper()}";
+                    }
+                    else
+                    {
+                        msg += "\tLeft Side:(send)\t Right Side:(recieve)\r\n";
 
-                        byte[] b1 = compare.ToBytes();
-                        byte[] b2 = revReadSDRAM;
-                        string msg = "";
-                        if (b1.Length != b2.Length)
+                        bool bFindERROR = false;
+                        for (int i = 0; i < b1.Length; i++)
                         {
-                            msg = "数据包长度不同";
-                            WriteMessage(msg);
-                        }
-                        else
-                        {
-                            msg += "\tLeft Side:(send)\t Right Side:(recieve)\r\n";
-
-                            bool bFindERROR = false;
-                            for (int i = 0; i < b1.Length; i++)
-                            {
-                                string szLine = string.Format("\t[{0}]\t{1:X2}\t{2:X2}\r\n", i, b1[i], b2[i]);
+                            string szLine = string.Format("\t[{0}]\t{1:X2}\t{2:X2}\r\n", i, b1[i], b2[i]);
                                 
-                                if ((bFindERROR == false) && (b1[i] != b2[i]))
-                                {
-                                    //msg += $"index:{i} write1:{b1[i]} read:{b2[i]}";
-                                    WriteMessage(string.Format("diff pos={0}/{1} (src,recv)(0x{2:X2},0x{3:X2})", i, b1.Length,b1[i], b2[i]));
-                                    szLine = string.Format("======>>[{0}]\t{1:X2}\t{2:X2}<<==================\r\n", i, b1[i], b2[i]);
-                                    //break;
-                                    bFindERROR = true;
-                                }
-                                msg += szLine;
-                       
+                            if ((bFindERROR == false) && (b1[i] != b2[i]))
+                            {
+                                errCount++;
+                                WriteMessage("错误:" + errCount.ToString());
+
+                                WriteMessage(string.Format("diff pos={0}/{1} (src,recv)(0x{2:X2},0x{3:X2})", i, b1.Length,b1[i], b2[i]));
+                                szLine = string.Format("======>>[{0}]\t{1:X2}\t{2:X2}<<==================\r\n", i, b1[i], b2[i]);
+    
+                                bFindERROR = true;
                             }
-                            if (bFindERROR)
-                                isStop = true;
-
-                            //msg += "\r\n";
-                            //msg += b1.ToString(" ") + "\r\n";
-                            //msg += b2.ToString(" ") + "\r\n";
-
-                            WriteTextFile($@"{folder}\error_{errCount}_.txt", msg);
+                            msg += szLine;
+                       
                         }
+                        if (bFindERROR)
+                            isStop = true;
+
+                        WriteTextFile($@"{folder}\error_{errCount}_.txt", msg);
                     }
                     currentCount++;
                     WriteTestMessage($"稳定性测试:当前次数:{currentCount},错误次数:{errCount}");
-                    System.Threading.Thread.Sleep(delay);
+
+                    if (delay > 0)
+                        System.Threading.Thread.Sleep(delay);
                 }
                 EnableControl(sender as Control, true);
             });

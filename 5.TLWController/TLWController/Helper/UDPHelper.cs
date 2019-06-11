@@ -31,7 +31,7 @@ namespace TLWController.Helper
                 udpClient.Client.ReceiveTimeout = 2000;
                 udpClient.Connect(remoteIP, 8001);
                 udpClient.Send(sendBytes, sendBytes.Length);
-                System.Threading.Thread.Sleep(200);
+                //System.Threading.Thread.Sleep(100);
                 IPEndPoint RemoteIpEndPoint = new IPEndPoint(IPAddress.Parse(remoteIP), 8001);
                 receiveBytes = udpClient.Receive(ref RemoteIpEndPoint);
                 udpClient.Close();
