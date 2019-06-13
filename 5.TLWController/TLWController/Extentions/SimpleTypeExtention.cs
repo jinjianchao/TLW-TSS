@@ -26,6 +26,11 @@ namespace TLWController.Extentions
             return int.Parse(source);
         }
 
+        public static UInt16 ToUInt16(this string source, System.Globalization.NumberStyles styles = System.Globalization.NumberStyles.HexNumber)
+        {
+            return UInt16.Parse(source, styles);
+        }
+
         public static byte ToByte(this string source)
         {
             return byte.Parse(source);

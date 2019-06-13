@@ -17,6 +17,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
+using TLWController.Extentions;
 
 namespace TLWController.Helper
 {
@@ -43,6 +44,7 @@ namespace TLWController.Helper
         public byte StartBit { get; set; }
         public byte StopBit { get; set; }
         public string Description { get; set; }
+        public string Offset { get; set; }
         public string ChineseDescription { get; set; }
         public string EnglishDescription { get; set; }
         public String Send { get; set; } = "Send";
@@ -80,10 +82,19 @@ namespace TLWController.Helper
         //第一行：序号 刷新率    是否调试模式(0:否，1：是)
         //第二行：//序号 起始位 结束位 特殊地址 特殊值
         //第三行开始往下：
-        //序号    FPGA红色地址    FPGA绿色地址    FPGA蓝色地址    恒流源地址   起始位 结束位    最小值   最大值   红色值     绿色纸     蓝色值     说明     中文说明    英文说明
+        //序号    FPGA红色地址    FPGA绿色地址    FPGA蓝色地址    恒流源地址   起始位 结束位    最小值   最大值   红色值     绿色纸     蓝色值  偏移量   说明     中文说明    英文说明
         #endregion
 
-        public static Register LoadRegister(string file)
+        private static int Reg2055StartAddr = 0x12 * 2;
+
+        public static byte[] Data { get; set; }
+
+        static RegisterHelper()
+        {
+            Data = new byte[1024];
+        }
+
+        public static Register Load2055Register(string file)
         {
             Register reg = new Register();
 
@@ -149,7 +160,7 @@ namespace TLWController.Helper
                     else
                     {
                         RegisterItem registerItem = new RegisterItem();
-                        if (data.Length != 15)
+                        if (data.Length != 16)
                         {
                             return null;
                         }
@@ -220,9 +231,10 @@ namespace TLWController.Helper
                             return null;
                         }
                         registerItem.BlueValue = blueValue;
-                        registerItem.Description = data[12];
-                        registerItem.ChineseDescription = data[13];
-                        registerItem.EnglishDescription = data[14];
+                        registerItem.Offset = data[12];
+                        registerItem.Description = data[13];
+                        registerItem.ChineseDescription = data[14];
+                        registerItem.EnglishDescription = data[15];
                         reg.RegisterItemList.Add(registerItem);
                     }
                     lineIndex++;
@@ -231,7 +243,7 @@ namespace TLWController.Helper
             return reg;
         }
 
-        public static void SavevRegister(Register register, string file)
+        public static void Savev2055Register(Register register, string file)
         {
             using (TextWriter writer = new StreamWriter(file))
             {
@@ -242,12 +254,37 @@ namespace TLWController.Helper
                 cx++;
                 foreach (var item in register.RegisterItemList)
                 {
-                    //序号    FPGA红色地址    FPGA绿色地址    FPGA蓝色地址    恒流源地址   起始位 结束位  最小值   最大值  红色值     绿色纸     蓝色值     说明     中文说明    英文说明
-                    writer.WriteLine($"{cx}\t{item.RedAddress}\t{item.GreenAddress}\t{item.BlueAddress}\t{item.RegisterAddress}\t{item.StartBit}\t{item.StopBit}\t{item.MinValue}\t{item.MaxValue}\t{item.RedValue}\t{item.GreenValue}\t{item.BlueValue}\t{item.Description}\t{item.ChineseDescription}\t{item.EnglishDescription}");
+                    //序号    FPGA红色地址    FPGA绿色地址    FPGA蓝色地址    恒流源地址   起始位 结束位  最小值   最大值  红色值     绿色纸     蓝色值  偏移量   说明     中文说明    英文说明
+                    writer.WriteLine($"{cx}\t{item.RedAddress}\t{item.GreenAddress}\t{item.BlueAddress}\t{item.RegisterAddress}\t{item.StartBit}\t{item.StopBit}\t{item.MinValue}\t{item.MaxValue}\t{item.RedValue}\t{item.GreenValue}\t{item.BlueValue}\t{item.Offset}\t{item.Description}\t{item.ChineseDescription}\t{item.EnglishDescription}");
                     cx++;
                 }
             }
 
+        }
+
+        public static void CombinReg2055(List<RegisterItem> reg2055List)
+        {
+            int positioin = Reg2055StartAddr;
+            foreach (var item in reg2055List)
+            {
+                byte[] redValue = ((UInt16)item.RedValue).GetBytes();
+                Array.Copy(redValue, 0, Data, positioin, redValue.Length);
+                positioin += redValue.Length;
+            }
+
+            foreach (var item in reg2055List)
+            {
+                byte[] greenValue = ((UInt16)item.GreenValue).GetBytes();
+                Array.Copy(greenValue, 0, Data, positioin, greenValue.Length);
+                positioin += greenValue.Length;
+            }
+
+            foreach (var item in reg2055List)
+            {
+                byte[] blueValue = ((UInt16)item.BlueValue).GetBytes();
+                Array.Copy(blueValue, 0, Data, positioin, blueValue.Length);
+                positioin += blueValue.Length;
+            }
         }
     }
 }

@@ -47,6 +47,9 @@ namespace TLWController
             BindChipPos();
             BindParam2055Color();
             BindParam2055Hz();
+            BindGammaBit();
+            BindGammaColor();
+            BindRegisterChip();
             WriteOrReadInterfaceData(false); ;
             if (!Import2055Param(registerAddressFile))
             {
@@ -159,6 +162,49 @@ namespace TLWController
             cbParam2055Refreshrate.ValueMember = "Value";
             cbParam2055Refreshrate.DisplayMember = "Text";
             cbParam2055Refreshrate.DataSource = items;
+        }
+
+        private void BindGammaBit()
+        {
+            //0 = 10bit GAMMA, 1024个16bit数据,1 = 13bit GAMMA, 4096个16bit数据,2=16bit GAMMA, 32768个16bit数据,3 = HDR, 1024个16bit数据
+            List<ListItem> items = new List<ListItem>()
+            {
+                new ListItem(){ Value=0, Text="10bit" },
+                new ListItem(){ Value=1, Text="13bit" },
+                new ListItem(){ Value=2, Text="16bit" },
+                new ListItem(){ Value=3, Text="HDR" }
+            };
+            cbGammaBit.ValueMember = "Value";
+            cbGammaBit.DisplayMember = "Text";
+            cbGammaBit.DataSource = items;
+        }
+
+        private void BindGammaColor()
+        {
+            //1 = 红色,2 = 绿色,3 = 蓝色
+            List<ListItem> items = new List<ListItem>()
+            {
+                new ListItem(){ Value=0, Text="全部" },
+                new ListItem(){ Value=1, Text="红色" },
+                new ListItem(){ Value=2, Text="绿色" },
+                new ListItem(){ Value=3, Text="蓝色" }
+            };
+            cbGammaColor.ValueMember = "Value";
+            cbGammaColor.DisplayMember = "Text";
+            cbGammaColor.DataSource = items;
+        }
+
+        private void BindRegisterChip()
+        {
+            //1 = 红色,2 = 绿色,3 = 蓝色
+            List<ListItem> items = new List<ListItem>()
+            {
+                new ListItem(){ Value=0, Text="FPGA" },
+                new ListItem(){ Value=1, Text="4K视频芯片" }
+            };
+            cbRegChip.ValueMember = "Value";
+            cbRegChip.DisplayMember = "Text";
+            cbRegChip.DataSource = items;
         }
 
         #endregion
@@ -382,6 +428,9 @@ namespace TLWController
             _TLWCommand.PackageDelay = GetSendDataTime();
             _TLWCommand.SendWait = GetReceiveDataTime();
 
+            _TLWCommand.PackageDelay = 6000;
+            _TLWCommand.SendWait = 6000;
+
             string startIP = GetCommunicationType().StartIPAddress;
             string endIP = GetCommunicationType().EndIPAddress;
             string ipHeader = startIP.Substring(0, startIP.LastIndexOf('.'));
@@ -422,18 +471,35 @@ namespace TLWController
 
         private bool Import2055Param(string file)
         {
-            Register register = RegisterHelper.LoadRegister(file);
+            Register register = RegisterHelper.Load2055Register(file);
             if (register == null) return false;
+            grid2055.Columns["CoCheckBox"].DisplayIndex = 0;
+            grid2055.Columns["ColOffset"].DisplayIndex = 1;
+            grid2055.Columns["ColENDescription"].DisplayIndex = 2;
+            grid2055.Columns["ColCNDescription"].DisplayIndex = 3;
+            grid2055.Columns["ColDescription"].DisplayIndex = 4;
+            grid2055.Columns["ColRegisterAddress"].DisplayIndex = 5;
+            grid2055.Columns["ColRedAddress"].DisplayIndex = 6;
+            grid2055.Columns["ColGreenAddress"].DisplayIndex = 7;
+            grid2055.Columns["ColBlueAddress"].DisplayIndex = 8;
+            grid2055.Columns["ColStartBit"].DisplayIndex = 9;
+            grid2055.Columns["ColStopBit"].DisplayIndex = 10;
+            grid2055.Columns["ColMinValue"].DisplayIndex = 11;
+            grid2055.Columns["ColMaxValue"].DisplayIndex = 12;
+
+
+
             if (lang == "2052")
             {
                 grid2055.Columns["ColENDescription"].Visible = false;
-                grid2055.Columns["ColCNDescription"].Width = 500;
+                grid2055.Columns["ColCNDescription"].Width = 300;
             }
             else
             {
                 grid2055.Columns["ColCNDescription"].Visible = false;
-                grid2055.Columns["ColENDescription"].Width = 500;
+                grid2055.Columns["ColENDescription"].Width = 300;
             }
+            grid2055.Columns["ColOffset"].Width = 200;
             grid2055.Columns["ColDescription"].Visible = false;
             grid2055.Columns["ColRegisterAddress"].Visible = false;
             grid2055.Columns["ColRedAddress"].Visible = false;
@@ -444,7 +510,7 @@ namespace TLWController
             grid2055.Columns["ColMinValue"].Visible = false;
             grid2055.Columns["ColMaxValue"].Visible = false;
             grid2055.DataSource = register.RegisterItemList;
-
+            grid2055.AllowUserToOrderColumns = false;
             cbParam2055Refreshrate.SelectedIndex = register.RefreshRate;
             ckDebugMode.Checked = register.IsDebug;
             numSpecialAddr.Value = register.SpecialRegister.RegisterAddress;
@@ -567,7 +633,7 @@ namespace TLWController
             reg.SpecialRegister.RegisterAddress = (int)numSpecialAddr.Value;
             reg.SpecialRegister.Value = (byte)numSpectionValue.Value;
 
-            RegisterHelper.SavevRegister(reg, saveFileDialog.FileName);
+            RegisterHelper.Savev2055Register(reg, saveFileDialog.FileName);
 
         }
         #endregion
@@ -640,7 +706,7 @@ namespace TLWController
                       WriteOutput(t, "读取FLASH");
                       if (t.ResultCode == 0)
                       {
-                          WriteTextFile(saveFileDialog.FileName, t.Data.ToString(" "));
+                          WriteTextFile(saveFileDialog.FileName, (t.Data as byte[]).ToString(" "));
                       }
                   });
                   EnableControl(sender as Control, true);
@@ -1111,8 +1177,11 @@ namespace TLWController
                 RegisterItem regItemData = grid2055.Rows[grid2055.SelectedRows[0].Index].DataBoundItem as TLWController.Helper.RegisterItem;
                 //grid2055.selected
                 DevComponents.DotNetBar.Controls.DataGridViewIntegerInputEditingControl ctr = (e.Control as DevComponents.DotNetBar.Controls.DataGridViewIntegerInputEditingControl);
-                ctr.MinValue = regItemData.MinValue;
-                ctr.MaxValue = regItemData.MaxValue;
+                if (ctr != null)
+                {
+                    ctr.MinValue = regItemData.MinValue;
+                    ctr.MaxValue = regItemData.MaxValue;
+                }
             }
         }
 
@@ -1125,7 +1194,7 @@ namespace TLWController
         ushort CheckSum16(byte[] dat, int offset, int len)
         {
             ushort tmp = 0;
-            for (int i=0;i<len;i++)
+            for (int i = 0; i < len; i++)
             {
                 tmp += dat[offset + i];
             }
@@ -1137,11 +1206,11 @@ namespace TLWController
             string ip = GetCommunicationType().StartIPAddress;
             string folder = @"D:\测试文件夹\TSS\error_Write_SDRAM_Read_SDRAM";
             try
-            { 
+            {
                 if (System.IO.Directory.Exists(folder)) System.IO.Directory.Delete(folder, true);
                 System.IO.Directory.CreateDirectory(folder);
             }
-            catch  
+            catch
             {
                 MessageBox.Show("请关闭文件再试！");
                 return;
@@ -1159,7 +1228,7 @@ namespace TLWController
             //尾data[len - 3] data[len - 2] data[len - 1]   
 
             byte[] arrSendDataSection = new byte[1024];
-            
+
             int errCount = 0;
             int currentCount = 0;
             isStop = false;
@@ -1197,7 +1266,7 @@ namespace TLWController
                     Array.Copy(arrCompare, arrRandomCompareSDRAM, nRecvLen);
 
                     //复制数据区
-                    Array.Copy(arrSendDataSection,0, arrRandomCompareSDRAM, 20, 1024);
+                    Array.Copy(arrSendDataSection, 0, arrRandomCompareSDRAM, 20, 1024);
 
                     //替换校验值
                     ushort ck1 = CheckSum16(arrRandomCompareSDRAM, 3, 1041);
@@ -1212,13 +1281,13 @@ namespace TLWController
                     {
                         errCount++;
                         currentCount++;
-                        WriteMessage(string.Format("当前测试次数{0} 发送写入数据包后，没有收到返回数据",currentCount));
+                        WriteMessage(string.Format("当前测试次数{0} 发送写入数据包后，没有收到返回数据", currentCount));
                         WriteTestMessage($"稳定性测试:当前次数:{currentCount},错误次数:{errCount}");
                         WriteTextFile($@"{folder}\error_{errCount}.txt", "写FLASH没有收到返回数据");
                         continue;
                     }
-                    if (delay >0 )
-                    System.Threading.Thread.Sleep(delay);
+                    if (delay > 0)
+                        System.Threading.Thread.Sleep(delay);
 
                     revLen = UDPHelper.Send(readSDRAM, ip, out byte[] revReadSDRAM);
                     if (revLen == 0)
@@ -1233,15 +1302,15 @@ namespace TLWController
                     //string revStr = revReadSDRAM.ToString(" ").ToUpper();
                     //if (revStr != compare)
                     //{
-                        //errCount++;
-                        //WriteMessage("错误:" + errCount.ToString());
-                        //string writeData = $"{compare.ToUpper()}\r\n{revStr.ToUpper()}";
-                        //WriteTextFile($@"{folder}\error_{errCount}.txt", writeData);
+                    //errCount++;
+                    //WriteMessage("错误:" + errCount.ToString());
+                    //string writeData = $"{compare.ToUpper()}\r\n{revStr.ToUpper()}";
+                    //WriteTextFile($@"{folder}\error_{errCount}.txt", writeData);
 
 
-                        //errCount++;
-                        //WriteMessage("错误:" + errCount.ToString());
-                        //string writeData = $"{compare.ToUpper()}\r\n{revReadSDRAM.ToString(" ").ToUpper()}";
+                    //errCount++;
+                    //WriteMessage("错误:" + errCount.ToString());
+                    //string writeData = $"{compare.ToUpper()}\r\n{revReadSDRAM.ToString(" ").ToUpper()}";
 
                     //比较数据内容
                     byte[] b1 = arrRandomCompareSDRAM;// compare.ToBytes();
@@ -1263,19 +1332,19 @@ namespace TLWController
                         for (int i = 0; i < b1.Length; i++)
                         {
                             string szLine = string.Format("\t[{0}]\t{1:X2}\t{2:X2}\r\n", i, b1[i], b2[i]);
-                                
+
                             if ((bFindERROR == false) && (b1[i] != b2[i]))
                             {
                                 errCount++;
                                 WriteMessage("错误:" + errCount.ToString());
 
-                                WriteMessage(string.Format("diff pos={0}/{1} (src,recv)(0x{2:X2},0x{3:X2})", i, b1.Length,b1[i], b2[i]));
+                                WriteMessage(string.Format("diff pos={0}/{1} (src,recv)(0x{2:X2},0x{3:X2})", i, b1.Length, b1[i], b2[i]));
                                 szLine = string.Format("======>>[{0}]\t{1:X2}\t{2:X2}<<==================\r\n", i, b1[i], b2[i]);
-    
+
                                 bFindERROR = true;
                             }
                             msg += szLine;
-                       
+
                         }
                         if (bFindERROR)
                             isStop = true;
@@ -1292,108 +1361,278 @@ namespace TLWController
             });
         }
 
-        private void tabPage1_Click(object sender, EventArgs e)
+        private void btnGammaSet_Click(object sender, EventArgs e)
         {
-
-        }
-
-        byte[] CreateHeader()
-        {
-            return new byte[20];
-        }
-
-        byte[] CreaterFooter()
-        {
-            return new byte[5];
-        }
-
-        void SetCmdHeader(byte[] header, uint cmdNum)
-        {
-            byte[] bytes = cmdNum.GetBytes();
-            Array.Copy(bytes, 0, header, 0, bytes.Length - 1);
-        }
-
-        void SetDevAddr(byte[] header, ushort devAddr)
-        {
-            byte[] bytes = devAddr.GetBytes();
-            Array.Copy(bytes, 5, header, 0, bytes.Length);
-        }
-
-        void SetId(byte[] header, ushort id)
-        {
-            byte[] bytes = id.GetBytes();
-            Array.Copy(bytes, 7, header, 0, bytes.Length);
-        }
-
-        void SetCmdNum(byte[] header, ushort cmdNum)
-        {
-            byte[] bytes = cmdNum.GetBytes();
-            Array.Copy(bytes, 9, header, 0, bytes.Length);
-        }
-
-        void SetPackageCount(byte[] header, ushort count)
-        {
-            byte[] bytes = count.GetBytes();
-            Array.Copy(bytes, 15, header, 0, bytes.Length);
-        }
-
-        void SetPackageIndex(byte[] header, ushort index)
-        {
-            byte[] bytes = index.GetBytes();
-            Array.Copy(bytes, 17, header, 0, bytes.Length);
-        }
-
-        void SetCommandState(byte[] header, byte state)
-        {
-            byte[] bytes = state.GetBytes();
-            Array.Copy(bytes, 17, header, 0, bytes.Length);
-        }
-
-        void SetDataLength(byte allData,ushort dataLength)
-        {
-        }
-
-        byte[] CombinData(byte[] header, byte[] data, byte[] footer)
-        {
-            int pos = 0;
-            byte[] result = new byte[header.Length + data.Length + footer.Length];
-            Array.Copy(header, 0, result, pos, header.Length);
-            pos += header.Length;
-            Array.Copy(data, 0, result, pos, data.Length);
-            pos += data.Length;
-            Array.Copy(footer, 0, result, pos, footer.Length);
-            return result;
-        }
-
-
-        private void button3_Click(object sender, EventArgs e)
-        {
-            List<byte> content = new List<byte>();
-            byte[] sdramAddr = new byte[3];
-            Array.Copy(((uint)numSDRAMAddr.Value).GetBytes(), 0, sdramAddr, 0, 3);
-            content.AddRange(sdramAddr);
-            byte val = 0;
-            for (int i = 1; i <= 1024; i++)
+            if (CheckIsBusy()) return;
+            if (!CheckDeviceAddr())
             {
-                if (val > 255 || val == 0) val = 1;
-                content.Add(val);
-                val++;
+                MessageBox.Show(this, "设备地址错误");
+                return;
+            }
+            //0 = 10bit GAMMA, 1024个16bit数据,1 = 13bit GAMMA, 4096个16bit数据,2=16bit GAMMA, 32768个16bit数据,3 = HDR, 1024个16bit数据
+            byte mode = byte.Parse(cbGammaBit.SelectedValue.ToString());
+            byte[] data = null;
+            if (mode == 0)
+            {
+                GAMMAProcessLib.GAMMAProcessClass gAMMAProcess = new GAMMAProcessLib.GAMMAProcessClass(10, (double)numGamma.Value, 65535);
+                data = gAMMAProcess.GetData;
+                //byte val = 1;
+                //for (int i = 1; i <= data.Length; i++)
+                //{
+                //    if (val > 255 || val == 0) val = 1;
+                //    data[i - 1] = val;
+                //    val++;
+                //}
+
+            }
+            else if (mode == 1)
+            {
+                GAMMAProcessLib.GAMMAProcessClass gAMMAProcess = new GAMMAProcessLib.GAMMAProcessClass(13, (double)numGamma.Value, 65535);
+                data = gAMMAProcess.GetData;
+            }
+            else if (mode == 2)
+            {
+                GAMMAProcessLib.GAMMAProcessClass gAMMAProcess = new GAMMAProcessLib.GAMMAProcessClass(16, (double)numGamma.Value, 65535);
+                data = gAMMAProcess.GetData;
+            }
+            else if (mode == 3)
+            {
+                GAMMAProcessLib.GAMMAProcessClass gAMMAProcess = new GAMMAProcessLib.GAMMAProcessClass(10, 65535);
+                data = gAMMAProcess.GetData;
             }
 
-            byte[] header = CreateHeader();
-            byte[] footer = CreaterFooter();
-            SetCmdHeader(header, 0xAA8E42);
-            SetDevAddr(header, GetCardAddress());
-            SetId(header, GetId());
-            SetCmdNum(header, 0x0006);
-            SetPackageCount(header, 1);
-            SetPackageIndex(header, 1);
-            SetCommandState(header, 1);
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Filter = "*.txt|*.txt";
+            saveFileDialog.Title = "保存测试数据";
+            saveFileDialog.FileName = "Gamma_Write";
+            if (saveFileDialog.ShowDialog(this) == DialogResult.Cancel) return;
+            WriteTextFile(saveFileDialog.FileName, data.ToString(" "));
+            byte color = byte.Parse(cbGammaColor.SelectedValue.ToString());
+            EnableControl(sender as Control, false);
+            _TLWCommand.tlw_WriteGAMMA(GetCardAddress(), GetId(), mode, color, data, _DevIP, (param) =>
+               {
+                   Array.ForEach(param, t => WriteOutput(t, "GAMMA发送"));
+                   EnableControl(sender as Control, true);
+               });
+        }
 
+        private void btnGammaRead_Click(object sender, EventArgs e)
+        {
+            if (CheckIsBusy()) return;
+            if (!CheckDeviceAddr())
+            {
+                MessageBox.Show(this, "设备地址错误");
+                return;
+            }
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Filter = "*.txt|*.txt";
+            saveFileDialog.Title = "保存测试数据";
+            saveFileDialog.FileName = "GAMMA_READ.txt";
+            if (saveFileDialog.ShowDialog(this) == DialogResult.Cancel) return;
 
-            byte[] allData = CombinData(header, content.ToArray(), footer);
+            string ip = ShowSelectIPDialog();
+            uint regAddr = (uint)numRegAddr.Value;
+            byte chipPos = (byte)cbChipPos.SelectedValue.ToString().ToByte();
 
+            byte mode = byte.Parse(cbGammaBit.SelectedValue.ToString());
+            int dateLen = 0;
+            //0 = 10bit GAMMA, 1024个16bit数据,1 = 13bit GAMMA, 4096个16bit数据,2=16bit GAMMA, 32768个16bit数据,3 = HDR, 1024个16bit数据
+            if (mode == 0)
+            {
+                dateLen = 1024 * 2;
+            }
+            else if (mode == 1)
+            {
+                dateLen = 4096 * 2;
+            }
+            else if (mode == 2)
+            {
+                dateLen = 32768 * 2;
+            }
+            else if (mode == 3)
+            {
+                dateLen = 1024 * 2;
+            }
 
+            EnableControl(sender as Control, false, ip);
+            byte color = byte.Parse(cbGammaColor.SelectedValue.ToString());
+            _TLWCommand.tlw_ReadGAMMA(GetCardAddress(), GetId(), mode, color, dateLen, _DevIP, (param) =>
+             {
+                 Array.ForEach(param, t =>
+                 {
+                     WriteOutput(t, "读取GAMMA");
+                     if (t.ResultCode == 0)
+                     {
+                         WriteTextFile(saveFileDialog.FileName, (t.Data as byte[]).ToString(" "));
+                     }
+                 });
+                 EnableControl(sender as Control, true);
+             });
+        }
+
+        private void ckParamAll_CheckedChanged(object sender, EventArgs e)
+        {
+            for (int i = 0; i < grid2055.Rows.Count; i++)
+            {
+                grid2055.Rows[i].Cells[0].Value = ckParamAll.Checked;
+            }
+        }
+
+        private void btnSpecialSet_Click(object sender, EventArgs e)
+        {
+            if (CheckIsBusy()) return;
+            if (!CheckDeviceAddr())
+            {
+                MessageBox.Show(this, "设备地址错误");
+                return;
+            }
+            byte chipPos = (byte)cbRegChip.SelectedValue.ToString().ToByte();
+            uint regAddr = (uint)numSpecialAddr.Value;
+            uint regValue = (uint)numSpectionValue.Value;
+            bool bSave = !ckDebugMode.Checked;
+            EnableControl(sender as Control, false);
+            _TLWCommand.tlw_WriteRegister(GetCardAddress(), GetId(), chipPos, regAddr, regValue, bSave, _DevIP, (param) =>
+                {
+                    Array.ForEach(param, t => WriteOutput(t, "写特殊寄存器"));
+                    EnableControl(sender as Control, true);
+                });
+        }
+
+        private void btnRegReadSpecial_Click(object sender, EventArgs e)
+        {
+            if (CheckIsBusy()) return;
+            if (!CheckDeviceAddr())
+            {
+                MessageBox.Show(this, "设备地址错误");
+                return;
+            }
+            byte chipPos = (byte)cbRegChip.SelectedValue.ToString().ToByte();
+            uint regAddr = (uint)numSpecialAddr.Value;
+            uint regValue = (uint)numSpectionValue.Value;
+            bool bSave = !ckDebugMode.Checked;
+            EnableControl(sender as Control, false);
+            _TLWCommand.tlw_ReadRegister(GetCardAddress(), GetId(), chipPos, regAddr, _DevIP, (param) =>
+             {
+                 Array.ForEach(param, t =>
+                 {
+                     WriteOutput(t, "读特殊寄存器");
+                     if (t.ResultCode == 0)
+                     {
+                         Invoke(new MethodInvoker(() =>
+                         {
+                             numSpectionValue.Value = (uint)t.Data;
+                         }));
+                     }
+                 });
+                 EnableControl(sender as Control, true);
+             });
+        }
+
+        private void btnSendAll_Click(object sender, EventArgs e)
+        {
+            if (CheckIsBusy()) return;
+            if (!CheckDeviceAddr())
+            {
+                MessageBox.Show(this, "设备地址错误");
+                return;
+            }
+
+            byte chipPos = (byte)cbRegChip.SelectedValue.ToString().ToByte();
+            //uint regAddr = (uint)numSpecialAddr.Value;
+            //uint regValue = (uint)numSpectionValue.Value;
+            bool bSave = !ckDebugMode.Checked;
+            int color = (int)cbParam2055Color.SelectedValue;
+            List<RegisterItem> regList = grid2055.DataSource as List<RegisterItem>;
+            byte[] data = new byte[1024];
+            RegisterHelper.CombinReg2055(regList);
+            data = RegisterHelper.Data;
+            EnableControl(sender as Control, false);
+            _TLWCommand.tlw_WriteRegisterGroup(GetCardAddress(), GetId(), chipPos, data, bSave, _DevIP, (param) =>
+            {
+                Array.ForEach(param, t => WriteOutput(t, "批量写入寄存器"));
+                EnableControl(sender as Control, true);
+            });
+        }
+
+        private void grid2055_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (grid2055.Rows[e.RowIndex].Cells[e.ColumnIndex].OwningColumn.Name == "ColSend")
+            {
+                if (CheckIsBusy()) return;
+                if (!CheckDeviceAddr())
+                {
+                    MessageBox.Show(this, "设备地址错误");
+                    return;
+                }
+                byte chipPos = (byte)cbRegChip.SelectedValue.ToString().ToByte();
+                bool bSave = !ckDebugMode.Checked;
+                byte[] data = new byte[1024];
+                int color = (int)cbParam2055Color.SelectedValue;
+                int positioin = 0;
+                RegisterItem registerItem = (RegisterItem)grid2055.Rows[e.RowIndex].DataBoundItem;
+                if (color == 0)
+                {
+                    byte[] redAddress = registerItem.RedAddress.ToUInt16().GetBytes();
+                    Array.Copy(redAddress, 0, data, positioin, redAddress.Length);
+                    positioin += redAddress.Length;
+
+                    byte[] redValue = ((UInt16)registerItem.RedValue).GetBytes();
+                    Array.Copy(redValue, 0, data, positioin, redValue.Length);
+                    positioin += redValue.Length;
+
+                    byte[] greenAddress = registerItem.GreenAddress.ToUInt16().GetBytes();
+                    Array.Copy(greenAddress, 0, data, positioin, greenAddress.Length);
+                    positioin += greenAddress.Length;
+
+                    byte[] greenValue = ((UInt16)registerItem.GreenValue).GetBytes();
+                    Array.Copy(greenValue, 0, data, positioin, greenValue.Length);
+                    positioin += greenValue.Length;
+
+                    byte[] blueAddress = registerItem.BlueAddress.ToUInt16().GetBytes();
+                    Array.Copy(blueAddress, 0, data, positioin, blueAddress.Length);
+                    positioin += blueAddress.Length;
+
+                    byte[] blueValue = ((UInt16)registerItem.BlueValue).GetBytes();
+                    Array.Copy(blueValue, 0, data, positioin, blueValue.Length);
+                    positioin += blueValue.Length;
+                }
+                else if (color == 1)
+                {
+                    byte[] redAddress = registerItem.RedAddress.ToUInt16().GetBytes();
+                    Array.Copy(redAddress, 0, data, positioin, redAddress.Length);
+                    positioin += redAddress.Length;
+
+                    byte[] redValue = ((UInt16)registerItem.RedValue).GetBytes();
+                    Array.Copy(redValue, 0, data, positioin, redValue.Length);
+                    positioin += redValue.Length;
+                }
+                else if (color == 2)
+                {
+                    byte[] greenAddress = registerItem.GreenAddress.ToUInt16().GetBytes();
+                    Array.Copy(greenAddress, 0, data, positioin, greenAddress.Length);
+                    positioin += greenAddress.Length;
+
+                    byte[] greenValue = ((UInt16)registerItem.GreenValue).GetBytes();
+                    Array.Copy(greenValue, 0, data, positioin, greenValue.Length);
+                    positioin += greenValue.Length;
+                }
+                else
+                {
+                    byte[] blueAddress = registerItem.BlueAddress.ToUInt16().GetBytes();
+                    Array.Copy(blueAddress, 0, data, positioin, blueAddress.Length);
+                    positioin += blueAddress.Length;
+
+                    byte[] blueValue = ((UInt16)registerItem.BlueValue).GetBytes();
+                    Array.Copy(blueValue, 0, data, positioin, blueValue.Length);
+                    positioin += blueValue.Length;
+                }
+                EnableControl(sender as Control, false);
+                _TLWCommand.tlw_WriteRegisterGroup(GetCardAddress(), GetId(), chipPos, data, bSave, _DevIP, (param) =>
+                {
+                    Array.ForEach(param, t => WriteOutput(t, "批量写入寄存器"));
+                    EnableControl(sender as Control, true);
+                });
+            }
         }
     }
 }

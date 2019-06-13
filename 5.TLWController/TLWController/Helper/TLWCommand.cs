@@ -26,7 +26,7 @@ namespace TLWController.Helper
         public string IP { get; set; }
         public int Dev { get; set; }
         public int ResultCode { get; set; }
-        public byte[] Data { get; set; }
+        public object Data { get; set; }
     }
 
     public class InParam
@@ -424,6 +424,64 @@ namespace TLWController.Helper
         }
 
         /// <summary>
+        /// 读取SDRAM数据
+        /// </summary>
+        /// <param name="hDevice">设备句柄</param>
+        /// <param name="addr">设备地址</param>
+        /// <param name="id">数据包识别号</param>
+        /// <param name="startAddr">SDRAM地址</param>
+        /// <param name="pData">数据指针，指向数据保存的地方</param>
+        /// <param name="offset">数组内偏移量</param>
+        /// <param name="len">待读取的数据长度,必须为1024</param>
+        /// <returns></returns>
+
+        public void tlw_SDRAM_Read(ushort addr, ushort id, UInt32 startAddr, int len, Dictionary<string, int> ips, Action<ReturnParam[]> action)
+        {
+            //Task<ReturnParam[]> task = new Task<ReturnParam[]>(obj =>
+            //{
+            //    ReturnParam[] returnParam = new ReturnParam[ips.Count];
+            //    int i = 0;
+            //    foreach (var item in ips)
+            //    {
+            //        new Task((inParam) =>
+            //        {
+            //            InParam param = (inParam as InParam);
+            //            returnParam[param.Index] = new ReturnParam();
+            //            returnParam[param.Index].IP = param.IP;
+            //            returnParam[param.Index].Dev = param.Dev;
+            //            byte[] pData = new byte[len];
+            //            if (pData.Length <= 1024)
+            //            {
+            //                returnParam[param.Index].ResultCode = _Command.tlw_FLASH_Read(param.Dev, addr, id, chipPos, startAddr, pData, 0, pData.Length);
+            //            }
+            //            else
+            //            {
+            //                returnParam[param.Index].ResultCode = _Command.tlw_FLASH_BatchRead(param.Dev, addr, id, chipPos, startAddr, pData, 0, pData.Length, ProgressCallBackFunc);
+            //            }
+            //            if (returnParam[param.Index].ResultCode == 0)
+            //            {
+            //                returnParam[param.Index].Data = pData;
+            //            }
+            //        },
+            //        new InParam()
+            //        {
+            //            Index = i,
+            //            IP = item.Key,
+            //            Dev = item.Value
+            //        },
+            //        TaskCreationOptions.AttachedToParent).Start();
+            //        i++;
+            //    }
+            //    return returnParam;
+            //}, null);
+            //task.ContinueWith(t =>
+            //{
+            //    action(t.Result);
+            //});
+            //task.Start();
+        }
+
+        /// <summary>
         /// 将SDRAM数据写入FLASH
         /// </summary>
         /// <param name="hDevice">设备句柄</param>
@@ -449,6 +507,298 @@ namespace TLWController.Helper
 
                         returnParam[param.Index].ResultCode = _Command.tlw_SDRAM_WriteToFLASH(param.Dev, addr, id);
 
+                    },
+                    new InParam()
+                    {
+                        Index = i,
+                        IP = item.Key,
+                        Dev = item.Value
+                    },
+                    TaskCreationOptions.AttachedToParent).Start();
+                    i++;
+                }
+                return returnParam;
+            }, null);
+            task.ContinueWith(t =>
+            {
+                action(t.Result);
+            });
+            task.Start();
+        }
+
+        /// <summary>
+        /// 写入GAMMA数据
+        /// </summary>
+        /// <param name="hDevice">设备句柄</param>
+        /// <param name="addr">设备地址</param>
+        /// <param name="id">数据包识别号</param>
+        /// <param name="mode">0 = 10bit GAMMA, 1024个16bit数据,1 = 13bit GAMMA, 4096个16bit数据,2=16bit GAMMA, 32768个16bit数据,3 = HDR, 1024个16bit数据</param>
+        /// <param name="color">1 = 红色,2 = 绿色,3 = 蓝色</param>
+        /// <param name="src">GAMMA数据数组</param>
+        /// <param name="offset">偏移量</param>
+        /// <param name="len">需要保存到数组的长度</param>
+        /// <returns>0 —— 成功，其他值失败</returns>
+        public void tlw_WriteGAMMA(ushort addr, ushort id, byte mode, byte color, byte[] src, Dictionary<string, int> ips, Action<ReturnParam[]> action)
+        {
+            //return _Command.tlw_SDRAM_WriteToFLASH(hDevice, addr, id);
+
+            Task<ReturnParam[]> task = new Task<ReturnParam[]>(obj =>
+            {
+                ReturnParam[] returnParam = new ReturnParam[ips.Count];
+                int i = 0;
+                foreach (var item in ips)
+                {
+                    new Task((inParam) =>
+                    {
+                        InParam param = (inParam as InParam);
+                        returnParam[param.Index] = new ReturnParam();
+                        returnParam[param.Index].IP = param.IP;
+                        returnParam[param.Index].Dev = param.Dev;
+                        returnParam[param.Index].ResultCode = _Command.tlw_WriteGAMMA(param.Dev, addr, id, mode, color, src, 0, src.Length);
+                    },
+                    new InParam()
+                    {
+                        Index = i,
+                        IP = item.Key,
+                        Dev = item.Value
+                    },
+                    TaskCreationOptions.AttachedToParent).Start();
+                    i++;
+                }
+                return returnParam;
+            }, null);
+            task.ContinueWith(t =>
+            {
+                action(t.Result);
+            });
+            task.Start();
+        }
+
+        /// <summary>
+        /// 读取GAMMA数据
+        /// </summary>
+        /// <param name="hDevice">设备句柄</param>
+        /// <param name="addr">设备地址</param>
+        /// <param name="id">数据包识别号</param>
+        /// <param name="mode">0 = 10bit GAMMA, 1024个16bit数据,1 = 13bit GAMMA, 4096个16bit数据,2=16bit GAMMA, 32768个16bit数据,3 = HDR, 1024个16bit数据</param>
+        /// <param name="color">1 = 红色,2 = 绿色,3 = 蓝色</param>
+        /// <param name="src">GAMMA数据数组</param>
+        /// <param name="offset">偏移量</param>
+        /// <param name="len">需要保存到数组的长度</param>
+        /// <returns>0 —— 成功，其他值失败</returns>
+        public void tlw_ReadGAMMA(ushort addr, ushort id, byte mode, byte color, int readLen, Dictionary<string, int> ips, Action<ReturnParam[]> action)
+        {
+            Task<ReturnParam[]> task = new Task<ReturnParam[]>(obj =>
+            {
+                ReturnParam[] returnParam = new ReturnParam[ips.Count];
+                int i = 0;
+                foreach (var item in ips)
+                {
+                    new Task((inParam) =>
+                    {
+                        InParam param = (inParam as InParam);
+                        returnParam[param.Index] = new ReturnParam();
+                        returnParam[param.Index].IP = param.IP;
+                        returnParam[param.Index].Dev = param.Dev;
+
+                        byte[] pData = new byte[readLen];
+                        returnParam[param.Index].ResultCode = _Command.tlw_ReadGAMMA(param.Dev, addr, id, mode, color, pData, 0, pData.Length);
+                        if (returnParam[param.Index].ResultCode == 0)
+                        {
+                            returnParam[param.Index].Data = pData;
+                        }
+                    },
+                    new InParam()
+                    {
+                        Index = i,
+                        IP = item.Key,
+                        Dev = item.Value
+                    },
+                    TaskCreationOptions.AttachedToParent).Start();
+                    i++;
+                }
+                return returnParam;
+            }, null);
+            task.ContinueWith(t =>
+            {
+                action(t.Result);
+            });
+            task.Start();
+        }
+
+        /// <summary>
+        /// 写入寄存器数组
+        /// </summary>
+        /// <param name="hDevice">hDevice 设备句柄</param>
+        /// <param name="addr">设备地址</param>
+        /// <param name="id">数据包识别号</param>
+        /// <param name="chip"> 0 FPGA  1 4K视频芯片</param>
+        /// <param name="src">数据数组指针</param>
+        /// <param name="offset">偏移量</param>
+        /// <param name="len">数据长度</param>
+        /// <param name="bSave">是否保存 TRUE 保存  FALSE 不保存</param>
+        /// <returns>0 —— 成功，其他值失败</returns>
+        public void tlw_WriteRegisterGroup(ushort addr, ushort id, byte chip, byte[] src, bool bSave, Dictionary<string, int> ips, Action<ReturnParam[]> action)
+        {
+            Task<ReturnParam[]> task = new Task<ReturnParam[]>(obj =>
+            {
+                ReturnParam[] returnParam = new ReturnParam[ips.Count];
+                int i = 0;
+                foreach (var item in ips)
+                {
+                    new Task((inParam) =>
+                    {
+                        InParam param = (inParam as InParam);
+                        returnParam[param.Index] = new ReturnParam();
+                        returnParam[param.Index].IP = param.IP;
+                        returnParam[param.Index].Dev = param.Dev;
+                        returnParam[param.Index].ResultCode = _Command.tlw_WriteRegisterGroup(param.Dev, addr, id, chip, src, 0, src.Length, bSave);
+                    },
+                    new InParam()
+                    {
+                        Index = i,
+                        IP = item.Key,
+                        Dev = item.Value
+                    },
+                    TaskCreationOptions.AttachedToParent).Start();
+                    i++;
+                }
+                return returnParam;
+            }, null);
+            task.ContinueWith(t =>
+            {
+                action(t.Result);
+            });
+            task.Start();
+        }
+
+        /// <summary>
+        /// 读取寄存器数组
+        /// </summary>
+        /// <param name="hDevice">设备句柄</param>
+        /// <param name="addr">设备地址</param>
+        /// <param name="id">数据包识别号</param>
+        /// <param name="chip">0 FPGA  1 4K视频芯片</param>
+        /// <param name="src">数据数组指针</param>
+        /// <param name="offset">偏移量</param>
+        /// <param name="len">数据长度</param>
+        /// <returns>0 —— 成功，其他值失败</returns>
+        public void tlw_ReadRegisterGroup(ushort addr, ushort id, byte chip, int readLen, Dictionary<string, int> ips, Action<ReturnParam[]> action)
+        {
+            Task<ReturnParam[]> task = new Task<ReturnParam[]>(obj =>
+            {
+                ReturnParam[] returnParam = new ReturnParam[ips.Count];
+                int i = 0;
+                foreach (var item in ips)
+                {
+                    new Task((inParam) =>
+                    {
+                        InParam param = (inParam as InParam);
+                        returnParam[param.Index] = new ReturnParam();
+                        returnParam[param.Index].IP = param.IP;
+                        returnParam[param.Index].Dev = param.Dev;
+
+                        byte[] pData = new byte[readLen];
+                        returnParam[param.Index].ResultCode = _Command.tlw_ReadRegisterGroup(param.Dev, addr, id, chip, pData, 0, pData.Length);
+                        if (returnParam[param.Index].ResultCode == 0)
+                        {
+                            returnParam[param.Index].Data = pData;
+                        }
+                    },
+                    new InParam()
+                    {
+                        Index = i,
+                        IP = item.Key,
+                        Dev = item.Value
+                    },
+                    TaskCreationOptions.AttachedToParent).Start();
+                    i++;
+                }
+                return returnParam;
+            }, null);
+            task.ContinueWith(t =>
+            {
+                action(t.Result);
+            });
+            task.Start();
+        }
+
+        /// <summary>
+        /// 写入单个寄存器值
+        /// </summary>
+        /// <param name="hDevice">设备句柄</param>
+        /// <param name="addr">设备地址</param>
+        /// <param name="id">数据包识别号</param>
+        /// <param name="chip">0 FPGA  1 4K视频芯片</param>
+        /// <param name="regAddr">寄存器地址</param>
+        /// <param name="regVal">寄存器数值</param>
+        /// <param name="bSave">是否保存 TRUE 保存  FALSE 不保存</param>
+        /// <returns>0 —— 成功，其他值失败</returns>
+        public void tlw_WriteRegister(ushort addr, ushort id, byte chip, UInt32 regAddr, UInt32 regVal, bool bSave, Dictionary<string, int> ips, Action<ReturnParam[]> action)
+        {
+            Task<ReturnParam[]> task = new Task<ReturnParam[]>(obj =>
+            {
+                ReturnParam[] returnParam = new ReturnParam[ips.Count];
+                int i = 0;
+                foreach (var item in ips)
+                {
+                    new Task((inParam) =>
+                    {
+                        InParam param = (inParam as InParam);
+                        returnParam[param.Index] = new ReturnParam();
+                        returnParam[param.Index].IP = param.IP;
+                        returnParam[param.Index].Dev = param.Dev;
+                        returnParam[param.Index].ResultCode = _Command.tlw_WriteRegister(param.Dev, addr, id, chip, regAddr, regVal, bSave);
+                    },
+                    new InParam()
+                    {
+                        Index = i,
+                        IP = item.Key,
+                        Dev = item.Value
+                    },
+                    TaskCreationOptions.AttachedToParent).Start();
+                    i++;
+                }
+                return returnParam;
+            }, null);
+            task.ContinueWith(t =>
+            {
+                action(t.Result);
+            });
+            task.Start();
+        }
+
+        /// <summary>
+        /// 读取单个寄存器值
+        /// </summary>
+        /// <param name="hDevice">设备句柄</param>
+        /// <param name="addr">设备地址</param>
+        /// <param name="id">数据包识别号</param>
+        /// <param name="chip">0 FPGA  1 4K视频芯片</param>
+        /// <param name="regAddr">寄存器地址</param>
+        /// <param name="regVal">返回寄存器数值</param>
+        /// <returns>0 —— 成功，其他值失败</returns>
+        public void tlw_ReadRegister(ushort addr, ushort id, byte chip, UInt32 regAddr, Dictionary<string, int> ips, Action<ReturnParam[]> action)
+        {
+            Task<ReturnParam[]> task = new Task<ReturnParam[]>(obj =>
+            {
+                ReturnParam[] returnParam = new ReturnParam[ips.Count];
+                int i = 0;
+                foreach (var item in ips)
+                {
+                    new Task((inParam) =>
+                    {
+                        InParam param = (inParam as InParam);
+                        returnParam[param.Index] = new ReturnParam();
+                        returnParam[param.Index].IP = param.IP;
+                        returnParam[param.Index].Dev = param.Dev;
+
+                        UInt32[] pData = new UInt32[1];
+                        returnParam[param.Index].ResultCode = _Command.tlw_ReadRegister(param.Dev, addr, id, chip, regAddr, pData);
+                        if (returnParam[param.Index].ResultCode == 0)
+                        {
+                            returnParam[param.Index].Data = pData;
+                        }
                     },
                     new InParam()
                     {
