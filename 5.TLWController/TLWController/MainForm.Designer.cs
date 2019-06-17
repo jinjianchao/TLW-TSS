@@ -41,7 +41,25 @@
             this.btnApplyBrightness = new System.Windows.Forms.Button();
             this.numBrightness = new System.Windows.Forms.NumericUpDown();
             this.tbBrightness = new System.Windows.Forms.TrackBar();
-            this.tab = new System.Windows.Forms.TabControl();
+            this.tab2055Param = new System.Windows.Forms.TabControl();
+            this.tabAdvance = new System.Windows.Forms.TabPage();
+            this.gpFirmwareUpgrade = new System.Windows.Forms.GroupBox();
+            this.btnUpgradeMCU = new System.Windows.Forms.Button();
+            this.btnChoseMCU = new System.Windows.Forms.Button();
+            this.txtMcu = new System.Windows.Forms.TextBox();
+            this.label8 = new System.Windows.Forms.Label();
+            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.btnReadReg = new System.Windows.Forms.Button();
+            this.ckParamAll = new System.Windows.Forms.CheckBox();
+            this.btnSendAll = new System.Windows.Forms.Button();
+            this.cbParam2055Color = new System.Windows.Forms.ComboBox();
+            this.label9 = new System.Windows.Forms.Label();
+            this.ckDebugMode = new System.Windows.Forms.CheckBox();
+            this.cbRegChip = new System.Windows.Forms.ComboBox();
+            this.label14 = new System.Windows.Forms.Label();
+            this.btnExport2055Param = new System.Windows.Forms.Button();
+            this.btnLoad2055Param = new System.Windows.Forms.Button();
+            this.grid2055 = new System.Windows.Forms.DataGridView();
             this.tabTest = new System.Windows.Forms.TabPage();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.label7 = new System.Windows.Forms.Label();
@@ -71,29 +89,6 @@
             this.button1 = new System.Windows.Forms.Button();
             this.numTimeDelay = new System.Windows.Forms.NumericUpDown();
             this.button2 = new System.Windows.Forms.Button();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.groupBox4 = new System.Windows.Forms.GroupBox();
-            this.numSpectionValue = new System.Windows.Forms.NumericUpDown();
-            this.label13 = new System.Windows.Forms.Label();
-            this.btnSpecialSet = new System.Windows.Forms.Button();
-            this.label11 = new System.Windows.Forms.Label();
-            this.numSpecialStopBit = new System.Windows.Forms.NumericUpDown();
-            this.label10 = new System.Windows.Forms.Label();
-            this.label12 = new System.Windows.Forms.Label();
-            this.numSpecialAddr = new System.Windows.Forms.NumericUpDown();
-            this.numSpecialStartBit = new System.Windows.Forms.NumericUpDown();
-            this.ckParamAll = new System.Windows.Forms.CheckBox();
-            this.btnSendAll = new System.Windows.Forms.Button();
-            this.cbParam2055Color = new System.Windows.Forms.ComboBox();
-            this.label9 = new System.Windows.Forms.Label();
-            this.ckDebugMode = new System.Windows.Forms.CheckBox();
-            this.cbRegChip = new System.Windows.Forms.ComboBox();
-            this.label14 = new System.Windows.Forms.Label();
-            this.cbParam2055Refreshrate = new System.Windows.Forms.ComboBox();
-            this.label8 = new System.Windows.Forms.Label();
-            this.btnExport2055Param = new System.Windows.Forms.Button();
-            this.btnLoad2055Param = new System.Windows.Forms.Button();
-            this.grid2055 = new System.Windows.Forms.DataGridView();
             this.CoCheckBox = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.ColMinValue = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColMaxValue = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -107,18 +102,21 @@
             this.ColBlueAddress = new DevComponents.DotNetBar.Controls.DataGridViewLabelXColumn();
             this.ColStartBit = new DevComponents.DotNetBar.Controls.DataGridViewLabelXColumn();
             this.ColStopBit = new DevComponents.DotNetBar.Controls.DataGridViewLabelXColumn();
-            this.ColRedValue = new DevComponents.DotNetBar.Controls.DataGridViewIntegerInputColumn();
-            this.ColGreenValue = new DevComponents.DotNetBar.Controls.DataGridViewIntegerInputColumn();
-            this.ColBlueValue = new DevComponents.DotNetBar.Controls.DataGridViewIntegerInputColumn();
+            this.ColRedValue = new DevComponents.DotNetBar.Controls.DataGridViewLabelXColumn();
+            this.ColGreenValue = new DevComponents.DotNetBar.Controls.DataGridViewLabelXColumn();
+            this.ColBlueValue = new DevComponents.DotNetBar.Controls.DataGridViewLabelXColumn();
             this.ColSend = new System.Windows.Forms.DataGridViewButtonColumn();
-            this.btnRegReadSpecial = new System.Windows.Forms.Button();
             this.tabCommonCommand.SuspendLayout();
             this.groupBox5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numGamma)).BeginInit();
             this.gbBrightness.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numBrightness)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tbBrightness)).BeginInit();
-            this.tab.SuspendLayout();
+            this.tab2055Param.SuspendLayout();
+            this.tabAdvance.SuspendLayout();
+            this.gpFirmwareUpgrade.SuspendLayout();
+            this.tabPage1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.grid2055)).BeginInit();
             this.tabTest.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -130,13 +128,6 @@
             this.gpTest.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numTestDataLen)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numTimeDelay)).BeginInit();
-            this.tabPage1.SuspendLayout();
-            this.groupBox4.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numSpectionValue)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numSpecialStopBit)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numSpecialAddr)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numSpecialStartBit)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.grid2055)).BeginInit();
             this.SuspendLayout();
             // 
             // tabCommonCommand
@@ -267,19 +258,248 @@
             this.tbBrightness.TickFrequency = 10;
             this.tbBrightness.Scroll += new System.EventHandler(this.tbBrightness_Scroll);
             // 
-            // tab
+            // tab2055Param
             // 
-            this.tab.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.tab2055Param.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tab.Controls.Add(this.tabCommonCommand);
-            this.tab.Controls.Add(this.tabTest);
-            this.tab.Controls.Add(this.tabPage1);
-            this.tab.Location = new System.Drawing.Point(0, 12);
-            this.tab.Name = "tab";
-            this.tab.SelectedIndex = 0;
-            this.tab.Size = new System.Drawing.Size(1400, 597);
-            this.tab.TabIndex = 0;
+            this.tab2055Param.Controls.Add(this.tabCommonCommand);
+            this.tab2055Param.Controls.Add(this.tabAdvance);
+            this.tab2055Param.Controls.Add(this.tabPage1);
+            this.tab2055Param.Controls.Add(this.tabTest);
+            this.tab2055Param.Location = new System.Drawing.Point(0, 12);
+            this.tab2055Param.Name = "tab2055Param";
+            this.tab2055Param.SelectedIndex = 0;
+            this.tab2055Param.Size = new System.Drawing.Size(1400, 597);
+            this.tab2055Param.TabIndex = 0;
+            // 
+            // tabAdvance
+            // 
+            this.tabAdvance.BackColor = System.Drawing.SystemColors.Control;
+            this.tabAdvance.Controls.Add(this.gpFirmwareUpgrade);
+            this.tabAdvance.Location = new System.Drawing.Point(4, 22);
+            this.tabAdvance.Name = "tabAdvance";
+            this.tabAdvance.Padding = new System.Windows.Forms.Padding(3);
+            this.tabAdvance.Size = new System.Drawing.Size(1392, 571);
+            this.tabAdvance.TabIndex = 3;
+            this.tabAdvance.Text = "高级";
+            // 
+            // gpFirmwareUpgrade
+            // 
+            this.gpFirmwareUpgrade.Controls.Add(this.btnUpgradeMCU);
+            this.gpFirmwareUpgrade.Controls.Add(this.btnChoseMCU);
+            this.gpFirmwareUpgrade.Controls.Add(this.txtMcu);
+            this.gpFirmwareUpgrade.Controls.Add(this.label8);
+            this.gpFirmwareUpgrade.Location = new System.Drawing.Point(8, 7);
+            this.gpFirmwareUpgrade.Name = "gpFirmwareUpgrade";
+            this.gpFirmwareUpgrade.Size = new System.Drawing.Size(374, 132);
+            this.gpFirmwareUpgrade.TabIndex = 0;
+            this.gpFirmwareUpgrade.TabStop = false;
+            this.gpFirmwareUpgrade.Text = "固件升级";
+            // 
+            // btnUpgradeMCU
+            // 
+            this.btnUpgradeMCU.Location = new System.Drawing.Point(288, 19);
+            this.btnUpgradeMCU.Name = "btnUpgradeMCU";
+            this.btnUpgradeMCU.Size = new System.Drawing.Size(75, 23);
+            this.btnUpgradeMCU.TabIndex = 3;
+            this.btnUpgradeMCU.Text = "更新";
+            this.btnUpgradeMCU.UseVisualStyleBackColor = true;
+            this.btnUpgradeMCU.Click += new System.EventHandler(this.btnUpgradeMCU_Click);
+            // 
+            // btnChoseMCU
+            // 
+            this.btnChoseMCU.Location = new System.Drawing.Point(245, 19);
+            this.btnChoseMCU.Name = "btnChoseMCU";
+            this.btnChoseMCU.Size = new System.Drawing.Size(39, 23);
+            this.btnChoseMCU.TabIndex = 2;
+            this.btnChoseMCU.Text = "...";
+            this.btnChoseMCU.UseVisualStyleBackColor = true;
+            this.btnChoseMCU.Click += new System.EventHandler(this.btnChoseMCU_Click);
+            // 
+            // txtMcu
+            // 
+            this.txtMcu.Location = new System.Drawing.Point(54, 19);
+            this.txtMcu.Name = "txtMcu";
+            this.txtMcu.Size = new System.Drawing.Size(187, 21);
+            this.txtMcu.TabIndex = 1;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(19, 22);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(29, 12);
+            this.label8.TabIndex = 0;
+            this.label8.Text = "MCU:";
+            // 
+            // tabPage1
+            // 
+            this.tabPage1.BackColor = System.Drawing.SystemColors.Control;
+            this.tabPage1.Controls.Add(this.btnReadReg);
+            this.tabPage1.Controls.Add(this.ckParamAll);
+            this.tabPage1.Controls.Add(this.btnSendAll);
+            this.tabPage1.Controls.Add(this.cbParam2055Color);
+            this.tabPage1.Controls.Add(this.label9);
+            this.tabPage1.Controls.Add(this.ckDebugMode);
+            this.tabPage1.Controls.Add(this.cbRegChip);
+            this.tabPage1.Controls.Add(this.label14);
+            this.tabPage1.Controls.Add(this.btnExport2055Param);
+            this.tabPage1.Controls.Add(this.btnLoad2055Param);
+            this.tabPage1.Controls.Add(this.grid2055);
+            this.tabPage1.Location = new System.Drawing.Point(4, 22);
+            this.tabPage1.Name = "tabPage1";
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage1.Size = new System.Drawing.Size(1392, 571);
+            this.tabPage1.TabIndex = 2;
+            this.tabPage1.Text = "2055参数下载";
+            // 
+            // btnReadReg
+            // 
+            this.btnReadReg.Location = new System.Drawing.Point(666, 8);
+            this.btnReadReg.Name = "btnReadReg";
+            this.btnReadReg.Size = new System.Drawing.Size(75, 23);
+            this.btnReadReg.TabIndex = 10;
+            this.btnReadReg.Text = "读取";
+            this.btnReadReg.UseVisualStyleBackColor = true;
+            this.btnReadReg.Click += new System.EventHandler(this.btnReadReg_Click);
+            // 
+            // ckParamAll
+            // 
+            this.ckParamAll.AutoSize = true;
+            this.ckParamAll.Location = new System.Drawing.Point(16, 38);
+            this.ckParamAll.Name = "ckParamAll";
+            this.ckParamAll.Size = new System.Drawing.Size(15, 14);
+            this.ckParamAll.TabIndex = 9;
+            this.ckParamAll.UseVisualStyleBackColor = true;
+            this.ckParamAll.Visible = false;
+            this.ckParamAll.CheckedChanged += new System.EventHandler(this.ckParamAll_CheckedChanged);
+            // 
+            // btnSendAll
+            // 
+            this.btnSendAll.Location = new System.Drawing.Point(584, 7);
+            this.btnSendAll.Name = "btnSendAll";
+            this.btnSendAll.Size = new System.Drawing.Size(75, 23);
+            this.btnSendAll.TabIndex = 8;
+            this.btnSendAll.Text = "全部设置";
+            this.btnSendAll.UseVisualStyleBackColor = true;
+            this.btnSendAll.Click += new System.EventHandler(this.btnSendAll_Click);
+            // 
+            // cbParam2055Color
+            // 
+            this.cbParam2055Color.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbParam2055Color.FormattingEnabled = true;
+            this.cbParam2055Color.Location = new System.Drawing.Point(391, 9);
+            this.cbParam2055Color.Name = "cbParam2055Color";
+            this.cbParam2055Color.Size = new System.Drawing.Size(97, 20);
+            this.cbParam2055Color.TabIndex = 7;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(344, 11);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(41, 12);
+            this.label9.TabIndex = 6;
+            this.label9.Text = "颜色：";
+            // 
+            // ckDebugMode
+            // 
+            this.ckDebugMode.AutoSize = true;
+            this.ckDebugMode.Location = new System.Drawing.Point(506, 10);
+            this.ckDebugMode.Name = "ckDebugMode";
+            this.ckDebugMode.Size = new System.Drawing.Size(72, 16);
+            this.ckDebugMode.TabIndex = 5;
+            this.ckDebugMode.Text = "调试模式";
+            this.ckDebugMode.UseVisualStyleBackColor = true;
+            // 
+            // cbRegChip
+            // 
+            this.cbRegChip.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbRegChip.FormattingEnabled = true;
+            this.cbRegChip.Items.AddRange(new object[] {
+            "50Hz",
+            "60Hz"});
+            this.cbRegChip.Location = new System.Drawing.Point(230, 8);
+            this.cbRegChip.Name = "cbRegChip";
+            this.cbRegChip.Size = new System.Drawing.Size(97, 20);
+            this.cbRegChip.TabIndex = 4;
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(184, 12);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(41, 12);
+            this.label14.TabIndex = 3;
+            this.label14.Text = "器件：";
+            // 
+            // btnExport2055Param
+            // 
+            this.btnExport2055Param.Location = new System.Drawing.Point(90, 6);
+            this.btnExport2055Param.Name = "btnExport2055Param";
+            this.btnExport2055Param.Size = new System.Drawing.Size(75, 23);
+            this.btnExport2055Param.TabIndex = 2;
+            this.btnExport2055Param.Text = "导出";
+            this.btnExport2055Param.UseVisualStyleBackColor = true;
+            this.btnExport2055Param.Click += new System.EventHandler(this.btnExport2055Param_Click);
+            // 
+            // btnLoad2055Param
+            // 
+            this.btnLoad2055Param.Location = new System.Drawing.Point(9, 6);
+            this.btnLoad2055Param.Name = "btnLoad2055Param";
+            this.btnLoad2055Param.Size = new System.Drawing.Size(75, 23);
+            this.btnLoad2055Param.TabIndex = 1;
+            this.btnLoad2055Param.Text = "导入";
+            this.btnLoad2055Param.UseVisualStyleBackColor = true;
+            this.btnLoad2055Param.Click += new System.EventHandler(this.btnLoad2055Param_Click);
+            // 
+            // grid2055
+            // 
+            this.grid2055.AllowUserToAddRows = false;
+            this.grid2055.AllowUserToDeleteRows = false;
+            this.grid2055.AllowUserToOrderColumns = true;
+            this.grid2055.AllowUserToResizeColumns = false;
+            this.grid2055.AllowUserToResizeRows = false;
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.grid2055.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle2;
+            this.grid2055.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.grid2055.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.grid2055.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.CoCheckBox,
+            this.ColMinValue,
+            this.ColMaxValue,
+            this.ColCNDescription,
+            this.ColENDescription,
+            this.ColDescription,
+            this.ColOffset,
+            this.ColRegisterAddress,
+            this.ColRedAddress,
+            this.ColGreenAddress,
+            this.ColBlueAddress,
+            this.ColStartBit,
+            this.ColStopBit,
+            this.ColRedValue,
+            this.ColGreenValue,
+            this.ColBlueValue,
+            this.ColSend});
+            this.grid2055.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
+            this.grid2055.EnableHeadersVisualStyles = false;
+            this.grid2055.Location = new System.Drawing.Point(6, 35);
+            this.grid2055.MultiSelect = false;
+            this.grid2055.Name = "grid2055";
+            this.grid2055.RowHeadersVisible = false;
+            this.grid2055.RowTemplate.Height = 23;
+            this.grid2055.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.grid2055.Size = new System.Drawing.Size(1378, 528);
+            this.grid2055.TabIndex = 0;
+            this.grid2055.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.grid2055_CellBeginEdit);
+            this.grid2055.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.grid2055_CellContentClick);
+            this.grid2055.CellEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.grid2055_CellEnter);
+            this.grid2055.CellLeave += new System.Windows.Forms.DataGridViewCellEventHandler(this.grid2055_CellLeave);
+            this.grid2055.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(this.grid2055_EditingControlShowing);
             // 
             // tabTest
             // 
@@ -406,7 +626,7 @@
             this.cbChipPos.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.cbChipPos.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbChipPos.FormattingEnabled = true;
-            this.cbChipPos.Location = new System.Drawing.Point(82, 20);
+            this.cbChipPos.Location = new System.Drawing.Point(79, 21);
             this.cbChipPos.Name = "cbChipPos";
             this.cbChipPos.Size = new System.Drawing.Size(121, 20);
             this.cbChipPos.TabIndex = 11;
@@ -625,306 +845,6 @@
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
-            // tabPage1
-            // 
-            this.tabPage1.BackColor = System.Drawing.SystemColors.Control;
-            this.tabPage1.Controls.Add(this.groupBox4);
-            this.tabPage1.Controls.Add(this.ckParamAll);
-            this.tabPage1.Controls.Add(this.btnSendAll);
-            this.tabPage1.Controls.Add(this.cbParam2055Color);
-            this.tabPage1.Controls.Add(this.label9);
-            this.tabPage1.Controls.Add(this.ckDebugMode);
-            this.tabPage1.Controls.Add(this.cbRegChip);
-            this.tabPage1.Controls.Add(this.label14);
-            this.tabPage1.Controls.Add(this.cbParam2055Refreshrate);
-            this.tabPage1.Controls.Add(this.label8);
-            this.tabPage1.Controls.Add(this.btnExport2055Param);
-            this.tabPage1.Controls.Add(this.btnLoad2055Param);
-            this.tabPage1.Controls.Add(this.grid2055);
-            this.tabPage1.Location = new System.Drawing.Point(4, 22);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(1392, 571);
-            this.tabPage1.TabIndex = 2;
-            this.tabPage1.Text = "2055参数下载";
-            // 
-            // groupBox4
-            // 
-            this.groupBox4.Controls.Add(this.btnRegReadSpecial);
-            this.groupBox4.Controls.Add(this.numSpectionValue);
-            this.groupBox4.Controls.Add(this.label13);
-            this.groupBox4.Controls.Add(this.btnSpecialSet);
-            this.groupBox4.Controls.Add(this.label11);
-            this.groupBox4.Controls.Add(this.numSpecialStopBit);
-            this.groupBox4.Controls.Add(this.label10);
-            this.groupBox4.Controls.Add(this.label12);
-            this.groupBox4.Controls.Add(this.numSpecialAddr);
-            this.groupBox4.Controls.Add(this.numSpecialStartBit);
-            this.groupBox4.Location = new System.Drawing.Point(418, 7);
-            this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(703, 54);
-            this.groupBox4.TabIndex = 16;
-            this.groupBox4.TabStop = false;
-            this.groupBox4.Text = "特殊寄存器";
-            // 
-            // numSpectionValue
-            // 
-            this.numSpectionValue.Location = new System.Drawing.Point(454, 22);
-            this.numSpectionValue.Maximum = new decimal(new int[] {
-            99999999,
-            0,
-            0,
-            0});
-            this.numSpectionValue.Name = "numSpectionValue";
-            this.numSpectionValue.Size = new System.Drawing.Size(73, 21);
-            this.numSpectionValue.TabIndex = 18;
-            // 
-            // label13
-            // 
-            this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(418, 26);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(23, 12);
-            this.label13.TabIndex = 17;
-            this.label13.Text = "值:";
-            // 
-            // btnSpecialSet
-            // 
-            this.btnSpecialSet.Location = new System.Drawing.Point(540, 21);
-            this.btnSpecialSet.Name = "btnSpecialSet";
-            this.btnSpecialSet.Size = new System.Drawing.Size(75, 23);
-            this.btnSpecialSet.TabIndex = 16;
-            this.btnSpecialSet.Text = "设置";
-            this.btnSpecialSet.UseVisualStyleBackColor = true;
-            this.btnSpecialSet.Click += new System.EventHandler(this.btnSpecialSet_Click);
-            // 
-            // label11
-            // 
-            this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(148, 26);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(53, 12);
-            this.label11.TabIndex = 12;
-            this.label11.Text = "起始位：";
-            // 
-            // numSpecialStopBit
-            // 
-            this.numSpecialStopBit.Enabled = false;
-            this.numSpecialStopBit.Location = new System.Drawing.Point(340, 22);
-            this.numSpecialStopBit.Maximum = new decimal(new int[] {
-            99999999,
-            0,
-            0,
-            0});
-            this.numSpecialStopBit.Name = "numSpecialStopBit";
-            this.numSpecialStopBit.Size = new System.Drawing.Size(73, 21);
-            this.numSpecialStopBit.TabIndex = 15;
-            this.numSpecialStopBit.Value = new decimal(new int[] {
-            15,
-            0,
-            0,
-            0});
-            // 
-            // label10
-            // 
-            this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(22, 26);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(41, 12);
-            this.label10.TabIndex = 10;
-            this.label10.Text = "地址：";
-            // 
-            // label12
-            // 
-            this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(286, 26);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(53, 12);
-            this.label12.TabIndex = 14;
-            this.label12.Text = "终止位：";
-            // 
-            // numSpecialAddr
-            // 
-            this.numSpecialAddr.Location = new System.Drawing.Point(69, 22);
-            this.numSpecialAddr.Maximum = new decimal(new int[] {
-            99999999,
-            0,
-            0,
-            0});
-            this.numSpecialAddr.Name = "numSpecialAddr";
-            this.numSpecialAddr.Size = new System.Drawing.Size(73, 21);
-            this.numSpecialAddr.TabIndex = 11;
-            // 
-            // numSpecialStartBit
-            // 
-            this.numSpecialStartBit.Enabled = false;
-            this.numSpecialStartBit.Location = new System.Drawing.Point(201, 22);
-            this.numSpecialStartBit.Maximum = new decimal(new int[] {
-            99999999,
-            0,
-            0,
-            0});
-            this.numSpecialStartBit.Name = "numSpecialStartBit";
-            this.numSpecialStartBit.Size = new System.Drawing.Size(73, 21);
-            this.numSpecialStartBit.TabIndex = 13;
-            // 
-            // ckParamAll
-            // 
-            this.ckParamAll.AutoSize = true;
-            this.ckParamAll.Location = new System.Drawing.Point(16, 69);
-            this.ckParamAll.Name = "ckParamAll";
-            this.ckParamAll.Size = new System.Drawing.Size(15, 14);
-            this.ckParamAll.TabIndex = 9;
-            this.ckParamAll.UseVisualStyleBackColor = true;
-            this.ckParamAll.CheckedChanged += new System.EventHandler(this.ckParamAll_CheckedChanged);
-            // 
-            // btnSendAll
-            // 
-            this.btnSendAll.Location = new System.Drawing.Point(1127, 29);
-            this.btnSendAll.Name = "btnSendAll";
-            this.btnSendAll.Size = new System.Drawing.Size(75, 23);
-            this.btnSendAll.TabIndex = 8;
-            this.btnSendAll.Text = "全部设置";
-            this.btnSendAll.UseVisualStyleBackColor = true;
-            this.btnSendAll.Click += new System.EventHandler(this.btnSendAll_Click);
-            // 
-            // cbParam2055Color
-            // 
-            this.cbParam2055Color.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbParam2055Color.FormattingEnabled = true;
-            this.cbParam2055Color.Location = new System.Drawing.Point(161, 34);
-            this.cbParam2055Color.Name = "cbParam2055Color";
-            this.cbParam2055Color.Size = new System.Drawing.Size(97, 20);
-            this.cbParam2055Color.TabIndex = 7;
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(93, 38);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(41, 12);
-            this.label9.TabIndex = 6;
-            this.label9.Text = "颜色：";
-            // 
-            // ckDebugMode
-            // 
-            this.ckDebugMode.AutoSize = true;
-            this.ckDebugMode.Location = new System.Drawing.Point(309, 36);
-            this.ckDebugMode.Name = "ckDebugMode";
-            this.ckDebugMode.Size = new System.Drawing.Size(72, 16);
-            this.ckDebugMode.TabIndex = 5;
-            this.ckDebugMode.Text = "调试模式";
-            this.ckDebugMode.UseVisualStyleBackColor = true;
-            // 
-            // cbRegChip
-            // 
-            this.cbRegChip.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbRegChip.FormattingEnabled = true;
-            this.cbRegChip.Items.AddRange(new object[] {
-            "50Hz",
-            "60Hz"});
-            this.cbRegChip.Location = new System.Drawing.Point(309, 8);
-            this.cbRegChip.Name = "cbRegChip";
-            this.cbRegChip.Size = new System.Drawing.Size(97, 20);
-            this.cbRegChip.TabIndex = 4;
-            // 
-            // label14
-            // 
-            this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(263, 12);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(41, 12);
-            this.label14.TabIndex = 3;
-            this.label14.Text = "器件：";
-            // 
-            // cbParam2055Refreshrate
-            // 
-            this.cbParam2055Refreshrate.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbParam2055Refreshrate.Enabled = false;
-            this.cbParam2055Refreshrate.FormattingEnabled = true;
-            this.cbParam2055Refreshrate.Items.AddRange(new object[] {
-            "50Hz",
-            "60Hz"});
-            this.cbParam2055Refreshrate.Location = new System.Drawing.Point(161, 7);
-            this.cbParam2055Refreshrate.Name = "cbParam2055Refreshrate";
-            this.cbParam2055Refreshrate.Size = new System.Drawing.Size(97, 20);
-            this.cbParam2055Refreshrate.TabIndex = 4;
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Enabled = false;
-            this.label8.Location = new System.Drawing.Point(93, 11);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(53, 12);
-            this.label8.TabIndex = 3;
-            this.label8.Text = "刷新率：";
-            // 
-            // btnExport2055Param
-            // 
-            this.btnExport2055Param.Location = new System.Drawing.Point(9, 33);
-            this.btnExport2055Param.Name = "btnExport2055Param";
-            this.btnExport2055Param.Size = new System.Drawing.Size(75, 23);
-            this.btnExport2055Param.TabIndex = 2;
-            this.btnExport2055Param.Text = "导出";
-            this.btnExport2055Param.UseVisualStyleBackColor = true;
-            this.btnExport2055Param.Click += new System.EventHandler(this.btnExport2055Param_Click);
-            // 
-            // btnLoad2055Param
-            // 
-            this.btnLoad2055Param.Location = new System.Drawing.Point(9, 6);
-            this.btnLoad2055Param.Name = "btnLoad2055Param";
-            this.btnLoad2055Param.Size = new System.Drawing.Size(75, 23);
-            this.btnLoad2055Param.TabIndex = 1;
-            this.btnLoad2055Param.Text = "导入";
-            this.btnLoad2055Param.UseVisualStyleBackColor = true;
-            this.btnLoad2055Param.Click += new System.EventHandler(this.btnLoad2055Param_Click);
-            // 
-            // grid2055
-            // 
-            this.grid2055.AllowUserToAddRows = false;
-            this.grid2055.AllowUserToDeleteRows = false;
-            this.grid2055.AllowUserToOrderColumns = true;
-            this.grid2055.AllowUserToResizeColumns = false;
-            this.grid2055.AllowUserToResizeRows = false;
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.grid2055.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle2;
-            this.grid2055.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.grid2055.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.grid2055.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.CoCheckBox,
-            this.ColMinValue,
-            this.ColMaxValue,
-            this.ColCNDescription,
-            this.ColENDescription,
-            this.ColDescription,
-            this.ColOffset,
-            this.ColRegisterAddress,
-            this.ColRedAddress,
-            this.ColGreenAddress,
-            this.ColBlueAddress,
-            this.ColStartBit,
-            this.ColStopBit,
-            this.ColRedValue,
-            this.ColGreenValue,
-            this.ColBlueValue,
-            this.ColSend});
-            this.grid2055.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
-            this.grid2055.EnableHeadersVisualStyles = false;
-            this.grid2055.Location = new System.Drawing.Point(6, 66);
-            this.grid2055.MultiSelect = false;
-            this.grid2055.Name = "grid2055";
-            this.grid2055.RowHeadersVisible = false;
-            this.grid2055.RowTemplate.Height = 23;
-            this.grid2055.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.grid2055.Size = new System.Drawing.Size(1378, 497);
-            this.grid2055.TabIndex = 0;
-            this.grid2055.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.grid2055_CellBeginEdit);
-            this.grid2055.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.grid2055_CellContentClick);
-            this.grid2055.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(this.grid2055_EditingControlShowing);
-            // 
             // CoCheckBox
             // 
             this.CoCheckBox.DataPropertyName = "IsSelected";
@@ -1024,46 +944,29 @@
             // 
             // ColRedValue
             // 
-            // 
-            // 
-            // 
-            this.ColRedValue.BackgroundStyle.Class = "DataGridViewNumericBorder";
-            this.ColRedValue.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.ColRedValue.DataPropertyName = "RedValue";
             this.ColRedValue.Frozen = true;
             this.ColRedValue.HeaderText = "红色值";
             this.ColRedValue.Name = "ColRedValue";
             this.ColRedValue.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.ColRedValue.ShowUpDown = true;
-            this.ColRedValue.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             // 
             // ColGreenValue
             // 
-            // 
-            // 
-            // 
-            this.ColGreenValue.BackgroundStyle.Class = "DataGridViewNumericBorder";
-            this.ColGreenValue.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.ColGreenValue.DataPropertyName = "GreenValue";
             this.ColGreenValue.Frozen = true;
             this.ColGreenValue.HeaderText = "绿色值";
             this.ColGreenValue.Name = "ColGreenValue";
             this.ColGreenValue.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.ColGreenValue.ShowUpDown = true;
+            this.ColGreenValue.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             // 
             // ColBlueValue
             // 
-            // 
-            // 
-            // 
-            this.ColBlueValue.BackgroundStyle.Class = "DataGridViewNumericBorder";
-            this.ColBlueValue.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.ColBlueValue.DataPropertyName = "BlueValue";
             this.ColBlueValue.Frozen = true;
             this.ColBlueValue.HeaderText = "蓝色值";
             this.ColBlueValue.Name = "ColBlueValue";
             this.ColBlueValue.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.ColBlueValue.ShowUpDown = true;
+            this.ColBlueValue.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             // 
             // ColSend
             // 
@@ -1075,22 +978,12 @@
             this.ColSend.Text = "发送";
             this.ColSend.UseColumnTextForButtonValue = true;
             // 
-            // btnRegReadSpecial
-            // 
-            this.btnRegReadSpecial.Location = new System.Drawing.Point(621, 21);
-            this.btnRegReadSpecial.Name = "btnRegReadSpecial";
-            this.btnRegReadSpecial.Size = new System.Drawing.Size(75, 23);
-            this.btnRegReadSpecial.TabIndex = 19;
-            this.btnRegReadSpecial.Text = "读取";
-            this.btnRegReadSpecial.UseVisualStyleBackColor = true;
-            this.btnRegReadSpecial.Click += new System.EventHandler(this.btnRegReadSpecial_Click);
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1400, 609);
-            this.Controls.Add(this.tab);
+            this.Controls.Add(this.tab2055Param);
             this.Name = "MainForm";
             this.Text = "Form1";
             this.FormClosing += new PluginLib.BaseFormV2.FormCloseDelegate(this.MainForm_FormClosing);
@@ -1102,7 +995,13 @@
             this.gbBrightness.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.numBrightness)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tbBrightness)).EndInit();
-            this.tab.ResumeLayout(false);
+            this.tab2055Param.ResumeLayout(false);
+            this.tabAdvance.ResumeLayout(false);
+            this.gpFirmwareUpgrade.ResumeLayout(false);
+            this.gpFirmwareUpgrade.PerformLayout();
+            this.tabPage1.ResumeLayout(false);
+            this.tabPage1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.grid2055)).EndInit();
             this.tabTest.ResumeLayout(false);
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
@@ -1118,15 +1017,6 @@
             this.gpTest.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numTestDataLen)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numTimeDelay)).EndInit();
-            this.tabPage1.ResumeLayout(false);
-            this.tabPage1.PerformLayout();
-            this.groupBox4.ResumeLayout(false);
-            this.groupBox4.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numSpectionValue)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numSpecialStopBit)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numSpecialAddr)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numSpecialStartBit)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.grid2055)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -1138,7 +1028,7 @@
         private System.Windows.Forms.Button btnApplyBrightness;
         private System.Windows.Forms.NumericUpDown numBrightness;
         private System.Windows.Forms.TrackBar tbBrightness;
-        private System.Windows.Forms.TabControl tab;
+        private System.Windows.Forms.TabControl tab2055Param;
         private System.Windows.Forms.TabPage tabTest;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Button btnReadFlashData;
@@ -1170,24 +1060,12 @@
         private System.Windows.Forms.Button btnLoad2055Param;
         private System.Windows.Forms.Button btnReadAndWriteFlash;
         private System.Windows.Forms.Button btnExport2055Param;
-        private System.Windows.Forms.ComboBox cbParam2055Refreshrate;
-        private System.Windows.Forms.Label label8;
         private System.Windows.Forms.ComboBox cbParam2055Color;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.CheckBox ckDebugMode;
         private System.Windows.Forms.Button btnSendAll;
         private System.Windows.Forms.CheckBox ckParamAll;
         private System.Windows.Forms.Button btnWriteSdramReadSdram;
-        private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.GroupBox groupBox4;
-        private System.Windows.Forms.Label label11;
-        private System.Windows.Forms.NumericUpDown numSpecialStopBit;
-        private System.Windows.Forms.Label label12;
-        private System.Windows.Forms.NumericUpDown numSpecialAddr;
-        private System.Windows.Forms.NumericUpDown numSpecialStartBit;
-        private System.Windows.Forms.Button btnSpecialSet;
-        private System.Windows.Forms.NumericUpDown numSpectionValue;
-        private System.Windows.Forms.Label label13;
         private System.Windows.Forms.GroupBox groupBox5;
         private System.Windows.Forms.ComboBox cbGammaBit;
         private System.Windows.Forms.Button btnGammaSet;
@@ -1198,6 +1076,13 @@
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.ComboBox cbRegChip;
         private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.Button btnReadReg;
+        private System.Windows.Forms.TabPage tabAdvance;
+        private System.Windows.Forms.GroupBox gpFirmwareUpgrade;
+        private System.Windows.Forms.Button btnUpgradeMCU;
+        private System.Windows.Forms.Button btnChoseMCU;
+        private System.Windows.Forms.TextBox txtMcu;
+        private System.Windows.Forms.Label label8;
         private System.Windows.Forms.DataGridViewCheckBoxColumn CoCheckBox;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColMinValue;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColMaxValue;
@@ -1211,11 +1096,10 @@
         private DevComponents.DotNetBar.Controls.DataGridViewLabelXColumn ColBlueAddress;
         private DevComponents.DotNetBar.Controls.DataGridViewLabelXColumn ColStartBit;
         private DevComponents.DotNetBar.Controls.DataGridViewLabelXColumn ColStopBit;
-        private DevComponents.DotNetBar.Controls.DataGridViewIntegerInputColumn ColRedValue;
-        private DevComponents.DotNetBar.Controls.DataGridViewIntegerInputColumn ColGreenValue;
-        private DevComponents.DotNetBar.Controls.DataGridViewIntegerInputColumn ColBlueValue;
+        private DevComponents.DotNetBar.Controls.DataGridViewLabelXColumn ColRedValue;
+        private DevComponents.DotNetBar.Controls.DataGridViewLabelXColumn ColGreenValue;
+        private DevComponents.DotNetBar.Controls.DataGridViewLabelXColumn ColBlueValue;
         private System.Windows.Forms.DataGridViewButtonColumn ColSend;
-        private System.Windows.Forms.Button btnRegReadSpecial;
     }
 }
 

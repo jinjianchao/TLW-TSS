@@ -166,5 +166,56 @@ namespace TLWController.Extentions
             }
             return val;
         }
+
+        public static string ToBinaryString(this byte source, int len)
+        {
+            string str1 = Convert.ToString(source, 2);
+            if (str1.Length < len)
+            {
+                int length = len - str1.Length;
+                for (int i = 0; i < length; i++)
+                {
+                    str1 = "0" + str1;
+                }
+            }
+            return str1;
+        }
+
+        public static string ToBinaryString(this UInt16 source, int len)
+        {
+            string str1 = Convert.ToString(source, 2);
+            if (str1.Length < len)
+            {
+                int length = len - str1.Length;
+                for (int i = 0; i < length; i++)
+                {
+                    str1 = "0" + str1;
+                }
+            }
+            return str1;
+        }
+
+        public static string Reverse(this string soruce)
+        {
+            string newStr = "";
+            for (int i = soruce.Length - 1; i >= 0; i--)
+            {
+                newStr += soruce.Substring(i, 1);
+            }
+            return newStr;
+        }
+
+        public static string Replace(this string source, int index, string newValue)
+        {
+            //string str1 = source.Substring(0, index);
+            //string str2 = source.Substring(index + 1);
+            //string str3 = str1 + newValue + str2;
+            //return str3;
+
+            char[] charArr = source.ToCharArray();
+            charArr[index] = (newValue.ToCharArray())[0];
+            string str = new string(charArr);
+            return str;
+        }
     }
 }

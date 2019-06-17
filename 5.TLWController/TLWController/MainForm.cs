@@ -41,12 +41,20 @@ namespace TLWController
 
         private void MainForm_Load(object sender, EventArgs e)
         {
+            NumericUpDown numericUpDownForGrid = new NumericUpDown();
+            numericUpDownForGrid.Name = "numValue";
+            grid2055.Controls.Add(numericUpDownForGrid);
+
+            ComboBox comboBoxForGrid = new ComboBox();
+            comboBoxForGrid.Name = "cbValue";
+            comboBoxForGrid.DropDownStyle = ComboBoxStyle.DropDownList;
+            grid2055.Controls.Add(comboBoxForGrid);
+
             registerAddressFile = System.IO.Path.Combine(Path, @"Config\Param2055.txt");
             MultiLanguage.GetNames(this, lang, Path + @"\Language");
             BindBrightnessColor();
             BindChipPos();
             BindParam2055Color();
-            BindParam2055Hz();
             BindGammaBit();
             BindGammaColor();
             BindRegisterChip();
@@ -61,7 +69,7 @@ namespace TLWController
             if (!_TLWCommand.Sys_Initial(Path))
             {
                 MessageBox.Show(this, Trans("initsyslibfailed"));
-                tab.Enabled = false;
+                tab2055Param.Enabled = false;
                 return;
             }
             _TLWCommand.Sys_WriteLog(true);
@@ -150,18 +158,6 @@ namespace TLWController
             cbParam2055Color.ValueMember = "Value";
             cbParam2055Color.DisplayMember = "Text";
             cbParam2055Color.DataSource = items;
-        }
-
-        private void BindParam2055Hz()
-        {
-            List<ListItem> items = new List<ListItem>()
-            {
-                new ListItem(){ Value=0, Text="50Hz" },
-                new ListItem(){ Value=1, Text="60Hz" }
-            };
-            cbParam2055Refreshrate.ValueMember = "Value";
-            cbParam2055Refreshrate.DisplayMember = "Text";
-            cbParam2055Refreshrate.DataSource = items;
         }
 
         private void BindGammaBit()
@@ -487,8 +483,6 @@ namespace TLWController
             grid2055.Columns["ColMinValue"].DisplayIndex = 11;
             grid2055.Columns["ColMaxValue"].DisplayIndex = 12;
 
-
-
             if (lang == "2052")
             {
                 grid2055.Columns["ColENDescription"].Visible = false;
@@ -500,6 +494,7 @@ namespace TLWController
                 grid2055.Columns["ColENDescription"].Width = 300;
             }
             grid2055.Columns["ColOffset"].Width = 200;
+            grid2055.Columns["CoCheckBox"].Visible = false;
             grid2055.Columns["ColDescription"].Visible = false;
             grid2055.Columns["ColRegisterAddress"].Visible = false;
             grid2055.Columns["ColRedAddress"].Visible = false;
@@ -509,11 +504,10 @@ namespace TLWController
             grid2055.Columns["ColStopBit"].Visible = false;
             grid2055.Columns["ColMinValue"].Visible = false;
             grid2055.Columns["ColMaxValue"].Visible = false;
+            grid2055.Columns["ColSend"].Visible = false;
             grid2055.DataSource = register.RegisterItemList;
             grid2055.AllowUserToOrderColumns = false;
-            cbParam2055Refreshrate.SelectedIndex = register.RefreshRate;
             ckDebugMode.Checked = register.IsDebug;
-            numSpecialAddr.Value = register.SpecialRegister.RegisterAddress;
 
             return true;
         }
@@ -625,13 +619,8 @@ namespace TLWController
             if (saveFileDialog.ShowDialog(this) == DialogResult.Cancel) return;
             Register reg = new Register();
             reg.RegisterItemList = grid2055.DataSource as List<RegisterItem>;
-            reg.RefreshRate = (byte)cbParam2055Refreshrate.SelectedIndex;
             reg.IsDebug = ckDebugMode.Checked;
             reg.SpecialRegister = new RegisterSpectialItem();
-            reg.SpecialRegister.StartBit = (byte)numSpecialStartBit.Value;
-            reg.SpecialRegister.StopBit = (byte)numSpecialStopBit.Value;
-            reg.SpecialRegister.RegisterAddress = (int)numSpecialAddr.Value;
-            reg.SpecialRegister.Value = (byte)numSpectionValue.Value;
 
             RegisterHelper.Savev2055Register(reg, saveFileDialog.FileName);
 
@@ -658,6 +647,13 @@ namespace TLWController
             //    data[i - 1] = val;
             //    val++;
             //}
+            byte val = 255;
+            for (int i = 1; i <= 1024; i++)
+            {
+                if (val < 0 || val == 0) val = 255;
+                data[i - 1] = val;
+                val--;
+            }
             SaveFileDialog saveFileDialog = new SaveFileDialog();
             saveFileDialog.Filter = "*.txt|*.txt";
             saveFileDialog.Title = "保存测试数据";
@@ -1170,8 +1166,6 @@ namespace TLWController
 
         private void grid2055_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
         {
-            //(e.Control as DevComponents.DotNetBar.Controls.DataGridViewIntegerInputEditingControl).MinValue
-            //grid2055.Rows[grid2055.SelectedRows[0].Index].DataBoundItem as TLWController.Helper.RegisterItem
             if (grid2055.SelectedRows.Count == 1)
             {
                 RegisterItem regItemData = grid2055.Rows[grid2055.SelectedRows[0].Index].DataBoundItem as TLWController.Helper.RegisterItem;
@@ -1179,8 +1173,11 @@ namespace TLWController
                 DevComponents.DotNetBar.Controls.DataGridViewIntegerInputEditingControl ctr = (e.Control as DevComponents.DotNetBar.Controls.DataGridViewIntegerInputEditingControl);
                 if (ctr != null)
                 {
+                    object obj = grid2055.Rows[_CurrentGridRowIndex].Cells[_CurrentGridColumnIndex].Value;
                     ctr.MinValue = regItemData.MinValue;
                     ctr.MaxValue = regItemData.MaxValue;
+
+                    ctr.Value = (byte)obj;
                 }
             }
         }
@@ -1189,6 +1186,38 @@ namespace TLWController
         {
             _CurrentGridRowIndex = e.RowIndex;
             _CurrentGridColumnIndex = e.ColumnIndex;
+
+            if (grid2055.SelectedRows.Count == 1)
+            {
+                RegisterItem regItemData = grid2055.Rows[grid2055.SelectedRows[0].Index].DataBoundItem as TLWController.Helper.RegisterItem;
+                //DevComponents.DotNetBar.Controls.DataGridViewIntegerInputEditingControl ctr = (e.Control as DevComponents.DotNetBar.Controls.DataGridViewIntegerInputEditingControl);
+                //if (ctr != null)
+                //{
+                //    object obj = grid2055.Rows[_CurrentGridRowIndex].Cells[_CurrentGridColumnIndex].Value;
+                //    ctr.MinValue = regItemData.MinValue;
+                //    ctr.MaxValue = regItemData.MaxValue;
+
+                //    ctr.Value = (byte)obj;
+                //}
+
+                //if (grid2055.Rows[e.RowIndex].Cells[e.ColumnIndex].OwningColumn.Name == "ColRedValue")
+                //{
+                //    int cellX = grid2055.GetCellDisplayRectangle(e.ColumnIndex, e.RowIndex, false).X;
+                //    int cellY = grid2055.GetCellDisplayRectangle(e.ColumnIndex, e.RowIndex, false).Y;
+
+                //    Rectangle rect = grid2055.Rows[e.RowIndex].Cells[e.ColumnIndex].ContentBounds;
+                //    //numValue
+                //    grid2055.Controls["numValue"].Bounds = rect;
+                //    grid2055.Controls["numValue"].Location = new Point(cellX, cellY);
+                //    (grid2055.Controls["numValue"] as NumericUpDown).Minimum = regItemData.MinValue;
+                //    (grid2055.Controls["numValue"] as NumericUpDown).Maximum = regItemData.MaxValue;
+                //    object obj = grid2055.Rows[_CurrentGridRowIndex].Cells[_CurrentGridColumnIndex].Value;
+                //    (grid2055.Controls["numValue"] as NumericUpDown).Value = (byte)obj;
+                //    grid2055.Controls["numValue"].Visible = true;
+                //}
+            }
+
+
         }
 
         ushort CheckSum16(byte[] dat, int offset, int len)
@@ -1376,13 +1405,13 @@ namespace TLWController
             {
                 GAMMAProcessLib.GAMMAProcessClass gAMMAProcess = new GAMMAProcessLib.GAMMAProcessClass(10, (double)numGamma.Value, 65535);
                 data = gAMMAProcess.GetData;
-                //byte val = 1;
-                //for (int i = 1; i <= data.Length; i++)
-                //{
-                //    if (val > 255 || val == 0) val = 1;
-                //    data[i - 1] = val;
-                //    val++;
-                //}
+                byte val = 1;
+                for (int i = 1; i <= data.Length; i++)
+                {
+                    if (val > 255 || val == 0) val = 1;
+                    data[i - 1] = val;
+                    val++;
+                }
 
             }
             else if (mode == 1)
@@ -1478,56 +1507,6 @@ namespace TLWController
             }
         }
 
-        private void btnSpecialSet_Click(object sender, EventArgs e)
-        {
-            if (CheckIsBusy()) return;
-            if (!CheckDeviceAddr())
-            {
-                MessageBox.Show(this, "设备地址错误");
-                return;
-            }
-            byte chipPos = (byte)cbRegChip.SelectedValue.ToString().ToByte();
-            uint regAddr = (uint)numSpecialAddr.Value;
-            uint regValue = (uint)numSpectionValue.Value;
-            bool bSave = !ckDebugMode.Checked;
-            EnableControl(sender as Control, false);
-            _TLWCommand.tlw_WriteRegister(GetCardAddress(), GetId(), chipPos, regAddr, regValue, bSave, _DevIP, (param) =>
-                {
-                    Array.ForEach(param, t => WriteOutput(t, "写特殊寄存器"));
-                    EnableControl(sender as Control, true);
-                });
-        }
-
-        private void btnRegReadSpecial_Click(object sender, EventArgs e)
-        {
-            if (CheckIsBusy()) return;
-            if (!CheckDeviceAddr())
-            {
-                MessageBox.Show(this, "设备地址错误");
-                return;
-            }
-            byte chipPos = (byte)cbRegChip.SelectedValue.ToString().ToByte();
-            uint regAddr = (uint)numSpecialAddr.Value;
-            uint regValue = (uint)numSpectionValue.Value;
-            bool bSave = !ckDebugMode.Checked;
-            EnableControl(sender as Control, false);
-            _TLWCommand.tlw_ReadRegister(GetCardAddress(), GetId(), chipPos, regAddr, _DevIP, (param) =>
-             {
-                 Array.ForEach(param, t =>
-                 {
-                     WriteOutput(t, "读特殊寄存器");
-                     if (t.ResultCode == 0)
-                     {
-                         Invoke(new MethodInvoker(() =>
-                         {
-                             numSpectionValue.Value = (uint)t.Data;
-                         }));
-                     }
-                 });
-                 EnableControl(sender as Control, true);
-             });
-        }
-
         private void btnSendAll_Click(object sender, EventArgs e)
         {
             if (CheckIsBusy()) return;
@@ -1538,100 +1517,235 @@ namespace TLWController
             }
 
             byte chipPos = (byte)cbRegChip.SelectedValue.ToString().ToByte();
-            //uint regAddr = (uint)numSpecialAddr.Value;
-            //uint regValue = (uint)numSpectionValue.Value;
             bool bSave = !ckDebugMode.Checked;
             int color = (int)cbParam2055Color.SelectedValue;
             List<RegisterItem> regList = grid2055.DataSource as List<RegisterItem>;
             byte[] data = new byte[1024];
             RegisterHelper.CombinReg2055(regList);
             data = RegisterHelper.Data;
+
+            //byte val = 1;
+            //for (int i = 1; i <= data.Length; i++)
+            //{
+            //    if (val > 255 || val == 0) val = 1;
+            //    data[i - 1] = val;
+            //    val++;
+            //}
+
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Filter = "*.txt|*.txt";
+            saveFileDialog.Title = "保存Register数据";
+            saveFileDialog.FileName = "Register_Write";
+            if (saveFileDialog.ShowDialog(this) == DialogResult.Cancel) return;
+            WriteTextFile(saveFileDialog.FileName, RegisterHelper.Data.ToString(" "));
+
             EnableControl(sender as Control, false);
             _TLWCommand.tlw_WriteRegisterGroup(GetCardAddress(), GetId(), chipPos, data, bSave, _DevIP, (param) =>
             {
                 Array.ForEach(param, t => WriteOutput(t, "批量写入寄存器"));
                 EnableControl(sender as Control, true);
             });
+
+            //_TLWCommand.tlw_ReadRegisterGroup(GetCardAddress(), GetId(), chipPos, 1024, _DevIP, (param) =>
+            //  {
+            //      Array.ForEach(param, t =>
+            //      {
+            //          WriteOutput(t, "批量读取寄存器");
+            //          if (t.ResultCode == 0)
+            //          {
+            //              byte[] data = new byte[1024];
+            //              RegisterHelper.Data = t.Data as byte[];
+            //              RegisterHelper.CombinReg2055(regList);
+            //              data = RegisterHelper.Data;
+            //              _TLWCommand.tlw_WriteRegisterGroup(GetCardAddress(), GetId(), chipPos, data, bSave, _DevIP, (param1) =>
+            //              {
+            //                  Array.ForEach(param1, t1 => WriteOutput(t, "批量写入寄存器"));
+            //                  EnableControl(sender as Control, true);
+            //              });
+            //          }
+            //          else
+            //          {
+            //              EnableControl(sender as Control, true);
+            //          }
+            //      });
+            //  });
+        }
+
+
+
+        private void btnReadReg_Click(object sender, EventArgs e)
+        {
+            if (CheckIsBusy()) return;
+            if (!CheckDeviceAddr())
+            {
+                MessageBox.Show(this, "设备地址错误");
+                return;
+            }
+
+            byte chipPos = (byte)cbRegChip.SelectedValue.ToString().ToByte();
+            bool bSave = !ckDebugMode.Checked;
+            int color = (int)cbParam2055Color.SelectedValue;
+            List<RegisterItem> regList = grid2055.DataSource as List<RegisterItem>;
+            //byte[] data = new byte[1024];
+            //RegisterHelper.CombinReg2055(regList);
+            //data = RegisterHelper.Data;
+            EnableControl(sender as Control, false);
+            //_TLWCommand.tlw_WriteRegisterGroup(GetCardAddress(), GetId(), chipPos, data, bSave, _DevIP, (param) =>
+            //{
+            //    Array.ForEach(param, t => WriteOutput(t, "批量写入寄存器"));
+            //    EnableControl(sender as Control, true);
+            //});
+
+            _TLWCommand.tlw_ReadRegisterGroup(GetCardAddress(), GetId(), chipPos, 1024, _DevIP, (param) =>
+            {
+                Array.ForEach(param, t =>
+                {
+                    WriteOutput(t, "批量读取寄存器");
+                    if (t.ResultCode == 0)
+                    {
+                        RegisterHelper.Data = t.Data as byte[];
+                        Invoke(new MethodInvoker(() =>
+                        {
+                            SaveFileDialog saveFileDialog = new SaveFileDialog();
+                            saveFileDialog.Filter = "*.txt|*.txt";
+                            saveFileDialog.Title = "保存Register数据";
+                            saveFileDialog.FileName = "Register_Read";
+                            if (saveFileDialog.ShowDialog(this) == DialogResult.Cancel) return;
+                            WriteTextFile(saveFileDialog.FileName, RegisterHelper.Data.ToString(" "));
+                        }));
+
+                    }
+                    EnableControl(sender as Control, true);
+                });
+            });
+        }
+
+        private void btnChoseMCU_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "*.bin|*.bin";
+            if (openFileDialog.ShowDialog(this) == DialogResult.Cancel) return;
+            txtMcu.Text = openFileDialog.FileName;
+        }
+
+        private void btnUpgradeMCU_Click(object sender, EventArgs e)
+        {
+            string fileName = txtMcu.Text;
+            if (File.Exists(fileName) == false)
+            {
+                MessageBox.Show(this, "MCU文件不存在");
+                return;
+            }
         }
 
         private void grid2055_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (grid2055.Rows[e.RowIndex].Cells[e.ColumnIndex].OwningColumn.Name == "ColSend")
+            //grid2055.Controls["numValue"].Visible = false;
+            //if (grid2055.SelectedRows.Count == 1)
+            //{
+            //    RegisterItem regItemData = grid2055.Rows[grid2055.SelectedRows[0].Index].DataBoundItem as TLWController.Helper.RegisterItem;
+            //    //DevComponents.DotNetBar.Controls.DataGridViewIntegerInputEditingControl ctr = (e.Control as DevComponents.DotNetBar.Controls.DataGridViewIntegerInputEditingControl);
+            //    //if (ctr != null)
+            //    //{
+            //    //    object obj = grid2055.Rows[_CurrentGridRowIndex].Cells[_CurrentGridColumnIndex].Value;
+            //    //    ctr.MinValue = regItemData.MinValue;
+            //    //    ctr.MaxValue = regItemData.MaxValue;
+
+            //    //    ctr.Value = (byte)obj;
+            //    //}
+
+            //    if (grid2055.Rows[e.RowIndex].Cells[e.ColumnIndex].OwningColumn.Name == "ColRedValue")
+            //    {
+            //        int cellX = grid2055.GetCellDisplayRectangle(e.ColumnIndex, e.RowIndex, false).X;
+            //        int cellY = grid2055.GetCellDisplayRectangle(e.ColumnIndex, e.RowIndex, false).Y;
+
+            //        Rectangle rect = grid2055.Rows[e.RowIndex].Cells[e.ColumnIndex].ContentBounds;
+            //        //numValue
+            //        grid2055.Controls["numValue"].Bounds = rect;
+            //        grid2055.Controls["numValue"].Location = new Point(cellX, cellY);
+            //        (grid2055.Controls["numValue"] as NumericUpDown).Minimum = regItemData.MinValue;
+            //        (grid2055.Controls["numValue"] as NumericUpDown).Maximum = regItemData.MaxValue;
+            //        object obj = grid2055.Rows[e.RowIndex].Cells[e.ColumnIndex].Value;
+            //        (grid2055.Controls["numValue"] as NumericUpDown).Hexadecimal = true;
+            //        (grid2055.Controls["numValue"] as NumericUpDown).Value = (byte)obj;
+            //        grid2055.Controls["numValue"].Visible = true;
+            //    }
+            //}
+        }
+
+        private void grid2055_CellLeave(object sender, DataGridViewCellEventArgs e)
+        {
+            grid2055.Controls["numValue"].Visible = false;
+            grid2055.Controls["cbValue"].Visible = false;
+            if (grid2055.Rows[e.RowIndex].Cells[e.ColumnIndex].OwningColumn.Name == "ColRedValue" ||
+                    grid2055.Rows[e.RowIndex].Cells[e.ColumnIndex].OwningColumn.Name == "ColGreenValue" ||
+                    grid2055.Rows[e.RowIndex].Cells[e.ColumnIndex].OwningColumn.Name == "ColBlueValue"
+                    )
             {
-                if (CheckIsBusy()) return;
-                if (!CheckDeviceAddr())
+                RegisterItem regItemData = grid2055.Rows[grid2055.SelectedRows[0].Index].DataBoundItem as TLWController.Helper.RegisterItem;
+                if (regItemData.MaxValue - regItemData.MinValue <= 10)
                 {
-                    MessageBox.Show(this, "设备地址错误");
-                    return;
-                }
-                byte chipPos = (byte)cbRegChip.SelectedValue.ToString().ToByte();
-                bool bSave = !ckDebugMode.Checked;
-                byte[] data = new byte[1024];
-                int color = (int)cbParam2055Color.SelectedValue;
-                int positioin = 0;
-                RegisterItem registerItem = (RegisterItem)grid2055.Rows[e.RowIndex].DataBoundItem;
-                if (color == 0)
-                {
-                    byte[] redAddress = registerItem.RedAddress.ToUInt16().GetBytes();
-                    Array.Copy(redAddress, 0, data, positioin, redAddress.Length);
-                    positioin += redAddress.Length;
-
-                    byte[] redValue = ((UInt16)registerItem.RedValue).GetBytes();
-                    Array.Copy(redValue, 0, data, positioin, redValue.Length);
-                    positioin += redValue.Length;
-
-                    byte[] greenAddress = registerItem.GreenAddress.ToUInt16().GetBytes();
-                    Array.Copy(greenAddress, 0, data, positioin, greenAddress.Length);
-                    positioin += greenAddress.Length;
-
-                    byte[] greenValue = ((UInt16)registerItem.GreenValue).GetBytes();
-                    Array.Copy(greenValue, 0, data, positioin, greenValue.Length);
-                    positioin += greenValue.Length;
-
-                    byte[] blueAddress = registerItem.BlueAddress.ToUInt16().GetBytes();
-                    Array.Copy(blueAddress, 0, data, positioin, blueAddress.Length);
-                    positioin += blueAddress.Length;
-
-                    byte[] blueValue = ((UInt16)registerItem.BlueValue).GetBytes();
-                    Array.Copy(blueValue, 0, data, positioin, blueValue.Length);
-                    positioin += blueValue.Length;
-                }
-                else if (color == 1)
-                {
-                    byte[] redAddress = registerItem.RedAddress.ToUInt16().GetBytes();
-                    Array.Copy(redAddress, 0, data, positioin, redAddress.Length);
-                    positioin += redAddress.Length;
-
-                    byte[] redValue = ((UInt16)registerItem.RedValue).GetBytes();
-                    Array.Copy(redValue, 0, data, positioin, redValue.Length);
-                    positioin += redValue.Length;
-                }
-                else if (color == 2)
-                {
-                    byte[] greenAddress = registerItem.GreenAddress.ToUInt16().GetBytes();
-                    Array.Copy(greenAddress, 0, data, positioin, greenAddress.Length);
-                    positioin += greenAddress.Length;
-
-                    byte[] greenValue = ((UInt16)registerItem.GreenValue).GetBytes();
-                    Array.Copy(greenValue, 0, data, positioin, greenValue.Length);
-                    positioin += greenValue.Length;
+                    grid2055.Rows[e.RowIndex].Cells[e.ColumnIndex].Value = ((int)(grid2055.Controls["cbValue"] as ComboBox).SelectedValue).ToString("X2");
                 }
                 else
                 {
-                    byte[] blueAddress = registerItem.BlueAddress.ToUInt16().GetBytes();
-                    Array.Copy(blueAddress, 0, data, positioin, blueAddress.Length);
-                    positioin += blueAddress.Length;
-
-                    byte[] blueValue = ((UInt16)registerItem.BlueValue).GetBytes();
-                    Array.Copy(blueValue, 0, data, positioin, blueValue.Length);
-                    positioin += blueValue.Length;
+                    grid2055.Rows[e.RowIndex].Cells[e.ColumnIndex].Value = ((byte)(grid2055.Controls["numValue"] as NumericUpDown).Value).ToString("X2");
                 }
-                EnableControl(sender as Control, false);
-                _TLWCommand.tlw_WriteRegisterGroup(GetCardAddress(), GetId(), chipPos, data, bSave, _DevIP, (param) =>
+            }
+        }
+
+        private void grid2055_CellEnter(object sender, DataGridViewCellEventArgs e)
+        {
+            if (grid2055.SelectedRows.Count == 1)
+            {
+                RegisterItem regItemData = grid2055.Rows[grid2055.SelectedRows[0].Index].DataBoundItem as TLWController.Helper.RegisterItem;
+                if (grid2055.Rows[e.RowIndex].Cells[e.ColumnIndex].OwningColumn.Name == "ColRedValue" ||
+                    grid2055.Rows[e.RowIndex].Cells[e.ColumnIndex].OwningColumn.Name == "ColGreenValue" ||
+                    grid2055.Rows[e.RowIndex].Cells[e.ColumnIndex].OwningColumn.Name == "ColBlueValue"
+                    )
                 {
-                    Array.ForEach(param, t => WriteOutput(t, "批量写入寄存器"));
-                    EnableControl(sender as Control, true);
-                });
+                    int cellX = grid2055.GetCellDisplayRectangle(e.ColumnIndex, e.RowIndex, false).X;
+                    int cellY = grid2055.GetCellDisplayRectangle(e.ColumnIndex, e.RowIndex, false).Y;
+
+                    Rectangle rect = grid2055.Rows[e.RowIndex].Cells[e.ColumnIndex].ContentBounds;
+
+                    if (regItemData.MaxValue - regItemData.MinValue <= 10)
+                    {
+                        //combobox
+                        grid2055.Controls["cbValue"].Bounds = rect;
+                        grid2055.Controls["cbValue"].Location = new Point(cellX, cellY);
+
+                        List<ListItem> items = new List<ListItem>();
+                        for (int i = regItemData.MinValue; i <= regItemData.MaxValue; i++)
+                        {
+                            items.Add(new ListItem() { Value = i, Text = i.ToString("X2") });
+                        }
+                        (grid2055.Controls["cbValue"] as ComboBox).ValueMember = "Value";
+                        (grid2055.Controls["cbValue"] as ComboBox).DisplayMember = "Text";
+                        (grid2055.Controls["cbValue"] as ComboBox).DataSource = items;
+
+                        object obj = grid2055.Rows[e.RowIndex].Cells[e.ColumnIndex].Value;
+                        string str1 = (string)obj;
+                        int byteVal = int.Parse(str1, System.Globalization.NumberStyles.HexNumber);
+
+                        (grid2055.Controls["cbValue"] as ComboBox).SelectedValue = byteVal;
+                        grid2055.Controls["cbValue"].Visible = true;
+                    }
+                    else
+                    {
+                        //numValue
+                        grid2055.Controls["numValue"].Bounds = rect;
+                        grid2055.Controls["numValue"].Location = new Point(cellX, cellY);
+                        (grid2055.Controls["numValue"] as NumericUpDown).Minimum = regItemData.MinValue;
+                        (grid2055.Controls["numValue"] as NumericUpDown).Maximum = regItemData.MaxValue;
+                        object obj = grid2055.Rows[e.RowIndex].Cells[e.ColumnIndex].Value;
+                        (grid2055.Controls["numValue"] as NumericUpDown).Hexadecimal = true;
+                        string str1 = (string)obj;
+                        byte byteVal = byte.Parse(str1, System.Globalization.NumberStyles.HexNumber);
+                        (grid2055.Controls["numValue"] as NumericUpDown).Value = byteVal;
+                        grid2055.Controls["numValue"].Visible = true;
+                    }
+                }
             }
         }
     }

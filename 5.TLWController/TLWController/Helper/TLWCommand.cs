@@ -533,7 +533,7 @@ namespace TLWController.Helper
         /// <param name="addr">设备地址</param>
         /// <param name="id">数据包识别号</param>
         /// <param name="mode">0 = 10bit GAMMA, 1024个16bit数据,1 = 13bit GAMMA, 4096个16bit数据,2=16bit GAMMA, 32768个16bit数据,3 = HDR, 1024个16bit数据</param>
-        /// <param name="color">1 = 红色,2 = 绿色,3 = 蓝色</param>
+        /// <param name="color">0 = 全部颜色,1 = 红色,2 = 绿色,3 = 蓝色</param>
         /// <param name="src">GAMMA数据数组</param>
         /// <param name="offset">偏移量</param>
         /// <param name="len">需要保存到数组的长度</param>
@@ -554,7 +554,16 @@ namespace TLWController.Helper
                         returnParam[param.Index] = new ReturnParam();
                         returnParam[param.Index].IP = param.IP;
                         returnParam[param.Index].Dev = param.Dev;
-                        returnParam[param.Index].ResultCode = _Command.tlw_WriteGAMMA(param.Dev, addr, id, mode, color, src, 0, src.Length);
+                        if (color == 0)
+                        {
+                            returnParam[param.Index].ResultCode = _Command.tlw_WriteGAMMA(param.Dev, addr, id, mode, 1, src, 0, src.Length);
+                            if (returnParam[param.Index].ResultCode == 0) returnParam[param.Index].ResultCode = _Command.tlw_WriteGAMMA(param.Dev, addr, id, mode, 2, src, 0, src.Length);
+                            if (returnParam[param.Index].ResultCode == 0) returnParam[param.Index].ResultCode = _Command.tlw_WriteGAMMA(param.Dev, addr, id, mode, 3, src, 0, src.Length);
+                        }
+                        else
+                        {
+                            returnParam[param.Index].ResultCode = _Command.tlw_WriteGAMMA(param.Dev, addr, id, mode, color, src, 0, src.Length);
+                        }
                     },
                     new InParam()
                     {

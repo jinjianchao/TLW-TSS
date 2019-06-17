@@ -38,9 +38,9 @@ namespace TLWController.Helper
         public string RedAddress { get; set; }
         public string GreenAddress { get; set; }
         public string BlueAddress { get; set; }
-        public byte RedValue { get; set; }
-        public byte GreenValue { get; set; }
-        public byte BlueValue { get; set; }
+        public string RedValue { get; set; }
+        public string GreenValue { get; set; }
+        public string BlueValue { get; set; }
         public byte StartBit { get; set; }
         public byte StopBit { get; set; }
         public string Description { get; set; }
@@ -58,11 +58,6 @@ namespace TLWController.Helper
         /// 是否调试模式 true：是,断电丢失，false:否，断电不丢失
         /// </summary>
         public bool IsDebug { get; set; }
-
-        /// <summary>
-        /// 刷新率
-        /// </summary>
-        public byte RefreshRate { get; set; }
 
         public List<RegisterItem> RegisterItemList { get; set; }
 
@@ -122,7 +117,6 @@ namespace TLWController.Helper
                         {
                             return null;
                         }
-                        reg.RefreshRate = refreshRate;
 
                         if (!bool.TryParse(data[2], out bool isDebug))
                         {
@@ -214,23 +208,27 @@ namespace TLWController.Helper
                         }
                         registerItem.MaxValue = maxValue;
 
-                        if (!byte.TryParse(data[9], NumberStyles.HexNumber, CultureInfo.InvariantCulture, out byte redValue))
-                        {
-                            return null;
-                        }
-                        registerItem.RedValue = redValue;
+                        //if (!byte.TryParse(data[9], NumberStyles.HexNumber, CultureInfo.InvariantCulture, out byte redValue))
+                        //{
+                        //    return null;
+                        //}
+                        //registerItem.RedValue = redValue;
+                        registerItem.RedValue = data[9];
 
-                        if (!byte.TryParse(data[10], NumberStyles.HexNumber, CultureInfo.InvariantCulture, out byte greenValue))
-                        {
-                            return null;
-                        }
-                        registerItem.GreenValue = greenValue;
+                        //if (!byte.TryParse(data[10], NumberStyles.HexNumber, CultureInfo.InvariantCulture, out byte greenValue))
+                        //{
+                        //    return null;
+                        //}
+                        //registerItem.GreenValue = greenValue;
+                        registerItem.GreenValue = data[10];
 
-                        if (!byte.TryParse(data[11], NumberStyles.HexNumber, CultureInfo.InvariantCulture, out byte blueValue))
-                        {
-                            return null;
-                        }
-                        registerItem.BlueValue = blueValue;
+                        //if (!byte.TryParse(data[11], NumberStyles.HexNumber, CultureInfo.InvariantCulture, out byte blueValue))
+                        //{
+                        //    return null;
+                        //}
+                        //registerItem.BlueValue = blueValue;
+                        registerItem.BlueValue = data[11];
+
                         registerItem.Offset = data[12];
                         registerItem.Description = data[13];
                         registerItem.ChineseDescription = data[14];
@@ -248,7 +246,7 @@ namespace TLWController.Helper
             using (TextWriter writer = new StreamWriter(file))
             {
                 int cx = 0;
-                writer.WriteLine($"{cx}\t{register.RefreshRate}\t{register.IsDebug}");
+                writer.WriteLine($"{cx}\t{0}\t{register.IsDebug}");
                 cx++;
                 writer.WriteLine($"{cx}\t{register.SpecialRegister.StartBit}\t{register.SpecialRegister.StopBit}\t{register.SpecialRegister.RegisterAddress}\t{register.SpecialRegister.Value}");
                 cx++;
@@ -264,27 +262,78 @@ namespace TLWController.Helper
 
         public static void CombinReg2055(List<RegisterItem> reg2055List)
         {
-            int positioin = Reg2055StartAddr;
-            foreach (var item in reg2055List)
+            int position = Reg2055StartAddr;
+            for (byte i = 0x12; i < 0x77; i++)
             {
-                byte[] redValue = ((UInt16)item.RedValue).GetBytes();
-                Array.Copy(redValue, 0, Data, positioin, redValue.Length);
-                positioin += redValue.Length;
+                List<RegisterSpectialItem> reg = GetRegisterItem(reg2055List, i);
+                foreach (var item in reg)
+                {
+                    CombinData(position, item.Value, item.StartBit, item.StopBit);
+                }
+                position += 2;
             }
+        }
 
-            foreach (var item in reg2055List)
-            {
-                byte[] greenValue = ((UInt16)item.GreenValue).GetBytes();
-                Array.Copy(greenValue, 0, Data, positioin, greenValue.Length);
-                positioin += greenValue.Length;
-            }
+        private static void CombinData(int position, byte newData, int startBit, int stopBit)
+        {
+            string binaryVal = newData.ToBinaryString(stopBit - startBit + 1).Reverse();
 
+            byte[] data1 = new byte[2];
+            data1[0] = Data[position];
+            data1[1] = Data[position + 1];
+            UInt16 uData1 = data1.GetUInt16();
+            string binaryVal1 = uData1.ToBinaryString(16).Reverse();
+            int index = 0;
+            for (int i = startBit; i <= stopBit; i++)
+            {
+                string str1 = binaryVal.Substring(index++, 1);
+                binaryVal1 = binaryVal1.Replace(i, str1);
+            }
+            binaryVal1 = binaryVal1.Reverse();
+            UInt16 data2 = Convert.ToUInt16(binaryVal1, 2);
+            byte[] data3 = data2.GetBytes();
+            Data[position] = data3[0];
+            Data[position + 1] = data3[1];
+        }
+
+        private static List<RegisterSpectialItem> GetRegisterItem(List<RegisterItem> reg2055List, byte regAddr)
+        {
+            List<RegisterSpectialItem> result = new List<RegisterSpectialItem>();
             foreach (var item in reg2055List)
             {
-                byte[] blueValue = ((UInt16)item.BlueValue).GetBytes();
-                Array.Copy(blueValue, 0, Data, positioin, blueValue.Length);
-                positioin += blueValue.Length;
+                string strAddr = regAddr.ToString("X2");
+                if (item.RedAddress.ToUpper() == strAddr)
+                {
+                    result.Add(new RegisterSpectialItem()
+                    {
+                        RegisterAddress = byte.Parse(item.RedAddress, System.Globalization.NumberStyles.HexNumber),
+                        StartBit = item.StartBit,
+                        StopBit = item.StopBit,
+                        Value = item.RedValue.ToByte()
+                    });
+                }
+                if (item.GreenAddress.ToUpper() == strAddr)
+                {
+                    result.Add(new RegisterSpectialItem()
+                    {
+                        RegisterAddress = byte.Parse(item.GreenAddress, System.Globalization.NumberStyles.HexNumber),
+                        StartBit = item.StartBit,
+                        StopBit = item.StopBit,
+                        Value = item.GreenValue.ToByte()
+                    });
+                }
+                if (item.BlueAddress.ToUpper() == strAddr)
+                {
+                    result.Add(new RegisterSpectialItem()
+                    {
+                        RegisterAddress = byte.Parse(item.BlueAddress, System.Globalization.NumberStyles.HexNumber),
+                        StartBit = item.StartBit,
+                        StopBit = item.StopBit,
+                        Value = item.BlueValue.ToByte()
+                    });
+                }
             }
+            return result;
         }
     }
 }
