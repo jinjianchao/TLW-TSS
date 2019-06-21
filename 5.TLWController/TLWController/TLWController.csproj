@@ -79,6 +79,7 @@
       <DependentUpon>FrmSectionSet.cs</DependentUpon>
     </Compile>
     <Compile Include="Helper\InterfaceDataHelper.cs" />
+    <Compile Include="Helper\NetworkValidateHelper.cs" />
     <Compile Include="Helper\RegisterHelper.cs" />
     <Compile Include="Helper\TLWCommand.cs" />
     <Compile Include="Helper\UDPHelper.cs" />
@@ -128,6 +129,9 @@
     <None Include="Lib\tlw.dll" />
     <None Include="Lib\TLWComm.dll" />
     <None Include="Lib\UnitInfo.dll" />
+    <Content Include="Config\Param2055 - 复制%282%29.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Config\Param2055 - 复制.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

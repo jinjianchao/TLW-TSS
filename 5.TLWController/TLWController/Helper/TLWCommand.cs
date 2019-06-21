@@ -403,6 +403,21 @@ namespace TLWController.Helper
                         else
                         {
                             returnParam[param.Index].ResultCode = _Command.tlw_SDRAM_BatchWrite(param.Dev, addr, 0, startAddr, pData, 0, pData.Length, ProgressCallBackFunc);
+                            //startAddr = 0x1e0000;
+                            //for (int j = 0; j < 216; j++)
+                            //{
+                            //    returnParam[param.Index].ResultCode = _Command.tlw_SDRAM_BatchWrite(param.Dev, addr, 0, startAddr, pData, 0, pData.Length, ProgressCallBackFunc);
+                            //    startAddr += 4096;
+                            //}
+
+
+                            //for (int j = 0; j < pData.Length / 1024; i++)
+                            //{
+                            //    byte[] data = new byte[1024];
+                            //    Array.Copy(pData, i * 1024, data, 0, 1024);
+                            //    returnParam[param.Index].ResultCode = _Command.tlw_SDRAM_Read(param.Dev, addr, id, startAddr, data, 0, pData.Length);
+                            //    addr += 1024;
+                            //}
                         }
                     },
                     new InParam()
@@ -437,48 +452,50 @@ namespace TLWController.Helper
 
         public void tlw_SDRAM_Read(ushort addr, ushort id, UInt32 startAddr, int len, Dictionary<string, int> ips, Action<ReturnParam[]> action)
         {
-            //Task<ReturnParam[]> task = new Task<ReturnParam[]>(obj =>
-            //{
-            //    ReturnParam[] returnParam = new ReturnParam[ips.Count];
-            //    int i = 0;
-            //    foreach (var item in ips)
-            //    {
-            //        new Task((inParam) =>
-            //        {
-            //            InParam param = (inParam as InParam);
-            //            returnParam[param.Index] = new ReturnParam();
-            //            returnParam[param.Index].IP = param.IP;
-            //            returnParam[param.Index].Dev = param.Dev;
-            //            byte[] pData = new byte[len];
-            //            if (pData.Length <= 1024)
-            //            {
-            //                returnParam[param.Index].ResultCode = _Command.tlw_FLASH_Read(param.Dev, addr, id, chipPos, startAddr, pData, 0, pData.Length);
-            //            }
-            //            else
-            //            {
-            //                returnParam[param.Index].ResultCode = _Command.tlw_FLASH_BatchRead(param.Dev, addr, id, chipPos, startAddr, pData, 0, pData.Length, ProgressCallBackFunc);
-            //            }
-            //            if (returnParam[param.Index].ResultCode == 0)
-            //            {
-            //                returnParam[param.Index].Data = pData;
-            //            }
-            //        },
-            //        new InParam()
-            //        {
-            //            Index = i,
-            //            IP = item.Key,
-            //            Dev = item.Value
-            //        },
-            //        TaskCreationOptions.AttachedToParent).Start();
-            //        i++;
-            //    }
-            //    return returnParam;
-            //}, null);
-            //task.ContinueWith(t =>
-            //{
-            //    action(t.Result);
-            //});
-            //task.Start();
+            Task<ReturnParam[]> task = new Task<ReturnParam[]>(obj =>
+            {
+                ReturnParam[] returnParam = new ReturnParam[ips.Count];
+                int i = 0;
+                foreach (var item in ips)
+                {
+                    new Task((inParam) =>
+                    {
+                        InParam param = (inParam as InParam);
+                        returnParam[param.Index] = new ReturnParam();
+                        returnParam[param.Index].IP = param.IP;
+                        returnParam[param.Index].Dev = param.Dev;
+                        byte[] pData = new byte[len];
+                        if (pData.Length <= 1024)
+                        {
+                            returnParam[param.Index].ResultCode = _Command.tlw_SDRAM_Read(param.Dev, addr, id, startAddr, pData, 0, pData.Length);
+                        }
+                        else
+                        {
+                            returnParam[param.Index].ResultCode = _Command.tlw_SDRAM_BatchRead(param.Dev, addr, id, startAddr, pData, 0, pData.Length, ProgressCallBackFunc);
+                        }
+
+
+                        if (returnParam[param.Index].ResultCode == 0)
+                        {
+                            returnParam[param.Index].Data = pData;
+                        }
+                    },
+                    new InParam()
+                    {
+                        Index = i,
+                        IP = item.Key,
+                        Dev = item.Value
+                    },
+                    TaskCreationOptions.AttachedToParent).Start();
+                    i++;
+                }
+                return returnParam;
+            }, null);
+            task.ContinueWith(t =>
+            {
+                action(t.Result);
+            });
+            task.Start();
         }
 
         /// <summary>
@@ -827,6 +844,234 @@ namespace TLWController.Helper
             task.Start();
         }
 
+        /// <summary>
+        /// 写入韧件程序
+        /// </summary>
+        /// <param name="hDevice">设备句柄</param>
+        /// <param name="addr">设备地址</param>
+        /// <param name="id">数据包识别号</param>
+        /// <param name="chip">哪个芯片 默认为0   1为从芯片</param>
+        /// <param name="mode"> 0 MCU韧件程序 , 1 FPGA韧件程序</param>
+        /// <param name="path">文件路径</param>
+        /// <param name="func">进度回调函数</param>
+        /// <returns>0 —— 成功，其他值失败</returns>
+        public void tlw_Firmware_Write(ushort addr, ushort id, byte chip, byte mode, string path, Dictionary<string, int> ips, Action<ReturnParam[]> action)
+        {
+            Task<ReturnParam[]> task = new Task<ReturnParam[]>(obj =>
+            {
+                ReturnParam[] returnParam = new ReturnParam[ips.Count];
+                int i = 0;
+                foreach (var item in ips)
+                {
+                    new Task((inParam) =>
+                    {
+                        InParam param = (inParam as InParam);
+                        returnParam[param.Index] = new ReturnParam();
+                        returnParam[param.Index].IP = param.IP;
+                        returnParam[param.Index].Dev = param.Dev;
+                        returnParam[param.Index].ResultCode = _Command.tlw_Firmware_Write(param.Dev, addr, id, chip, mode, path, ProgressCallBackFunc);
+                    },
+                    new InParam()
+                    {
+                        Index = i,
+                        IP = item.Key,
+                        Dev = item.Value
+                    },
+                    TaskCreationOptions.AttachedToParent).Start();
+                    i++;
+                }
+                return returnParam;
+            }, null);
+            task.ContinueWith(t =>
+            {
+                action(t.Result);
+            });
+            task.Start();
+        }
+
+        /// <summary>
+        /// 读取韧件程序
+        /// </summary>
+        /// <param name="hDevice">设备句柄</param>
+        /// <param name="addr">设备地址</param>
+        /// <param name="id">数据包识别号</param>
+        /// <param name="chip">哪个芯片 默认为0   1为从芯片</param>
+        /// <param name="mode">0 MCU韧件程序 , 1 FPGA韧件程序</param>
+        /// <param name="dataLen">韧件程序的大小，一般为1024的倍数</param>
+        /// <param name="path">保存文件路径</param>
+        /// <param name="func">进度回调函数</param>
+        /// <returns>0 —— 成功，其他值失败</returns>
+        public void tlw_Firmware_Read(ushort addr, ushort id, byte chip, byte mode, int dataLen, string path, Dictionary<string, int> ips, Action<ReturnParam[]> action)
+        {
+            Task<ReturnParam[]> task = new Task<ReturnParam[]>(obj =>
+            {
+                ReturnParam[] returnParam = new ReturnParam[ips.Count];
+                int i = 0;
+                foreach (var item in ips)
+                {
+                    new Task((inParam) =>
+                    {
+                        InParam param = (inParam as InParam);
+                        returnParam[param.Index] = new ReturnParam();
+                        returnParam[param.Index].IP = param.IP;
+                        returnParam[param.Index].Dev = param.Dev;
+                        returnParam[param.Index].ResultCode = _Command.tlw_Firmware_Read(param.Dev, addr, id, chip, mode, dataLen, path, ProgressCallBackFunc);
+                    },
+                    new InParam()
+                    {
+                        Index = i,
+                        IP = item.Key,
+                        Dev = item.Value
+                    },
+                    TaskCreationOptions.AttachedToParent).Start();
+                    i++;
+                }
+                return returnParam;
+            }, null);
+            task.ContinueWith(t =>
+            {
+                action(t.Result);
+            });
+            task.Start();
+        }
+
+        /// <summary>
+        /// 读取韧件程序版本号
+        /// </summary>
+        /// <param name="hDevice">设备句柄</param>
+        /// <param name="addr">设备地址</param>
+        /// <param name="id">数据包识别号</param>
+        /// <param name="chip">哪个芯片 默认为0   1为从芯片</param>
+        /// <param name="mode">0 MCU韧件程序版本 , 1 FPGA韧件程序版本</param>
+        /// <param name="dst">获取版本信息保存的数组指针</param>
+        /// <param name="offset">数组内偏移量</param>
+        /// <param name="nLen">数据长度,默认为4</param>
+        /// <returns>0 —— 成功，其他值失败</returns>
+        public void tlw_GetVersion(ushort addr, ushort id, byte chip, byte mode, Dictionary<string, int> ips, Action<ReturnParam[]> action)
+        {
+            Task<ReturnParam[]> task = new Task<ReturnParam[]>(obj =>
+            {
+                ReturnParam[] returnParam = new ReturnParam[ips.Count];
+                int i = 0;
+                foreach (var item in ips)
+                {
+                    new Task((inParam) =>
+                    {
+                        InParam param = (inParam as InParam);
+                        returnParam[param.Index] = new ReturnParam();
+                        returnParam[param.Index].IP = param.IP;
+                        returnParam[param.Index].Dev = param.Dev;
+
+                        byte[] pData = new byte[4];
+                        returnParam[param.Index].ResultCode = _Command.tlw_GetVersion(param.Dev, addr, id, chip, mode, pData, 0, pData.Length);
+                        if (returnParam[param.Index].ResultCode == 0)
+                        {
+                            returnParam[param.Index].Data = pData;
+                        }
+                    },
+                    new InParam()
+                    {
+                        Index = i,
+                        IP = item.Key,
+                        Dev = item.Value
+                    },
+                    TaskCreationOptions.AttachedToParent).Start();
+                    i++;
+                }
+                return returnParam;
+            }, null);
+            task.ContinueWith(t =>
+            {
+                action(t.Result);
+            });
+            task.Start();
+        }
+
+        /// <summary>
+        /// 视频卡加载参数
+        /// </summary>
+        /// <param name="hDevice">设备句柄</param>
+        /// <param name="addr">设备地址</param>
+        /// <param name="id">数据包识别号</param>
+        /// <param name="mode">表示加载的内容 0 全部加载 1校正数据 2 红色GAMMA 3绿色GAMMA 4蓝色GAMMA 5 MAP  6 寄存器数组1  7 寄存器数组2</param>
+        /// <returns>0 —— 成功，其他值失败</returns>
+        public void tlw_VideoCardLoadParam(ushort addr, ushort id, byte mode, Dictionary<string, int> ips, Action<ReturnParam[]> action)
+        {
+            Task<ReturnParam[]> task = new Task<ReturnParam[]>(obj =>
+            {
+                ReturnParam[] returnParam = new ReturnParam[ips.Count];
+                int i = 0;
+                foreach (var item in ips)
+                {
+                    new Task((inParam) =>
+                    {
+                        InParam param = (inParam as InParam);
+                        returnParam[param.Index] = new ReturnParam();
+                        returnParam[param.Index].IP = param.IP;
+                        returnParam[param.Index].Dev = param.Dev;
+                        returnParam[param.Index].ResultCode = _Command.tlw_VideoCardLoadParam(param.Dev, addr, id, mode);
+                    },
+                    new InParam()
+                    {
+                        Index = i,
+                        IP = item.Key,
+                        Dev = item.Value
+                    },
+                    TaskCreationOptions.AttachedToParent).Start();
+                    i++;
+                }
+                return returnParam;
+            }, null);
+            task.ContinueWith(t =>
+            {
+                action(t.Result);
+            });
+            task.Start();
+        }
+
+        /// <summary>
+        /// 设置网络参数
+        /// </summary>
+        /// <param name="hDevice">设备句柄</param>
+        /// <param name="addr">设备地址</param>
+        /// <param name="id">数据包识别号</param>
+        /// <param name="dat">数据数组</param>
+        /// <param name="offset">偏移量</param>
+        /// <param name="nLen">长度为12，分别是IP地址，子网掩码，网关地址各占4字节</param>
+        /// <returns>0 —— 成功，其他值失败</returns>
+        public void tlw_SetNetworkParam(ushort addr, ushort id, byte[] dat, Dictionary<string, int> ips, Action<ReturnParam[]> action)
+        {
+            Task<ReturnParam[]> task = new Task<ReturnParam[]>(obj =>
+            {
+                ReturnParam[] returnParam = new ReturnParam[ips.Count];
+                int i = 0;
+                foreach (var item in ips)
+                {
+                    new Task((inParam) =>
+                    {
+                        InParam param = (inParam as InParam);
+                        returnParam[param.Index] = new ReturnParam();
+                        returnParam[param.Index].IP = param.IP;
+                        returnParam[param.Index].Dev = param.Dev;
+                        returnParam[param.Index].ResultCode = _Command.tlw_SetNetworkParam(param.Dev, addr, id, dat, 0, dat.Length);
+                    },
+                    new InParam()
+                    {
+                        Index = i,
+                        IP = item.Key,
+                        Dev = item.Value
+                    },
+                    TaskCreationOptions.AttachedToParent).Start();
+                    i++;
+                }
+                return returnParam;
+            }, null);
+            task.ContinueWith(t =>
+            {
+                action(t.Result);
+            });
+            task.Start();
+        }
         #endregion
 
         #region 同步执行
@@ -890,7 +1135,42 @@ namespace TLWController.Helper
             return result;
         }
 
+        /// <summary>
+        /// 写入韧件程序
+        /// </summary>
+        /// <param name="hDevice">设备句柄</param>
+        /// <param name="addr">设备地址</param>
+        /// <param name="id">数据包识别号</param>
+        /// <param name="chip">哪个芯片 默认为0   1为从芯片</param>
+        /// <param name="mode"> 0 MCU韧件程序 , 1 FPGA韧件程序</param>
+        /// <param name="path">文件路径</param>
+        /// <param name="func">进度回调函数</param>
+        /// <returns>0 —— 成功，其他值失败</returns>
+        public int tlw_Firmware_Write(int hDevice, ushort addr, ushort id, byte chip, byte mode, string path)
+        {
+            int result = 0;
+            result = _Command.tlw_Firmware_Write(hDevice, addr, id, chip, mode, path, ProgressCallBackFunc);
+            return result;
+        }
 
+        /// <summary>
+        /// 读取韧件程序版本号
+        /// </summary>
+        /// <param name="hDevice">设备句柄</param>
+        /// <param name="addr">设备地址</param>
+        /// <param name="id">数据包识别号</param>
+        /// <param name="chip">哪个芯片 默认为0   1为从芯片</param>
+        /// <param name="mode">0 MCU韧件程序版本 , 1 FPGA韧件程序版本</param>
+        /// <param name="dst">获取版本信息保存的数组指针</param>
+        /// <param name="offset">数组内偏移量</param>
+        /// <param name="nLen">数据长度,默认为4</param>
+        /// <returns>0 —— 成功，其他值失败</returns>
+        public int tlw_GetVersion(int hDevice, ushort addr, ushort id, byte chip, byte mode, byte[] dst, int offset, int nLen)
+        {
+
+            int result = _Command.tlw_GetVersion(hDevice, addr, id, chip, mode, dst, 0, nLen);
+            return result;
+        }
         #endregion
 
         #endregion

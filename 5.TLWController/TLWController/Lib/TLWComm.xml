@@ -431,7 +431,7 @@
             <param name="pData">数据指针，指向数据保存的地方</param>
             <param name="offset">数组内偏移量</param>
             <param name="len">待读取的数据长度,必须为1024</param>
-            <returns></returns>
+            <returns>0 —— 成功，其他值失败</returns>
         </member>
         <member name="M:TLWComm.TLWCommOper.tlw_SDRAM_BatchRead(System.Int32,System.UInt16,System.UInt16,System.UInt32,System.Byte[],System.Int32,System.Int32,TLWComm.ProgressCallBackByDevice)">
             <summary>
@@ -445,7 +445,70 @@
             <param name="offset">数组内偏移量</param>
             <param name="len">需要读取的数据长度</param>
             <param name="func">进度回调函数</param>
-            <returns></returns>
+            <returns>0 —— 成功，其他值失败</returns>
+        </member>
+        <member name="M:TLWComm.TLWCommOper.tlw_Firmware_Write(System.Int32,System.UInt16,System.UInt16,System.Byte,System.Byte,System.String,TLWComm.ProgressCallBackByDevice)">
+            <summary>
+            写入韧件程序
+            </summary>
+            <param name="hDevice">设备句柄</param>
+            <param name="addr">设备地址</param>
+            <param name="id">数据包识别号</param>
+            <param name="chip">哪个芯片 默认为0   1为从芯片</param>
+            <param name="mode"> 0 MCU韧件程序 , 1 FPGA韧件程序</param>
+            <param name="path">文件路径</param>
+            <param name="func">进度回调函数</param>
+            <returns>0 —— 成功，其他值失败</returns>
+        </member>
+        <member name="M:TLWComm.TLWCommOper.tlw_Firmware_Read(System.Int32,System.UInt16,System.UInt16,System.Byte,System.Byte,System.Int32,System.String,TLWComm.ProgressCallBackByDevice)">
+            <summary>
+            读取韧件程序
+            </summary>
+            <param name="hDevice">设备句柄</param>
+            <param name="addr">设备地址</param>
+            <param name="id">数据包识别号</param>
+            <param name="chip">哪个芯片 默认为0   1为从芯片</param>
+            <param name="mode">0 MCU韧件程序 , 1 FPGA韧件程序</param>
+            <param name="dataLen">韧件程序的大小，一般为1024的倍数</param>
+            <param name="path">保存文件路径</param>
+            <param name="func">进度回调函数</param>
+            <returns>0 —— 成功，其他值失败</returns>
+        </member>
+        <member name="M:TLWComm.TLWCommOper.tlw_GetVersion(System.Int32,System.UInt16,System.UInt16,System.Byte,System.Byte,System.Byte[],System.Int32,System.Int32)">
+            <summary>
+            读取韧件程序版本号
+            </summary>
+            <param name="hDevice">设备句柄</param>
+            <param name="addr">设备地址</param>
+            <param name="id">数据包识别号</param>
+            <param name="chip">哪个芯片 默认为0   1为从芯片</param>
+            <param name="mode">0 MCU韧件程序版本 , 1 FPGA韧件程序版本</param>
+            <param name="dst">获取版本信息保存的数组指针</param>
+            <param name="offset">数组内偏移量</param>
+            <param name="nLen">数据长度,默认为4</param>
+            <returns>0 —— 成功，其他值失败</returns>
+        </member>
+        <member name="M:TLWComm.TLWCommOper.tlw_VideoCardLoadParam(System.Int32,System.UInt16,System.UInt16,System.Byte)">
+            <summary>
+            视频卡加载参数
+            </summary>
+            <param name="hDevice">设备句柄</param>
+            <param name="addr">设备地址</param>
+            <param name="id">数据包识别号</param>
+            <param name="mode">表示加载的内容 0 全部加载 1校正数据 2 红色GAMMA 3绿色GAMMA 4蓝色GAMMA 5 MAP  6 寄存器数组1  7 寄存器数组2</param>
+            <returns>0 —— 成功，其他值失败</returns>
+        </member>
+        <member name="M:TLWComm.TLWCommOper.tlw_SetNetworkParam(System.Int32,System.UInt16,System.UInt16,System.Byte[],System.Int32,System.Int32)">
+            <summary>
+            设置网络参数
+            </summary>
+            <param name="hDevice">设备句柄</param>
+            <param name="addr">设备地址</param>
+            <param name="id">数据包识别号</param>
+            <param name="dat">数据数组</param>
+            <param name="offset">偏移量</param>
+            <param name="nLen">长度为12，分别是IP地址，子网掩码，网关地址各占4字节</param>
+            <returns>0 —— 成功，其他值失败</returns>
         </member>
     </members>
 </doc>

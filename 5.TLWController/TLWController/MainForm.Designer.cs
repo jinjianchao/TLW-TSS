@@ -28,7 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.tabCommonCommand = new System.Windows.Forms.TabPage();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.numGamma = new System.Windows.Forms.NumericUpDown();
@@ -44,51 +45,23 @@
             this.tab2055Param = new System.Windows.Forms.TabControl();
             this.tabAdvance = new System.Windows.Forms.TabPage();
             this.gpFirmwareUpgrade = new System.Windows.Forms.GroupBox();
+            this.label11 = new System.Windows.Forms.Label();
+            this.btnReadFirmwareVersion = new System.Windows.Forms.Button();
+            this.cbAdvChip = new System.Windows.Forms.ComboBox();
+            this.btnReadFPGA = new System.Windows.Forms.Button();
+            this.btnReadMCU = new System.Windows.Forms.Button();
+            this.btnUpgradeFPGA = new System.Windows.Forms.Button();
             this.btnUpgradeMCU = new System.Windows.Forms.Button();
+            this.btnChoseFPGA = new System.Windows.Forms.Button();
             this.btnChoseMCU = new System.Windows.Forms.Button();
+            this.txtFPGA = new System.Windows.Forms.TextBox();
+            this.label10 = new System.Windows.Forms.Label();
             this.txtMcu = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.btnReadReg = new System.Windows.Forms.Button();
-            this.ckParamAll = new System.Windows.Forms.CheckBox();
-            this.btnSendAll = new System.Windows.Forms.Button();
-            this.cbParam2055Color = new System.Windows.Forms.ComboBox();
-            this.label9 = new System.Windows.Forms.Label();
-            this.ckDebugMode = new System.Windows.Forms.CheckBox();
-            this.cbRegChip = new System.Windows.Forms.ComboBox();
-            this.label14 = new System.Windows.Forms.Label();
-            this.btnExport2055Param = new System.Windows.Forms.Button();
-            this.btnLoad2055Param = new System.Windows.Forms.Button();
+            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.tabPage2 = new System.Windows.Forms.TabPage();
             this.grid2055 = new System.Windows.Forms.DataGridView();
-            this.tabTest = new System.Windows.Forms.TabPage();
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.label7 = new System.Windows.Forms.Label();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.btnReadFlashData = new System.Windows.Forms.Button();
-            this.btnCreateAndWriteFlashData = new System.Windows.Forms.Button();
-            this.numFlashDataLen = new System.Windows.Forms.NumericUpDown();
-            this.label2 = new System.Windows.Forms.Label();
-            this.numRegAddr = new System.Windows.Forms.NumericUpDown();
-            this.label1 = new System.Windows.Forms.Label();
-            this.cbChipPos = new System.Windows.Forms.ComboBox();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.btnSDRAMWriteToFlash = new System.Windows.Forms.Button();
-            this.btnCreateAndWriteSDRAM = new System.Windows.Forms.Button();
-            this.numSDRAMDataLength = new System.Windows.Forms.NumericUpDown();
-            this.label3 = new System.Windows.Forms.Label();
-            this.numSDRAMAddr = new System.Windows.Forms.NumericUpDown();
-            this.label4 = new System.Windows.Forms.Label();
-            this.gpTest = new System.Windows.Forms.GroupBox();
-            this.btnWriteSdramReadSdram = new System.Windows.Forms.Button();
-            this.btnReadAndWriteFlash = new System.Windows.Forms.Button();
-            this.btnTest3 = new System.Windows.Forms.Button();
-            this.btnReadWriteSend = new System.Windows.Forms.Button();
-            this.label5 = new System.Windows.Forms.Label();
-            this.numTestDataLen = new System.Windows.Forms.NumericUpDown();
-            this.label6 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
-            this.numTimeDelay = new System.Windows.Forms.NumericUpDown();
-            this.button2 = new System.Windows.Forms.Button();
             this.CoCheckBox = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.ColMinValue = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColMaxValue = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -106,6 +79,60 @@
             this.ColGreenValue = new DevComponents.DotNetBar.Controls.DataGridViewLabelXColumn();
             this.ColBlueValue = new DevComponents.DotNetBar.Controls.DataGridViewLabelXColumn();
             this.ColSend = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.rtOtherReg = new System.Windows.Forms.RichTextBox();
+            this.btnReadReg = new System.Windows.Forms.Button();
+            this.btnSendAll = new System.Windows.Forms.Button();
+            this.cbParam2055Color = new System.Windows.Forms.ComboBox();
+            this.label9 = new System.Windows.Forms.Label();
+            this.ckDebugMode = new System.Windows.Forms.CheckBox();
+            this.cbRegChip = new System.Windows.Forms.ComboBox();
+            this.label14 = new System.Windows.Forms.Label();
+            this.btnExport2055Param = new System.Windows.Forms.Button();
+            this.btnLoad2055Param = new System.Windows.Forms.Button();
+            this.tabTest = new System.Windows.Forms.TabPage();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.btnLoadVideoCardParam = new System.Windows.Forms.Button();
+            this.cbVideocardLoadParam = new System.Windows.Forms.ComboBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.cbChipPos = new System.Windows.Forms.ComboBox();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.btnReadFlashData = new System.Windows.Forms.Button();
+            this.btnCreateAndWriteFlashData = new System.Windows.Forms.Button();
+            this.numFlashDataLen = new System.Windows.Forms.NumericUpDown();
+            this.label2 = new System.Windows.Forms.Label();
+            this.numRegAddr = new System.Windows.Forms.NumericUpDown();
+            this.label1 = new System.Windows.Forms.Label();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.btnReadSDRAM = new System.Windows.Forms.Button();
+            this.btnSDRAMWriteToFlash = new System.Windows.Forms.Button();
+            this.btnCreateAndWriteSDRAM = new System.Windows.Forms.Button();
+            this.numSDRAMDataLength = new System.Windows.Forms.NumericUpDown();
+            this.label3 = new System.Windows.Forms.Label();
+            this.numSDRAMAddr = new System.Windows.Forms.NumericUpDown();
+            this.label4 = new System.Windows.Forms.Label();
+            this.gpTest = new System.Windows.Forms.GroupBox();
+            this.button4 = new System.Windows.Forms.Button();
+            this.button3 = new System.Windows.Forms.Button();
+            this.btnWriteSdramReadSdram = new System.Windows.Forms.Button();
+            this.btnReadAndWriteFlash = new System.Windows.Forms.Button();
+            this.btnTest3 = new System.Windows.Forms.Button();
+            this.btnReadWriteSend = new System.Windows.Forms.Button();
+            this.label5 = new System.Windows.Forms.Label();
+            this.numTestDataLen = new System.Windows.Forms.NumericUpDown();
+            this.label6 = new System.Windows.Forms.Label();
+            this.button1 = new System.Windows.Forms.Button();
+            this.numTimeDelay = new System.Windows.Forms.NumericUpDown();
+            this.button2 = new System.Windows.Forms.Button();
+            this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.label12 = new System.Windows.Forms.Label();
+            this.txtIP = new System.Windows.Forms.TextBox();
+            this.label13 = new System.Windows.Forms.Label();
+            this.txtMask = new System.Windows.Forms.TextBox();
+            this.label15 = new System.Windows.Forms.Label();
+            this.txtGateway = new System.Windows.Forms.TextBox();
+            this.btnSetNetwork = new System.Windows.Forms.Button();
             this.tabCommonCommand.SuspendLayout();
             this.groupBox5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numGamma)).BeginInit();
@@ -116,9 +143,13 @@
             this.tabAdvance.SuspendLayout();
             this.gpFirmwareUpgrade.SuspendLayout();
             this.tabPage1.SuspendLayout();
+            this.tabControl1.SuspendLayout();
+            this.tabPage2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.grid2055)).BeginInit();
+            this.tabPage3.SuspendLayout();
             this.tabTest.SuspendLayout();
             this.groupBox3.SuspendLayout();
+            this.groupBox4.SuspendLayout();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numFlashDataLen)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numRegAddr)).BeginInit();
@@ -128,6 +159,7 @@
             this.gpTest.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numTestDataLen)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numTimeDelay)).BeginInit();
+            this.groupBox6.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabCommonCommand
@@ -276,6 +308,7 @@
             // tabAdvance
             // 
             this.tabAdvance.BackColor = System.Drawing.SystemColors.Control;
+            this.tabAdvance.Controls.Add(this.groupBox6);
             this.tabAdvance.Controls.Add(this.gpFirmwareUpgrade);
             this.tabAdvance.Location = new System.Drawing.Point(4, 22);
             this.tabAdvance.Name = "tabAdvance";
@@ -286,20 +319,87 @@
             // 
             // gpFirmwareUpgrade
             // 
+            this.gpFirmwareUpgrade.Controls.Add(this.label11);
+            this.gpFirmwareUpgrade.Controls.Add(this.btnReadFirmwareVersion);
+            this.gpFirmwareUpgrade.Controls.Add(this.cbAdvChip);
+            this.gpFirmwareUpgrade.Controls.Add(this.btnReadFPGA);
+            this.gpFirmwareUpgrade.Controls.Add(this.btnReadMCU);
+            this.gpFirmwareUpgrade.Controls.Add(this.btnUpgradeFPGA);
             this.gpFirmwareUpgrade.Controls.Add(this.btnUpgradeMCU);
+            this.gpFirmwareUpgrade.Controls.Add(this.btnChoseFPGA);
             this.gpFirmwareUpgrade.Controls.Add(this.btnChoseMCU);
+            this.gpFirmwareUpgrade.Controls.Add(this.txtFPGA);
+            this.gpFirmwareUpgrade.Controls.Add(this.label10);
             this.gpFirmwareUpgrade.Controls.Add(this.txtMcu);
             this.gpFirmwareUpgrade.Controls.Add(this.label8);
-            this.gpFirmwareUpgrade.Location = new System.Drawing.Point(8, 7);
+            this.gpFirmwareUpgrade.Location = new System.Drawing.Point(322, 7);
             this.gpFirmwareUpgrade.Name = "gpFirmwareUpgrade";
-            this.gpFirmwareUpgrade.Size = new System.Drawing.Size(374, 132);
+            this.gpFirmwareUpgrade.Size = new System.Drawing.Size(556, 111);
             this.gpFirmwareUpgrade.TabIndex = 0;
             this.gpFirmwareUpgrade.TabStop = false;
             this.gpFirmwareUpgrade.Text = "固件升级";
             // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(14, 23);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(59, 12);
+            this.label11.TabIndex = 18;
+            this.label11.Text = "程序位置:";
+            // 
+            // btnReadFirmwareVersion
+            // 
+            this.btnReadFirmwareVersion.Location = new System.Drawing.Point(474, 47);
+            this.btnReadFirmwareVersion.Name = "btnReadFirmwareVersion";
+            this.btnReadFirmwareVersion.Size = new System.Drawing.Size(75, 23);
+            this.btnReadFirmwareVersion.TabIndex = 5;
+            this.btnReadFirmwareVersion.Text = "读取版本号";
+            this.btnReadFirmwareVersion.UseVisualStyleBackColor = true;
+            this.btnReadFirmwareVersion.Click += new System.EventHandler(this.btnReadFirmwareVersion_Click);
+            // 
+            // cbAdvChip
+            // 
+            this.cbAdvChip.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbAdvChip.FormattingEnabled = true;
+            this.cbAdvChip.Location = new System.Drawing.Point(79, 20);
+            this.cbAdvChip.Name = "cbAdvChip";
+            this.cbAdvChip.Size = new System.Drawing.Size(121, 20);
+            this.cbAdvChip.TabIndex = 17;
+            // 
+            // btnReadFPGA
+            // 
+            this.btnReadFPGA.Location = new System.Drawing.Point(393, 73);
+            this.btnReadFPGA.Name = "btnReadFPGA";
+            this.btnReadFPGA.Size = new System.Drawing.Size(75, 23);
+            this.btnReadFPGA.TabIndex = 4;
+            this.btnReadFPGA.Text = "读取";
+            this.btnReadFPGA.UseVisualStyleBackColor = true;
+            this.btnReadFPGA.Click += new System.EventHandler(this.btnReadFPGA_Click);
+            // 
+            // btnReadMCU
+            // 
+            this.btnReadMCU.Location = new System.Drawing.Point(393, 46);
+            this.btnReadMCU.Name = "btnReadMCU";
+            this.btnReadMCU.Size = new System.Drawing.Size(75, 23);
+            this.btnReadMCU.TabIndex = 4;
+            this.btnReadMCU.Text = "读取";
+            this.btnReadMCU.UseVisualStyleBackColor = true;
+            this.btnReadMCU.Click += new System.EventHandler(this.btnReadMCU_Click);
+            // 
+            // btnUpgradeFPGA
+            // 
+            this.btnUpgradeFPGA.Location = new System.Drawing.Point(313, 73);
+            this.btnUpgradeFPGA.Name = "btnUpgradeFPGA";
+            this.btnUpgradeFPGA.Size = new System.Drawing.Size(75, 23);
+            this.btnUpgradeFPGA.TabIndex = 3;
+            this.btnUpgradeFPGA.Text = "更新";
+            this.btnUpgradeFPGA.UseVisualStyleBackColor = true;
+            this.btnUpgradeFPGA.Click += new System.EventHandler(this.btnUpgradeFPGA_Click);
+            // 
             // btnUpgradeMCU
             // 
-            this.btnUpgradeMCU.Location = new System.Drawing.Point(288, 19);
+            this.btnUpgradeMCU.Location = new System.Drawing.Point(313, 46);
             this.btnUpgradeMCU.Name = "btnUpgradeMCU";
             this.btnUpgradeMCU.Size = new System.Drawing.Size(75, 23);
             this.btnUpgradeMCU.TabIndex = 3;
@@ -307,9 +407,19 @@
             this.btnUpgradeMCU.UseVisualStyleBackColor = true;
             this.btnUpgradeMCU.Click += new System.EventHandler(this.btnUpgradeMCU_Click);
             // 
+            // btnChoseFPGA
+            // 
+            this.btnChoseFPGA.Location = new System.Drawing.Point(270, 73);
+            this.btnChoseFPGA.Name = "btnChoseFPGA";
+            this.btnChoseFPGA.Size = new System.Drawing.Size(39, 23);
+            this.btnChoseFPGA.TabIndex = 2;
+            this.btnChoseFPGA.Text = "...";
+            this.btnChoseFPGA.UseVisualStyleBackColor = true;
+            this.btnChoseFPGA.Click += new System.EventHandler(this.btnChoseFPGA_Click);
+            // 
             // btnChoseMCU
             // 
-            this.btnChoseMCU.Location = new System.Drawing.Point(245, 19);
+            this.btnChoseMCU.Location = new System.Drawing.Point(270, 46);
             this.btnChoseMCU.Name = "btnChoseMCU";
             this.btnChoseMCU.Size = new System.Drawing.Size(39, 23);
             this.btnChoseMCU.TabIndex = 2;
@@ -317,9 +427,25 @@
             this.btnChoseMCU.UseVisualStyleBackColor = true;
             this.btnChoseMCU.Click += new System.EventHandler(this.btnChoseMCU_Click);
             // 
+            // txtFPGA
+            // 
+            this.txtFPGA.Location = new System.Drawing.Point(79, 73);
+            this.txtFPGA.Name = "txtFPGA";
+            this.txtFPGA.Size = new System.Drawing.Size(187, 21);
+            this.txtFPGA.TabIndex = 1;
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(38, 76);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(35, 12);
+            this.label10.TabIndex = 0;
+            this.label10.Text = "FPGA:";
+            // 
             // txtMcu
             // 
-            this.txtMcu.Location = new System.Drawing.Point(54, 19);
+            this.txtMcu.Location = new System.Drawing.Point(79, 46);
             this.txtMcu.Name = "txtMcu";
             this.txtMcu.Size = new System.Drawing.Size(187, 21);
             this.txtMcu.TabIndex = 1;
@@ -327,7 +453,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(19, 22);
+            this.label8.Location = new System.Drawing.Point(44, 49);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(29, 12);
             this.label8.TabIndex = 0;
@@ -336,8 +462,8 @@
             // tabPage1
             // 
             this.tabPage1.BackColor = System.Drawing.SystemColors.Control;
+            this.tabPage1.Controls.Add(this.tabControl1);
             this.tabPage1.Controls.Add(this.btnReadReg);
-            this.tabPage1.Controls.Add(this.ckParamAll);
             this.tabPage1.Controls.Add(this.btnSendAll);
             this.tabPage1.Controls.Add(this.cbParam2055Color);
             this.tabPage1.Controls.Add(this.label9);
@@ -346,113 +472,36 @@
             this.tabPage1.Controls.Add(this.label14);
             this.tabPage1.Controls.Add(this.btnExport2055Param);
             this.tabPage1.Controls.Add(this.btnLoad2055Param);
-            this.tabPage1.Controls.Add(this.grid2055);
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage1.Size = new System.Drawing.Size(1392, 571);
             this.tabPage1.TabIndex = 2;
-            this.tabPage1.Text = "2055参数下载";
+            this.tabPage1.Text = "寄存器设置";
             // 
-            // btnReadReg
+            // tabControl1
             // 
-            this.btnReadReg.Location = new System.Drawing.Point(666, 8);
-            this.btnReadReg.Name = "btnReadReg";
-            this.btnReadReg.Size = new System.Drawing.Size(75, 23);
-            this.btnReadReg.TabIndex = 10;
-            this.btnReadReg.Text = "读取";
-            this.btnReadReg.UseVisualStyleBackColor = true;
-            this.btnReadReg.Click += new System.EventHandler(this.btnReadReg_Click);
+            this.tabControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tabControl1.Controls.Add(this.tabPage2);
+            this.tabControl1.Controls.Add(this.tabPage3);
+            this.tabControl1.Location = new System.Drawing.Point(0, 42);
+            this.tabControl1.Name = "tabControl1";
+            this.tabControl1.SelectedIndex = 0;
+            this.tabControl1.Size = new System.Drawing.Size(1392, 523);
+            this.tabControl1.TabIndex = 11;
             // 
-            // ckParamAll
+            // tabPage2
             // 
-            this.ckParamAll.AutoSize = true;
-            this.ckParamAll.Location = new System.Drawing.Point(16, 38);
-            this.ckParamAll.Name = "ckParamAll";
-            this.ckParamAll.Size = new System.Drawing.Size(15, 14);
-            this.ckParamAll.TabIndex = 9;
-            this.ckParamAll.UseVisualStyleBackColor = true;
-            this.ckParamAll.Visible = false;
-            this.ckParamAll.CheckedChanged += new System.EventHandler(this.ckParamAll_CheckedChanged);
-            // 
-            // btnSendAll
-            // 
-            this.btnSendAll.Location = new System.Drawing.Point(584, 7);
-            this.btnSendAll.Name = "btnSendAll";
-            this.btnSendAll.Size = new System.Drawing.Size(75, 23);
-            this.btnSendAll.TabIndex = 8;
-            this.btnSendAll.Text = "全部设置";
-            this.btnSendAll.UseVisualStyleBackColor = true;
-            this.btnSendAll.Click += new System.EventHandler(this.btnSendAll_Click);
-            // 
-            // cbParam2055Color
-            // 
-            this.cbParam2055Color.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbParam2055Color.FormattingEnabled = true;
-            this.cbParam2055Color.Location = new System.Drawing.Point(391, 9);
-            this.cbParam2055Color.Name = "cbParam2055Color";
-            this.cbParam2055Color.Size = new System.Drawing.Size(97, 20);
-            this.cbParam2055Color.TabIndex = 7;
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(344, 11);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(41, 12);
-            this.label9.TabIndex = 6;
-            this.label9.Text = "颜色：";
-            // 
-            // ckDebugMode
-            // 
-            this.ckDebugMode.AutoSize = true;
-            this.ckDebugMode.Location = new System.Drawing.Point(506, 10);
-            this.ckDebugMode.Name = "ckDebugMode";
-            this.ckDebugMode.Size = new System.Drawing.Size(72, 16);
-            this.ckDebugMode.TabIndex = 5;
-            this.ckDebugMode.Text = "调试模式";
-            this.ckDebugMode.UseVisualStyleBackColor = true;
-            // 
-            // cbRegChip
-            // 
-            this.cbRegChip.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbRegChip.FormattingEnabled = true;
-            this.cbRegChip.Items.AddRange(new object[] {
-            "50Hz",
-            "60Hz"});
-            this.cbRegChip.Location = new System.Drawing.Point(230, 8);
-            this.cbRegChip.Name = "cbRegChip";
-            this.cbRegChip.Size = new System.Drawing.Size(97, 20);
-            this.cbRegChip.TabIndex = 4;
-            // 
-            // label14
-            // 
-            this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(184, 12);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(41, 12);
-            this.label14.TabIndex = 3;
-            this.label14.Text = "器件：";
-            // 
-            // btnExport2055Param
-            // 
-            this.btnExport2055Param.Location = new System.Drawing.Point(90, 6);
-            this.btnExport2055Param.Name = "btnExport2055Param";
-            this.btnExport2055Param.Size = new System.Drawing.Size(75, 23);
-            this.btnExport2055Param.TabIndex = 2;
-            this.btnExport2055Param.Text = "导出";
-            this.btnExport2055Param.UseVisualStyleBackColor = true;
-            this.btnExport2055Param.Click += new System.EventHandler(this.btnExport2055Param_Click);
-            // 
-            // btnLoad2055Param
-            // 
-            this.btnLoad2055Param.Location = new System.Drawing.Point(9, 6);
-            this.btnLoad2055Param.Name = "btnLoad2055Param";
-            this.btnLoad2055Param.Size = new System.Drawing.Size(75, 23);
-            this.btnLoad2055Param.TabIndex = 1;
-            this.btnLoad2055Param.Text = "导入";
-            this.btnLoad2055Param.UseVisualStyleBackColor = true;
-            this.btnLoad2055Param.Click += new System.EventHandler(this.btnLoad2055Param_Click);
+            this.tabPage2.Controls.Add(this.grid2055);
+            this.tabPage2.Location = new System.Drawing.Point(4, 22);
+            this.tabPage2.Name = "tabPage2";
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage2.Size = new System.Drawing.Size(1384, 497);
+            this.tabPage2.TabIndex = 0;
+            this.tabPage2.Text = "2055寄存器";
+            this.tabPage2.UseVisualStyleBackColor = true;
             // 
             // grid2055
             // 
@@ -461,11 +510,8 @@
             this.grid2055.AllowUserToOrderColumns = true;
             this.grid2055.AllowUserToResizeColumns = false;
             this.grid2055.AllowUserToResizeRows = false;
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.grid2055.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle2;
-            this.grid2055.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.grid2055.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
             this.grid2055.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.grid2055.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.CoCheckBox,
@@ -485,365 +531,22 @@
             this.ColGreenValue,
             this.ColBlueValue,
             this.ColSend});
+            this.grid2055.Dock = System.Windows.Forms.DockStyle.Fill;
             this.grid2055.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
             this.grid2055.EnableHeadersVisualStyles = false;
-            this.grid2055.Location = new System.Drawing.Point(6, 35);
+            this.grid2055.Location = new System.Drawing.Point(3, 3);
             this.grid2055.MultiSelect = false;
             this.grid2055.Name = "grid2055";
             this.grid2055.RowHeadersVisible = false;
             this.grid2055.RowTemplate.Height = 23;
             this.grid2055.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.grid2055.Size = new System.Drawing.Size(1378, 528);
+            this.grid2055.Size = new System.Drawing.Size(1378, 491);
             this.grid2055.TabIndex = 0;
             this.grid2055.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.grid2055_CellBeginEdit);
             this.grid2055.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.grid2055_CellContentClick);
             this.grid2055.CellEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.grid2055_CellEnter);
             this.grid2055.CellLeave += new System.Windows.Forms.DataGridViewCellEventHandler(this.grid2055_CellLeave);
             this.grid2055.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(this.grid2055_EditingControlShowing);
-            // 
-            // tabTest
-            // 
-            this.tabTest.BackColor = System.Drawing.SystemColors.Control;
-            this.tabTest.Controls.Add(this.groupBox3);
-            this.tabTest.Location = new System.Drawing.Point(4, 22);
-            this.tabTest.Name = "tabTest";
-            this.tabTest.Padding = new System.Windows.Forms.Padding(3);
-            this.tabTest.Size = new System.Drawing.Size(1392, 571);
-            this.tabTest.TabIndex = 1;
-            this.tabTest.Text = "测试页";
-            // 
-            // groupBox3
-            // 
-            this.groupBox3.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox3.Controls.Add(this.label7);
-            this.groupBox3.Controls.Add(this.groupBox1);
-            this.groupBox3.Controls.Add(this.cbChipPos);
-            this.groupBox3.Controls.Add(this.groupBox2);
-            this.groupBox3.Controls.Add(this.gpTest);
-            this.groupBox3.Location = new System.Drawing.Point(6, 6);
-            this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(1376, 320);
-            this.groupBox3.TabIndex = 12;
-            this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "FLASH操作";
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(14, 24);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(59, 12);
-            this.label7.TabIndex = 12;
-            this.label7.Text = "芯片位置:";
-            // 
-            // groupBox1
-            // 
-            this.groupBox1.Controls.Add(this.btnReadFlashData);
-            this.groupBox1.Controls.Add(this.btnCreateAndWriteFlashData);
-            this.groupBox1.Controls.Add(this.numFlashDataLen);
-            this.groupBox1.Controls.Add(this.label2);
-            this.groupBox1.Controls.Add(this.numRegAddr);
-            this.groupBox1.Controls.Add(this.label1);
-            this.groupBox1.Location = new System.Drawing.Point(6, 47);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(254, 86);
-            this.groupBox1.TabIndex = 0;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "读写FLASH";
-            // 
-            // btnReadFlashData
-            // 
-            this.btnReadFlashData.Location = new System.Drawing.Point(156, 46);
-            this.btnReadFlashData.Name = "btnReadFlashData";
-            this.btnReadFlashData.Size = new System.Drawing.Size(88, 23);
-            this.btnReadFlashData.TabIndex = 2;
-            this.btnReadFlashData.Text = "读取";
-            this.btnReadFlashData.UseVisualStyleBackColor = true;
-            this.btnReadFlashData.Click += new System.EventHandler(this.btnReadFlashData_Click);
-            // 
-            // btnCreateAndWriteFlashData
-            // 
-            this.btnCreateAndWriteFlashData.Location = new System.Drawing.Point(156, 19);
-            this.btnCreateAndWriteFlashData.Name = "btnCreateAndWriteFlashData";
-            this.btnCreateAndWriteFlashData.Size = new System.Drawing.Size(88, 23);
-            this.btnCreateAndWriteFlashData.TabIndex = 2;
-            this.btnCreateAndWriteFlashData.Text = "构建并写入";
-            this.btnCreateAndWriteFlashData.UseVisualStyleBackColor = true;
-            this.btnCreateAndWriteFlashData.Click += new System.EventHandler(this.btnCreateAndWriteFlashData_Click);
-            // 
-            // numFlashDataLen
-            // 
-            this.numFlashDataLen.Location = new System.Drawing.Point(89, 46);
-            this.numFlashDataLen.Maximum = new decimal(new int[] {
-            65535,
-            0,
-            0,
-            0});
-            this.numFlashDataLen.Name = "numFlashDataLen";
-            this.numFlashDataLen.Size = new System.Drawing.Size(61, 21);
-            this.numFlashDataLen.TabIndex = 1;
-            this.numFlashDataLen.Value = new decimal(new int[] {
-            1024,
-            0,
-            0,
-            0});
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(6, 50);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(65, 12);
-            this.label2.TabIndex = 0;
-            this.label2.Text = "数据长度：";
-            // 
-            // numRegAddr
-            // 
-            this.numRegAddr.Hexadecimal = true;
-            this.numRegAddr.Location = new System.Drawing.Point(89, 20);
-            this.numRegAddr.Maximum = new decimal(new int[] {
-            1215752191,
-            23,
-            0,
-            0});
-            this.numRegAddr.Name = "numRegAddr";
-            this.numRegAddr.Size = new System.Drawing.Size(61, 21);
-            this.numRegAddr.TabIndex = 1;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(6, 24);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(71, 12);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "FLASH地址：";
-            // 
-            // cbChipPos
-            // 
-            this.cbChipPos.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.cbChipPos.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbChipPos.FormattingEnabled = true;
-            this.cbChipPos.Location = new System.Drawing.Point(79, 21);
-            this.cbChipPos.Name = "cbChipPos";
-            this.cbChipPos.Size = new System.Drawing.Size(121, 20);
-            this.cbChipPos.TabIndex = 11;
-            // 
-            // groupBox2
-            // 
-            this.groupBox2.Controls.Add(this.btnSDRAMWriteToFlash);
-            this.groupBox2.Controls.Add(this.btnCreateAndWriteSDRAM);
-            this.groupBox2.Controls.Add(this.numSDRAMDataLength);
-            this.groupBox2.Controls.Add(this.label3);
-            this.groupBox2.Controls.Add(this.numSDRAMAddr);
-            this.groupBox2.Controls.Add(this.label4);
-            this.groupBox2.Location = new System.Drawing.Point(266, 47);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(254, 86);
-            this.groupBox2.TabIndex = 1;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "读写SDRAN";
-            // 
-            // btnSDRAMWriteToFlash
-            // 
-            this.btnSDRAMWriteToFlash.Location = new System.Drawing.Point(156, 46);
-            this.btnSDRAMWriteToFlash.Name = "btnSDRAMWriteToFlash";
-            this.btnSDRAMWriteToFlash.Size = new System.Drawing.Size(88, 23);
-            this.btnSDRAMWriteToFlash.TabIndex = 2;
-            this.btnSDRAMWriteToFlash.Text = "写入FLASH";
-            this.btnSDRAMWriteToFlash.UseVisualStyleBackColor = true;
-            this.btnSDRAMWriteToFlash.Click += new System.EventHandler(this.btnSDRAMWriteToFlash_Click);
-            // 
-            // btnCreateAndWriteSDRAM
-            // 
-            this.btnCreateAndWriteSDRAM.Location = new System.Drawing.Point(156, 19);
-            this.btnCreateAndWriteSDRAM.Name = "btnCreateAndWriteSDRAM";
-            this.btnCreateAndWriteSDRAM.Size = new System.Drawing.Size(88, 23);
-            this.btnCreateAndWriteSDRAM.TabIndex = 2;
-            this.btnCreateAndWriteSDRAM.Text = "构建并写入";
-            this.btnCreateAndWriteSDRAM.UseVisualStyleBackColor = true;
-            this.btnCreateAndWriteSDRAM.Click += new System.EventHandler(this.btnCreateAndWriteSDRAM_Click);
-            // 
-            // numSDRAMDataLength
-            // 
-            this.numSDRAMDataLength.Location = new System.Drawing.Point(89, 46);
-            this.numSDRAMDataLength.Maximum = new decimal(new int[] {
-            65535,
-            0,
-            0,
-            0});
-            this.numSDRAMDataLength.Name = "numSDRAMDataLength";
-            this.numSDRAMDataLength.Size = new System.Drawing.Size(61, 21);
-            this.numSDRAMDataLength.TabIndex = 1;
-            this.numSDRAMDataLength.Value = new decimal(new int[] {
-            1024,
-            0,
-            0,
-            0});
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(6, 50);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(65, 12);
-            this.label3.TabIndex = 0;
-            this.label3.Text = "数据长度：";
-            // 
-            // numSDRAMAddr
-            // 
-            this.numSDRAMAddr.Hexadecimal = true;
-            this.numSDRAMAddr.Location = new System.Drawing.Point(89, 20);
-            this.numSDRAMAddr.Maximum = new decimal(new int[] {
-            1215752191,
-            23,
-            0,
-            0});
-            this.numSDRAMAddr.Name = "numSDRAMAddr";
-            this.numSDRAMAddr.Size = new System.Drawing.Size(61, 21);
-            this.numSDRAMAddr.TabIndex = 1;
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(6, 24);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(71, 12);
-            this.label4.TabIndex = 0;
-            this.label4.Text = "SDRAM地址：";
-            // 
-            // gpTest
-            // 
-            this.gpTest.Controls.Add(this.btnWriteSdramReadSdram);
-            this.gpTest.Controls.Add(this.btnReadAndWriteFlash);
-            this.gpTest.Controls.Add(this.btnTest3);
-            this.gpTest.Controls.Add(this.btnReadWriteSend);
-            this.gpTest.Controls.Add(this.label5);
-            this.gpTest.Controls.Add(this.numTestDataLen);
-            this.gpTest.Controls.Add(this.label6);
-            this.gpTest.Controls.Add(this.button1);
-            this.gpTest.Controls.Add(this.numTimeDelay);
-            this.gpTest.Controls.Add(this.button2);
-            this.gpTest.Location = new System.Drawing.Point(526, 47);
-            this.gpTest.Name = "gpTest";
-            this.gpTest.Size = new System.Drawing.Size(451, 190);
-            this.gpTest.TabIndex = 9;
-            this.gpTest.TabStop = false;
-            this.gpTest.Text = "稳定性测试";
-            // 
-            // btnWriteSdramReadSdram
-            // 
-            this.btnWriteSdramReadSdram.Location = new System.Drawing.Point(129, 82);
-            this.btnWriteSdramReadSdram.Name = "btnWriteSdramReadSdram";
-            this.btnWriteSdramReadSdram.Size = new System.Drawing.Size(110, 23);
-            this.btnWriteSdramReadSdram.TabIndex = 9;
-            this.btnWriteSdramReadSdram.Text = "写SDRAM->读SDRAM";
-            this.btnWriteSdramReadSdram.UseVisualStyleBackColor = true;
-            this.btnWriteSdramReadSdram.Click += new System.EventHandler(this.btnWriteSdramReadSdram_Click);
-            // 
-            // btnReadAndWriteFlash
-            // 
-            this.btnReadAndWriteFlash.Location = new System.Drawing.Point(6, 82);
-            this.btnReadAndWriteFlash.Name = "btnReadAndWriteFlash";
-            this.btnReadAndWriteFlash.Size = new System.Drawing.Size(113, 23);
-            this.btnReadAndWriteFlash.TabIndex = 8;
-            this.btnReadAndWriteFlash.Text = "写flash->读flash";
-            this.btnReadAndWriteFlash.UseVisualStyleBackColor = true;
-            this.btnReadAndWriteFlash.Click += new System.EventHandler(this.btnReadAndWriteFlash_Click);
-            // 
-            // btnTest3
-            // 
-            this.btnTest3.Location = new System.Drawing.Point(260, 43);
-            this.btnTest3.Name = "btnTest3";
-            this.btnTest3.Size = new System.Drawing.Size(181, 23);
-            this.btnTest3.TabIndex = 7;
-            this.btnTest3.Text = "写SDRAM->写FLASH->读FLASH";
-            this.btnTest3.UseVisualStyleBackColor = true;
-            this.btnTest3.Click += new System.EventHandler(this.btnTest3_Click);
-            // 
-            // btnReadWriteSend
-            // 
-            this.btnReadWriteSend.Location = new System.Drawing.Point(129, 43);
-            this.btnReadWriteSend.Name = "btnReadWriteSend";
-            this.btnReadWriteSend.Size = new System.Drawing.Size(130, 23);
-            this.btnReadWriteSend.TabIndex = 4;
-            this.btnReadWriteSend.Text = "写FLASH->读FLASH";
-            this.btnReadWriteSend.UseVisualStyleBackColor = true;
-            this.btnReadWriteSend.Click += new System.EventHandler(this.btnReadWriteSend_Click);
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(133, 25);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(65, 12);
-            this.label5.TabIndex = 6;
-            this.label5.Text = "数据长度：";
-            // 
-            // numTestDataLen
-            // 
-            this.numTestDataLen.Location = new System.Drawing.Point(197, 21);
-            this.numTestDataLen.Maximum = new decimal(new int[] {
-            999999,
-            0,
-            0,
-            0});
-            this.numTestDataLen.Name = "numTestDataLen";
-            this.numTestDataLen.Size = new System.Drawing.Size(63, 21);
-            this.numTestDataLen.TabIndex = 5;
-            this.numTestDataLen.Value = new decimal(new int[] {
-            1042,
-            0,
-            0,
-            0});
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(14, 25);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(41, 12);
-            this.label6.TabIndex = 6;
-            this.label6.Text = "延时：";
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(10, 43);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(113, 23);
-            this.button1.TabIndex = 2;
-            this.button1.Text = "读FLASH";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
-            // numTimeDelay
-            // 
-            this.numTimeDelay.Location = new System.Drawing.Point(68, 21);
-            this.numTimeDelay.Maximum = new decimal(new int[] {
-            999999,
-            0,
-            0,
-            0});
-            this.numTimeDelay.Name = "numTimeDelay";
-            this.numTimeDelay.Size = new System.Drawing.Size(55, 21);
-            this.numTimeDelay.TabIndex = 5;
-            this.numTimeDelay.Value = new decimal(new int[] {
-            5,
-            0,
-            0,
-            0});
-            // 
-            // button2
-            // 
-            this.button2.Location = new System.Drawing.Point(268, 20);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
-            this.button2.TabIndex = 3;
-            this.button2.Text = "停止";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // CoCheckBox
             // 
@@ -978,6 +681,599 @@
             this.ColSend.Text = "发送";
             this.ColSend.UseColumnTextForButtonValue = true;
             // 
+            // tabPage3
+            // 
+            this.tabPage3.Controls.Add(this.rtOtherReg);
+            this.tabPage3.Location = new System.Drawing.Point(4, 22);
+            this.tabPage3.Name = "tabPage3";
+            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage3.Size = new System.Drawing.Size(1384, 497);
+            this.tabPage3.TabIndex = 1;
+            this.tabPage3.Text = "其它寄存器";
+            this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // rtOtherReg
+            // 
+            this.rtOtherReg.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.rtOtherReg.Location = new System.Drawing.Point(3, 3);
+            this.rtOtherReg.Name = "rtOtherReg";
+            this.rtOtherReg.Size = new System.Drawing.Size(1378, 491);
+            this.rtOtherReg.TabIndex = 0;
+            this.rtOtherReg.Text = resources.GetString("rtOtherReg.Text");
+            // 
+            // btnReadReg
+            // 
+            this.btnReadReg.Location = new System.Drawing.Point(666, 8);
+            this.btnReadReg.Name = "btnReadReg";
+            this.btnReadReg.Size = new System.Drawing.Size(75, 23);
+            this.btnReadReg.TabIndex = 10;
+            this.btnReadReg.Text = "读取";
+            this.btnReadReg.UseVisualStyleBackColor = true;
+            this.btnReadReg.Click += new System.EventHandler(this.btnReadReg_Click);
+            // 
+            // btnSendAll
+            // 
+            this.btnSendAll.Location = new System.Drawing.Point(584, 7);
+            this.btnSendAll.Name = "btnSendAll";
+            this.btnSendAll.Size = new System.Drawing.Size(75, 23);
+            this.btnSendAll.TabIndex = 8;
+            this.btnSendAll.Text = "全部设置";
+            this.btnSendAll.UseVisualStyleBackColor = true;
+            this.btnSendAll.Click += new System.EventHandler(this.btnSendAll_Click);
+            // 
+            // cbParam2055Color
+            // 
+            this.cbParam2055Color.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbParam2055Color.FormattingEnabled = true;
+            this.cbParam2055Color.Location = new System.Drawing.Point(391, 9);
+            this.cbParam2055Color.Name = "cbParam2055Color";
+            this.cbParam2055Color.Size = new System.Drawing.Size(97, 20);
+            this.cbParam2055Color.TabIndex = 7;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(344, 11);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(41, 12);
+            this.label9.TabIndex = 6;
+            this.label9.Text = "颜色：";
+            // 
+            // ckDebugMode
+            // 
+            this.ckDebugMode.AutoSize = true;
+            this.ckDebugMode.Location = new System.Drawing.Point(506, 10);
+            this.ckDebugMode.Name = "ckDebugMode";
+            this.ckDebugMode.Size = new System.Drawing.Size(72, 16);
+            this.ckDebugMode.TabIndex = 5;
+            this.ckDebugMode.Text = "调试模式";
+            this.ckDebugMode.UseVisualStyleBackColor = true;
+            // 
+            // cbRegChip
+            // 
+            this.cbRegChip.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbRegChip.FormattingEnabled = true;
+            this.cbRegChip.Items.AddRange(new object[] {
+            "50Hz",
+            "60Hz"});
+            this.cbRegChip.Location = new System.Drawing.Point(230, 8);
+            this.cbRegChip.Name = "cbRegChip";
+            this.cbRegChip.Size = new System.Drawing.Size(97, 20);
+            this.cbRegChip.TabIndex = 4;
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(184, 12);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(41, 12);
+            this.label14.TabIndex = 3;
+            this.label14.Text = "器件：";
+            // 
+            // btnExport2055Param
+            // 
+            this.btnExport2055Param.Location = new System.Drawing.Point(90, 6);
+            this.btnExport2055Param.Name = "btnExport2055Param";
+            this.btnExport2055Param.Size = new System.Drawing.Size(75, 23);
+            this.btnExport2055Param.TabIndex = 2;
+            this.btnExport2055Param.Text = "导出";
+            this.btnExport2055Param.UseVisualStyleBackColor = true;
+            this.btnExport2055Param.Click += new System.EventHandler(this.btnExport2055Param_Click);
+            // 
+            // btnLoad2055Param
+            // 
+            this.btnLoad2055Param.Location = new System.Drawing.Point(9, 6);
+            this.btnLoad2055Param.Name = "btnLoad2055Param";
+            this.btnLoad2055Param.Size = new System.Drawing.Size(75, 23);
+            this.btnLoad2055Param.TabIndex = 1;
+            this.btnLoad2055Param.Text = "导入";
+            this.btnLoad2055Param.UseVisualStyleBackColor = true;
+            this.btnLoad2055Param.Click += new System.EventHandler(this.btnLoad2055Param_Click);
+            // 
+            // tabTest
+            // 
+            this.tabTest.BackColor = System.Drawing.SystemColors.Control;
+            this.tabTest.Controls.Add(this.groupBox3);
+            this.tabTest.Location = new System.Drawing.Point(4, 22);
+            this.tabTest.Name = "tabTest";
+            this.tabTest.Padding = new System.Windows.Forms.Padding(3);
+            this.tabTest.Size = new System.Drawing.Size(1392, 571);
+            this.tabTest.TabIndex = 1;
+            this.tabTest.Text = "测试页";
+            // 
+            // groupBox3
+            // 
+            this.groupBox3.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox3.Controls.Add(this.groupBox4);
+            this.groupBox3.Controls.Add(this.label7);
+            this.groupBox3.Controls.Add(this.cbChipPos);
+            this.groupBox3.Controls.Add(this.groupBox1);
+            this.groupBox3.Controls.Add(this.groupBox2);
+            this.groupBox3.Controls.Add(this.gpTest);
+            this.groupBox3.Location = new System.Drawing.Point(6, 6);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(1376, 320);
+            this.groupBox3.TabIndex = 12;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "FLASH操作";
+            // 
+            // groupBox4
+            // 
+            this.groupBox4.Controls.Add(this.btnLoadVideoCardParam);
+            this.groupBox4.Controls.Add(this.cbVideocardLoadParam);
+            this.groupBox4.Location = new System.Drawing.Point(6, 139);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Size = new System.Drawing.Size(220, 55);
+            this.groupBox4.TabIndex = 17;
+            this.groupBox4.TabStop = false;
+            this.groupBox4.Text = "视频卡加载参数";
+            // 
+            // btnLoadVideoCardParam
+            // 
+            this.btnLoadVideoCardParam.Location = new System.Drawing.Point(136, 20);
+            this.btnLoadVideoCardParam.Name = "btnLoadVideoCardParam";
+            this.btnLoadVideoCardParam.Size = new System.Drawing.Size(75, 23);
+            this.btnLoadVideoCardParam.TabIndex = 18;
+            this.btnLoadVideoCardParam.Text = "加载";
+            this.btnLoadVideoCardParam.UseVisualStyleBackColor = true;
+            this.btnLoadVideoCardParam.Click += new System.EventHandler(this.btnLoadVideoCardParam_Click);
+            // 
+            // cbVideocardLoadParam
+            // 
+            this.cbVideocardLoadParam.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbVideocardLoadParam.FormattingEnabled = true;
+            this.cbVideocardLoadParam.Location = new System.Drawing.Point(8, 20);
+            this.cbVideocardLoadParam.Name = "cbVideocardLoadParam";
+            this.cbVideocardLoadParam.Size = new System.Drawing.Size(121, 20);
+            this.cbVideocardLoadParam.TabIndex = 17;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(30, 23);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(59, 12);
+            this.label7.TabIndex = 16;
+            this.label7.Text = "芯片位置:";
+            // 
+            // cbChipPos
+            // 
+            this.cbChipPos.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbChipPos.FormattingEnabled = true;
+            this.cbChipPos.Location = new System.Drawing.Point(95, 20);
+            this.cbChipPos.Name = "cbChipPos";
+            this.cbChipPos.Size = new System.Drawing.Size(121, 20);
+            this.cbChipPos.TabIndex = 15;
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.btnReadFlashData);
+            this.groupBox1.Controls.Add(this.btnCreateAndWriteFlashData);
+            this.groupBox1.Controls.Add(this.numFlashDataLen);
+            this.groupBox1.Controls.Add(this.label2);
+            this.groupBox1.Controls.Add(this.numRegAddr);
+            this.groupBox1.Controls.Add(this.label1);
+            this.groupBox1.Location = new System.Drawing.Point(6, 47);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(254, 86);
+            this.groupBox1.TabIndex = 0;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "读写FLASH";
+            // 
+            // btnReadFlashData
+            // 
+            this.btnReadFlashData.Location = new System.Drawing.Point(156, 46);
+            this.btnReadFlashData.Name = "btnReadFlashData";
+            this.btnReadFlashData.Size = new System.Drawing.Size(88, 23);
+            this.btnReadFlashData.TabIndex = 2;
+            this.btnReadFlashData.Text = "读取";
+            this.btnReadFlashData.UseVisualStyleBackColor = true;
+            this.btnReadFlashData.Click += new System.EventHandler(this.btnReadFlashData_Click);
+            // 
+            // btnCreateAndWriteFlashData
+            // 
+            this.btnCreateAndWriteFlashData.Location = new System.Drawing.Point(156, 19);
+            this.btnCreateAndWriteFlashData.Name = "btnCreateAndWriteFlashData";
+            this.btnCreateAndWriteFlashData.Size = new System.Drawing.Size(88, 23);
+            this.btnCreateAndWriteFlashData.TabIndex = 2;
+            this.btnCreateAndWriteFlashData.Text = "构建并写入";
+            this.btnCreateAndWriteFlashData.UseVisualStyleBackColor = true;
+            this.btnCreateAndWriteFlashData.Click += new System.EventHandler(this.btnCreateAndWriteFlashData_Click);
+            // 
+            // numFlashDataLen
+            // 
+            this.numFlashDataLen.Location = new System.Drawing.Point(89, 46);
+            this.numFlashDataLen.Maximum = new decimal(new int[] {
+            65535,
+            0,
+            0,
+            0});
+            this.numFlashDataLen.Name = "numFlashDataLen";
+            this.numFlashDataLen.Size = new System.Drawing.Size(61, 21);
+            this.numFlashDataLen.TabIndex = 1;
+            this.numFlashDataLen.Value = new decimal(new int[] {
+            1024,
+            0,
+            0,
+            0});
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(6, 50);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(65, 12);
+            this.label2.TabIndex = 0;
+            this.label2.Text = "数据长度：";
+            // 
+            // numRegAddr
+            // 
+            this.numRegAddr.Hexadecimal = true;
+            this.numRegAddr.Location = new System.Drawing.Point(89, 20);
+            this.numRegAddr.Maximum = new decimal(new int[] {
+            1215752191,
+            23,
+            0,
+            0});
+            this.numRegAddr.Name = "numRegAddr";
+            this.numRegAddr.Size = new System.Drawing.Size(61, 21);
+            this.numRegAddr.TabIndex = 1;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(6, 24);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(71, 12);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "FLASH地址：";
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.btnReadSDRAM);
+            this.groupBox2.Controls.Add(this.btnSDRAMWriteToFlash);
+            this.groupBox2.Controls.Add(this.btnCreateAndWriteSDRAM);
+            this.groupBox2.Controls.Add(this.numSDRAMDataLength);
+            this.groupBox2.Controls.Add(this.label3);
+            this.groupBox2.Controls.Add(this.numSDRAMAddr);
+            this.groupBox2.Controls.Add(this.label4);
+            this.groupBox2.Location = new System.Drawing.Point(266, 47);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(254, 116);
+            this.groupBox2.TabIndex = 1;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "读写SDRAN";
+            // 
+            // btnReadSDRAM
+            // 
+            this.btnReadSDRAM.Location = new System.Drawing.Point(156, 48);
+            this.btnReadSDRAM.Name = "btnReadSDRAM";
+            this.btnReadSDRAM.Size = new System.Drawing.Size(88, 23);
+            this.btnReadSDRAM.TabIndex = 3;
+            this.btnReadSDRAM.Text = "读取SDRAM";
+            this.btnReadSDRAM.UseVisualStyleBackColor = true;
+            this.btnReadSDRAM.Click += new System.EventHandler(this.btnReadSDRAM_Click);
+            // 
+            // btnSDRAMWriteToFlash
+            // 
+            this.btnSDRAMWriteToFlash.Location = new System.Drawing.Point(156, 77);
+            this.btnSDRAMWriteToFlash.Name = "btnSDRAMWriteToFlash";
+            this.btnSDRAMWriteToFlash.Size = new System.Drawing.Size(88, 23);
+            this.btnSDRAMWriteToFlash.TabIndex = 2;
+            this.btnSDRAMWriteToFlash.Text = "写入FLASH";
+            this.btnSDRAMWriteToFlash.UseVisualStyleBackColor = true;
+            this.btnSDRAMWriteToFlash.Click += new System.EventHandler(this.btnSDRAMWriteToFlash_Click);
+            // 
+            // btnCreateAndWriteSDRAM
+            // 
+            this.btnCreateAndWriteSDRAM.Location = new System.Drawing.Point(156, 19);
+            this.btnCreateAndWriteSDRAM.Name = "btnCreateAndWriteSDRAM";
+            this.btnCreateAndWriteSDRAM.Size = new System.Drawing.Size(88, 23);
+            this.btnCreateAndWriteSDRAM.TabIndex = 2;
+            this.btnCreateAndWriteSDRAM.Text = "构建并写入";
+            this.btnCreateAndWriteSDRAM.UseVisualStyleBackColor = true;
+            this.btnCreateAndWriteSDRAM.Click += new System.EventHandler(this.btnCreateAndWriteSDRAM_Click);
+            // 
+            // numSDRAMDataLength
+            // 
+            this.numSDRAMDataLength.Location = new System.Drawing.Point(89, 46);
+            this.numSDRAMDataLength.Maximum = new decimal(new int[] {
+            65535,
+            0,
+            0,
+            0});
+            this.numSDRAMDataLength.Name = "numSDRAMDataLength";
+            this.numSDRAMDataLength.Size = new System.Drawing.Size(61, 21);
+            this.numSDRAMDataLength.TabIndex = 1;
+            this.numSDRAMDataLength.Value = new decimal(new int[] {
+            1024,
+            0,
+            0,
+            0});
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(6, 50);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(65, 12);
+            this.label3.TabIndex = 0;
+            this.label3.Text = "数据长度：";
+            // 
+            // numSDRAMAddr
+            // 
+            this.numSDRAMAddr.Hexadecimal = true;
+            this.numSDRAMAddr.Location = new System.Drawing.Point(89, 20);
+            this.numSDRAMAddr.Maximum = new decimal(new int[] {
+            1215752191,
+            23,
+            0,
+            0});
+            this.numSDRAMAddr.Name = "numSDRAMAddr";
+            this.numSDRAMAddr.Size = new System.Drawing.Size(61, 21);
+            this.numSDRAMAddr.TabIndex = 1;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(6, 24);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(71, 12);
+            this.label4.TabIndex = 0;
+            this.label4.Text = "SDRAM地址：";
+            // 
+            // gpTest
+            // 
+            this.gpTest.Controls.Add(this.button4);
+            this.gpTest.Controls.Add(this.button3);
+            this.gpTest.Controls.Add(this.btnWriteSdramReadSdram);
+            this.gpTest.Controls.Add(this.btnReadAndWriteFlash);
+            this.gpTest.Controls.Add(this.btnTest3);
+            this.gpTest.Controls.Add(this.btnReadWriteSend);
+            this.gpTest.Controls.Add(this.label5);
+            this.gpTest.Controls.Add(this.numTestDataLen);
+            this.gpTest.Controls.Add(this.label6);
+            this.gpTest.Controls.Add(this.button1);
+            this.gpTest.Controls.Add(this.numTimeDelay);
+            this.gpTest.Controls.Add(this.button2);
+            this.gpTest.Location = new System.Drawing.Point(526, 47);
+            this.gpTest.Name = "gpTest";
+            this.gpTest.Size = new System.Drawing.Size(451, 116);
+            this.gpTest.TabIndex = 9;
+            this.gpTest.TabStop = false;
+            this.gpTest.Text = "稳定性测试";
+            // 
+            // button4
+            // 
+            this.button4.Location = new System.Drawing.Point(339, 82);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(75, 23);
+            this.button4.TabIndex = 11;
+            this.button4.Text = "版本批量读取";
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
+            // 
+            // button3
+            // 
+            this.button3.Location = new System.Drawing.Point(246, 82);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(75, 23);
+            this.button3.TabIndex = 10;
+            this.button3.Text = "批量更新FPGA";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
+            // 
+            // btnWriteSdramReadSdram
+            // 
+            this.btnWriteSdramReadSdram.Location = new System.Drawing.Point(129, 82);
+            this.btnWriteSdramReadSdram.Name = "btnWriteSdramReadSdram";
+            this.btnWriteSdramReadSdram.Size = new System.Drawing.Size(110, 23);
+            this.btnWriteSdramReadSdram.TabIndex = 9;
+            this.btnWriteSdramReadSdram.Text = "写SDRAM->读SDRAM";
+            this.btnWriteSdramReadSdram.UseVisualStyleBackColor = true;
+            this.btnWriteSdramReadSdram.Click += new System.EventHandler(this.btnWriteSdramReadSdram_Click);
+            // 
+            // btnReadAndWriteFlash
+            // 
+            this.btnReadAndWriteFlash.Location = new System.Drawing.Point(6, 82);
+            this.btnReadAndWriteFlash.Name = "btnReadAndWriteFlash";
+            this.btnReadAndWriteFlash.Size = new System.Drawing.Size(113, 23);
+            this.btnReadAndWriteFlash.TabIndex = 8;
+            this.btnReadAndWriteFlash.Text = "写flash->读flash";
+            this.btnReadAndWriteFlash.UseVisualStyleBackColor = true;
+            this.btnReadAndWriteFlash.Click += new System.EventHandler(this.btnReadAndWriteFlash_Click);
+            // 
+            // btnTest3
+            // 
+            this.btnTest3.Location = new System.Drawing.Point(260, 43);
+            this.btnTest3.Name = "btnTest3";
+            this.btnTest3.Size = new System.Drawing.Size(181, 23);
+            this.btnTest3.TabIndex = 7;
+            this.btnTest3.Text = "写SDRAM->写FLASH->读FLASH";
+            this.btnTest3.UseVisualStyleBackColor = true;
+            this.btnTest3.Click += new System.EventHandler(this.btnTest3_Click);
+            // 
+            // btnReadWriteSend
+            // 
+            this.btnReadWriteSend.Location = new System.Drawing.Point(129, 43);
+            this.btnReadWriteSend.Name = "btnReadWriteSend";
+            this.btnReadWriteSend.Size = new System.Drawing.Size(130, 23);
+            this.btnReadWriteSend.TabIndex = 4;
+            this.btnReadWriteSend.Text = "写FLASH->读FLASH";
+            this.btnReadWriteSend.UseVisualStyleBackColor = true;
+            this.btnReadWriteSend.Click += new System.EventHandler(this.btnReadWriteSend_Click);
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(133, 25);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(65, 12);
+            this.label5.TabIndex = 6;
+            this.label5.Text = "数据长度：";
+            // 
+            // numTestDataLen
+            // 
+            this.numTestDataLen.Location = new System.Drawing.Point(197, 21);
+            this.numTestDataLen.Maximum = new decimal(new int[] {
+            999999,
+            0,
+            0,
+            0});
+            this.numTestDataLen.Name = "numTestDataLen";
+            this.numTestDataLen.Size = new System.Drawing.Size(63, 21);
+            this.numTestDataLen.TabIndex = 5;
+            this.numTestDataLen.Value = new decimal(new int[] {
+            1042,
+            0,
+            0,
+            0});
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(14, 25);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(41, 12);
+            this.label6.TabIndex = 6;
+            this.label6.Text = "延时：";
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(10, 43);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(113, 23);
+            this.button1.TabIndex = 2;
+            this.button1.Text = "读FLASH";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // numTimeDelay
+            // 
+            this.numTimeDelay.Location = new System.Drawing.Point(68, 21);
+            this.numTimeDelay.Maximum = new decimal(new int[] {
+            999999,
+            0,
+            0,
+            0});
+            this.numTimeDelay.Name = "numTimeDelay";
+            this.numTimeDelay.Size = new System.Drawing.Size(55, 21);
+            this.numTimeDelay.TabIndex = 5;
+            this.numTimeDelay.Value = new decimal(new int[] {
+            5,
+            0,
+            0,
+            0});
+            // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(268, 20);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(75, 23);
+            this.button2.TabIndex = 3;
+            this.button2.Text = "停止";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
+            // groupBox6
+            // 
+            this.groupBox6.Controls.Add(this.btnSetNetwork);
+            this.groupBox6.Controls.Add(this.txtGateway);
+            this.groupBox6.Controls.Add(this.label15);
+            this.groupBox6.Controls.Add(this.txtMask);
+            this.groupBox6.Controls.Add(this.label13);
+            this.groupBox6.Controls.Add(this.txtIP);
+            this.groupBox6.Controls.Add(this.label12);
+            this.groupBox6.Location = new System.Drawing.Point(9, 7);
+            this.groupBox6.Name = "groupBox6";
+            this.groupBox6.Size = new System.Drawing.Size(307, 111);
+            this.groupBox6.TabIndex = 1;
+            this.groupBox6.TabStop = false;
+            this.groupBox6.Text = "网络参数";
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(45, 25);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(23, 12);
+            this.label12.TabIndex = 0;
+            this.label12.Text = "IP:";
+            // 
+            // txtIP
+            // 
+            this.txtIP.Location = new System.Drawing.Point(76, 21);
+            this.txtIP.Name = "txtIP";
+            this.txtIP.Size = new System.Drawing.Size(140, 21);
+            this.txtIP.TabIndex = 1;
+            this.txtIP.Text = "192.168.0.32";
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(9, 52);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(59, 12);
+            this.label13.TabIndex = 0;
+            this.label13.Text = "子网掩码:";
+            // 
+            // txtMask
+            // 
+            this.txtMask.Location = new System.Drawing.Point(76, 48);
+            this.txtMask.Name = "txtMask";
+            this.txtMask.Size = new System.Drawing.Size(140, 21);
+            this.txtMask.TabIndex = 1;
+            this.txtMask.Text = "255.255.255.0";
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(33, 79);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(35, 12);
+            this.label15.TabIndex = 0;
+            this.label15.Text = "网关:";
+            // 
+            // txtGateway
+            // 
+            this.txtGateway.Location = new System.Drawing.Point(76, 75);
+            this.txtGateway.Name = "txtGateway";
+            this.txtGateway.Size = new System.Drawing.Size(140, 21);
+            this.txtGateway.TabIndex = 1;
+            this.txtGateway.Text = "192.168.0.1";
+            // 
+            // btnSetNetwork
+            // 
+            this.btnSetNetwork.Location = new System.Drawing.Point(223, 75);
+            this.btnSetNetwork.Name = "btnSetNetwork";
+            this.btnSetNetwork.Size = new System.Drawing.Size(75, 23);
+            this.btnSetNetwork.TabIndex = 2;
+            this.btnSetNetwork.Text = "设置";
+            this.btnSetNetwork.UseVisualStyleBackColor = true;
+            this.btnSetNetwork.Click += new System.EventHandler(this.btnSetNetwork_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -1001,10 +1297,14 @@
             this.gpFirmwareUpgrade.PerformLayout();
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
+            this.tabControl1.ResumeLayout(false);
+            this.tabPage2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.grid2055)).EndInit();
+            this.tabPage3.ResumeLayout(false);
             this.tabTest.ResumeLayout(false);
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
+            this.groupBox4.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numFlashDataLen)).EndInit();
@@ -1017,6 +1317,8 @@
             this.gpTest.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numTestDataLen)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numTimeDelay)).EndInit();
+            this.groupBox6.ResumeLayout(false);
+            this.groupBox6.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -1064,7 +1366,6 @@
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.CheckBox ckDebugMode;
         private System.Windows.Forms.Button btnSendAll;
-        private System.Windows.Forms.CheckBox ckParamAll;
         private System.Windows.Forms.Button btnWriteSdramReadSdram;
         private System.Windows.Forms.GroupBox groupBox5;
         private System.Windows.Forms.ComboBox cbGammaBit;
@@ -1072,8 +1373,6 @@
         private System.Windows.Forms.ComboBox cbGammaColor;
         private System.Windows.Forms.NumericUpDown numGamma;
         private System.Windows.Forms.Button btnGammaRead;
-        private System.Windows.Forms.ComboBox cbChipPos;
-        private System.Windows.Forms.Label label7;
         private System.Windows.Forms.ComboBox cbRegChip;
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.Button btnReadReg;
@@ -1100,6 +1399,35 @@
         private DevComponents.DotNetBar.Controls.DataGridViewLabelXColumn ColGreenValue;
         private DevComponents.DotNetBar.Controls.DataGridViewLabelXColumn ColBlueValue;
         private System.Windows.Forms.DataGridViewButtonColumn ColSend;
+        private System.Windows.Forms.Button btnUpgradeFPGA;
+        private System.Windows.Forms.Button btnChoseFPGA;
+        private System.Windows.Forms.TextBox txtFPGA;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Button btnReadFPGA;
+        private System.Windows.Forms.Button btnReadMCU;
+        private System.Windows.Forms.Button btnReadFirmwareVersion;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.ComboBox cbChipPos;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.ComboBox cbAdvChip;
+        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.TabPage tabPage2;
+        private System.Windows.Forms.TabPage tabPage3;
+        private System.Windows.Forms.RichTextBox rtOtherReg;
+        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.GroupBox groupBox4;
+        private System.Windows.Forms.ComboBox cbVideocardLoadParam;
+        private System.Windows.Forms.Button btnLoadVideoCardParam;
+        private System.Windows.Forms.Button btnReadSDRAM;
+        private System.Windows.Forms.GroupBox groupBox6;
+        private System.Windows.Forms.Button btnSetNetwork;
+        private System.Windows.Forms.TextBox txtGateway;
+        private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.TextBox txtMask;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.TextBox txtIP;
+        private System.Windows.Forms.Label label12;
     }
 }
 
