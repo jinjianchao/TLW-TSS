@@ -195,27 +195,22 @@ namespace TLWController.Extentions
             return str1;
         }
 
-        public static string Reverse(this string soruce)
+        /// <summary>
+        /// 从字节中截取指定位中的数据
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="startBit"></param>
+        /// <param name="stopBit"></param>
+        /// <returns></returns>
+        public static byte GetBitRangeValue(this byte source, int startBit, int stopBit)
         {
-            string newStr = "";
-            for (int i = soruce.Length - 1; i >= 0; i--)
-            {
-                newStr += soruce.Substring(i, 1);
-            }
-            return newStr;
+            //11111111
+            //11000000 start = 2 stop =4
+            byte val1 = (byte)(source << (8 - stopBit - 1));
+            byte val2 = (byte)(val1 >> (8 - (stopBit - startBit + 1)));
+            return val2;
         }
 
-        public static string Replace(this string source, int index, string newValue)
-        {
-            //string str1 = source.Substring(0, index);
-            //string str2 = source.Substring(index + 1);
-            //string str3 = str1 + newValue + str2;
-            //return str3;
 
-            char[] charArr = source.ToCharArray();
-            charArr[index] = (newValue.ToCharArray())[0];
-            string str = new string(charArr);
-            return str;
-        }
     }
 }

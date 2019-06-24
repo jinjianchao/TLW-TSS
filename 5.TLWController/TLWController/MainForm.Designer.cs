@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.tabCommonCommand = new System.Windows.Forms.TabPage();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
@@ -44,6 +44,14 @@
             this.tbBrightness = new System.Windows.Forms.TrackBar();
             this.tab2055Param = new System.Windows.Forms.TabControl();
             this.tabAdvance = new System.Windows.Forms.TabPage();
+            this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.btnSetNetwork = new System.Windows.Forms.Button();
+            this.txtGateway = new System.Windows.Forms.TextBox();
+            this.label15 = new System.Windows.Forms.Label();
+            this.txtMask = new System.Windows.Forms.TextBox();
+            this.label13 = new System.Windows.Forms.Label();
+            this.txtIP = new System.Windows.Forms.TextBox();
+            this.label12 = new System.Windows.Forms.Label();
             this.gpFirmwareUpgrade = new System.Windows.Forms.GroupBox();
             this.label11 = new System.Windows.Forms.Label();
             this.btnReadFirmwareVersion = new System.Windows.Forms.Button();
@@ -81,6 +89,7 @@
             this.ColSend = new System.Windows.Forms.DataGridViewButtonColumn();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.rtOtherReg = new System.Windows.Forms.RichTextBox();
+            this.tabPage4 = new System.Windows.Forms.TabPage();
             this.btnReadReg = new System.Windows.Forms.Button();
             this.btnSendAll = new System.Windows.Forms.Button();
             this.cbParam2055Color = new System.Windows.Forms.ComboBox();
@@ -125,14 +134,12 @@
             this.button1 = new System.Windows.Forms.Button();
             this.numTimeDelay = new System.Windows.Forms.NumericUpDown();
             this.button2 = new System.Windows.Forms.Button();
-            this.groupBox6 = new System.Windows.Forms.GroupBox();
-            this.label12 = new System.Windows.Forms.Label();
-            this.txtIP = new System.Windows.Forms.TextBox();
-            this.label13 = new System.Windows.Forms.Label();
-            this.txtMask = new System.Windows.Forms.TextBox();
-            this.label15 = new System.Windows.Forms.Label();
-            this.txtGateway = new System.Windows.Forms.TextBox();
-            this.btnSetNetwork = new System.Windows.Forms.Button();
+            this.btnUpgradeMAP = new System.Windows.Forms.Button();
+            this.btnChoseMAP = new System.Windows.Forms.Button();
+            this.txtMap = new System.Windows.Forms.TextBox();
+            this.label16 = new System.Windows.Forms.Label();
+            this.cbMapPos = new System.Windows.Forms.ComboBox();
+            this.groupBox7 = new System.Windows.Forms.GroupBox();
             this.tabCommonCommand.SuspendLayout();
             this.groupBox5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numGamma)).BeginInit();
@@ -141,6 +148,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.tbBrightness)).BeginInit();
             this.tab2055Param.SuspendLayout();
             this.tabAdvance.SuspendLayout();
+            this.groupBox6.SuspendLayout();
             this.gpFirmwareUpgrade.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabControl1.SuspendLayout();
@@ -159,7 +167,7 @@
             this.gpTest.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numTestDataLen)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numTimeDelay)).BeginInit();
-            this.groupBox6.SuspendLayout();
+            this.groupBox7.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabCommonCommand
@@ -308,6 +316,7 @@
             // tabAdvance
             // 
             this.tabAdvance.BackColor = System.Drawing.SystemColors.Control;
+            this.tabAdvance.Controls.Add(this.groupBox7);
             this.tabAdvance.Controls.Add(this.groupBox6);
             this.tabAdvance.Controls.Add(this.gpFirmwareUpgrade);
             this.tabAdvance.Location = new System.Drawing.Point(4, 22);
@@ -316,6 +325,83 @@
             this.tabAdvance.Size = new System.Drawing.Size(1392, 571);
             this.tabAdvance.TabIndex = 3;
             this.tabAdvance.Text = "高级";
+            // 
+            // groupBox6
+            // 
+            this.groupBox6.Controls.Add(this.btnSetNetwork);
+            this.groupBox6.Controls.Add(this.txtGateway);
+            this.groupBox6.Controls.Add(this.label15);
+            this.groupBox6.Controls.Add(this.txtMask);
+            this.groupBox6.Controls.Add(this.label13);
+            this.groupBox6.Controls.Add(this.txtIP);
+            this.groupBox6.Controls.Add(this.label12);
+            this.groupBox6.Location = new System.Drawing.Point(9, 7);
+            this.groupBox6.Name = "groupBox6";
+            this.groupBox6.Size = new System.Drawing.Size(307, 111);
+            this.groupBox6.TabIndex = 1;
+            this.groupBox6.TabStop = false;
+            this.groupBox6.Text = "网络参数";
+            // 
+            // btnSetNetwork
+            // 
+            this.btnSetNetwork.Location = new System.Drawing.Point(223, 75);
+            this.btnSetNetwork.Name = "btnSetNetwork";
+            this.btnSetNetwork.Size = new System.Drawing.Size(75, 23);
+            this.btnSetNetwork.TabIndex = 2;
+            this.btnSetNetwork.Text = "设置";
+            this.btnSetNetwork.UseVisualStyleBackColor = true;
+            this.btnSetNetwork.Click += new System.EventHandler(this.btnSetNetwork_Click);
+            // 
+            // txtGateway
+            // 
+            this.txtGateway.Location = new System.Drawing.Point(76, 75);
+            this.txtGateway.Name = "txtGateway";
+            this.txtGateway.Size = new System.Drawing.Size(140, 21);
+            this.txtGateway.TabIndex = 1;
+            this.txtGateway.Text = "192.168.0.1";
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(33, 79);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(35, 12);
+            this.label15.TabIndex = 0;
+            this.label15.Text = "网关:";
+            // 
+            // txtMask
+            // 
+            this.txtMask.Location = new System.Drawing.Point(76, 48);
+            this.txtMask.Name = "txtMask";
+            this.txtMask.Size = new System.Drawing.Size(140, 21);
+            this.txtMask.TabIndex = 1;
+            this.txtMask.Text = "255.255.255.0";
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(9, 52);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(59, 12);
+            this.label13.TabIndex = 0;
+            this.label13.Text = "子网掩码:";
+            // 
+            // txtIP
+            // 
+            this.txtIP.Location = new System.Drawing.Point(76, 21);
+            this.txtIP.Name = "txtIP";
+            this.txtIP.Size = new System.Drawing.Size(140, 21);
+            this.txtIP.TabIndex = 1;
+            this.txtIP.Text = "192.168.0.32";
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(45, 25);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(23, 12);
+            this.label12.TabIndex = 0;
+            this.label12.Text = "IP:";
             // 
             // gpFirmwareUpgrade
             // 
@@ -486,6 +572,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Controls.Add(this.tabPage3);
+            this.tabControl1.Controls.Add(this.tabPage4);
             this.tabControl1.Location = new System.Drawing.Point(0, 42);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
@@ -510,8 +597,8 @@
             this.grid2055.AllowUserToOrderColumns = true;
             this.grid2055.AllowUserToResizeColumns = false;
             this.grid2055.AllowUserToResizeRows = false;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.grid2055.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.grid2055.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle4;
             this.grid2055.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.grid2055.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.CoCheckBox,
@@ -694,12 +781,21 @@
             // 
             // rtOtherReg
             // 
-            this.rtOtherReg.Dock = System.Windows.Forms.DockStyle.Fill;
             this.rtOtherReg.Location = new System.Drawing.Point(3, 3);
             this.rtOtherReg.Name = "rtOtherReg";
-            this.rtOtherReg.Size = new System.Drawing.Size(1378, 491);
+            this.rtOtherReg.Size = new System.Drawing.Size(686, 276);
             this.rtOtherReg.TabIndex = 0;
             this.rtOtherReg.Text = resources.GetString("rtOtherReg.Text");
+            // 
+            // tabPage4
+            // 
+            this.tabPage4.BackColor = System.Drawing.SystemColors.Control;
+            this.tabPage4.Location = new System.Drawing.Point(4, 22);
+            this.tabPage4.Name = "tabPage4";
+            this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage4.Size = new System.Drawing.Size(1384, 497);
+            this.tabPage4.TabIndex = 2;
+            this.tabPage4.Text = "tabPage4";
             // 
             // btnReadReg
             // 
@@ -1197,82 +1293,64 @@
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
-            // groupBox6
+            // btnUpgradeMAP
             // 
-            this.groupBox6.Controls.Add(this.btnSetNetwork);
-            this.groupBox6.Controls.Add(this.txtGateway);
-            this.groupBox6.Controls.Add(this.label15);
-            this.groupBox6.Controls.Add(this.txtMask);
-            this.groupBox6.Controls.Add(this.label13);
-            this.groupBox6.Controls.Add(this.txtIP);
-            this.groupBox6.Controls.Add(this.label12);
-            this.groupBox6.Location = new System.Drawing.Point(9, 7);
-            this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(307, 111);
-            this.groupBox6.TabIndex = 1;
-            this.groupBox6.TabStop = false;
-            this.groupBox6.Text = "网络参数";
+            this.btnUpgradeMAP.Location = new System.Drawing.Point(324, 22);
+            this.btnUpgradeMAP.Name = "btnUpgradeMAP";
+            this.btnUpgradeMAP.Size = new System.Drawing.Size(75, 23);
+            this.btnUpgradeMAP.TabIndex = 7;
+            this.btnUpgradeMAP.Text = "更新";
+            this.btnUpgradeMAP.UseVisualStyleBackColor = true;
+            this.btnUpgradeMAP.Click += new System.EventHandler(this.btnUpgradeMAP_Click);
             // 
-            // label12
+            // btnChoseMAP
             // 
-            this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(45, 25);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(23, 12);
-            this.label12.TabIndex = 0;
-            this.label12.Text = "IP:";
+            this.btnChoseMAP.Location = new System.Drawing.Point(281, 22);
+            this.btnChoseMAP.Name = "btnChoseMAP";
+            this.btnChoseMAP.Size = new System.Drawing.Size(39, 23);
+            this.btnChoseMAP.TabIndex = 6;
+            this.btnChoseMAP.Text = "...";
+            this.btnChoseMAP.UseVisualStyleBackColor = true;
+            this.btnChoseMAP.Click += new System.EventHandler(this.btnChoseMAP_Click);
             // 
-            // txtIP
+            // txtMap
             // 
-            this.txtIP.Location = new System.Drawing.Point(76, 21);
-            this.txtIP.Name = "txtIP";
-            this.txtIP.Size = new System.Drawing.Size(140, 21);
-            this.txtIP.TabIndex = 1;
-            this.txtIP.Text = "192.168.0.32";
+            this.txtMap.Location = new System.Drawing.Point(43, 23);
+            this.txtMap.Name = "txtMap";
+            this.txtMap.Size = new System.Drawing.Size(141, 21);
+            this.txtMap.TabIndex = 5;
             // 
-            // label13
+            // label16
             // 
-            this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(9, 52);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(59, 12);
-            this.label13.TabIndex = 0;
-            this.label13.Text = "子网掩码:";
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(8, 26);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(29, 12);
+            this.label16.TabIndex = 4;
+            this.label16.Text = "MAP:";
             // 
-            // txtMask
+            // cbMapPos
             // 
-            this.txtMask.Location = new System.Drawing.Point(76, 48);
-            this.txtMask.Name = "txtMask";
-            this.txtMask.Size = new System.Drawing.Size(140, 21);
-            this.txtMask.TabIndex = 1;
-            this.txtMask.Text = "255.255.255.0";
+            this.cbMapPos.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbMapPos.FormattingEnabled = true;
+            this.cbMapPos.Location = new System.Drawing.Point(191, 24);
+            this.cbMapPos.Name = "cbMapPos";
+            this.cbMapPos.Size = new System.Drawing.Size(85, 20);
+            this.cbMapPos.TabIndex = 19;
             // 
-            // label15
+            // groupBox7
             // 
-            this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(33, 79);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(35, 12);
-            this.label15.TabIndex = 0;
-            this.label15.Text = "网关:";
-            // 
-            // txtGateway
-            // 
-            this.txtGateway.Location = new System.Drawing.Point(76, 75);
-            this.txtGateway.Name = "txtGateway";
-            this.txtGateway.Size = new System.Drawing.Size(140, 21);
-            this.txtGateway.TabIndex = 1;
-            this.txtGateway.Text = "192.168.0.1";
-            // 
-            // btnSetNetwork
-            // 
-            this.btnSetNetwork.Location = new System.Drawing.Point(223, 75);
-            this.btnSetNetwork.Name = "btnSetNetwork";
-            this.btnSetNetwork.Size = new System.Drawing.Size(75, 23);
-            this.btnSetNetwork.TabIndex = 2;
-            this.btnSetNetwork.Text = "设置";
-            this.btnSetNetwork.UseVisualStyleBackColor = true;
-            this.btnSetNetwork.Click += new System.EventHandler(this.btnSetNetwork_Click);
+            this.groupBox7.Controls.Add(this.cbMapPos);
+            this.groupBox7.Controls.Add(this.txtMap);
+            this.groupBox7.Controls.Add(this.btnUpgradeMAP);
+            this.groupBox7.Controls.Add(this.label16);
+            this.groupBox7.Controls.Add(this.btnChoseMAP);
+            this.groupBox7.Location = new System.Drawing.Point(9, 124);
+            this.groupBox7.Name = "groupBox7";
+            this.groupBox7.Size = new System.Drawing.Size(419, 67);
+            this.groupBox7.TabIndex = 2;
+            this.groupBox7.TabStop = false;
+            this.groupBox7.Text = "MAP下载";
             // 
             // MainForm
             // 
@@ -1293,6 +1371,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.tbBrightness)).EndInit();
             this.tab2055Param.ResumeLayout(false);
             this.tabAdvance.ResumeLayout(false);
+            this.groupBox6.ResumeLayout(false);
+            this.groupBox6.PerformLayout();
             this.gpFirmwareUpgrade.ResumeLayout(false);
             this.gpFirmwareUpgrade.PerformLayout();
             this.tabPage1.ResumeLayout(false);
@@ -1317,8 +1397,8 @@
             this.gpTest.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numTestDataLen)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numTimeDelay)).EndInit();
-            this.groupBox6.ResumeLayout(false);
-            this.groupBox6.PerformLayout();
+            this.groupBox7.ResumeLayout(false);
+            this.groupBox7.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -1428,6 +1508,13 @@
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.TextBox txtIP;
         private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.TabPage tabPage4;
+        private System.Windows.Forms.Button btnUpgradeMAP;
+        private System.Windows.Forms.Button btnChoseMAP;
+        private System.Windows.Forms.TextBox txtMap;
+        private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.ComboBox cbMapPos;
+        private System.Windows.Forms.GroupBox groupBox7;
     }
 }
 

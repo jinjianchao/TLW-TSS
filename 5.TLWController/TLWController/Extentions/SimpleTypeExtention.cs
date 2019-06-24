@@ -21,15 +21,16 @@ namespace TLWController.Extentions
     public static class SimpleTypeExtention
     {
         #region 字符串扩展
-        public static int ToInit32(this string source)
+        public static int ToInit32(this string source, System.Globalization.NumberStyles styles = System.Globalization.NumberStyles.Number)
         {
-            return int.Parse(source);
+            return int.Parse(source, styles);
         }
 
         public static UInt16 ToUInt16(this string source, System.Globalization.NumberStyles styles = System.Globalization.NumberStyles.HexNumber)
         {
             return UInt16.Parse(source, styles);
         }
+
 
         public static byte ToByte(this string source)
         {
@@ -84,6 +85,29 @@ namespace TLWController.Extentions
                 index++;
             }
             return data;
+        }
+
+        public static string Reverse(this string soruce)
+        {
+            string newStr = "";
+            for (int i = soruce.Length - 1; i >= 0; i--)
+            {
+                newStr += soruce.Substring(i, 1);
+            }
+            return newStr;
+        }
+
+        public static string Replace(this string source, int index, string newValue)
+        {
+            //string str1 = source.Substring(0, index);
+            //string str2 = source.Substring(index + 1);
+            //string str3 = str1 + newValue + str2;
+            //return str3;
+
+            char[] charArr = source.ToCharArray();
+            charArr[index] = (newValue.ToCharArray())[0];
+            string str = new string(charArr);
+            return str;
         }
     }
 }

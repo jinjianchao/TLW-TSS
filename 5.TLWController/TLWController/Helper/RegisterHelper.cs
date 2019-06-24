@@ -21,12 +21,30 @@ using TLWController.Extentions;
 
 namespace TLWController.Helper
 {
+    /// <summary>
+    /// 寄存器颜色
+    /// </summary>
+    public enum EnumRegColor
+    {
+        Red,
+        Green,
+        Blue
+    }
+
     public class RegisterSpectialItem
     {
         public int RegisterAddress { get; set; }
         public byte StartBit { get; set; }
         public byte StopBit { get; set; }
         public byte Value { get; set; }
+        /// <summary>
+        /// 辅助属性，标识当前寄存器地址代表的颜色
+        /// </summary>
+        public EnumRegColor Color { get; set; }
+        /// <summary>
+        /// 辅助属性，标识当前寄存器详细描述信息
+        /// </summary>
+        public RegisterItem Register { get; set; }
     }
     /// <summary>
     /// 寄存器项
@@ -59,13 +77,22 @@ namespace TLWController.Helper
         /// </summary>
         public bool IsDebug { get; set; }
 
-        public List<RegisterItem> RegisterItemList { get; set; }
+        /// <summary>
+        /// 2055寄存器
+        /// </summary>
+        public List<RegisterItem> Register2055ItemList { get; set; }
+
+        /// <summary>
+        /// 其他寄存器
+        /// </summary>
+        public IList<RegisterItem> RegisterOtherItemList { get; set; }
 
         public RegisterSpectialItem SpecialRegister { get; set; }
 
         public Register()
         {
-            RegisterItemList = new List<RegisterItem>();
+            Register2055ItemList = new List<RegisterItem>();
+            RegisterOtherItemList = new List<RegisterItem>();
         }
     }
 
@@ -140,160 +167,164 @@ namespace TLWController.Helper
                 int lineIndex = 0;
                 string lineData = string.Empty;
                 List<RegisterItem> RegisterItemList = new List<RegisterItem>();
+                bool isFind = false;
                 while ((lineData = reader.ReadLine()) != null)
                 {
-                    if (lineData == "******************************************************************* other *************************************************************************") break;
-                    string[] data = lineData.Split('\t');
-                    if (lineIndex == 0)
+                    if (lineData == "******************************************************************* Start 2055 *************************************************************************")
                     {
-                        if (data.Length != 3)
-                        {
-                            return null;
-                        }
-
-                        if (!byte.TryParse(data[1], NumberStyles.HexNumber, CultureInfo.InvariantCulture, out byte refreshRate))
-                        {
-                            return null;
-                        }
-
-                        if (!bool.TryParse(data[2], out bool isDebug))
-                        {
-                            return null;
-                        }
-                        reg.IsDebug = isDebug;
+                        isFind = true;
+                        continue;
                     }
-                    else if (lineIndex == 1)
+                    if (lineData == "******************************************************************* End 2055 *************************************************************************") break;
+                    if (isFind)
                     {
-                        if (data.Length != 5)
+                        string[] data = lineData.Split('\t');
+                        if (lineIndex == 0)
                         {
-                            return null;
+                            //标题
+                            lineIndex++;
+                            continue;
                         }
-                        RegisterSpectialItem specialFPGA = new RegisterSpectialItem();
+                        if (lineIndex == 1)
+                        {
+                            if (data.Length != 3)
+                            {
+                                return null;
+                            }
 
-                        if (!byte.TryParse(data[1], NumberStyles.HexNumber, CultureInfo.InvariantCulture, out byte startBit))
-                        {
-                            return null;
-                        }
-                        specialFPGA.StartBit = startBit;
+                            if (!byte.TryParse(data[1], NumberStyles.HexNumber, CultureInfo.InvariantCulture, out byte refreshRate))
+                            {
+                                return null;
+                            }
 
-                        if (!byte.TryParse(data[2], NumberStyles.HexNumber, CultureInfo.InvariantCulture, out byte endBit))
-                        {
-                            return null;
+                            if (!bool.TryParse(data[2], out bool isDebug))
+                            {
+                                return null;
+                            }
+                            reg.IsDebug = isDebug;
                         }
-                        specialFPGA.StopBit = endBit;
-                        if (!int.TryParse(data[3], NumberStyles.HexNumber, CultureInfo.InvariantCulture, out int addr))
+                        else if (lineIndex == 2)
                         {
-                            return null;
+                            if (data.Length != 5)
+                            {
+                                return null;
+                            }
+                            RegisterSpectialItem specialFPGA = new RegisterSpectialItem();
+
+                            if (!byte.TryParse(data[1], NumberStyles.HexNumber, CultureInfo.InvariantCulture, out byte startBit))
+                            {
+                                return null;
+                            }
+                            specialFPGA.StartBit = startBit;
+
+                            if (!byte.TryParse(data[2], NumberStyles.HexNumber, CultureInfo.InvariantCulture, out byte endBit))
+                            {
+                                return null;
+                            }
+                            specialFPGA.StopBit = endBit;
+                            if (!int.TryParse(data[3], NumberStyles.HexNumber, CultureInfo.InvariantCulture, out int addr))
+                            {
+                                return null;
+                            }
+                            specialFPGA.RegisterAddress = addr;
+                            specialFPGA.Value = byte.Parse(data[4]);
+                            reg.SpecialRegister = specialFPGA;
                         }
-                        specialFPGA.RegisterAddress = addr;
-                        specialFPGA.Value = byte.Parse(data[4]);
-                        reg.SpecialRegister = specialFPGA;
+                        else
+                        {
+                            RegisterItem registerItem = new RegisterItem();
+                            if (data.Length != 16)
+                            {
+                                return null;
+                            }
+                            UInt16 fpgaAddress = 0;
+                            if (!UInt16.TryParse(data[1], NumberStyles.HexNumber, CultureInfo.InvariantCulture, out fpgaAddress))
+                            {
+                                return null;
+                            }
+                            registerItem.RedAddress = data[1];
+
+                            if (!UInt16.TryParse(data[2], NumberStyles.HexNumber, CultureInfo.InvariantCulture, out fpgaAddress))
+                            {
+                                return null;
+                            }
+                            registerItem.GreenAddress = data[2];
+
+                            if (!UInt16.TryParse(data[3], NumberStyles.HexNumber, CultureInfo.InvariantCulture, out fpgaAddress))
+                            {
+                                return null;
+                            }
+                            registerItem.BlueAddress = data[3];
+
+                            byte regAddress = 0;
+                            if (!byte.TryParse(data[4], NumberStyles.HexNumber, CultureInfo.InvariantCulture, out regAddress))
+                            {
+                                return null;
+                            }
+                            registerItem.RegisterAddress = data[4];
+
+                            if (!byte.TryParse(data[5], NumberStyles.HexNumber, CultureInfo.InvariantCulture, out byte startBit))
+                            {
+                                return null;
+                            }
+                            registerItem.StartBit = startBit;
+
+                            if (!byte.TryParse(data[6], NumberStyles.HexNumber, CultureInfo.InvariantCulture, out byte endBit))
+                            {
+                                return null;
+                            }
+                            registerItem.StopBit = endBit;
+
+                            if (!byte.TryParse(data[7], NumberStyles.HexNumber, CultureInfo.InvariantCulture, out byte minValue))
+                            {
+                                return null;
+                            }
+                            registerItem.MinValue = minValue;
+
+                            if (!byte.TryParse(data[8], NumberStyles.HexNumber, CultureInfo.InvariantCulture, out byte maxValue))
+                            {
+                                return null;
+                            }
+                            registerItem.MaxValue = maxValue;
+                            registerItem.RedValue = data[9];
+                            registerItem.GreenValue = data[10];
+                            registerItem.BlueValue = data[11];
+                            registerItem.Offset = data[12];
+                            registerItem.Description = data[13];
+                            registerItem.ChineseDescription = data[14];
+                            registerItem.EnglishDescription = data[15];
+                            reg.Register2055ItemList.Add(registerItem);
+                        }
+                        lineIndex++;
                     }
-                    else
-                    {
-                        RegisterItem registerItem = new RegisterItem();
-                        if (data.Length != 16)
-                        {
-                            return null;
-                        }
-                        UInt16 fpgaAddress = 0;
-                        if (!UInt16.TryParse(data[1], NumberStyles.HexNumber, CultureInfo.InvariantCulture, out fpgaAddress))
-                        {
-                            return null;
-                        }
-                        registerItem.RedAddress = data[1];
-
-                        if (!UInt16.TryParse(data[2], NumberStyles.HexNumber, CultureInfo.InvariantCulture, out fpgaAddress))
-                        {
-                            return null;
-                        }
-                        registerItem.GreenAddress = data[2];
-
-                        if (!UInt16.TryParse(data[3], NumberStyles.HexNumber, CultureInfo.InvariantCulture, out fpgaAddress))
-                        {
-                            return null;
-                        }
-                        registerItem.BlueAddress = data[3];
-
-                        byte regAddress = 0;
-                        if (!byte.TryParse(data[4], NumberStyles.HexNumber, CultureInfo.InvariantCulture, out regAddress))
-                        {
-                            return null;
-                        }
-                        registerItem.RegisterAddress = data[4];
-
-                        if (!byte.TryParse(data[5], NumberStyles.HexNumber, CultureInfo.InvariantCulture, out byte startBit))
-                        {
-                            return null;
-                        }
-                        registerItem.StartBit = startBit;
-
-                        if (!byte.TryParse(data[6], NumberStyles.HexNumber, CultureInfo.InvariantCulture, out byte endBit))
-                        {
-                            return null;
-                        }
-                        registerItem.StopBit = endBit;
-
-                        if (!byte.TryParse(data[7], NumberStyles.HexNumber, CultureInfo.InvariantCulture, out byte minValue))
-                        {
-                            return null;
-                        }
-                        registerItem.MinValue = minValue;
-
-                        if (!byte.TryParse(data[8], NumberStyles.HexNumber, CultureInfo.InvariantCulture, out byte maxValue))
-                        {
-                            return null;
-                        }
-                        registerItem.MaxValue = maxValue;
-
-                        //if (!byte.TryParse(data[9], NumberStyles.HexNumber, CultureInfo.InvariantCulture, out byte redValue))
-                        //{
-                        //    return null;
-                        //}
-                        //registerItem.RedValue = redValue;
-                        registerItem.RedValue = data[9];
-
-                        //if (!byte.TryParse(data[10], NumberStyles.HexNumber, CultureInfo.InvariantCulture, out byte greenValue))
-                        //{
-                        //    return null;
-                        //}
-                        //registerItem.GreenValue = greenValue;
-                        registerItem.GreenValue = data[10];
-
-                        //if (!byte.TryParse(data[11], NumberStyles.HexNumber, CultureInfo.InvariantCulture, out byte blueValue))
-                        //{
-                        //    return null;
-                        //}
-                        //registerItem.BlueValue = blueValue;
-                        registerItem.BlueValue = data[11];
-
-                        registerItem.Offset = data[12];
-                        registerItem.Description = data[13];
-                        registerItem.ChineseDescription = data[14];
-                        registerItem.EnglishDescription = data[15];
-                        reg.RegisterItemList.Add(registerItem);
-                    }
-                    lineIndex++;
                 }
             }
             return reg;
         }
 
-        public static void Savev2055Register(Register register, string file)
+        private static void ReadRegister2055(TextReader reader)
+        {
+
+        }
+
+        public static void Save2055Register(Register register, string file)
         {
             using (TextWriter writer = new StreamWriter(file))
             {
+                writer.WriteLine("******************************************************************* Start 2055 *************************************************************************");
+                writer.WriteLine("序号    FPGA红色地址    FPGA绿色地址    FPGA蓝色地址    恒流源地址   起始位 结束位  最小值   最大值  红色值     绿色纸     蓝色值  偏移量   说明     中文说明    英文说明");
                 int cx = 0;
                 writer.WriteLine($"{cx}\t{0}\t{register.IsDebug}");
                 cx++;
                 writer.WriteLine($"{cx}\t{register.SpecialRegister.StartBit}\t{register.SpecialRegister.StopBit}\t{register.SpecialRegister.RegisterAddress}\t{register.SpecialRegister.Value}");
                 cx++;
-                foreach (var item in register.RegisterItemList)
+                foreach (var item in register.Register2055ItemList)
                 {
                     //序号    FPGA红色地址    FPGA绿色地址    FPGA蓝色地址    恒流源地址   起始位 结束位  最小值   最大值  红色值     绿色纸     蓝色值  偏移量   说明     中文说明    英文说明
                     writer.WriteLine($"{cx}\t{item.RedAddress}\t{item.GreenAddress}\t{item.BlueAddress}\t{item.RegisterAddress}\t{item.StartBit}\t{item.StopBit}\t{item.MinValue.ToString("X2")}\t{item.MaxValue.ToString("X2")}\t{item.RedValue}\t{item.GreenValue}\t{item.BlueValue}\t{item.Offset}\t{item.Description}\t{item.ChineseDescription}\t{item.EnglishDescription}");
                     cx++;
                 }
+                writer.WriteLine("******************************************************************* End 2055 *************************************************************************");
             }
 
         }
@@ -307,6 +338,39 @@ namespace TLWController.Helper
                 foreach (var item in reg)
                 {
                     CombinData(position, item.Value, item.StartBit, item.StopBit);
+                }
+                position += 2;
+            }
+        }
+        /// <summary>
+        /// 将字节数组数据解析成类对象
+        /// </summary>
+        /// <param name="reg2055List"></param>
+        public static void SplitReg2055(List<RegisterItem> reg2055List)
+        {
+            int position = Reg2055StartAddr;
+            for (byte i = 0x12; i < 0x77; i++)
+            {
+                List<RegisterSpectialItem> reg = GetRegisterItem(reg2055List, i);
+                foreach (var item in reg)
+                {
+                    //CombinData(position, item.Value, item.StartBit, item.StopBit);
+                    if (item.Color == EnumRegColor.Red)
+                    {
+                        byte val = RegisterHelper.Data[position + 1].GetBitRangeValue(item.StartBit, item.StopBit);
+                        item.Register.RedValue = val.ToString("X2");
+
+                    }
+                    else if (item.Color == EnumRegColor.Green)
+                    {
+                        byte val = RegisterHelper.Data[position + 1].GetBitRangeValue(item.StartBit, item.StopBit);
+                        item.Register.GreenValue = val.ToString("X2");
+                    }
+                    else if (item.Color == EnumRegColor.Blue)
+                    {
+                        byte val = RegisterHelper.Data[position + 1].GetBitRangeValue(item.StartBit, item.StopBit);
+                        item.Register.BlueValue = val.ToString("X2");
+                    }
                 }
                 position += 2;
             }
@@ -347,7 +411,9 @@ namespace TLWController.Helper
                         RegisterAddress = byte.Parse(item.RedAddress, System.Globalization.NumberStyles.HexNumber),
                         StartBit = item.StartBit,
                         StopBit = item.StopBit,
-                        Value = item.RedValue.ToByte()
+                        Value = item.RedValue.ToByte(),
+                        Color = EnumRegColor.Red,
+                        Register = item
                     });
                 }
                 if (item.GreenAddress.ToUpper() == strAddr)
@@ -357,7 +423,9 @@ namespace TLWController.Helper
                         RegisterAddress = byte.Parse(item.GreenAddress, System.Globalization.NumberStyles.HexNumber),
                         StartBit = item.StartBit,
                         StopBit = item.StopBit,
-                        Value = item.GreenValue.ToByte()
+                        Value = item.GreenValue.ToByte(),
+                        Color = EnumRegColor.Green,
+                        Register = item
                     });
                 }
                 if (item.BlueAddress.ToUpper() == strAddr)
@@ -367,7 +435,9 @@ namespace TLWController.Helper
                         RegisterAddress = byte.Parse(item.BlueAddress, System.Globalization.NumberStyles.HexNumber),
                         StartBit = item.StartBit,
                         StopBit = item.StopBit,
-                        Value = item.BlueValue.ToByte()
+                        Value = item.BlueValue.ToByte(),
+                        Color = EnumRegColor.Blue,
+                        Register = item
                     });
                 }
             }

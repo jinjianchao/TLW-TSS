@@ -145,6 +145,10 @@ namespace TLWController
             cbChipPos.ValueMember = "Value";
             cbChipPos.DisplayMember = "Text";
             cbChipPos.DataSource = items;
+            cbMapPos.ValueMember = "Value";
+            cbMapPos.DisplayMember = "Text";
+            cbMapPos.DataSource = items;
+
         }
 
         private void BindParam2055Color()
@@ -549,7 +553,7 @@ namespace TLWController
             grid2055.Columns["ColMinValue"].Visible = false;
             grid2055.Columns["ColMaxValue"].Visible = false;
             //grid2055.Columns["ColSend"].Visible = false;
-            grid2055.DataSource = register.RegisterItemList;
+            grid2055.DataSource = register.Register2055ItemList;
             grid2055.AllowUserToOrderColumns = false;
             ckDebugMode.Checked = register.IsDebug;
 
@@ -662,11 +666,11 @@ namespace TLWController
             saveFileDialog.Filter = "*.txt|*.txt";
             if (saveFileDialog.ShowDialog(this) == DialogResult.Cancel) return;
             Register reg = new Register();
-            reg.RegisterItemList = grid2055.DataSource as List<RegisterItem>;
+            reg.Register2055ItemList = grid2055.DataSource as List<RegisterItem>;
             reg.IsDebug = ckDebugMode.Checked;
             reg.SpecialRegister = new RegisterSpectialItem();
 
-            RegisterHelper.Savev2055Register(reg, saveFileDialog.FileName);
+            RegisterHelper.Save2055Register(reg, saveFileDialog.FileName);
 
         }
         #endregion
@@ -1656,7 +1660,6 @@ namespace TLWController
             //    Array.ForEach(param, t => WriteOutput(t, "批量写入寄存器"));
             //    EnableControl(sender as Control, true);
             //});
-
             _TLWCommand.tlw_ReadRegisterGroup(GetCardAddress(), GetId(), chipPos, 1024, _DevIP, (param) =>
             {
                 Array.ForEach(param, t =>
@@ -1673,6 +1676,10 @@ namespace TLWController
                             saveFileDialog.FileName = "Register_Read";
                             if (saveFileDialog.ShowDialog(this) == DialogResult.Cancel) return;
                             WriteTextFile(saveFileDialog.FileName, RegisterHelper.Data.ToString(" "));
+                            RegisterHelper.SplitReg2055(regList);
+
+                            grid2055.DataSource = regList;
+                            grid2055.Refresh();
                         }));
 
                     }
@@ -2328,6 +2335,40 @@ namespace TLWController
                 Array.ForEach(param, t => WriteOutput(t, "设置网络参数"));
                 EnableControl(sender as Control, true);
             });
+        }
+
+        private void btnUpgradeMAP_Click(object sender, EventArgs e)
+        {
+            if (CheckIsBusy()) return;
+            string fileName = txtMap.Text;
+            if (File.Exists(fileName) == false)
+            {
+                MessageBox.Show(this, "MAP文件不存在");
+                return;
+            }
+
+            if (!CheckDeviceAddr())
+            {
+                MessageBox.Show(this, "设备地址错误");
+                return;
+            }
+            MapHelper.LoadMap(fileName);
+            byte chip = byte.Parse(cbMapPos.SelectedValue.ToString());
+            byte[] data = MapHelper.Data;
+            EnableControl(sender as Control, false);
+            _TLWCommand.tlw_WriteMAP(GetCardAddress(), GetId(), chip, data, 1024, _DevIP, (param) =>
+               {
+                   Array.ForEach(param, t => WriteOutput(t, "更新MAP"));
+                   EnableControl(sender as Control, true);
+               });
+        }
+
+        private void btnChoseMAP_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "*.mif|*.mif";
+            if (openFileDialog.ShowDialog(this) == DialogResult.Cancel) return;
+            txtMap.Text = openFileDialog.FileName;
         }
     }
 }

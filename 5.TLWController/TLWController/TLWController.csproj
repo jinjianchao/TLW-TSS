@@ -79,6 +79,7 @@
       <DependentUpon>FrmSectionSet.cs</DependentUpon>
     </Compile>
     <Compile Include="Helper\InterfaceDataHelper.cs" />
+    <Compile Include="Helper\MapHelper.cs" />
     <Compile Include="Helper\NetworkValidateHelper.cs" />
     <Compile Include="Helper\RegisterHelper.cs" />
     <Compile Include="Helper\TLWCommand.cs" />

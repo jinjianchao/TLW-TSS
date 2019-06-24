@@ -370,6 +370,12 @@ namespace TLWController.Helper
         }
 
 
+        public void tlw_WriteMAP(ushort addrMB, ushort id, byte chipPos, byte[] pData, uint sectorSize, Dictionary<string, int> ips, Action<ReturnParam[]> action)
+        {
+            UInt32 addr = 0x3E8000;
+            tlw_FLASH_Write(addrMB, id, chipPos, addr, pData, sectorSize, ips, action);
+        }
+
         /// <summary>
         /// 数据写入SDRAM
         /// </summary>
