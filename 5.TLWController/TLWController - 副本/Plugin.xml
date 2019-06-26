@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<plugins version="2.0">
+  <dll name="TLWController.dll"/>
+  <item namespace="TLWController" guid="{304CA65F-6227-4B9E-97D1-A85A598BA520}" form="MainForm" defaultTitle="TLWController" position="0">
+    <lan_title>
+      <lan_2052>TLW控制软件</lan_2052>
+      <lan_0>TLW Controller</lan_0>
+    </lan_title>
+    <!--<init>
+      <usedcommunicate value="1"/>
+      <controller text="TW-XX-S30">
+      </controller>
+    </init>-->
+
+  </item>
+</plugins>

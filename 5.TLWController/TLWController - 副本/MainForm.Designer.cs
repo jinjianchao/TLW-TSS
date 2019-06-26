@@ -28,9 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tabCommonCommand = new System.Windows.Forms.TabPage();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.numGamma = new System.Windows.Forms.NumericUpDown();
@@ -45,12 +44,6 @@
             this.tbBrightness = new System.Windows.Forms.TrackBar();
             this.tab2055Param = new System.Windows.Forms.TabControl();
             this.tabAdvance = new System.Windows.Forms.TabPage();
-            this.groupBox7 = new System.Windows.Forms.GroupBox();
-            this.cbMapPos = new System.Windows.Forms.ComboBox();
-            this.txtMap = new System.Windows.Forms.TextBox();
-            this.btnUpgradeMAP = new System.Windows.Forms.Button();
-            this.label16 = new System.Windows.Forms.Label();
-            this.btnChoseMAP = new System.Windows.Forms.Button();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
             this.btnSetNetwork = new System.Windows.Forms.Button();
             this.txtGateway = new System.Windows.Forms.TextBox();
@@ -74,7 +67,7 @@
             this.txtMcu = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.tabRegister = new System.Windows.Forms.TabControl();
+            this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.grid2055 = new System.Windows.Forms.DataGridView();
             this.CoCheckBox = new System.Windows.Forms.DataGridViewCheckBoxColumn();
@@ -97,7 +90,6 @@
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.rtOtherReg = new System.Windows.Forms.RichTextBox();
             this.tabPage4 = new System.Windows.Forms.TabPage();
-            this.gridOtherReg = new System.Windows.Forms.DataGridView();
             this.btnReadReg = new System.Windows.Forms.Button();
             this.btnSendAll = new System.Windows.Forms.Button();
             this.cbParam2055Color = new System.Windows.Forms.ComboBox();
@@ -109,23 +101,6 @@
             this.btnLoad2055Param = new System.Windows.Forms.Button();
             this.tabTest = new System.Windows.Forms.TabPage();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.groupBox9 = new System.Windows.Forms.GroupBox();
-            this.btnSingleRegRead = new System.Windows.Forms.Button();
-            this.label19 = new System.Windows.Forms.Label();
-            this.btnSetRegister = new System.Windows.Forms.Button();
-            this.numSingleRegValue = new System.Windows.Forms.NumericUpDown();
-            this.numSingleRegAddr = new System.Windows.Forms.NumericUpDown();
-            this.label18 = new System.Windows.Forms.Label();
-            this.groupBox8 = new System.Windows.Forms.GroupBox();
-            this.btnSDRAMToFlash = new System.Windows.Forms.Button();
-            this.btnSetB6B7 = new System.Windows.Forms.Button();
-            this.btnOpenCalibration = new System.Windows.Forms.Button();
-            this.btnWriteErrorCalibrationData = new System.Windows.Forms.Button();
-            this.btnReadCalibration = new System.Windows.Forms.Button();
-            this.btnUpgradeCalibration = new System.Windows.Forms.Button();
-            this.btnChoseCalibrationFile = new System.Windows.Forms.Button();
-            this.txtCalibration = new System.Windows.Forms.TextBox();
-            this.label17 = new System.Windows.Forms.Label();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.btnLoadVideoCardParam = new System.Windows.Forms.Button();
             this.cbVideocardLoadParam = new System.Windows.Forms.ComboBox();
@@ -159,16 +134,12 @@
             this.button1 = new System.Windows.Forms.Button();
             this.numTimeDelay = new System.Windows.Forms.NumericUpDown();
             this.button2 = new System.Windows.Forms.Button();
-            this.ColOtherCheckBox = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.ColOtherMinValue = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColOtherMaxValue = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColOtherCNDescription = new DevComponents.DotNetBar.Controls.DataGridViewLabelXColumn();
-            this.ColOtherENDescription = new DevComponents.DotNetBar.Controls.DataGridViewLabelXColumn();
-            this.ColOtherRegisterAddress = new DevComponents.DotNetBar.Controls.DataGridViewLabelXColumn();
-            this.ColOtherStartBit = new DevComponents.DotNetBar.Controls.DataGridViewLabelXColumn();
-            this.ColOtherStopBit = new DevComponents.DotNetBar.Controls.DataGridViewLabelXColumn();
-            this.ColOtherValue = new DevComponents.DotNetBar.Controls.DataGridViewIntegerInputColumn();
-            this.ColOtherSend = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.btnUpgradeMAP = new System.Windows.Forms.Button();
+            this.btnChoseMAP = new System.Windows.Forms.Button();
+            this.txtMap = new System.Windows.Forms.TextBox();
+            this.label16 = new System.Windows.Forms.Label();
+            this.cbMapPos = new System.Windows.Forms.ComboBox();
+            this.groupBox7 = new System.Windows.Forms.GroupBox();
             this.tabCommonCommand.SuspendLayout();
             this.groupBox5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numGamma)).BeginInit();
@@ -177,22 +148,15 @@
             ((System.ComponentModel.ISupportInitialize)(this.tbBrightness)).BeginInit();
             this.tab2055Param.SuspendLayout();
             this.tabAdvance.SuspendLayout();
-            this.groupBox7.SuspendLayout();
             this.groupBox6.SuspendLayout();
             this.gpFirmwareUpgrade.SuspendLayout();
             this.tabPage1.SuspendLayout();
-            this.tabRegister.SuspendLayout();
+            this.tabControl1.SuspendLayout();
             this.tabPage2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.grid2055)).BeginInit();
             this.tabPage3.SuspendLayout();
-            this.tabPage4.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.gridOtherReg)).BeginInit();
             this.tabTest.SuspendLayout();
             this.groupBox3.SuspendLayout();
-            this.groupBox9.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numSingleRegValue)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numSingleRegAddr)).BeginInit();
-            this.groupBox8.SuspendLayout();
             this.groupBox4.SuspendLayout();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numFlashDataLen)).BeginInit();
@@ -203,6 +167,7 @@
             this.gpTest.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numTestDataLen)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numTimeDelay)).BeginInit();
+            this.groupBox7.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabCommonCommand
@@ -360,65 +325,6 @@
             this.tabAdvance.Size = new System.Drawing.Size(1392, 571);
             this.tabAdvance.TabIndex = 3;
             this.tabAdvance.Text = "高级";
-            // 
-            // groupBox7
-            // 
-            this.groupBox7.Controls.Add(this.cbMapPos);
-            this.groupBox7.Controls.Add(this.txtMap);
-            this.groupBox7.Controls.Add(this.btnUpgradeMAP);
-            this.groupBox7.Controls.Add(this.label16);
-            this.groupBox7.Controls.Add(this.btnChoseMAP);
-            this.groupBox7.Location = new System.Drawing.Point(9, 124);
-            this.groupBox7.Name = "groupBox7";
-            this.groupBox7.Size = new System.Drawing.Size(419, 67);
-            this.groupBox7.TabIndex = 2;
-            this.groupBox7.TabStop = false;
-            this.groupBox7.Text = "MAP下载";
-            // 
-            // cbMapPos
-            // 
-            this.cbMapPos.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbMapPos.FormattingEnabled = true;
-            this.cbMapPos.Location = new System.Drawing.Point(191, 24);
-            this.cbMapPos.Name = "cbMapPos";
-            this.cbMapPos.Size = new System.Drawing.Size(85, 20);
-            this.cbMapPos.TabIndex = 19;
-            // 
-            // txtMap
-            // 
-            this.txtMap.Location = new System.Drawing.Point(43, 23);
-            this.txtMap.Name = "txtMap";
-            this.txtMap.Size = new System.Drawing.Size(141, 21);
-            this.txtMap.TabIndex = 5;
-            // 
-            // btnUpgradeMAP
-            // 
-            this.btnUpgradeMAP.Location = new System.Drawing.Point(324, 22);
-            this.btnUpgradeMAP.Name = "btnUpgradeMAP";
-            this.btnUpgradeMAP.Size = new System.Drawing.Size(75, 23);
-            this.btnUpgradeMAP.TabIndex = 7;
-            this.btnUpgradeMAP.Text = "更新";
-            this.btnUpgradeMAP.UseVisualStyleBackColor = true;
-            this.btnUpgradeMAP.Click += new System.EventHandler(this.btnUpgradeMAP_Click);
-            // 
-            // label16
-            // 
-            this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(8, 26);
-            this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(29, 12);
-            this.label16.TabIndex = 4;
-            this.label16.Text = "MAP:";
-            // 
-            // btnChoseMAP
-            // 
-            this.btnChoseMAP.Location = new System.Drawing.Point(281, 22);
-            this.btnChoseMAP.Name = "btnChoseMAP";
-            this.btnChoseMAP.Size = new System.Drawing.Size(39, 23);
-            this.btnChoseMAP.TabIndex = 6;
-            this.btnChoseMAP.Text = "...";
-            this.btnChoseMAP.UseVisualStyleBackColor = true;
-            this.btnChoseMAP.Click += new System.EventHandler(this.btnChoseMAP_Click);
             // 
             // groupBox6
             // 
@@ -642,7 +548,7 @@
             // tabPage1
             // 
             this.tabPage1.BackColor = System.Drawing.SystemColors.Control;
-            this.tabPage1.Controls.Add(this.tabRegister);
+            this.tabPage1.Controls.Add(this.tabControl1);
             this.tabPage1.Controls.Add(this.btnReadReg);
             this.tabPage1.Controls.Add(this.btnSendAll);
             this.tabPage1.Controls.Add(this.cbParam2055Color);
@@ -659,19 +565,19 @@
             this.tabPage1.TabIndex = 2;
             this.tabPage1.Text = "寄存器设置";
             // 
-            // tabRegister
+            // tabControl1
             // 
-            this.tabRegister.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.tabControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tabRegister.Controls.Add(this.tabPage2);
-            this.tabRegister.Controls.Add(this.tabPage3);
-            this.tabRegister.Controls.Add(this.tabPage4);
-            this.tabRegister.Location = new System.Drawing.Point(0, 42);
-            this.tabRegister.Name = "tabRegister";
-            this.tabRegister.SelectedIndex = 0;
-            this.tabRegister.Size = new System.Drawing.Size(1392, 523);
-            this.tabRegister.TabIndex = 11;
+            this.tabControl1.Controls.Add(this.tabPage2);
+            this.tabControl1.Controls.Add(this.tabPage3);
+            this.tabControl1.Controls.Add(this.tabPage4);
+            this.tabControl1.Location = new System.Drawing.Point(0, 42);
+            this.tabControl1.Name = "tabControl1";
+            this.tabControl1.SelectedIndex = 0;
+            this.tabControl1.Size = new System.Drawing.Size(1392, 523);
+            this.tabControl1.TabIndex = 11;
             // 
             // tabPage2
             // 
@@ -691,8 +597,8 @@
             this.grid2055.AllowUserToOrderColumns = true;
             this.grid2055.AllowUserToResizeColumns = false;
             this.grid2055.AllowUserToResizeRows = false;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.grid2055.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.grid2055.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle4;
             this.grid2055.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.grid2055.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.CoCheckBox,
@@ -884,46 +790,12 @@
             // tabPage4
             // 
             this.tabPage4.BackColor = System.Drawing.SystemColors.Control;
-            this.tabPage4.Controls.Add(this.gridOtherReg);
             this.tabPage4.Location = new System.Drawing.Point(4, 22);
             this.tabPage4.Name = "tabPage4";
             this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage4.Size = new System.Drawing.Size(1384, 497);
             this.tabPage4.TabIndex = 2;
-            this.tabPage4.Text = "其它寄存器";
-            // 
-            // gridOtherReg
-            // 
-            this.gridOtherReg.AllowUserToAddRows = false;
-            this.gridOtherReg.AllowUserToDeleteRows = false;
-            this.gridOtherReg.AllowUserToOrderColumns = true;
-            this.gridOtherReg.AllowUserToResizeColumns = false;
-            this.gridOtherReg.AllowUserToResizeRows = false;
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.gridOtherReg.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle2;
-            this.gridOtherReg.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.gridOtherReg.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.ColOtherCheckBox,
-            this.ColOtherMinValue,
-            this.ColOtherMaxValue,
-            this.ColOtherCNDescription,
-            this.ColOtherENDescription,
-            this.ColOtherRegisterAddress,
-            this.ColOtherStartBit,
-            this.ColOtherStopBit,
-            this.ColOtherValue,
-            this.ColOtherSend});
-            this.gridOtherReg.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gridOtherReg.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
-            this.gridOtherReg.EnableHeadersVisualStyles = false;
-            this.gridOtherReg.Location = new System.Drawing.Point(3, 3);
-            this.gridOtherReg.MultiSelect = false;
-            this.gridOtherReg.Name = "gridOtherReg";
-            this.gridOtherReg.RowHeadersVisible = false;
-            this.gridOtherReg.RowTemplate.Height = 23;
-            this.gridOtherReg.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.gridOtherReg.Size = new System.Drawing.Size(1378, 491);
-            this.gridOtherReg.TabIndex = 1;
+            this.tabPage4.Text = "tabPage4";
             // 
             // btnReadReg
             // 
@@ -1030,8 +902,6 @@
             this.groupBox3.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox3.Controls.Add(this.groupBox9);
-            this.groupBox3.Controls.Add(this.groupBox8);
             this.groupBox3.Controls.Add(this.groupBox4);
             this.groupBox3.Controls.Add(this.label7);
             this.groupBox3.Controls.Add(this.cbChipPos);
@@ -1040,199 +910,16 @@
             this.groupBox3.Controls.Add(this.gpTest);
             this.groupBox3.Location = new System.Drawing.Point(6, 6);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(1376, 405);
+            this.groupBox3.Size = new System.Drawing.Size(1376, 320);
             this.groupBox3.TabIndex = 12;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "FLASH操作";
-            // 
-            // groupBox9
-            // 
-            this.groupBox9.Controls.Add(this.btnSingleRegRead);
-            this.groupBox9.Controls.Add(this.label19);
-            this.groupBox9.Controls.Add(this.btnSetRegister);
-            this.groupBox9.Controls.Add(this.numSingleRegValue);
-            this.groupBox9.Controls.Add(this.numSingleRegAddr);
-            this.groupBox9.Controls.Add(this.label18);
-            this.groupBox9.Location = new System.Drawing.Point(859, 139);
-            this.groupBox9.Name = "groupBox9";
-            this.groupBox9.Size = new System.Drawing.Size(472, 73);
-            this.groupBox9.TabIndex = 19;
-            this.groupBox9.TabStop = false;
-            this.groupBox9.Text = "寄存器操作";
-            // 
-            // btnSingleRegRead
-            // 
-            this.btnSingleRegRead.Location = new System.Drawing.Point(385, 27);
-            this.btnSingleRegRead.Name = "btnSingleRegRead";
-            this.btnSingleRegRead.Size = new System.Drawing.Size(75, 23);
-            this.btnSingleRegRead.TabIndex = 4;
-            this.btnSingleRegRead.Text = "读取";
-            this.btnSingleRegRead.UseVisualStyleBackColor = true;
-            this.btnSingleRegRead.Click += new System.EventHandler(this.btnSingleRegRead_Click);
-            // 
-            // label19
-            // 
-            this.label19.AutoSize = true;
-            this.label19.Location = new System.Drawing.Point(175, 31);
-            this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(29, 12);
-            this.label19.TabIndex = 3;
-            this.label19.Text = "值：";
-            // 
-            // btnSetRegister
-            // 
-            this.btnSetRegister.Location = new System.Drawing.Point(303, 27);
-            this.btnSetRegister.Name = "btnSetRegister";
-            this.btnSetRegister.Size = new System.Drawing.Size(75, 23);
-            this.btnSetRegister.TabIndex = 2;
-            this.btnSetRegister.Text = "设置";
-            this.btnSetRegister.UseVisualStyleBackColor = true;
-            this.btnSetRegister.Click += new System.EventHandler(this.btnSetRegister_Click);
-            // 
-            // numSingleRegValue
-            // 
-            this.numSingleRegValue.Hexadecimal = true;
-            this.numSingleRegValue.Location = new System.Drawing.Point(206, 29);
-            this.numSingleRegValue.Maximum = new decimal(new int[] {
-            99999999,
-            0,
-            0,
-            0});
-            this.numSingleRegValue.Name = "numSingleRegValue";
-            this.numSingleRegValue.Size = new System.Drawing.Size(91, 21);
-            this.numSingleRegValue.TabIndex = 1;
-            // 
-            // numSingleRegAddr
-            // 
-            this.numSingleRegAddr.Hexadecimal = true;
-            this.numSingleRegAddr.Location = new System.Drawing.Point(65, 27);
-            this.numSingleRegAddr.Maximum = new decimal(new int[] {
-            99999999,
-            0,
-            0,
-            0});
-            this.numSingleRegAddr.Name = "numSingleRegAddr";
-            this.numSingleRegAddr.Size = new System.Drawing.Size(91, 21);
-            this.numSingleRegAddr.TabIndex = 1;
-            // 
-            // label18
-            // 
-            this.label18.AutoSize = true;
-            this.label18.Location = new System.Drawing.Point(18, 31);
-            this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(41, 12);
-            this.label18.TabIndex = 0;
-            this.label18.Text = "地址：";
-            // 
-            // groupBox8
-            // 
-            this.groupBox8.Controls.Add(this.btnSDRAMToFlash);
-            this.groupBox8.Controls.Add(this.btnSetB6B7);
-            this.groupBox8.Controls.Add(this.btnOpenCalibration);
-            this.groupBox8.Controls.Add(this.btnWriteErrorCalibrationData);
-            this.groupBox8.Controls.Add(this.btnReadCalibration);
-            this.groupBox8.Controls.Add(this.btnUpgradeCalibration);
-            this.groupBox8.Controls.Add(this.btnChoseCalibrationFile);
-            this.groupBox8.Controls.Add(this.txtCalibration);
-            this.groupBox8.Controls.Add(this.label17);
-            this.groupBox8.Location = new System.Drawing.Point(6, 139);
-            this.groupBox8.Name = "groupBox8";
-            this.groupBox8.Size = new System.Drawing.Size(621, 88);
-            this.groupBox8.TabIndex = 18;
-            this.groupBox8.TabStop = false;
-            this.groupBox8.Text = "校正数据读,写";
-            // 
-            // btnSDRAMToFlash
-            // 
-            this.btnSDRAMToFlash.Location = new System.Drawing.Point(517, 17);
-            this.btnSDRAMToFlash.Name = "btnSDRAMToFlash";
-            this.btnSDRAMToFlash.Size = new System.Drawing.Size(102, 23);
-            this.btnSDRAMToFlash.TabIndex = 13;
-            this.btnSDRAMToFlash.Text = "SDRAM->FLASH";
-            this.btnSDRAMToFlash.UseVisualStyleBackColor = true;
-            this.btnSDRAMToFlash.Click += new System.EventHandler(this.btnSDRAMToFlash_Click);
-            // 
-            // btnSetB6B7
-            // 
-            this.btnSetB6B7.Location = new System.Drawing.Point(426, 18);
-            this.btnSetB6B7.Name = "btnSetB6B7";
-            this.btnSetB6B7.Size = new System.Drawing.Size(87, 23);
-            this.btnSetB6B7.TabIndex = 12;
-            this.btnSetB6B7.Text = "设置数据长度";
-            this.btnSetB6B7.UseVisualStyleBackColor = true;
-            this.btnSetB6B7.Click += new System.EventHandler(this.btnSetB6B7_Click);
-            // 
-            // btnOpenCalibration
-            // 
-            this.btnOpenCalibration.Location = new System.Drawing.Point(346, 20);
-            this.btnOpenCalibration.Name = "btnOpenCalibration";
-            this.btnOpenCalibration.Size = new System.Drawing.Size(75, 23);
-            this.btnOpenCalibration.TabIndex = 11;
-            this.btnOpenCalibration.Text = "开启校正";
-            this.btnOpenCalibration.UseVisualStyleBackColor = true;
-            this.btnOpenCalibration.Click += new System.EventHandler(this.btnOpenCalibration_Click);
-            // 
-            // btnWriteErrorCalibrationData
-            // 
-            this.btnWriteErrorCalibrationData.Location = new System.Drawing.Point(269, 50);
-            this.btnWriteErrorCalibrationData.Name = "btnWriteErrorCalibrationData";
-            this.btnWriteErrorCalibrationData.Size = new System.Drawing.Size(75, 23);
-            this.btnWriteErrorCalibrationData.TabIndex = 10;
-            this.btnWriteErrorCalibrationData.Text = "写入错误数据";
-            this.btnWriteErrorCalibrationData.UseVisualStyleBackColor = true;
-            this.btnWriteErrorCalibrationData.Click += new System.EventHandler(this.btnWriteErrorCalibrationData_Click);
-            // 
-            // btnReadCalibration
-            // 
-            this.btnReadCalibration.Location = new System.Drawing.Point(346, 50);
-            this.btnReadCalibration.Name = "btnReadCalibration";
-            this.btnReadCalibration.Size = new System.Drawing.Size(75, 23);
-            this.btnReadCalibration.TabIndex = 9;
-            this.btnReadCalibration.Text = "读取";
-            this.btnReadCalibration.UseVisualStyleBackColor = true;
-            this.btnReadCalibration.Click += new System.EventHandler(this.btnReadCalibration_Click);
-            // 
-            // btnUpgradeCalibration
-            // 
-            this.btnUpgradeCalibration.Location = new System.Drawing.Point(269, 20);
-            this.btnUpgradeCalibration.Name = "btnUpgradeCalibration";
-            this.btnUpgradeCalibration.Size = new System.Drawing.Size(75, 23);
-            this.btnUpgradeCalibration.TabIndex = 8;
-            this.btnUpgradeCalibration.Text = "写入";
-            this.btnUpgradeCalibration.UseVisualStyleBackColor = true;
-            this.btnUpgradeCalibration.Click += new System.EventHandler(this.btnUpgradeCalibration_Click);
-            // 
-            // btnChoseCalibrationFile
-            // 
-            this.btnChoseCalibrationFile.Location = new System.Drawing.Point(220, 20);
-            this.btnChoseCalibrationFile.Name = "btnChoseCalibrationFile";
-            this.btnChoseCalibrationFile.Size = new System.Drawing.Size(39, 23);
-            this.btnChoseCalibrationFile.TabIndex = 7;
-            this.btnChoseCalibrationFile.Text = "...";
-            this.btnChoseCalibrationFile.UseVisualStyleBackColor = true;
-            this.btnChoseCalibrationFile.Click += new System.EventHandler(this.btnChoseCalibrationFile_Click);
-            // 
-            // txtCalibration
-            // 
-            this.txtCalibration.Location = new System.Drawing.Point(42, 20);
-            this.txtCalibration.Name = "txtCalibration";
-            this.txtCalibration.Size = new System.Drawing.Size(168, 21);
-            this.txtCalibration.TabIndex = 6;
-            // 
-            // label17
-            // 
-            this.label17.AutoSize = true;
-            this.label17.Location = new System.Drawing.Point(7, 23);
-            this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(35, 12);
-            this.label17.TabIndex = 5;
-            this.label17.Text = "文件:";
             // 
             // groupBox4
             // 
             this.groupBox4.Controls.Add(this.btnLoadVideoCardParam);
             this.groupBox4.Controls.Add(this.cbVideocardLoadParam);
-            this.groupBox4.Location = new System.Drawing.Point(633, 139);
+            this.groupBox4.Location = new System.Drawing.Point(6, 139);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Size = new System.Drawing.Size(220, 55);
             this.groupBox4.TabIndex = 17;
@@ -1315,7 +1002,7 @@
             // 
             this.numFlashDataLen.Location = new System.Drawing.Point(89, 46);
             this.numFlashDataLen.Maximum = new decimal(new int[] {
-            99999999,
+            65535,
             0,
             0,
             0});
@@ -1368,9 +1055,9 @@
             this.groupBox2.Controls.Add(this.label3);
             this.groupBox2.Controls.Add(this.numSDRAMAddr);
             this.groupBox2.Controls.Add(this.label4);
-            this.groupBox2.Location = new System.Drawing.Point(266, 49);
+            this.groupBox2.Location = new System.Drawing.Point(266, 47);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(361, 84);
+            this.groupBox2.Size = new System.Drawing.Size(254, 116);
             this.groupBox2.TabIndex = 1;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "读写SDRAN";
@@ -1387,7 +1074,7 @@
             // 
             // btnSDRAMWriteToFlash
             // 
-            this.btnSDRAMWriteToFlash.Location = new System.Drawing.Point(250, 19);
+            this.btnSDRAMWriteToFlash.Location = new System.Drawing.Point(156, 77);
             this.btnSDRAMWriteToFlash.Name = "btnSDRAMWriteToFlash";
             this.btnSDRAMWriteToFlash.Size = new System.Drawing.Size(88, 23);
             this.btnSDRAMWriteToFlash.TabIndex = 2;
@@ -1409,7 +1096,7 @@
             // 
             this.numSDRAMDataLength.Location = new System.Drawing.Point(89, 46);
             this.numSDRAMDataLength.Maximum = new decimal(new int[] {
-            999999999,
+            65535,
             0,
             0,
             0});
@@ -1467,16 +1154,16 @@
             this.gpTest.Controls.Add(this.button1);
             this.gpTest.Controls.Add(this.numTimeDelay);
             this.gpTest.Controls.Add(this.button2);
-            this.gpTest.Location = new System.Drawing.Point(633, 49);
+            this.gpTest.Location = new System.Drawing.Point(526, 47);
             this.gpTest.Name = "gpTest";
-            this.gpTest.Size = new System.Drawing.Size(698, 84);
+            this.gpTest.Size = new System.Drawing.Size(451, 116);
             this.gpTest.TabIndex = 9;
             this.gpTest.TabStop = false;
             this.gpTest.Text = "稳定性测试";
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(448, 50);
+            this.button4.Location = new System.Drawing.Point(339, 82);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(75, 23);
             this.button4.TabIndex = 11;
@@ -1486,7 +1173,7 @@
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(589, 21);
+            this.button3.Location = new System.Drawing.Point(246, 82);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(75, 23);
             this.button3.TabIndex = 10;
@@ -1496,7 +1183,7 @@
             // 
             // btnWriteSdramReadSdram
             // 
-            this.btnWriteSdramReadSdram.Location = new System.Drawing.Point(472, 21);
+            this.btnWriteSdramReadSdram.Location = new System.Drawing.Point(129, 82);
             this.btnWriteSdramReadSdram.Name = "btnWriteSdramReadSdram";
             this.btnWriteSdramReadSdram.Size = new System.Drawing.Size(110, 23);
             this.btnWriteSdramReadSdram.TabIndex = 9;
@@ -1506,7 +1193,7 @@
             // 
             // btnReadAndWriteFlash
             // 
-            this.btnReadAndWriteFlash.Location = new System.Drawing.Point(349, 21);
+            this.btnReadAndWriteFlash.Location = new System.Drawing.Point(6, 82);
             this.btnReadAndWriteFlash.Name = "btnReadAndWriteFlash";
             this.btnReadAndWriteFlash.Size = new System.Drawing.Size(113, 23);
             this.btnReadAndWriteFlash.TabIndex = 8;
@@ -1516,7 +1203,7 @@
             // 
             // btnTest3
             // 
-            this.btnTest3.Location = new System.Drawing.Point(261, 50);
+            this.btnTest3.Location = new System.Drawing.Point(260, 43);
             this.btnTest3.Name = "btnTest3";
             this.btnTest3.Size = new System.Drawing.Size(181, 23);
             this.btnTest3.TabIndex = 7;
@@ -1526,7 +1213,7 @@
             // 
             // btnReadWriteSend
             // 
-            this.btnReadWriteSend.Location = new System.Drawing.Point(130, 50);
+            this.btnReadWriteSend.Location = new System.Drawing.Point(129, 43);
             this.btnReadWriteSend.Name = "btnReadWriteSend";
             this.btnReadWriteSend.Size = new System.Drawing.Size(130, 23);
             this.btnReadWriteSend.TabIndex = 4;
@@ -1571,7 +1258,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(11, 50);
+            this.button1.Location = new System.Drawing.Point(10, 43);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(113, 23);
             this.button1.TabIndex = 2;
@@ -1606,88 +1293,64 @@
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
-            // ColOtherCheckBox
+            // btnUpgradeMAP
             // 
-            this.ColOtherCheckBox.DataPropertyName = "IsSelected";
-            this.ColOtherCheckBox.Frozen = true;
-            this.ColOtherCheckBox.HeaderText = "";
-            this.ColOtherCheckBox.Name = "ColOtherCheckBox";
-            this.ColOtherCheckBox.Width = 30;
+            this.btnUpgradeMAP.Location = new System.Drawing.Point(324, 22);
+            this.btnUpgradeMAP.Name = "btnUpgradeMAP";
+            this.btnUpgradeMAP.Size = new System.Drawing.Size(75, 23);
+            this.btnUpgradeMAP.TabIndex = 7;
+            this.btnUpgradeMAP.Text = "更新";
+            this.btnUpgradeMAP.UseVisualStyleBackColor = true;
+            this.btnUpgradeMAP.Click += new System.EventHandler(this.btnUpgradeMAP_Click);
             // 
-            // ColOtherMinValue
+            // btnChoseMAP
             // 
-            this.ColOtherMinValue.DataPropertyName = "MinValue";
-            this.ColOtherMinValue.Frozen = true;
-            this.ColOtherMinValue.HeaderText = "最小值";
-            this.ColOtherMinValue.Name = "ColOtherMinValue";
+            this.btnChoseMAP.Location = new System.Drawing.Point(281, 22);
+            this.btnChoseMAP.Name = "btnChoseMAP";
+            this.btnChoseMAP.Size = new System.Drawing.Size(39, 23);
+            this.btnChoseMAP.TabIndex = 6;
+            this.btnChoseMAP.Text = "...";
+            this.btnChoseMAP.UseVisualStyleBackColor = true;
+            this.btnChoseMAP.Click += new System.EventHandler(this.btnChoseMAP_Click);
             // 
-            // ColOtherMaxValue
+            // txtMap
             // 
-            this.ColOtherMaxValue.DataPropertyName = "MaxValue";
-            this.ColOtherMaxValue.Frozen = true;
-            this.ColOtherMaxValue.HeaderText = "最大值";
-            this.ColOtherMaxValue.Name = "ColOtherMaxValue";
+            this.txtMap.Location = new System.Drawing.Point(43, 23);
+            this.txtMap.Name = "txtMap";
+            this.txtMap.Size = new System.Drawing.Size(141, 21);
+            this.txtMap.TabIndex = 5;
             // 
-            // ColOtherCNDescription
+            // label16
             // 
-            this.ColOtherCNDescription.DataPropertyName = "ChineseDescription";
-            this.ColOtherCNDescription.Frozen = true;
-            this.ColOtherCNDescription.HeaderText = "描述";
-            this.ColOtherCNDescription.Name = "ColOtherCNDescription";
-            this.ColOtherCNDescription.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.ColOtherCNDescription.Width = 150;
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(8, 26);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(29, 12);
+            this.label16.TabIndex = 4;
+            this.label16.Text = "MAP:";
             // 
-            // ColOtherENDescription
+            // cbMapPos
             // 
-            this.ColOtherENDescription.DataPropertyName = "EnglishDescription";
-            this.ColOtherENDescription.Frozen = true;
-            this.ColOtherENDescription.HeaderText = "描述";
-            this.ColOtherENDescription.Name = "ColOtherENDescription";
+            this.cbMapPos.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbMapPos.FormattingEnabled = true;
+            this.cbMapPos.Location = new System.Drawing.Point(191, 24);
+            this.cbMapPos.Name = "cbMapPos";
+            this.cbMapPos.Size = new System.Drawing.Size(85, 20);
+            this.cbMapPos.TabIndex = 19;
             // 
-            // ColOtherRegisterAddress
+            // groupBox7
             // 
-            this.ColOtherRegisterAddress.DataPropertyName = "Address";
-            this.ColOtherRegisterAddress.Frozen = true;
-            this.ColOtherRegisterAddress.HeaderText = "地址";
-            this.ColOtherRegisterAddress.Name = "ColOtherRegisterAddress";
-            // 
-            // ColOtherStartBit
-            // 
-            this.ColOtherStartBit.DataPropertyName = "StartBit";
-            this.ColOtherStartBit.Frozen = true;
-            this.ColOtherStartBit.HeaderText = "起始位";
-            this.ColOtherStartBit.Name = "ColOtherStartBit";
-            // 
-            // ColOtherStopBit
-            // 
-            this.ColOtherStopBit.DataPropertyName = "StopBit";
-            this.ColOtherStopBit.Frozen = true;
-            this.ColOtherStopBit.HeaderText = "终止位";
-            this.ColOtherStopBit.Name = "ColOtherStopBit";
-            // 
-            // ColOtherValue
-            // 
-            // 
-            // 
-            // 
-            this.ColOtherValue.BackgroundStyle.Class = "DataGridViewNumericBorder";
-            this.ColOtherValue.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.ColOtherValue.DataPropertyName = "Value";
-            this.ColOtherValue.Frozen = true;
-            this.ColOtherValue.HeaderText = "值";
-            this.ColOtherValue.Name = "ColOtherValue";
-            this.ColOtherValue.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.ColOtherValue.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // ColOtherSend
-            // 
-            this.ColOtherSend.DataPropertyName = "Send";
-            this.ColOtherSend.Frozen = true;
-            this.ColOtherSend.HeaderText = "";
-            this.ColOtherSend.Name = "ColOtherSend";
-            this.ColOtherSend.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.ColOtherSend.Text = "发送";
-            this.ColOtherSend.UseColumnTextForButtonValue = true;
+            this.groupBox7.Controls.Add(this.cbMapPos);
+            this.groupBox7.Controls.Add(this.txtMap);
+            this.groupBox7.Controls.Add(this.btnUpgradeMAP);
+            this.groupBox7.Controls.Add(this.label16);
+            this.groupBox7.Controls.Add(this.btnChoseMAP);
+            this.groupBox7.Location = new System.Drawing.Point(9, 124);
+            this.groupBox7.Name = "groupBox7";
+            this.groupBox7.Size = new System.Drawing.Size(419, 67);
+            this.groupBox7.TabIndex = 2;
+            this.groupBox7.TabStop = false;
+            this.groupBox7.Text = "MAP下载";
             // 
             // MainForm
             // 
@@ -1708,29 +1371,19 @@
             ((System.ComponentModel.ISupportInitialize)(this.tbBrightness)).EndInit();
             this.tab2055Param.ResumeLayout(false);
             this.tabAdvance.ResumeLayout(false);
-            this.groupBox7.ResumeLayout(false);
-            this.groupBox7.PerformLayout();
             this.groupBox6.ResumeLayout(false);
             this.groupBox6.PerformLayout();
             this.gpFirmwareUpgrade.ResumeLayout(false);
             this.gpFirmwareUpgrade.PerformLayout();
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
-            this.tabRegister.ResumeLayout(false);
+            this.tabControl1.ResumeLayout(false);
             this.tabPage2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.grid2055)).EndInit();
             this.tabPage3.ResumeLayout(false);
-            this.tabPage4.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.gridOtherReg)).EndInit();
             this.tabTest.ResumeLayout(false);
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
-            this.groupBox9.ResumeLayout(false);
-            this.groupBox9.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numSingleRegValue)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numSingleRegAddr)).EndInit();
-            this.groupBox8.ResumeLayout(false);
-            this.groupBox8.PerformLayout();
             this.groupBox4.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
@@ -1744,6 +1397,8 @@
             this.gpTest.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numTestDataLen)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numTimeDelay)).EndInit();
+            this.groupBox7.ResumeLayout(false);
+            this.groupBox7.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -1835,7 +1490,7 @@
         private System.Windows.Forms.ComboBox cbChipPos;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.ComboBox cbAdvChip;
-        private System.Windows.Forms.TabControl tabRegister;
+        private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.TabPage tabPage3;
         private System.Windows.Forms.RichTextBox rtOtherReg;
@@ -1860,34 +1515,6 @@
         private System.Windows.Forms.Label label16;
         private System.Windows.Forms.ComboBox cbMapPos;
         private System.Windows.Forms.GroupBox groupBox7;
-        private System.Windows.Forms.DataGridView gridOtherReg;
-        private System.Windows.Forms.GroupBox groupBox8;
-        private System.Windows.Forms.Button btnReadCalibration;
-        private System.Windows.Forms.Button btnUpgradeCalibration;
-        private System.Windows.Forms.Button btnChoseCalibrationFile;
-        private System.Windows.Forms.TextBox txtCalibration;
-        private System.Windows.Forms.Label label17;
-        private System.Windows.Forms.Button btnWriteErrorCalibrationData;
-        private System.Windows.Forms.Button btnOpenCalibration;
-        private System.Windows.Forms.Button btnSetB6B7;
-        private System.Windows.Forms.Button btnSDRAMToFlash;
-        private System.Windows.Forms.GroupBox groupBox9;
-        private System.Windows.Forms.Label label19;
-        private System.Windows.Forms.Button btnSetRegister;
-        private System.Windows.Forms.NumericUpDown numSingleRegValue;
-        private System.Windows.Forms.NumericUpDown numSingleRegAddr;
-        private System.Windows.Forms.Label label18;
-        private System.Windows.Forms.Button btnSingleRegRead;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn ColOtherCheckBox;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ColOtherMinValue;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ColOtherMaxValue;
-        private DevComponents.DotNetBar.Controls.DataGridViewLabelXColumn ColOtherCNDescription;
-        private DevComponents.DotNetBar.Controls.DataGridViewLabelXColumn ColOtherENDescription;
-        private DevComponents.DotNetBar.Controls.DataGridViewLabelXColumn ColOtherRegisterAddress;
-        private DevComponents.DotNetBar.Controls.DataGridViewLabelXColumn ColOtherStartBit;
-        private DevComponents.DotNetBar.Controls.DataGridViewLabelXColumn ColOtherStopBit;
-        private DevComponents.DotNetBar.Controls.DataGridViewIntegerInputColumn ColOtherValue;
-        private System.Windows.Forms.DataGridViewButtonColumn ColOtherSend;
     }
 }
 

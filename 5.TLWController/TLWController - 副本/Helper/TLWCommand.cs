@@ -1177,48 +1177,6 @@ namespace TLWController.Helper
             int result = _Command.tlw_GetVersion(hDevice, addr, id, chip, mode, dst, 0, nLen);
             return result;
         }
-
-        public int tlw_SDRAM_Write(int device, ushort addrMB, ushort id, UInt32 startAddr, byte[] pData)
-        {
-            int result = 0;
-            if (pData.Length <= 1024)
-            {
-                result = _Command.tlw_SDRAM_Write(device, addrMB, id, startAddr, pData, 0, pData.Length);
-            }
-            else
-            {
-                result = _Command.tlw_SDRAM_BatchWrite(device, addrMB, id, startAddr, pData, 0, pData.Length, ProgressCallBackFunc);
-            }
-            return result;
-        }
-
-        public int tlw_SDRAM_Read(int device, ushort addrMB, ushort id, UInt32 startAddr, byte[] pData)
-        {
-            int result = 0;
-            if (pData.Length <= 1024)
-            {
-                result = _Command.tlw_SDRAM_Read(device, addrMB, id, startAddr, pData, 0, pData.Length);
-            }
-            else
-            {
-                result = _Command.tlw_SDRAM_BatchRead(device, addrMB, id, startAddr, pData, 0, pData.Length, ProgressCallBackFunc);
-            }
-            return result;
-        }
-
-        public int tlw_WriteRegister(int device, ushort addrMB, ushort id, byte chip, UInt32 regAddr, uint regVal, bool bSave)
-        {
-            int result = 0;
-            result = _Command.tlw_WriteRegister(device, addrMB, id, chip, regAddr, regVal, bSave);
-            return result;
-        }
-
-        public int tlw_SDRAM_WriteToFLASH(int device, ushort addrMB, ushort id)
-        {
-            int result = 0;
-            result = _Command.tlw_SDRAM_WriteToFLASH(device, addrMB, id);
-            return result;
-        }
         #endregion
 
         #endregion

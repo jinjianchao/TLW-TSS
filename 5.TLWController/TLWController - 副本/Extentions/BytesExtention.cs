@@ -202,7 +202,7 @@ namespace TLWController.Extentions
         /// <param name="startBit"></param>
         /// <param name="stopBit"></param>
         /// <returns></returns>
-        public static byte GetBitRangeValueFromByte(this byte source, int startBit, int stopBit)
+        public static byte GetBitRangeValue(this byte source, int startBit, int stopBit)
         {
             //11111111
             //11000000 start = 2 stop =4
@@ -211,83 +211,6 @@ namespace TLWController.Extentions
             return val2;
         }
 
-        /// <summary>
-        /// 从Uint16中截取指定位中的数据
-        /// </summary>
-        /// <param name="source"></param>
-        /// <param name="startBit"></param>
-        /// <param name="stopBit"></param>
-        /// <returns></returns>
-        public static UInt16 GetBitRangeValueFromUInt16(this UInt16 source, int startBit, int stopBit)
-        {
-            //11111111
-            //11000000 start = 2 stop =4
-            UInt16 val1 = (UInt16)(source << (16 - stopBit - 1));
-            UInt16 val2 = (UInt16)(val1 >> (16 - (stopBit - startBit + 1)));
-            return val2;
-        }
 
-        public static byte[] Fill(this byte[] source, byte value)
-        {
-            for (int i = 0; i < source.Length; i++)
-            {
-                source[i] = value;
-            }
-            return source;
-        }
-
-        public static byte[,] Fill(this byte[,] source, byte value)
-        {
-            for (int i = 0; i < source.GetLength(0); i++)
-            {
-                for (int j = 0; j < source.GetLength(1); j++)
-                {
-                    source[i, j] = value;
-                }
-            }
-            return source;
-        }
-
-        public static bool IsEqual(this byte[] source, byte[] target)
-        {
-            for (int i = 0; i < source.Length; i++)
-            {
-                if (source[i] != target[i]) return false;
-            }
-            return true;
-        }
-
-        public static bool IsEqual(this byte[] source, byte[] target, out int diffIndex, out byte sourceData, out byte targetData)
-        {
-            diffIndex = 0;
-            sourceData = 0;
-            targetData = 0;
-            for (int i = 0; i < source.Length; i++)
-            {
-                if (source[i] != target[i])
-                {
-                    diffIndex = i;
-                    sourceData = source[i];
-                    targetData = target[i];
-                    return false;
-                }
-            }
-            return true;
-        }
-
-        public static UInt16[] ToUInt16(this byte[] source)
-        {
-            UInt16[] uintData = new UInt16[source.Length / 2];
-            int position = 0;
-            for (int i = 0; i < uintData.Length; i++)
-            {
-                byte[] byteData = new byte[2];
-                byteData[0] = source[position];
-                byteData[1] = source[position + 1];
-                uintData[i] = byteData.GetUInt16();
-                position += 2;
-            }
-            return uintData;
-        }
     }
 }
