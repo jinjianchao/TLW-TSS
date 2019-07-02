@@ -18,7 +18,6 @@ using System.Text;
 using System.Threading.Tasks;
 using TLWComm;
 using TLWController.Events;
-using TLWController.Extentions;
 
 namespace TLWController.Helper
 {
@@ -303,66 +302,6 @@ namespace TLWController.Helper
                             else
                             {
                                 returnParam[param.Index].ResultCode = _Command.tlw_FLASH_BatchWrite(param.Dev, addrMB, 0, chipPos, startAddr, pData, 0, pData.Length, ProgressCallBackFunc);
-
-                                int count = pData.Length / 1024;
-                                for (int j = 0; j < count; j++)
-                                {
-                                    byte[] tmpData = new byte[1024];
-                                    Array.Copy(pData, j * 1024, tmpData, 0, 1024);
-                                    returnParam[param.Index].ResultCode = _Command.tlw_FLASH_Write(param.Dev, addrMB, 0, chipPos, (uint)(startAddr + j * 1024), tmpData, 0, tmpData.Length);
-                                    int percent = (j + 1) / count * 100;
-                                    ProgressCallBackFunc(param.Dev, percent, $"{j + 1}/{count}");
-                                    System.Threading.Thread.Sleep(100);
-                                }
-                            }
-                        }
-                    },
-                    new InParam()
-                    {
-                        Index = i,
-                        IP = item.Key,
-                        Dev = item.Value
-                    },
-                    TaskCreationOptions.AttachedToParent).Start();
-                    i++;
-                }
-                return returnParam;
-            }, null);
-            task.ContinueWith(t =>
-            {
-                action(t.Result);
-            });
-            task.Start();
-        }
-
-        public void tlw_WriteMap(ushort addrMB, ushort id, byte chipPos, UInt32 startAddr, byte[] pData, uint sectorSize, Dictionary<string, int> ips, Action<ReturnParam[]> action)
-        {
-            Task<ReturnParam[]> task = new Task<ReturnParam[]>(obj =>
-            {
-                ReturnParam[] returnParam = new ReturnParam[ips.Count];
-                int i = 0;
-                foreach (var item in ips)
-                {
-                    new Task((inParam) =>
-                    {
-                        InParam param = (inParam as InParam);
-                        returnParam[param.Index] = new ReturnParam();
-                        returnParam[param.Index].IP = param.IP;
-                        returnParam[param.Index].Dev = param.Dev;
-
-                        returnParam[param.Index].ResultCode = 0;
-                        if (returnParam[param.Index].ResultCode == 0)
-                        {
-                            int count = pData.Length / 1024;
-                            for (int j = 0; j < count; j++)
-                            {
-                                byte[] tmpData = new byte[1024];
-                                Array.Copy(pData, j * 1024, tmpData, 0, 1024);
-                                returnParam[param.Index].ResultCode = _Command.tlw_FLASH_Write(param.Dev, addrMB, 0, chipPos, (uint)(startAddr + j * 1024), tmpData, 0, tmpData.Length);
-                                int percent = (j + 1) / count * 100;
-                                ProgressCallBackFunc(param.Dev, percent, $"{j + 1}/{count}");
-                                if (j == 0) System.Threading.Thread.Sleep(2000);//第一包数据延时两秒,需要擦除
-                                System.Threading.Thread.Sleep(100);
                             }
                         }
                     },
@@ -434,7 +373,7 @@ namespace TLWController.Helper
         public void tlw_WriteMAP(ushort addrMB, ushort id, byte chipPos, byte[] pData, uint sectorSize, Dictionary<string, int> ips, Action<ReturnParam[]> action)
         {
             UInt32 addr = 0x3E8000;
-            tlw_WriteMap(addrMB, id, chipPos, addr, pData, sectorSize, ips, action);
+            tlw_FLASH_Write(addrMB, id, chipPos, addr, pData, sectorSize, ips, action);
         }
 
         /// <summary>
@@ -539,7 +478,6 @@ namespace TLWController.Helper
                         else
                         {
                             returnParam[param.Index].ResultCode = _Command.tlw_SDRAM_BatchRead(param.Dev, addr, id, startAddr, pData, 0, pData.Length, ProgressCallBackFunc);
-
                         }
 
 

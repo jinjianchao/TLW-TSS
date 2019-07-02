@@ -55,11 +55,6 @@ namespace TLWController.Helper
         /// SDRAM数据长度
         /// </summary>
         public int SDRAMDataLength { get; set; }
-
-        /// <summary>
-        /// 视频卡加载
-        /// </summary>
-        public int VideocardLoadParam { get; set; }
     }
 
 }

@@ -135,7 +135,13 @@
     <None Include="Lib\tlw.dll" />
     <None Include="Lib\TLWComm.dll" />
     <None Include="Lib\UnitInfo.dll" />
-    <Content Include="Config\Param2055_Default.txt">
+    <Content Include="Config\Param2055 - 复制%282%29.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Config\Param2055 - 复制%283%29.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Config\Param2055 - 复制.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Config\Param2055.txt">

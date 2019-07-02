@@ -74,8 +74,6 @@ namespace TLWController
             BindRegisterChip();
             BindAdvChip();
             BindVideoCardParamType();
-            BindWorkMode();
-            BindCalibrationOnOff();
             WriteOrReadInterfaceData(false); ;
             if (!Import2055Param(registerAddressFile))
             {
@@ -162,9 +160,9 @@ namespace TLWController
             cbChipPos.ValueMember = "Value";
             cbChipPos.DisplayMember = "Text";
             cbChipPos.DataSource = items;
-            //cbMapPos.ValueMember = "Value";
-            //cbMapPos.DisplayMember = "Text";
-            //cbMapPos.DataSource = items;
+            cbMapPos.ValueMember = "Value";
+            cbMapPos.DisplayMember = "Text";
+            cbMapPos.DataSource = items;
 
         }
 
@@ -257,61 +255,6 @@ namespace TLWController
             cbVideocardLoadParam.DataSource = items;
         }
 
-        private void BindWorkMode()
-        {
-            //0 全部加载 1校正数据 2 红色GAMMA 3绿色GAMMA 4蓝色GAMMA 5 MAP  6 寄存器数组1  7 寄存器数组2
-            //            十六进制
-            //00 视频
-            //80 白
-            //81 黑
-            //82 蓝色
-            //83 绿色
-            //84 红色
-            //85 灰度渐变
-            //86 低灰度渐变
-            //87 斜线
-
-            List<ListItem> items = new List<ListItem>()
-            {
-                new ListItem(){ Value=0x00, Text="视频" },
-                new ListItem(){ Value=0x80, Text="白" },
-                new ListItem(){ Value=0x81, Text="黑" },
-                new ListItem(){ Value=0x82, Text="蓝色" },
-                new ListItem(){ Value=0x83, Text="绿色" },
-                new ListItem(){ Value=0x84, Text="红色" },
-                new ListItem(){ Value=0x85, Text="灰度渐变" },
-                new ListItem(){ Value=0x86, Text="低灰度渐变" },
-                new ListItem(){ Value=0x87, Text="斜线" }
-            };
-            cbWorkMode.ValueMember = "Value";
-            cbWorkMode.DisplayMember = "Text";
-            cbWorkMode.DataSource = items;
-        }
-
-        private void BindCalibrationOnOff()
-        {
-            //0 全部加载 1校正数据 2 红色GAMMA 3绿色GAMMA 4蓝色GAMMA 5 MAP  6 寄存器数组1  7 寄存器数组2
-            //            十六进制
-            //00 视频
-            //80 白
-            //81 黑
-            //82 蓝色
-            //83 绿色
-            //84 红色
-            //85 灰度渐变
-            //86 低灰度渐变
-            //87 斜线
-
-            List<ListItem> items = new List<ListItem>()
-            {
-                new ListItem(){ Value=0x00, Text="关" },
-                new ListItem(){ Value=0x01, Text="开" }
-            };
-            cbCalibrationOnOff.ValueMember = "Value";
-            cbCalibrationOnOff.DisplayMember = "Text";
-            cbCalibrationOnOff.DataSource = items;
-        }
-
         #endregion
 
         #region 辅助方法
@@ -328,7 +271,7 @@ namespace TLWController
                 _InterfaceData.FLASHDataLength = (int)numFlashDataLen.Value;
                 _InterfaceData.SDRAMAddress = (int)numSDRAMAddr.Value;
                 _InterfaceData.SDRAMDataLength = (int)numSDRAMDataLength.Value;
-                _InterfaceData.VideocardLoadParam = (int)cbVideocardLoadParam.SelectedIndex;
+
                 _InterfaceData.SerializeXML<InterfaceData>(file);
             }
             else
@@ -345,7 +288,6 @@ namespace TLWController
                 numFlashDataLen.Value = _InterfaceData.FLASHDataLength;
                 numSDRAMAddr.Value = _InterfaceData.SDRAMAddress;
                 numSDRAMDataLength.Value = _InterfaceData.SDRAMDataLength;
-                cbVideocardLoadParam.SelectedIndex = _InterfaceData.VideocardLoadParam;
             }
         }
 
@@ -437,14 +379,6 @@ namespace TLWController
             textWriter.Close();
         }
 
-        string ReadTextFile(string file)
-        {
-            TextReader textReader = new StreamReader(file);
-            string str = textReader.ReadToEnd();
-            textReader.Close();
-            return str;
-        }
-
         void WriteMessage(string message)
         {
             WriteLine(message, true);
@@ -506,12 +440,6 @@ namespace TLWController
             }
 
             ushort cardAddr = (ushort)(addr.X << 8 | addr.Y);
-            return cardAddr;
-        }
-
-        ushort GetCardAddress(int x, int y)
-        {
-            ushort cardAddr = (ushort)(x << 8 | y);
             return cardAddr;
         }
 
@@ -645,11 +573,11 @@ namespace TLWController
             grid2055.AllowUserToOrderColumns = false;
             ckDebugMode.Checked = register.IsDebug;
 
-            gridOtherReg.DataSource = register.RegisterOtherItemList;
+
             gridOtherReg.Columns["ColOtherCheckBox"].DisplayIndex = 0;
             gridOtherReg.Columns["ColOtherENDescription"].DisplayIndex = 1;
-            gridOtherReg.Columns["ColOtherCNDescription"].DisplayIndex = 1;
-            gridOtherReg.Columns["ColOtherRegisterAddress"].DisplayIndex = 2;
+            gridOtherReg.Columns["ColOtherCNDescription"].DisplayIndex = 2;
+            gridOtherReg.Columns["ColOtherRegisterAddress"].DisplayIndex = 3;
             gridOtherReg.Columns["ColOtherStartBit"].DisplayIndex = 4;
             gridOtherReg.Columns["ColOtherStopBit"].DisplayIndex = 5;
             gridOtherReg.Columns["ColOtherMinValue"].DisplayIndex = 6;
@@ -658,12 +586,12 @@ namespace TLWController
             if (lang == "2052")
             {
                 gridOtherReg.Columns["ColOtherENDescription"].Visible = false;
-                gridOtherReg.Columns["ColOtherCNDescription"].Width = 500;
+                gridOtherReg.Columns["ColOtherCNDescription"].Width = 300;
             }
             else
             {
                 gridOtherReg.Columns["ColOtherCNDescription"].Visible = false;
-                gridOtherReg.Columns["ColOtherENDescription"].Width = 500;
+                gridOtherReg.Columns["ColOtherENDescription"].Width = 300;
             }
             gridOtherReg.Columns["ColOtherCheckBox"].Visible = false;
             gridOtherReg.Columns["ColOtherRegisterAddress"].Visible = true;
@@ -671,6 +599,7 @@ namespace TLWController
             gridOtherReg.Columns["ColOtherStopBit"].Visible = false;
             gridOtherReg.Columns["ColOtherMinValue"].Visible = false;
             gridOtherReg.Columns["ColOtherMaxValue"].Visible = false;
+            gridOtherReg.DataSource = register.RegisterOtherItemList;
             gridOtherReg.AllowUserToOrderColumns = false;
             return true;
         }
@@ -718,13 +647,6 @@ namespace TLWController
                 return DialogResult.No;
             }
             WriteOrReadInterfaceData(true);
-            Register reg = new Register();
-            reg.RegisterOtherItemList = gridOtherReg.DataSource as List<RegisterOtherItem>;
-            reg.Register2055ItemList = grid2055.DataSource as List<Register2055Item>;
-            reg.IsDebug = ckDebugMode.Checked;
-            reg.SpecialRegister = new RegisterSpectialItem();
-
-            RegisterHelper.Save2055Register(reg, registerAddressFile);
             return DialogResult.Yes;
         }
 
@@ -815,32 +737,17 @@ namespace TLWController
 
             rnd.NextBytes(data);
 
-            //byte val = 1;
-            //for (int j = 0; j < data.Length / 4; j++)
-            //{
-            //    data[j * 4] = val;
-            //    data[j * 4 + 1] = val;
-            //    data[j * 4 + 2] = val;
-            //    data[j * 4 + 3] = val;
-            //    val++;
-            //    //if (val >= 255) val = 1;
-            //}
-
-            UInt32 val = 0x1;
+            byte val = 1;
             for (int j = 0; j < data.Length / 4; j++)
             {
-                byte[] btData = val.GetBytes();
-                data[j * 4] = btData[0];
-                data[j * 4 + 1] = btData[1];
-                data[j * 4 + 2] = btData[2];
-                data[j * 4 + 3] = btData[3];
+                data[j * 4] = val;
+                data[j * 4 + 1] = val;
+                data[j * 4 + 2] = val;
+                data[j * 4 + 3] = val;
                 val++;
                 //if (val >= 255) val = 1;
             }
-            //for (int i = 2048; i < data.Length; i++)
-            //{
-            //    data[i] = 0xff;
-            //}
+
             //byte val = 1;
             //for (int i = 1; i <= data.Length; i++)
             //{
@@ -889,9 +796,7 @@ namespace TLWController
                     for (int i = 0; i < count; i++)
                     {
                         byte[] writeData = new byte[1024];
-
-                        Array.Copy(data, sdramAddr - 0x1e0000, writeData, 0, 1024);
-
+                        Array.Copy(data, sdramAddr - sdramAddr, writeData, 0, 1024);
                         result = _TLWCommand.tlw_FLASH_Write(item.Value, GetCardAddress(), 0, chipPos, sdramAddr, writeData, 1024);
                         if ((sdramAddr & 0xffff) == 0)
                         {
@@ -987,37 +892,20 @@ namespace TLWController
             //    }
             //}
 
-            for (int i = 1; i <= numFlashDataLen.Value; i++)
-            {
-                data[i - 1] = 0xff;
-            }
-            for (int i = 0; i < data.Length / 4096; i++)
-            {
-                if (i == 0 || i == 54 || i == 107)
-                {
-                    for (int j = 0; j < 3072; j++)
-                    {
-                        data[i * 4096 + j] = 0xff;
-                    }
-                }
-                else
-                {
-                    for (int j = 0; j < 3072; j++)
-                    {
-                        data[i * 4096 + j] = 0x0;
-                    }
-                }
-            }
-
-            //byte val = 1;
-            //for (int j = 0; j < data.Length / 4; j++)
+            //for (int i = 1; i <= numFlashDataLen.Value; i++)
             //{
-            //    data[j * 4] = val;
-            //    data[j * 4 + 1] = val;
-            //    data[j * 4 + 2] = val;
-            //    data[j * 4 + 3] = val;
-            //    val++;
+            //    data[i - 1] = 0xff;
             //}
+
+            byte val = 1;
+            for (int j = 0; j < data.Length / 4; j++)
+            {
+                data[j * 4] = val;
+                data[j * 4 + 1] = val;
+                data[j * 4 + 2] = val;
+                data[j * 4 + 3] = val;
+                val++;
+            }
 
             CalibrationHelper.Write(data, @"D:\tmp\Write_SDRAM.zdat");
             byte chipPos = (byte)cbChipPos.SelectedValue.ToString().ToByte();
@@ -1688,7 +1576,7 @@ namespace TLWController
             byte[] data = null;
             if (mode == 0)
             {
-                GAMMAProcessLib.GAMMAProcessClass gAMMAProcess = new GAMMAProcessLib.GAMMAProcessClass(10, (double)numGamma.Value, 65535, true);
+                GAMMAProcessLib.GAMMAProcessClass gAMMAProcess = new GAMMAProcessLib.GAMMAProcessClass(10, (double)numGamma.Value, 65535);
                 data = gAMMAProcess.GetData;
                 //byte val = 1;
                 //for (int i = 1; i <= data.Length; i++)
@@ -1701,17 +1589,17 @@ namespace TLWController
             }
             else if (mode == 1)
             {
-                GAMMAProcessLib.GAMMAProcessClass gAMMAProcess = new GAMMAProcessLib.GAMMAProcessClass(13, (double)numGamma.Value, 65535, true);
+                GAMMAProcessLib.GAMMAProcessClass gAMMAProcess = new GAMMAProcessLib.GAMMAProcessClass(13, (double)numGamma.Value, 65535);
                 data = gAMMAProcess.GetData;
             }
             else if (mode == 2)
             {
-                GAMMAProcessLib.GAMMAProcessClass gAMMAProcess = new GAMMAProcessLib.GAMMAProcessClass(16, (double)numGamma.Value, 65535, true);
+                GAMMAProcessLib.GAMMAProcessClass gAMMAProcess = new GAMMAProcessLib.GAMMAProcessClass(16, (double)numGamma.Value, 65535);
                 data = gAMMAProcess.GetData;
             }
             else if (mode == 3)
             {
-                GAMMAProcessLib.GAMMAProcessClass gAMMAProcess = new GAMMAProcessLib.GAMMAProcessClass(10, 65535, true);
+                GAMMAProcessLib.GAMMAProcessClass gAMMAProcess = new GAMMAProcessLib.GAMMAProcessClass(10, 65535);
                 data = gAMMAProcess.GetData;
             }
 
@@ -1723,7 +1611,6 @@ namespace TLWController
             //WriteTextFile(saveFileDialog.FileName, data.ToString(" "));
             byte color = byte.Parse(cbGammaColor.SelectedValue.ToString());
             EnableControl(sender as Control, false);
-            WriteTextFile(@"D:\tmp\GammaWrite.txt", data.ToString(" "));
             _TLWCommand.tlw_WriteGAMMA(GetCardAddress(), GetId(), mode, color, data, _DevIP, (param) =>
                {
                    Array.ForEach(param, t => WriteOutput(t, "GAMMA发送"));
@@ -1739,11 +1626,11 @@ namespace TLWController
                 MessageBox.Show(this, "设备地址错误");
                 return;
             }
-            //SaveFileDialog saveFileDialog = new SaveFileDialog();
-            //saveFileDialog.Filter = "*.txt|*.txt";
-            //saveFileDialog.Title = "保存测试数据";
-            //saveFileDialog.FileName = "GAMMA_READ.txt";
-            //if (saveFileDialog.ShowDialog(this) == DialogResult.Cancel) return;
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Filter = "*.txt|*.txt";
+            saveFileDialog.Title = "保存测试数据";
+            saveFileDialog.FileName = "GAMMA_READ.txt";
+            if (saveFileDialog.ShowDialog(this) == DialogResult.Cancel) return;
 
             string ip = ShowSelectIPDialog();
             uint regAddr = (uint)numRegAddr.Value;
@@ -1778,11 +1665,19 @@ namespace TLWController
                      WriteOutput(t, "读取GAMMA");
                      if (t.ResultCode == 0)
                      {
-                         WriteTextFile(@"D:\tmp\GammaRead.txt", (t.Data as byte[]).ToString(" "));
+                         WriteTextFile(saveFileDialog.FileName, (t.Data as byte[]).ToString(" "));
                      }
                  });
                  EnableControl(sender as Control, true);
              });
+        }
+
+        private void ckParamAll_CheckedChanged(object sender, EventArgs e)
+        {
+            for (int i = 0; i < grid2055.Rows.Count; i++)
+            {
+                //grid2055.Rows[i].Cells[0].Value = ckParamAll.Checked;
+            }
         }
 
         private void btnSendAll_Click(object sender, EventArgs e)
@@ -1817,17 +1712,13 @@ namespace TLWController
             RegisterHelper.CombinReg2055(regList);
 
             data = RegisterHelper.Data;
-            //SaveFileDialog saveFileDialog = new SaveFileDialog();
-            //saveFileDialog.Filter = "*.txt|*.txt";
-            //saveFileDialog.Title = "保存Register数据";
-            //saveFileDialog.FileName = "Register_Write";
-            //if (saveFileDialog.ShowDialog(this) == DialogResult.Cancel) return;
-            WriteTextFile(@"d:\tmp\register_Write.txt", RegisterHelper.Data.ToString(" "));
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Filter = "*.txt|*.txt";
+            saveFileDialog.Title = "保存Register数据";
+            saveFileDialog.FileName = "Register_Write";
+            if (saveFileDialog.ShowDialog(this) == DialogResult.Cancel) return;
+            WriteTextFile(saveFileDialog.FileName, RegisterHelper.Data.ToString(" "));
 
-            byte[] tmp = new byte[510];
-            Array.Copy(data, 0, tmp, 0, 510);
-            ushort sum = tmp.Sum();
-            MessageBox.Show($"校验和:{sum.ToString("X4")}");
             EnableControl(sender as Control, false);
             _TLWCommand.tlw_WriteRegisterGroup(GetCardAddress(), GetId(), chipPos, data, bSave, _DevIP, (param) =>
             {
@@ -1860,6 +1751,8 @@ namespace TLWController
             //  });
         }
 
+
+
         private void btnReadReg_Click(object sender, EventArgs e)
         {
             if (CheckIsBusy()) return;
@@ -1875,59 +1768,43 @@ namespace TLWController
             List<Register2055Item> regList = grid2055.DataSource as List<Register2055Item>;
             List<RegisterOtherItem> regOtherList = gridOtherReg.DataSource as List<RegisterOtherItem>;
             EnableControl(sender as Control, false);
-            _TLWCommand.tlw_ReadRegisterGroup(GetCardAddress(), GetId(), chipPos, 1024, _DevIP, (param) =>
-            {
-                Array.ForEach(param, t =>
-                {
-                    WriteOutput(t, "批量读取寄存器");
-                    if (t.ResultCode == 0)
-                    {
-                        WriteTextFile(@"d:\tmp\register_reader.txt", (t.Data as byte[]).ToString(" "));
-                        RegisterHelper.Data = t.Data as byte[];
-                        byte[] tmp = new byte[2];
-                        tmp[0] = RegisterHelper.Data[510];
-                        tmp[1] = RegisterHelper.Data[511];
-                        UInt32 val = tmp.GetUInt16();
-                        string str = val.ToString("X4");
-                        MessageBox.Show(str);
-                        Invoke(new MethodInvoker(() =>
-                        {
-                            //SaveFileDialog saveFileDialog = new SaveFileDialog();
-                            //saveFileDialog.Filter = "*.txt|*.txt";
-                            //saveFileDialog.Title = "保存Register数据";
-                            //saveFileDialog.FileName = "Register_Read";
-                            //if (saveFileDialog.ShowDialog(this) == DialogResult.Cancel) return;
-                            //WriteTextFile(saveFileDialog.FileName, RegisterHelper.Data.ToString(" "));
-                            //RegisterHelper.SplitReg2055(regList);
-                            //RegisterHelper.SplitRegOther(regOtherList);
-                            //grid2055.DataSource = regList;
-                            //grid2055.Refresh();
-                            //gridOtherReg.DataSource = regOtherList;
-                            //gridOtherReg.Refresh();
+            //_TLWCommand.tlw_ReadRegisterGroup(GetCardAddress(), GetId(), chipPos, 1024, _DevIP, (param) =>
+            //{
+            //    Array.ForEach(param, t =>
+            //    {
+            //        WriteOutput(t, "批量读取寄存器");
+            //        if (t.ResultCode == 0)
+            //        {
+            //            RegisterHelper.Data = t.Data as byte[];
+            //            Invoke(new MethodInvoker(() =>
+            //            {
+            //                SaveFileDialog saveFileDialog = new SaveFileDialog();
+            //                saveFileDialog.Filter = "*.txt|*.txt";
+            //                saveFileDialog.Title = "保存Register数据";
+            //                saveFileDialog.FileName = "Register_Read";
+            //                if (saveFileDialog.ShowDialog(this) == DialogResult.Cancel) return;
+            //                WriteTextFile(saveFileDialog.FileName, RegisterHelper.Data.ToString(" "));
+            //                RegisterHelper.SplitReg2055(regList);
+            //                RegisterHelper.SplitRegOther(regOtherList);
+            //                grid2055.DataSource = regList;
+            //                grid2055.Refresh();
+            //                gridOtherReg.DataSource = regOtherList;
+            //                gridOtherReg.Refresh();
+            //            }));
 
+            //        }
+            //        EnableControl(sender as Control, true);
+            //    });
+            //});
 
-
-                            RegisterHelper.SplitReg2055(regList);
-                            RegisterHelper.SplitRegOther(regOtherList);
-                            grid2055.DataSource = regList;
-                            grid2055.Refresh();
-                            gridOtherReg.DataSource = regOtherList;
-                            gridOtherReg.Refresh();
-                        }));
-
-                    }
-                    EnableControl(sender as Control, true);
-                });
-            });
-
-            //RegisterHelper.Data = FileHelper.ReadTextFile(@"C:\Users\Jinjianchao\Desktop\更新连接版FPGA\Register_Read.txt").ToBytes();
-            //RegisterHelper.SplitReg2055(regList);
-            //RegisterHelper.SplitRegOther(regOtherList);
-            //grid2055.DataSource = regList;
-            //grid2055.Refresh();
-            //gridOtherReg.DataSource = regOtherList;
-            //gridOtherReg.Refresh();
-            //EnableControl(sender as Control, true);
+            RegisterHelper.Data = FileHelper.ReadTextFile(@"C:\Users\Jinjianchao\Desktop\更新连接版FPGA\Register_Read.txt").ToBytes();
+            RegisterHelper.SplitReg2055(regList);
+            RegisterHelper.SplitRegOther(regOtherList);
+            grid2055.DataSource = regList;
+            grid2055.Refresh();
+            gridOtherReg.DataSource = regOtherList;
+            gridOtherReg.Refresh();
+            EnableControl(sender as Control, true);
         }
 
         private void btnChoseMCU_Click(object sender, EventArgs e)
@@ -2123,9 +2000,6 @@ namespace TLWController
         {
             if (grid2055.SelectedRows.Count == 1)
             {
-                _CurrentGridRowIndex = e.RowIndex;
-                _CurrentGridColumnIndex = e.ColumnIndex;
-
                 Register2055Item regItemData = grid2055.Rows[grid2055.SelectedRows[0].Index].DataBoundItem as TLWController.Helper.Register2055Item;
                 if (grid2055.Rows[e.RowIndex].Cells[e.ColumnIndex].OwningColumn.Name == "ColRedValue" ||
                     grid2055.Rows[e.RowIndex].Cells[e.ColumnIndex].OwningColumn.Name == "ColGreenValue" ||
@@ -2479,7 +2353,6 @@ namespace TLWController
                             }
                         }
                     }
-                    break;
                 }
                 EnableControl(sender as Control, true);
 
@@ -2512,6 +2385,11 @@ namespace TLWController
                 MessageBox.Show(this, "设备地址错误");
                 return;
             }
+            //SaveFileDialog saveFileDialog = new SaveFileDialog();
+            //saveFileDialog.Filter = "*.txt|*.txt";
+            //saveFileDialog.Title = "保存测试数据";
+            //saveFileDialog.FileName = "SDRAM_Read.txt";
+            //if (saveFileDialog.ShowDialog(this) == DialogResult.Cancel) return;
 
             string ip = ShowSelectIPDialog();
             uint regAddr = (uint)numSDRAMAddr.Value;
@@ -2594,13 +2472,10 @@ namespace TLWController
                 MessageBox.Show(this, "设备地址错误");
                 return;
             }
-
-            EnableControl(sender as Control, false);
             MapHelper.LoadMap(fileName);
-            //byte chip = byte.Parse(cbMapPos.SelectedValue.ToString());
-            byte chip = 1;//map只下载到连接卡
+            byte chip = byte.Parse(cbMapPos.SelectedValue.ToString());
             byte[] data = MapHelper.Data;
-
+            EnableControl(sender as Control, false);
             _TLWCommand.tlw_WriteMAP(GetCardAddress(), GetId(), chip, data, 1024, _DevIP, (param) =>
                {
                    Array.ForEach(param, t => WriteOutput(t, "更新MAP"));
@@ -2640,20 +2515,20 @@ namespace TLWController
                 return;
             }
             byte[] data = CalibrationHelper.Read(216, 192, fileName);
-            //byte val = 1;
-            //for (int j = 0; j < data.Length / 4; j++)
-            //{
-            //    data[j * 4] = val;
-            //    data[j * 4 + 1] = val;
-            //    data[j * 4 + 2] = val;
-            //    data[j * 4 + 3] = val;
-            //    val++;
-            //}
-            //byte[] newData = new byte[216 * 4096].Fill(0x0);
-            //for (int i = 0; i < 216; i++)
-            //{
-            //    Array.Copy(data, i * 192 * 16, newData, i * 4096, 192 * 16);
-            //}
+            byte val = 1;
+            for (int j = 0; j < data.Length / 4; j++)
+            {
+                data[j * 4] = val;
+                data[j * 4 + 1] = val;
+                data[j * 4 + 2] = val;
+                data[j * 4 + 3] = val;
+                val++;
+            }
+            byte[] newData = new byte[216 * 4096].Fill(0xff);
+            for (int i = 0; i < 216; i++)
+            {
+                Array.Copy(data, i * 192 * 16, newData, i * 4096, 192 * 16);
+            }
 
             //byte val = 1;
             //for (int i = 1; i <= data.Length; i++)
@@ -2667,12 +2542,18 @@ namespace TLWController
             //        val++;
             //    }
             //}
+            //SaveFileDialog saveFileDialog = new SaveFileDialog();
+            //saveFileDialog.Filter = "*.txt|*.txt";
+            //saveFileDialog.Title = "保存测试数据";
+            //saveFileDialog.FileName = "Calibration_Write";
+            //if (saveFileDialog.ShowDialog(this) == DialogResult.Cancel) return;
+            //WriteTextFile(saveFileDialog.FileName, data.ToString(" "));
 
-            byte[] saveData = new byte[data.Length / 2];
+            byte[] saveData = new byte[newData.Length / 2];
 
-            Array.Copy(data, 0, saveData, 0, data.Length / 2);
+            Array.Copy(newData, 0, saveData, 0, newData.Length / 2);
             CalibrationHelper.Write(saveData, @"D:\tmp\上.zdat");
-            Array.Copy(data, data.Length / 2, saveData, 0, data.Length / 2);
+            Array.Copy(newData, newData.Length / 2, saveData, 0, newData.Length / 2);
             CalibrationHelper.Write(saveData, @"D:\tmp\下.zdat");
 
             //byte[] saveData = new byte[newData.Length / 2];
@@ -2696,12 +2577,11 @@ namespace TLWController
                 {
                     int result = 0;
                     UInt32 sdramAddr = 0x0000;
-                    int count = (int)(data.Length / 1024);
+                    int count = (int)(newData.Length / 1024);
                     for (int i = 0; i < count; i++)
                     {
                         byte[] writeData = new byte[1024];
-                        Array.Copy(data, i * 1024, writeData, 0, 1024);
-
+                        Array.Copy(newData, i * 1024, writeData, 0, 1024);
                         result = _TLWCommand.tlw_SDRAM_Write(item.Value, GetCardAddress(), 0, sdramAddr, writeData);
                         System.Threading.Thread.Sleep(1);
                         if (result != 0)
@@ -2727,33 +2607,33 @@ namespace TLWController
                         sdramAddr += 1024;
                     }
                     WriteMessage($"写入SDRAM完成，错误次数：{errCount}");
-                    byte chipPos = 0;//FPGA
-                    bool bSave = true;
-                    result = _TLWCommand.tlw_WriteRegister(item.Value, GetCardAddress(), 0, chipPos, 0x91, 1, bSave);//开启校正
-                    if (result != 0)
-                    {
-                        WriteMessage($"IP:{item.Key}开启校正失败");
-                        EnableControl(sender as Control, true);
-                        return;
-                    }
+                    //byte chipPos = (byte)cbRegChip.SelectedValue.ToString().ToByte();
+                    //bool bSave = !ckDebugMode.Checked;
+                    //result = _TLWCommand.tlw_WriteRegister(item.Value, GetCardAddress(), 0, chipPos, 0x91, 1, bSave);
+                    //if (result != 0)
+                    //{
+                    //    WriteMessage($"IP:{item.Key}开启校正失败");
+                    //    EnableControl(sender as Control, true);
+                    //    return;
+                    //}
 
-                    UInt32 regLength = 108 * 4096;
-                    UInt16 c0 = (UInt16)(regLength & 0x00ffff);
-                    UInt16 c1 = (UInt16)(regLength >> 16);
-                    result = _TLWCommand.tlw_WriteRegister(item.Value, GetCardAddress(), 0, chipPos, 0xc0, c0, bSave);
-                    if (result != 0)
-                    {
-                        WriteMessage($"IP:{item.Key}设置寄存器C0失败");
-                        EnableControl(sender as Control, true);
-                        return;
-                    }
-                    result = _TLWCommand.tlw_WriteRegister(item.Value, GetCardAddress(), 0, chipPos, 0xc1, c1, bSave);
-                    if (result != 0)
-                    {
-                        WriteMessage($"IP:{item.Key}设置寄存器C1失败");
-                        EnableControl(sender as Control, true);
-                        return;
-                    }
+                    //UInt32 regLength = 216 * 4096;
+                    //UInt16 b6 = (UInt16)(regLength >> 24);
+                    //UInt16 b7 = (UInt16)(regLength & 0x00ff);
+                    //result = _TLWCommand.tlw_WriteRegister(item.Value, GetCardAddress(), 0, chipPos, 0xb6, b6, bSave);
+                    //if (result != 0)
+                    //{
+                    //    WriteMessage($"IP:{item.Key}设置寄存器B6失败");
+                    //    EnableControl(sender as Control, true);
+                    //    return;
+                    //}
+                    //result = _TLWCommand.tlw_WriteRegister(item.Value, GetCardAddress(), 0, chipPos, 0xb7, b7, bSave);
+                    //if (result != 0)
+                    //{
+                    //    WriteMessage($"IP:{item.Key}设置寄存器B7失败");
+                    //    EnableControl(sender as Control, true);
+                    //    return;
+                    //}
 
                     //result = _TLWCommand.tlw_SDRAM_WriteToFLASH(item.Value, GetCardAddress(), 0);
                     //if (result != 0)
@@ -2764,6 +2644,39 @@ namespace TLWController
                     //}
                     //System.Threading.Thread.Sleep(30 * 1000);
 
+                }
+                EnableControl(sender as Control, true);
+            });
+        }
+
+        private void btnWriteErrorCalibrationData_Click(object sender, EventArgs e)
+        {
+            if (CheckIsBusy()) return;
+            if (!CheckDeviceAddr())
+            {
+                MessageBox.Show(this, "设备地址错误");
+                return;
+            }
+            byte[] data = new byte[4096 * 216].Fill(0);
+            InvokeAsync(() =>
+            {
+                EnableControl(sender as Control, false);
+                foreach (var item in _DevIP)
+                {
+                    int result = 0;
+                    UInt16 sdramAddr = 0x0000;
+                    int count = (int)(data.Length / 4096);
+                    for (int i = 0; i < count; i++)
+                    {
+                        result = _TLWCommand.tlw_SDRAM_Write(item.Value, GetCardAddress(), 0, sdramAddr, data);
+                        if (result != 0)
+                        {
+                            WriteMessage($"IP:{item.Key}写入SDRAM失败");
+                            EnableControl(sender as Control, true);
+                            return;
+                        }
+                        sdramAddr += 4096;
+                    }
                 }
                 EnableControl(sender as Control, true);
             });
@@ -2867,9 +2780,47 @@ namespace TLWController
             });
         }
 
+        private void btnReadCalibration_Click(object sender, EventArgs e)
+        {
+            if (CheckIsBusy()) return;
+            if (!CheckDeviceAddr())
+            {
+                MessageBox.Show(this, "设备地址错误");
+                return;
+            }
+            //SaveFileDialog saveFileDialog = new SaveFileDialog();
+            //saveFileDialog.Filter = "*.zdat|*.zdat";
+            //saveFileDialog.Title = "保存测试数据";
+            //saveFileDialog.FileName = "Calibration_Read.zdat";
+            //if (saveFileDialog.ShowDialog(this) == DialogResult.Cancel) return;
+
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Filter = "*.txt|*.txt";
+            saveFileDialog.Title = "保存测试数据";
+            saveFileDialog.FileName = "Calibration_Read";
+            if (saveFileDialog.ShowDialog(this) == DialogResult.Cancel) return;
+            string filename = saveFileDialog.FileName;
+            string ip = ShowSelectIPDialog();
+            uint regAddr = (uint)0x00;
+            int readLen = 216 * 4096;
+            EnableControl(sender as Control, false, ip);
+            _TLWCommand.tlw_SDRAM_Read(GetCardAddress(), GetId(), regAddr, readLen, _DevIP, (param) =>
+            {
+                Array.ForEach(param, t =>
+                {
+                    WriteOutput(t, "读取SDRAM");
+                    if (t.ResultCode == 0)
+                    {
+                        //WriteTextFile(filename, (t.Data as byte[]).ToString(" "));
+                        CalibrationHelper.Write(t.Data as byte[], filename);
+                    }
+                });
+                EnableControl(sender as Control, true);
+            });
+        }
+
         private void btnSetRegister_Click(object sender, EventArgs e)
         {
-            EnableControl(sender as Control, false);
             byte chipPos = (byte)cbRegChip.SelectedValue.ToString().ToByte();
             uint addr = (uint)numSingleRegAddr.Value;
             _TLWCommand.tlw_WriteRegister(GetCardAddress(), GetId(), chipPos, addr, (uint)numSingleRegValue.Value, true, _DevIP, (param2) =>
@@ -2893,7 +2844,6 @@ namespace TLWController
 
         private void btnSingleRegRead_Click(object sender, EventArgs e)
         {
-            EnableControl(sender as Control, false);
             byte chipPos = (byte)cbRegChip.SelectedValue.ToString().ToByte();
             uint addr = (uint)numSingleRegAddr.Value;
             _TLWCommand.tlw_ReadRegister(GetCardAddress(), GetId(), chipPos, addr, _DevIP, (param2) =>
@@ -2903,11 +2853,7 @@ namespace TLWController
 
                      if (t2.ResultCode == 0)
                      {
-                         WriteOutput(t2, "读取寄存器");
-                         Invoke(new MethodInvoker(() =>
-                         {
-                             numSingleRegValue.Value = (t2.Data as uint[])[0];
-                         }));
+                         WriteOutput(t2, "读取寄存器" + (t2.Data as byte[]).ToString(" "));
                          EnableControl(sender as Control, true);
                      }
                      else
@@ -2929,9 +2875,6 @@ namespace TLWController
         {
             if (gridOtherReg.SelectedRows.Count == 1)
             {
-                _CurrentOtherGridRowIndex = e.RowIndex;
-                _CurrentOtherGridColumnIndex = e.ColumnIndex;
-
                 RegisterOtherItem regItemData = gridOtherReg.Rows[gridOtherReg.SelectedRows[0].Index].DataBoundItem as TLWController.Helper.RegisterOtherItem;
                 if (gridOtherReg.Rows[e.RowIndex].Cells[e.ColumnIndex].OwningColumn.Name == "ColOtherValue")
                 {
@@ -2940,14 +2883,14 @@ namespace TLWController
 
                     Rectangle rect = gridOtherReg.Rows[e.RowIndex].Cells[e.ColumnIndex].ContentBounds;
 
-                    if (regItemData.MaxValue.ToInit32(System.Globalization.NumberStyles.HexNumber) - regItemData.MinValue.ToInit32(System.Globalization.NumberStyles.HexNumber) <= 10)
+                    if (regItemData.MaxValue.ToInit32() - regItemData.MinValue.ToInit32() <= 10)
                     {
                         //combobox
                         gridOtherReg.Controls["cbOtherValue"].Bounds = rect;
                         gridOtherReg.Controls["cbOtherValue"].Location = new Point(cellX, cellY);
 
                         List<ListItem> items = new List<ListItem>();
-                        for (int i = regItemData.MinValue.ToInit32(System.Globalization.NumberStyles.HexNumber); i <= regItemData.MaxValue.ToInit32(System.Globalization.NumberStyles.HexNumber); i++)
+                        for (int i = regItemData.MinValue.ToInit32(); i <= regItemData.MaxValue.ToInit32(); i++)
                         {
                             items.Add(new ListItem() { Value = i, Text = i.ToString("X2") });
                         }
@@ -2967,12 +2910,12 @@ namespace TLWController
                         //numValue
                         gridOtherReg.Controls["numOtherValue"].Bounds = rect;
                         gridOtherReg.Controls["numOtherValue"].Location = new Point(cellX, cellY);
-                        (gridOtherReg.Controls["numOtherValue"] as NumericUpDown).Minimum = regItemData.MinValue.ToInit32(System.Globalization.NumberStyles.HexNumber);
-                        (gridOtherReg.Controls["numOtherValue"] as NumericUpDown).Maximum = regItemData.MaxValue.ToInit32(System.Globalization.NumberStyles.HexNumber);
+                        (gridOtherReg.Controls["numOtherValue"] as NumericUpDown).Minimum = regItemData.MinValue.ToInit32();
+                        (gridOtherReg.Controls["numOtherValue"] as NumericUpDown).Maximum = regItemData.MaxValue.ToInit32();
                         object obj = gridOtherReg.Rows[e.RowIndex].Cells[e.ColumnIndex].Value;
                         (gridOtherReg.Controls["numOtherValue"] as NumericUpDown).Hexadecimal = true;
                         string str1 = (string)obj;
-                        Int32 byteVal = Int32.Parse(str1, System.Globalization.NumberStyles.HexNumber);
+                        byte byteVal = byte.Parse(str1, System.Globalization.NumberStyles.HexNumber);
                         (gridOtherReg.Controls["numOtherValue"] as NumericUpDown).Value = byteVal;
                         gridOtherReg.Controls["numOtherValue"].Visible = true;
                     }
@@ -2984,176 +2927,27 @@ namespace TLWController
         {
             gridOtherReg.Controls["numOtherValue"].Visible = false;
             gridOtherReg.Controls["cbOtherValue"].Visible = false;
-            if (gridOtherReg.Rows[e.RowIndex].Cells[e.ColumnIndex].OwningColumn.Name == "ColOtherValue" && gridOtherReg.SelectedRows.Count != 0)
+            if (gridOtherReg.Rows[e.RowIndex].Cells[e.ColumnIndex].OwningColumn.Name == "ColOtherValue")
             {
                 RegisterOtherItem regItemData = gridOtherReg.Rows[gridOtherReg.SelectedRows[0].Index].DataBoundItem as TLWController.Helper.RegisterOtherItem;
-                if (regItemData.MaxValue.ToInit32(System.Globalization.NumberStyles.HexNumber) - regItemData.MinValue.ToInit32(System.Globalization.NumberStyles.HexNumber) <= 10)
+                if (regItemData.MaxValue.ToInit32() - regItemData.MinValue.ToInit32() <= 10)
                 {
                     gridOtherReg.Rows[e.RowIndex].Cells[e.ColumnIndex].Value = ((int)(gridOtherReg.Controls["cbOtherValue"] as ComboBox).SelectedValue).ToString("X2");
                 }
                 else
                 {
-                    gridOtherReg.Rows[e.RowIndex].Cells[e.ColumnIndex].Value = ((int)(gridOtherReg.Controls["numOtherValue"] as NumericUpDown).Value).ToString("X2");
-                }
-            }
-        }
-
-        private void gridOtherReg_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-            if (CheckIsBusy()) return;
-            if (!CheckDeviceAddr())
-            {
-                MessageBox.Show(this, "设备地址错误");
-                return;
-            }
-
-            if (gridOtherReg.SelectedRows.Count == 1)
-            {
-
-                if (gridOtherReg.Rows[e.RowIndex].Cells[e.ColumnIndex].OwningColumn.Name == "ColOtherSend")
-                {
-                    RegisterOtherItem regItemData = gridOtherReg.Rows[gridOtherReg.SelectedRows[0].Index].DataBoundItem as TLWController.Helper.RegisterOtherItem;
-
-                    byte chipPos = (byte)cbRegChip.SelectedValue.ToString().ToByte();
-                    bool bSave = !ckDebugMode.Checked;
-                    byte color = byte.Parse(cbParam2055Color.SelectedValue.ToString());
-
-                    EnableControl(gridOtherReg as Control, false);
-
-                    _TLWCommand.tlw_WriteRegister(GetCardAddress(), GetId(), chipPos, regItemData.Address.ToUInt32(), regItemData.Value.ToUInt32(), bSave, _DevIP, (param) =>
-                    {
-                        Array.ForEach(param, t =>
-                        {
-                            WriteOutput(t, "写入寄存器");
-                            EnableControl(gridOtherReg as Control, true);
-                        });
-                    });
-
-                }
-            }
-        }
-
-        private void gridOtherReg_Scroll(object sender, ScrollEventArgs e)
-        {
-            gridOtherReg.Controls["numOtherValue"].Visible = false;
-            gridOtherReg.Controls["cbOtherValue"].Visible = false;
-            if (gridOtherReg.Rows[_CurrentOtherGridRowIndex].Cells[_CurrentOtherGridColumnIndex].OwningColumn.Name == "ColOtherValue")
-            {
-                RegisterOtherItem regItemData = gridOtherReg.Rows[gridOtherReg.SelectedRows[0].Index].DataBoundItem as TLWController.Helper.RegisterOtherItem;
-                if (regItemData.MaxValue.ToInit32(System.Globalization.NumberStyles.HexNumber) - regItemData.MinValue.ToInit32(System.Globalization.NumberStyles.HexNumber) <= 10)
-                {
-                    gridOtherReg.Rows[_CurrentOtherGridRowIndex].Cells[_CurrentOtherGridColumnIndex].Value = ((int)(gridOtherReg.Controls["cbOtherValue"] as ComboBox).SelectedValue).ToString("X2");
-                }
-                else
-                {
-                    gridOtherReg.Rows[_CurrentOtherGridRowIndex].Cells[_CurrentOtherGridColumnIndex].Value = ((int)(gridOtherReg.Controls["numOtherValue"] as NumericUpDown).Value).ToString("X2");
-                }
-            }
-        }
-
-        private void grid2055_Scroll(object sender, ScrollEventArgs e)
-        {
-            grid2055.Controls["numValue"].Visible = false;
-            grid2055.Controls["cbValue"].Visible = false;
-            if (grid2055.Rows[_CurrentGridRowIndex].Cells[_CurrentGridColumnIndex].OwningColumn.Name == "ColRedValue" ||
-                    grid2055.Rows[_CurrentGridRowIndex].Cells[_CurrentGridColumnIndex].OwningColumn.Name == "ColGreenValue" ||
-                    grid2055.Rows[_CurrentGridRowIndex].Cells[_CurrentGridColumnIndex].OwningColumn.Name == "ColBlueValue"
-                    )
-            {
-                Register2055Item regItemData = grid2055.Rows[grid2055.SelectedRows[0].Index].DataBoundItem as TLWController.Helper.Register2055Item;
-                if (regItemData.MaxValue - regItemData.MinValue <= 10)
-                {
-                    grid2055.Rows[_CurrentGridRowIndex].Cells[_CurrentGridColumnIndex].Value = ((int)(grid2055.Controls["cbValue"] as ComboBox).SelectedValue).ToString("X2");
-                }
-                else
-                {
-                    grid2055.Rows[_CurrentGridRowIndex].Cells[_CurrentGridColumnIndex].Value = ((byte)(grid2055.Controls["numValue"] as NumericUpDown).Value).ToString("X2");
+                    gridOtherReg.Rows[e.RowIndex].Cells[e.ColumnIndex].Value = ((byte)(gridOtherReg.Controls["numOtherValue"] as NumericUpDown).Value).ToString("X2");
                 }
             }
         }
 
         private void button5_Click(object sender, EventArgs e)
         {
-            EnableControl(sender as Control, false);
-            byte chipPos = (byte)cbRegChip.SelectedValue.ToString().ToByte();
-            uint addr = (uint)numSingleRegAddr.Value;
-            ushort cardAddr = (ushort)(241 << 8 | 241);
-            uint val = uint.Parse(cbWorkMode.SelectedValue.ToString());
-            _TLWCommand.tlw_WriteRegister(cardAddr, GetId(), chipPos, 0, val, true, _DevIP, (param2) =>
-            {
-                Array.ForEach(param2, t2 =>
-                {
-
-                    if (t2.ResultCode == 0)
-                    {
-                        WriteOutput(t2, "写入寄存器");
-                        EnableControl(sender as Control, true);
-                    }
-                    else
-                    {
-                        WriteOutput(t2, "写入寄存器");
-                        EnableControl(sender as Control, true);
-                    }
-                });
-            });
-        }
-
-        private void rbCalOn_Click(object sender, EventArgs e)
-        {
-            RadioButton rb = sender as RadioButton;
-            if (rb.Checked == false) return;
-            uint val = uint.Parse(rb.Tag.ToString());
-            EnableControl(groupBox11 as Control, false);
-            InvokeAsync(() =>
-            {
-                int errCount = 0;
-                foreach (var item in _DevIP)
-                {
-                    int result = 0;
-                    byte chipPos = 0;//FPGA
-                    bool bSave = true;
-                    result = _TLWCommand.tlw_WriteRegister(item.Value, GetCardAddress(0, 0), 0, chipPos, 0x91, val, bSave);//开启校正
-                    if (result != 0)
-                    {
-                        WriteMessage($"IP:{item.Key}开启校正失败");
-                        EnableControl(sender as Control, true);
-                        return;
-                    }
-                }
-                EnableControl(groupBox11 as Control, true);
-            });
-
-        }
-
-        private void rbCalOff_CheckedChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void btnRegSetDefault_Click(object sender, EventArgs e)
-        {
-            string file = System.IO.Path.Combine(Path, @"Config\Param2055_Default.txt");
-            if (!Import2055Param(file))
-            {
-                MessageBox.Show(this, "导入2055参数失败");
-                return;
-            }
-        }
-
-        private void btnSelectBatchCalibrationFolder_Click(object sender, EventArgs e)
-        {
-            FolderBrowserDialog folderBrowser = new FolderBrowserDialog();
-            if (folderBrowser.ShowDialog(this) == DialogResult.Cancel) return;
-            txtBatchCalibrationFolder.Text = folderBrowser.SelectedPath;
-        }
-
-        private void btnBatchWriteCalibration_Click(object sender, EventArgs e)
-        {
             if (CheckIsBusy()) return;
-            string folder = txtBatchCalibrationFolder.Text;
-            if (Directory.Exists(folder) == false)
+            string fileName = txtCalibration.Text;
+            if (File.Exists(fileName) == false)
             {
-                MessageBox.Show(this, "校正数据文件夹不存在");
+                MessageBox.Show(this, "校正数据文件不存在");
                 return;
             }
 
@@ -3162,70 +2956,122 @@ namespace TLWController
                 MessageBox.Show(this, "设备地址错误");
                 return;
             }
+            byte[] data = CalibrationHelper.Read(216, 192, fileName);
+
+            byte val = 1;
+            for (int j = 0; j < data.Length / 4; j++)
+            {
+                data[j * 4] = val;
+                data[j * 4 + 1] = val;
+                data[j * 4 + 2] = val;
+                data[j * 4 + 3] = val;
+                val++;
+                //if (val >= 255) val = 1;
+            }
+
+            byte[] newData = new byte[216 * 4096].Fill(0xff);
+            for (int i = 0; i < 216; i++)
+            {
+                Array.Copy(data, i * 192 * 16, newData, i * 4096, 192 * 16);
+            }
+
+            //SaveFileDialog saveFileDialog = new SaveFileDialog();
+            //saveFileDialog.Filter = "*.txt|*.txt";
+            //saveFileDialog.Title = "保存测试数据";
+            //saveFileDialog.FileName = "Calibration_Write";
+            //if (saveFileDialog.ShowDialog(this) == DialogResult.Cancel) return;
+
+            byte[] saveData = new byte[newData.Length / 2];
+            //for (int i = 0; i < newData.Length / 2; i++)
+            //{
+            //    newData[i] = 0x01;
+            //}
+            //for (int i = 0; i < newData.Length / 2; i++)
+            //{
+            //    newData[i + newData.Length / 2] = 0x02;
+            //}
+
+            Array.Copy(newData, 0, saveData, 0, newData.Length / 2);
+            //CalibrationHelper.Write(saveData, saveFileDialog.FileName);
+
+            byte modulePosition = (byte)cbChipPos.SelectedValue.ToString().ToByte();
+            uint regAddr = (uint)numRegAddr.Value;
+            int readLen = (int)numFlashDataLen.Value;
+            int cx = 1;
             InvokeAsync(() =>
             {
                 int errCount = 0;
                 EnableControl(sender as Control, false);
-                for (int row = 0; row < 1; row++)
-                {
-                    for (int column = 0; column < 10; column++)
-                    {
-                        string fileName = $@"{folder}\{row}.zdat";
-                        byte[] data = CalibrationHelper.Read(216, 192, fileName);
-
-                        foreach (var item in _DevIP)
-                        {
-                            int result = 0;
-                            UInt32 sdramAddr = 0x0000;
-                            int count = (int)(data.Length / 1024);
-                            for (int i = 0; i < count; i++)
-                            {
-                                byte[] writeData = new byte[1024];
-                                Array.Copy(data, i * 1024, writeData, 0, 1024);
-
-                                result = _TLWCommand.tlw_SDRAM_Write(item.Value, GetCardAddress(column + 1, row + 1), 0, sdramAddr, writeData);
-                                System.Threading.Thread.Sleep(1);
-                                if (result != 0)
-                                {
-                                    WriteMessage($"IP:{item.Key}写入SDRAM失败");
-                                    EnableControl(sender as Control, true);
-                                    return;
-                                }
-                                SetPrograss($"行:{row + 1},列{column + 1} {i + 1}/{count}", $"行:{row + 1},列{column + 1} {i + 1}/{count}", (int)(((float)(i + 1) / count) * 100));
-                                sdramAddr += 1024;
-                            }
-                        }
-                    }
-                }
-
-                byte chipPos = (byte)cbRegChip.SelectedValue.ToString().ToByte();
-                bool bSave = !ckDebugMode.Checked;
                 foreach (var item in _DevIP)
                 {
                     int result = 0;
+                    UInt32 sdramAddr = 0x0000;
+                    int count = (int)(newData.Length / 1024);
+                    WriteMessage($"共{count}包数据");
+                    for (int i = 0; i < count; i++)
+                    {
+                        byte[] writeData = new byte[1024];
+                        Array.Copy(newData, i * 1024, writeData, 0, 1024);
+
+
+
+                        result = _TLWCommand.tlw_SDRAM_Write(item.Value, GetCardAddress(), 0, sdramAddr, writeData);
+                        System.Threading.Thread.Sleep(1);
+                        if (result != 0)
+                        {
+                            WriteMessage($"IP:{item.Key}写入SDRAM失败");
+                            EnableControl(sender as Control, true);
+                            return;
+                        }
+                        byte[] readData = new byte[1024];
+                        result = _TLWCommand.tlw_SDRAM_Read(item.Value, GetCardAddress(), 0, sdramAddr, readData);
+                        if (writeData.IsEqual(readData, out int diffIndex, out byte sourceData, out byte targetData) == false)
+                        {
+                            i--;
+                            WriteMessage($"第{i + 1}包错误。位置:{diffIndex},写入:{sourceData.ToString("X2")},读取:{targetData.ToString("X2")}");
+                            errCount++;
+                            continue;
+                        }
+                        else
+                        {
+                            WriteMessage($"第{i + 1}包");
+                        }
+                        sdramAddr += 1024;
+                    }
+                    WriteMessage($"写入SDRAM完成，错误次数：{errCount}");
+                    System.Threading.Thread.Sleep(1000);
+                    byte chipPos = (byte)cbRegChip.SelectedValue.ToString().ToByte();
+                    bool bSave = !ckDebugMode.Checked;
+                    result = _TLWCommand.tlw_WriteRegister(item.Value, GetCardAddress(), 0, chipPos, 0x91, 1, bSave);
+                    if (result != 0)
+                    {
+                        WriteMessage($"IP:{item.Key}开启校正失败");
+                        EnableControl(sender as Control, true);
+                        return;
+                    }
+
                     UInt32 regLength = 108 * 4096;
                     UInt16 c0 = (UInt16)(regLength & 0x00ffff);
                     UInt16 c1 = (UInt16)(regLength >> 16);
-                    result = _TLWCommand.tlw_WriteRegister(item.Value, GetCardAddress(0, 0), 0, chipPos, 0xc0, c0, bSave);
+                    result = _TLWCommand.tlw_WriteRegister(item.Value, GetCardAddress(), 0, chipPos, 0xc0, c0, bSave);
                     if (result != 0)
                     {
                         WriteMessage($"IP:{item.Key}设置寄存器C0失败");
                         EnableControl(sender as Control, true);
                         return;
                     }
-                    result = _TLWCommand.tlw_WriteRegister(item.Value, GetCardAddress(0, 0), 0, chipPos, 0xc1, c1, bSave);
+                    result = _TLWCommand.tlw_WriteRegister(item.Value, GetCardAddress(), 0, chipPos, 0xc1, c1, bSave);
                     if (result != 0)
                     {
                         WriteMessage($"IP:{item.Key}设置寄存器C1失败");
                         EnableControl(sender as Control, true);
                         return;
                     }
-                }
 
-                foreach (var item in _DevIP)
-                {
-                    int result = 0;
-                    result = _TLWCommand.tlw_SDRAM_WriteToFLASH(item.Value, GetCardAddress(0, 0), 0);
+                    System.Threading.Thread.Sleep(500);
+
+
+                    result = _TLWCommand.tlw_SDRAM_WriteToFLASH(item.Value, GetCardAddress(), 0);
                     if (result != 0)
                     {
                         WriteMessage($"IP:{item.Key}SDRAM->FLASH失败");
@@ -3233,73 +3079,144 @@ namespace TLWController
                         return;
                     }
                     System.Threading.Thread.Sleep(12 * 1000);
+
+                    byte[] pdata = new byte[readLen];
+                    _TLWCommand.tlw_FLASH_Read(item.Value, GetCardAddress(), 0, modulePosition, regAddr, pdata, 1024);
+                    if (saveData.IsEqual(pdata) == false)
+                    {
+                        CalibrationHelper.Write(saveData, $@"d:\tmp\Write_{cx}.txt");
+                        CalibrationHelper.Write(pdata, $@"d:\tmp\Read_{cx}.txt");
+                        WriteMessage($"出错{cx}次");
+                        cx++;
+                    }
                 }
                 EnableControl(sender as Control, true);
             });
         }
 
-        private void btnCompare_Click(object sender, EventArgs e)
+        private void button9_Click(object sender, EventArgs e)
         {
-            string str1 = ReadTextFile(txtCompareFile1.Text);
-            string str2 = ReadTextFile(txtCompareFile2.Text);
-            byte[] bt1 = str1.ToBytes(' ');
-            byte[] bt2 = str2.ToBytes(' ');
-            string compareStr = "";
-            for (int i = 0; i < bt1.Length; i++)
+            if (CheckIsBusy()) return;
+            string fileName = txtCalibration.Text;
+            if (File.Exists(fileName) == false)
             {
-                if (bt1[i] != bt2[i])
-                {
-                    compareStr += $"Pos:{i} 值1：{bt1[i].ToString("X2")} 值2：{bt2[i].ToString("X2")}\r\n";
-                }
+                MessageBox.Show(this, "校正数据文件不存在");
+                return;
             }
-            rtCompare.Text = compareStr;
-        }
 
-        private void btnCompareChose1_Click(object sender, EventArgs e)
-        {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "*.txt|*.txt";
-            if (openFileDialog.ShowDialog(this) == DialogResult.Cancel) return;
-            txtCompareFile1.Text = openFileDialog.FileName;
-        }
+            if (!CheckDeviceAddr())
+            {
+                MessageBox.Show(this, "设备地址错误");
+                return;
+            }
+            byte[] data = CalibrationHelper.Read(216, 192, fileName);
 
-        private void btnCompareChose2_Click(object sender, EventArgs e)
-        {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "*.txt|*.txt";
-            if (openFileDialog.ShowDialog(this) == DialogResult.Cancel) return;
-            txtCompareFile2.Text = openFileDialog.FileName;
-        }
+            byte[] newData = new byte[216 * 4096].Fill(0xff);
+            for (int i = 0; i < 216; i++)
+            {
+                Array.Copy(data, i * 192 * 16, newData, i * 4096, 192 * 16);
+            }
+            byte[] saveData = new byte[newData.Length / 2];
 
-        private void button6_Click(object sender, EventArgs e)
-        {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "*.zdat|*.zdat";
-            if (openFileDialog.ShowDialog(this) == DialogResult.Cancel) return;
-            txtCalibration.Text = openFileDialog.FileName;
-        }
+            Array.Copy(newData, 0, saveData, 0, newData.Length / 2);
+            CalibrationHelper.Write(saveData, @"D:\tmp\上.zdat");
+            Array.Copy(newData, newData.Length / 2, saveData, 0, newData.Length / 2);
+            CalibrationHelper.Write(saveData, @"D:\tmp\下.zdat");
 
-        private void btnSendCalibrationOnOff_Click(object sender, EventArgs e)
-        {
-            uint val = uint.Parse(cbCalibrationOnOff.SelectedValue.ToString());
-            EnableControl(btnSendCalibrationOnOff as Control, false);
+
+            //byte modulePosition = (byte)cbChipPos.SelectedValue.ToString().ToByte();
+            uint regAddr = (uint)numRegAddr.Value;
+            int readLen = (int)numFlashDataLen.Value;
+            int cx = 1;
             InvokeAsync(() =>
             {
                 int errCount = 0;
+                EnableControl(sender as Control, false);
                 foreach (var item in _DevIP)
                 {
                     int result = 0;
-                    byte chipPos = 0;//FPGA
-                    bool bSave = true;
-                    result = _TLWCommand.tlw_WriteRegister(item.Value, GetCardAddress(), 0, chipPos, 0x91, val, bSave);//开启校正
+                    UInt32 sdramAddr = 0x0000;
+                    int count = (int)(newData.Length / 1024);
+                    WriteMessage($"共{count}包数据");
+                    for (int i = 0; i < count; i++)
+                    {
+                        byte[] writeData = new byte[1024];
+                        Array.Copy(newData, i * 1024, writeData, 0, 1024);
+                        result = _TLWCommand.tlw_SDRAM_Write(item.Value, GetCardAddress(), 0, sdramAddr, writeData);
+                        System.Threading.Thread.Sleep(1);
+                        if (result != 0)
+                        {
+                            WriteMessage($"IP:{item.Key}写入SDRAM失败");
+                            EnableControl(sender as Control, true);
+                            return;
+                        }
+                        byte[] readData = new byte[1024];
+                        result = _TLWCommand.tlw_SDRAM_Read(item.Value, GetCardAddress(), 0, sdramAddr, readData);
+                        if (writeData.IsEqual(readData, out int diffIndex, out byte sourceData, out byte targetData) == false)
+                        {
+                            i--;
+                            WriteMessage($"第{i + 1}包错误。位置:{diffIndex},写入:{sourceData.ToString("X2")},读取:{targetData.ToString("X2")}");
+                            errCount++;
+                            continue;
+                        }
+                        else
+                        {
+                            WriteMessage($"第{i + 1}包");
+                        }
+                        sdramAddr += 1024;
+                    }
+                    WriteMessage($"写入SDRAM完成，错误次数：{errCount}");
+                    System.Threading.Thread.Sleep(1000);
+                    byte chipPos = (byte)cbRegChip.SelectedValue.ToString().ToByte();
+                    bool bSave = !ckDebugMode.Checked;
+                    result = _TLWCommand.tlw_WriteRegister(item.Value, GetCardAddress(), 0, chipPos, 0x91, 1, bSave);
                     if (result != 0)
                     {
                         WriteMessage($"IP:{item.Key}开启校正失败");
                         EnableControl(sender as Control, true);
                         return;
                     }
+
+                    UInt32 regLength = 108 * 4096;
+                    UInt16 c0 = (UInt16)(regLength & 0x00ffff);
+                    UInt16 c1 = (UInt16)(regLength >> 16);
+                    result = _TLWCommand.tlw_WriteRegister(item.Value, GetCardAddress(), 0, chipPos, 0xc0, c0, bSave);
+                    if (result != 0)
+                    {
+                        WriteMessage($"IP:{item.Key}设置寄存器C0失败");
+                        EnableControl(sender as Control, true);
+                        return;
+                    }
+                    result = _TLWCommand.tlw_WriteRegister(item.Value, GetCardAddress(), 0, chipPos, 0xc1, c1, bSave);
+                    if (result != 0)
+                    {
+                        WriteMessage($"IP:{item.Key}设置寄存器C1失败");
+                        EnableControl(sender as Control, true);
+                        return;
+                    }
+
+                    System.Threading.Thread.Sleep(500);
+
+
+                    result = _TLWCommand.tlw_SDRAM_WriteToFLASH(item.Value, GetCardAddress(), 0);
+                    if (result != 0)
+                    {
+                        WriteMessage($"IP:{item.Key}SDRAM->FLASH失败");
+                        EnableControl(sender as Control, true);
+                        return;
+                    }
+                    System.Threading.Thread.Sleep(12 * 1000);
+
+                    byte[] pdata = new byte[readLen];
+                    _TLWCommand.tlw_FLASH_Read(item.Value, GetCardAddress(), 0, 3, regAddr, pdata, 1024);
+                    if (saveData.IsEqual(pdata) == false)
+                    {
+                        CalibrationHelper.Write(saveData, $@"d:\tmp\Write_{cx}.txt");
+                        CalibrationHelper.Write(pdata, $@"d:\tmp\Read_{cx}.txt");
+                        cx++;
+                    }
                 }
-                EnableControl(btnSendCalibrationOnOff as Control, true);
+                EnableControl(sender as Control, true);
             });
         }
     }

@@ -44,7 +44,6 @@ namespace TLWController.Helper
         {
             try
             {
-                MapData.Clear();
                 using (TextReader reader = new StreamReader(file))
                 {
                     bool isFindStart = false;

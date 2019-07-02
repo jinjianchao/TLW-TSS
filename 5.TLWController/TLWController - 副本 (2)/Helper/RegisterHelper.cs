@@ -127,11 +127,6 @@ namespace TLWController.Helper
 
         static RegisterHelper()
         {
-            ReloadDefaultData();
-        }
-
-        public static void ReloadDefaultData()
-        {
             Data = new byte[1024].Fill(0xFF);
             ushort[] arrDefualt = {
                     0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0001,0x0001,0x0001,0x0000,0x0000,0x0000,0x0000,0x0000, //0 
@@ -157,7 +152,6 @@ namespace TLWController.Helper
 
         public static Register LoadRegister(string file)
         {
-            ReloadDefaultData();
             Register reg = new Register();
 
             if (!File.Exists(file))
@@ -623,37 +617,6 @@ namespace TLWController.Helper
                 }
                 position += 2;
             }
-
-            position = 0xC0 * 2;
-            for (byte i = 0xC0; i <= 0xC0; i++)
-            {
-                List<RegisterOtherItem> reg = GetOtherRegisterItem(regList, i);
-                foreach (var item in reg)
-                {
-                    byte[] vals = new byte[2];
-                    vals[0] = RegisterHelper.Data[position];
-                    vals[1] = RegisterHelper.Data[position + 1];
-                    ushort data = vals.GetUInt16().GetBitRangeValueFromUInt16(item.StartBit, item.StopBit);
-                    item.Value = data.ToString("X4");
-                }
-                position += 2;
-            }
-
-
-            position = 0xC1 * 2;
-            for (byte i = 0xC1; i <= 0xC1; i++)
-            {
-                List<RegisterOtherItem> reg = GetOtherRegisterItem(regList, i);
-                foreach (var item in reg)
-                {
-                    byte[] vals = new byte[2];
-                    vals[0] = RegisterHelper.Data[position];
-                    vals[1] = RegisterHelper.Data[position + 1];
-                    ushort data = vals.GetUInt16().GetBitRangeValueFromUInt16(item.StartBit, item.StopBit);
-                    item.Value = data.ToString("X4");
-                }
-                position += 2;
-            }
         }
 
         public static void CombinOtherReg(List<RegisterOtherItem> regList)
@@ -710,26 +673,6 @@ namespace TLWController.Helper
             }
             position = 0xA4 * 2;
             for (byte i = 0xA4; i <= 0xB5; i++)
-            {
-                List<RegisterOtherItem> reg = GetOtherRegisterItem(regList, i);
-                foreach (var item in reg)
-                {
-                    CombinData(position, item.Value.ToUInt16(), item.StartBit, item.StopBit);
-                }
-                position += 2;
-            }
-            position = 0xC0 * 2;
-            for (byte i = 0xC0; i <= 0xC0; i++)
-            {
-                List<RegisterOtherItem> reg = GetOtherRegisterItem(regList, i);
-                foreach (var item in reg)
-                {
-                    CombinData(position, item.Value.ToUInt16(), item.StartBit, item.StopBit);
-                }
-                position += 2;
-            }
-            position = 0xC1 * 2;
-            for (byte i = 0xC1; i <= 0xC1; i++)
             {
                 List<RegisterOtherItem> reg = GetOtherRegisterItem(regList, i);
                 foreach (var item in reg)

@@ -248,13 +248,6 @@ namespace TLWController.Extentions
             return source;
         }
 
-        public static byte[] FillWithRandomData(this byte[] source)
-        {
-            Random rnd = new Random();
-            rnd.NextBytes(source);
-            return source;
-        }
-
         public static bool IsEqual(this byte[] source, byte[] target)
         {
             for (int i = 0; i < source.Length; i++)

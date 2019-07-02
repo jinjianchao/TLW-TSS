@@ -30,37 +30,10 @@ namespace TLWController.Helper
             //写SDRAM。1.56  M:192*108  文件大小:192*216  每次读取1行：192*16字节 . 放入4096（放前边），后边默认FF.
             int position = 0;
             byte[] lineData;
-            int cx = 0;
             while ((lineData = reader.ReadBytes(column * 16)).Length != 0)
             {
-                //if (cx == 0)
-                //{
-                //    lineData.Fill(0x00);
-                //    //lineData[0] = 0xff;
-                //    //lineData[1] = 0xff;
-                //    //for (int i = 0; i < 16; i++)
-                //    //{
-                //    //    lineData[i] = 0xff;
-                //    //}
-                //    lineData[0] = 0xff;
-                //    lineData[1] = 0xff;
-                //    lineData[5] = 0xff;
-                //    lineData[6] = 0xff;
-                //    lineData[10] = 0xff;
-                //    lineData[11] = 0xff;
-                //    //for (int i = 0; i < 16; i++)
-                //    //{
-                //    //    lineData[i + 1] = (byte)(0x11 + i);
-
-                //    //}
-                //}
-                //else
-                //{
-                //    lineData.Fill(0x00);
-                //}
                 Array.Copy(lineData, 0, data, position, lineData.Length);
                 position += 4096;
-                cx++;
             }
             reader.Close();
             return data;

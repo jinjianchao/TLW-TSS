@@ -28,8 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tabCommonCommand = new System.Windows.Forms.TabPage();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.numGamma = new System.Windows.Forms.NumericUpDown();
@@ -44,14 +45,8 @@
             this.tbBrightness = new System.Windows.Forms.TrackBar();
             this.tab2055Param = new System.Windows.Forms.TabControl();
             this.tabAdvance = new System.Windows.Forms.TabPage();
-            this.groupBox9 = new System.Windows.Forms.GroupBox();
-            this.btnSingleRegRead = new System.Windows.Forms.Button();
-            this.label19 = new System.Windows.Forms.Label();
-            this.btnSetRegister = new System.Windows.Forms.Button();
-            this.numSingleRegValue = new System.Windows.Forms.NumericUpDown();
-            this.numSingleRegAddr = new System.Windows.Forms.NumericUpDown();
-            this.label18 = new System.Windows.Forms.Label();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
+            this.cbMapPos = new System.Windows.Forms.ComboBox();
             this.txtMap = new System.Windows.Forms.TextBox();
             this.btnUpgradeMAP = new System.Windows.Forms.Button();
             this.label16 = new System.Windows.Forms.Label();
@@ -79,7 +74,6 @@
             this.txtMcu = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.btnRegSetDefault = new System.Windows.Forms.Button();
             this.tabRegister = new System.Windows.Forms.TabControl();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.grid2055 = new System.Windows.Forms.DataGridView();
@@ -100,8 +94,20 @@
             this.ColGreenValue = new DevComponents.DotNetBar.Controls.DataGridViewLabelXColumn();
             this.ColBlueValue = new DevComponents.DotNetBar.Controls.DataGridViewLabelXColumn();
             this.ColSend = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.rtOtherReg = new System.Windows.Forms.RichTextBox();
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.gridOtherReg = new System.Windows.Forms.DataGridView();
+            this.ColOtherCheckBox = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.ColOtherMinValue = new DevComponents.DotNetBar.Controls.DataGridViewLabelXColumn();
+            this.ColOtherMaxValue = new DevComponents.DotNetBar.Controls.DataGridViewLabelXColumn();
+            this.ColOtherCNDescription = new DevComponents.DotNetBar.Controls.DataGridViewLabelXColumn();
+            this.ColOtherENDescription = new DevComponents.DotNetBar.Controls.DataGridViewLabelXColumn();
+            this.ColOtherRegisterAddress = new DevComponents.DotNetBar.Controls.DataGridViewLabelXColumn();
+            this.ColOtherStartBit = new DevComponents.DotNetBar.Controls.DataGridViewLabelXColumn();
+            this.ColOtherStopBit = new DevComponents.DotNetBar.Controls.DataGridViewLabelXColumn();
+            this.ColOtherValue = new DevComponents.DotNetBar.Controls.DataGridViewLabelXColumn();
+            this.ColOtherSend = new System.Windows.Forms.DataGridViewButtonColumn();
             this.btnReadReg = new System.Windows.Forms.Button();
             this.btnSendAll = new System.Windows.Forms.Button();
             this.cbParam2055Color = new System.Windows.Forms.ComboBox();
@@ -113,16 +119,19 @@
             this.btnLoad2055Param = new System.Windows.Forms.Button();
             this.tabTest = new System.Windows.Forms.TabPage();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.groupBox11 = new System.Windows.Forms.GroupBox();
-            this.groupBox10 = new System.Windows.Forms.GroupBox();
-            this.button5 = new System.Windows.Forms.Button();
-            this.cbWorkMode = new System.Windows.Forms.ComboBox();
+            this.groupBox9 = new System.Windows.Forms.GroupBox();
+            this.btnSingleRegRead = new System.Windows.Forms.Button();
+            this.label19 = new System.Windows.Forms.Label();
+            this.btnSetRegister = new System.Windows.Forms.Button();
+            this.numSingleRegValue = new System.Windows.Forms.NumericUpDown();
+            this.numSingleRegAddr = new System.Windows.Forms.NumericUpDown();
+            this.label18 = new System.Windows.Forms.Label();
             this.groupBox8 = new System.Windows.Forms.GroupBox();
             this.btnSDRAMToFlash = new System.Windows.Forms.Button();
             this.btnSetB6B7 = new System.Windows.Forms.Button();
             this.btnOpenCalibration = new System.Windows.Forms.Button();
             this.btnUpgradeCalibration = new System.Windows.Forms.Button();
-            this.btnCompareChose1 = new System.Windows.Forms.Button();
+            this.btnChoseCalibrationFile = new System.Windows.Forms.Button();
             this.txtCalibration = new System.Windows.Forms.TextBox();
             this.label17 = new System.Windows.Forms.Label();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
@@ -158,32 +167,13 @@
             this.button1 = new System.Windows.Forms.Button();
             this.numTimeDelay = new System.Windows.Forms.NumericUpDown();
             this.button2 = new System.Windows.Forms.Button();
-            this.btnBatchWriteCalibration = new System.Windows.Forms.Button();
-            this.btnSelectBatchCalibrationFolder = new System.Windows.Forms.Button();
-            this.txtBatchCalibrationFolder = new System.Windows.Forms.TextBox();
-            this.label20 = new System.Windows.Forms.Label();
-            this.groupBox12 = new System.Windows.Forms.GroupBox();
-            this.groupBox13 = new System.Windows.Forms.GroupBox();
-            this.btnCompare = new System.Windows.Forms.Button();
-            this.rtCompare = new System.Windows.Forms.RichTextBox();
-            this.txtCompareFile1 = new System.Windows.Forms.TextBox();
-            this.label21 = new System.Windows.Forms.Label();
-            this.btnCompareChose2 = new System.Windows.Forms.Button();
-            this.label22 = new System.Windows.Forms.Label();
-            this.txtCompareFile2 = new System.Windows.Forms.TextBox();
+            this.button5 = new System.Windows.Forms.Button();
+            this.btnReadCalibration = new System.Windows.Forms.Button();
+            this.btnWriteErrorCalibrationData = new System.Windows.Forms.Button();
             this.button6 = new System.Windows.Forms.Button();
-            this.btnSendCalibrationOnOff = new System.Windows.Forms.Button();
-            this.cbCalibrationOnOff = new System.Windows.Forms.ComboBox();
-            this.ColOtherCheckBox = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.ColOtherMinValue = new DevComponents.DotNetBar.Controls.DataGridViewLabelXColumn();
-            this.ColOtherMaxValue = new DevComponents.DotNetBar.Controls.DataGridViewLabelXColumn();
-            this.ColOtherCNDescription = new DevComponents.DotNetBar.Controls.DataGridViewLabelXColumn();
-            this.ColOtherENDescription = new DevComponents.DotNetBar.Controls.DataGridViewLabelXColumn();
-            this.ColOtherRegisterAddress = new DevComponents.DotNetBar.Controls.DataGridViewLabelXColumn();
-            this.ColOtherStartBit = new DevComponents.DotNetBar.Controls.DataGridViewLabelXColumn();
-            this.ColOtherStopBit = new DevComponents.DotNetBar.Controls.DataGridViewLabelXColumn();
-            this.ColOtherValue = new DevComponents.DotNetBar.Controls.DataGridViewLabelXColumn();
-            this.ColOtherSend = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.button7 = new System.Windows.Forms.Button();
+            this.button8 = new System.Windows.Forms.Button();
+            this.button9 = new System.Windows.Forms.Button();
             this.tabCommonCommand.SuspendLayout();
             this.groupBox5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numGamma)).BeginInit();
@@ -192,9 +182,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.tbBrightness)).BeginInit();
             this.tab2055Param.SuspendLayout();
             this.tabAdvance.SuspendLayout();
-            this.groupBox9.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numSingleRegValue)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numSingleRegAddr)).BeginInit();
             this.groupBox7.SuspendLayout();
             this.groupBox6.SuspendLayout();
             this.gpFirmwareUpgrade.SuspendLayout();
@@ -202,12 +189,14 @@
             this.tabRegister.SuspendLayout();
             this.tabPage2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.grid2055)).BeginInit();
+            this.tabPage3.SuspendLayout();
             this.tabPage4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridOtherReg)).BeginInit();
             this.tabTest.SuspendLayout();
             this.groupBox3.SuspendLayout();
-            this.groupBox11.SuspendLayout();
-            this.groupBox10.SuspendLayout();
+            this.groupBox9.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numSingleRegValue)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numSingleRegAddr)).BeginInit();
             this.groupBox8.SuspendLayout();
             this.groupBox4.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -219,8 +208,6 @@
             this.gpTest.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numTestDataLen)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numTimeDelay)).BeginInit();
-            this.groupBox12.SuspendLayout();
-            this.groupBox13.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabCommonCommand
@@ -231,7 +218,7 @@
             this.tabCommonCommand.Location = new System.Drawing.Point(4, 22);
             this.tabCommonCommand.Name = "tabCommonCommand";
             this.tabCommonCommand.Padding = new System.Windows.Forms.Padding(3);
-            this.tabCommonCommand.Size = new System.Drawing.Size(1392, 578);
+            this.tabCommonCommand.Size = new System.Drawing.Size(1392, 571);
             this.tabCommonCommand.TabIndex = 0;
             this.tabCommonCommand.Text = "常用命令";
             // 
@@ -380,87 +367,9 @@
             this.tabAdvance.TabIndex = 3;
             this.tabAdvance.Text = "高级";
             // 
-            // groupBox9
-            // 
-            this.groupBox9.Controls.Add(this.btnSingleRegRead);
-            this.groupBox9.Controls.Add(this.label19);
-            this.groupBox9.Controls.Add(this.btnSetRegister);
-            this.groupBox9.Controls.Add(this.numSingleRegValue);
-            this.groupBox9.Controls.Add(this.numSingleRegAddr);
-            this.groupBox9.Controls.Add(this.label18);
-            this.groupBox9.Location = new System.Drawing.Point(434, 124);
-            this.groupBox9.Name = "groupBox9";
-            this.groupBox9.Size = new System.Drawing.Size(472, 67);
-            this.groupBox9.TabIndex = 19;
-            this.groupBox9.TabStop = false;
-            this.groupBox9.Text = "寄存器操作";
-            // 
-            // btnSingleRegRead
-            // 
-            this.btnSingleRegRead.Location = new System.Drawing.Point(385, 27);
-            this.btnSingleRegRead.Name = "btnSingleRegRead";
-            this.btnSingleRegRead.Size = new System.Drawing.Size(75, 23);
-            this.btnSingleRegRead.TabIndex = 4;
-            this.btnSingleRegRead.Text = "读取";
-            this.btnSingleRegRead.UseVisualStyleBackColor = true;
-            this.btnSingleRegRead.Click += new System.EventHandler(this.btnSingleRegRead_Click);
-            // 
-            // label19
-            // 
-            this.label19.AutoSize = true;
-            this.label19.Location = new System.Drawing.Point(175, 31);
-            this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(29, 12);
-            this.label19.TabIndex = 3;
-            this.label19.Text = "值：";
-            // 
-            // btnSetRegister
-            // 
-            this.btnSetRegister.Location = new System.Drawing.Point(303, 27);
-            this.btnSetRegister.Name = "btnSetRegister";
-            this.btnSetRegister.Size = new System.Drawing.Size(75, 23);
-            this.btnSetRegister.TabIndex = 2;
-            this.btnSetRegister.Text = "设置";
-            this.btnSetRegister.UseVisualStyleBackColor = true;
-            this.btnSetRegister.Click += new System.EventHandler(this.btnSetRegister_Click);
-            // 
-            // numSingleRegValue
-            // 
-            this.numSingleRegValue.Hexadecimal = true;
-            this.numSingleRegValue.Location = new System.Drawing.Point(206, 29);
-            this.numSingleRegValue.Maximum = new decimal(new int[] {
-            99999999,
-            0,
-            0,
-            0});
-            this.numSingleRegValue.Name = "numSingleRegValue";
-            this.numSingleRegValue.Size = new System.Drawing.Size(91, 21);
-            this.numSingleRegValue.TabIndex = 1;
-            // 
-            // numSingleRegAddr
-            // 
-            this.numSingleRegAddr.Hexadecimal = true;
-            this.numSingleRegAddr.Location = new System.Drawing.Point(65, 27);
-            this.numSingleRegAddr.Maximum = new decimal(new int[] {
-            99999999,
-            0,
-            0,
-            0});
-            this.numSingleRegAddr.Name = "numSingleRegAddr";
-            this.numSingleRegAddr.Size = new System.Drawing.Size(91, 21);
-            this.numSingleRegAddr.TabIndex = 1;
-            // 
-            // label18
-            // 
-            this.label18.AutoSize = true;
-            this.label18.Location = new System.Drawing.Point(18, 31);
-            this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(41, 12);
-            this.label18.TabIndex = 0;
-            this.label18.Text = "地址：";
-            // 
             // groupBox7
             // 
+            this.groupBox7.Controls.Add(this.cbMapPos);
             this.groupBox7.Controls.Add(this.txtMap);
             this.groupBox7.Controls.Add(this.btnUpgradeMAP);
             this.groupBox7.Controls.Add(this.label16);
@@ -471,6 +380,15 @@
             this.groupBox7.TabIndex = 2;
             this.groupBox7.TabStop = false;
             this.groupBox7.Text = "MAP下载";
+            // 
+            // cbMapPos
+            // 
+            this.cbMapPos.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbMapPos.FormattingEnabled = true;
+            this.cbMapPos.Location = new System.Drawing.Point(191, 24);
+            this.cbMapPos.Name = "cbMapPos";
+            this.cbMapPos.Size = new System.Drawing.Size(85, 20);
+            this.cbMapPos.TabIndex = 19;
             // 
             // txtMap
             // 
@@ -500,7 +418,7 @@
             // 
             // btnChoseMAP
             // 
-            this.btnChoseMAP.Location = new System.Drawing.Point(188, 22);
+            this.btnChoseMAP.Location = new System.Drawing.Point(281, 22);
             this.btnChoseMAP.Name = "btnChoseMAP";
             this.btnChoseMAP.Size = new System.Drawing.Size(39, 23);
             this.btnChoseMAP.TabIndex = 6;
@@ -705,11 +623,11 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(16, 76);
+            this.label10.Location = new System.Drawing.Point(38, 76);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(59, 12);
+            this.label10.Size = new System.Drawing.Size(35, 12);
             this.label10.TabIndex = 0;
-            this.label10.Text = "灯板FPGA:";
+            this.label10.Text = "FPGA:";
             // 
             // txtMcu
             // 
@@ -730,7 +648,6 @@
             // tabPage1
             // 
             this.tabPage1.BackColor = System.Drawing.SystemColors.Control;
-            this.tabPage1.Controls.Add(this.btnRegSetDefault);
             this.tabPage1.Controls.Add(this.tabRegister);
             this.tabPage1.Controls.Add(this.btnReadReg);
             this.tabPage1.Controls.Add(this.btnSendAll);
@@ -744,19 +661,9 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(1392, 578);
+            this.tabPage1.Size = new System.Drawing.Size(1392, 571);
             this.tabPage1.TabIndex = 2;
             this.tabPage1.Text = "寄存器设置";
-            // 
-            // btnRegSetDefault
-            // 
-            this.btnRegSetDefault.Location = new System.Drawing.Point(748, 9);
-            this.btnRegSetDefault.Name = "btnRegSetDefault";
-            this.btnRegSetDefault.Size = new System.Drawing.Size(75, 23);
-            this.btnRegSetDefault.TabIndex = 12;
-            this.btnRegSetDefault.Text = "恢复默认值";
-            this.btnRegSetDefault.UseVisualStyleBackColor = true;
-            this.btnRegSetDefault.Click += new System.EventHandler(this.btnRegSetDefault_Click);
             // 
             // tabRegister
             // 
@@ -764,11 +671,12 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tabRegister.Controls.Add(this.tabPage2);
+            this.tabRegister.Controls.Add(this.tabPage3);
             this.tabRegister.Controls.Add(this.tabPage4);
             this.tabRegister.Location = new System.Drawing.Point(0, 42);
             this.tabRegister.Name = "tabRegister";
             this.tabRegister.SelectedIndex = 0;
-            this.tabRegister.Size = new System.Drawing.Size(1392, 530);
+            this.tabRegister.Size = new System.Drawing.Size(1392, 523);
             this.tabRegister.TabIndex = 11;
             // 
             // tabPage2
@@ -777,7 +685,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(1384, 504);
+            this.tabPage2.Size = new System.Drawing.Size(1384, 497);
             this.tabPage2.TabIndex = 0;
             this.tabPage2.Text = "2055寄存器";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -789,8 +697,8 @@
             this.grid2055.AllowUserToOrderColumns = true;
             this.grid2055.AllowUserToResizeColumns = false;
             this.grid2055.AllowUserToResizeRows = false;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.grid2055.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.grid2055.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle3;
             this.grid2055.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.grid2055.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.CoCheckBox,
@@ -819,14 +727,13 @@
             this.grid2055.RowHeadersVisible = false;
             this.grid2055.RowTemplate.Height = 23;
             this.grid2055.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.grid2055.Size = new System.Drawing.Size(1378, 498);
+            this.grid2055.Size = new System.Drawing.Size(1378, 491);
             this.grid2055.TabIndex = 0;
             this.grid2055.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.grid2055_CellBeginEdit);
             this.grid2055.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.grid2055_CellContentClick);
             this.grid2055.CellEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.grid2055_CellEnter);
             this.grid2055.CellLeave += new System.Windows.Forms.DataGridViewCellEventHandler(this.grid2055_CellLeave);
             this.grid2055.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(this.grid2055_EditingControlShowing);
-            this.grid2055.Scroll += new System.Windows.Forms.ScrollEventHandler(this.grid2055_Scroll);
             // 
             // CoCheckBox
             // 
@@ -961,6 +868,25 @@
             this.ColSend.Text = "发送";
             this.ColSend.UseColumnTextForButtonValue = true;
             // 
+            // tabPage3
+            // 
+            this.tabPage3.Controls.Add(this.rtOtherReg);
+            this.tabPage3.Location = new System.Drawing.Point(4, 22);
+            this.tabPage3.Name = "tabPage3";
+            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage3.Size = new System.Drawing.Size(1384, 497);
+            this.tabPage3.TabIndex = 1;
+            this.tabPage3.Text = "其它寄存器";
+            this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // rtOtherReg
+            // 
+            this.rtOtherReg.Location = new System.Drawing.Point(3, 3);
+            this.rtOtherReg.Name = "rtOtherReg";
+            this.rtOtherReg.Size = new System.Drawing.Size(686, 276);
+            this.rtOtherReg.TabIndex = 0;
+            this.rtOtherReg.Text = resources.GetString("rtOtherReg.Text");
+            // 
             // tabPage4
             // 
             this.tabPage4.BackColor = System.Drawing.SystemColors.Control;
@@ -968,7 +894,7 @@
             this.tabPage4.Location = new System.Drawing.Point(4, 22);
             this.tabPage4.Name = "tabPage4";
             this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage4.Size = new System.Drawing.Size(1384, 504);
+            this.tabPage4.Size = new System.Drawing.Size(1384, 497);
             this.tabPage4.TabIndex = 2;
             this.tabPage4.Text = "其它寄存器";
             // 
@@ -979,8 +905,8 @@
             this.gridOtherReg.AllowUserToOrderColumns = true;
             this.gridOtherReg.AllowUserToResizeColumns = false;
             this.gridOtherReg.AllowUserToResizeRows = false;
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.gridOtherReg.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.gridOtherReg.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle4;
             this.gridOtherReg.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.gridOtherReg.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ColOtherCheckBox,
@@ -1002,13 +928,92 @@
             this.gridOtherReg.RowHeadersVisible = false;
             this.gridOtherReg.RowTemplate.Height = 23;
             this.gridOtherReg.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.gridOtherReg.Size = new System.Drawing.Size(1378, 498);
+            this.gridOtherReg.Size = new System.Drawing.Size(1378, 491);
             this.gridOtherReg.TabIndex = 1;
             this.gridOtherReg.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.gridOtherReg_CellBeginEdit);
-            this.gridOtherReg.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.gridOtherReg_CellContentClick);
             this.gridOtherReg.CellEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.gridOtherReg_CellEnter);
             this.gridOtherReg.CellLeave += new System.Windows.Forms.DataGridViewCellEventHandler(this.gridOtherReg_CellLeave);
-            this.gridOtherReg.Scroll += new System.Windows.Forms.ScrollEventHandler(this.gridOtherReg_Scroll);
+            // 
+            // ColOtherCheckBox
+            // 
+            this.ColOtherCheckBox.DataPropertyName = "IsSelected";
+            this.ColOtherCheckBox.Frozen = true;
+            this.ColOtherCheckBox.HeaderText = "";
+            this.ColOtherCheckBox.Name = "ColOtherCheckBox";
+            this.ColOtherCheckBox.Width = 30;
+            // 
+            // ColOtherMinValue
+            // 
+            this.ColOtherMinValue.DataPropertyName = "MinValue";
+            this.ColOtherMinValue.Frozen = true;
+            this.ColOtherMinValue.HeaderText = "最小值";
+            this.ColOtherMinValue.Name = "ColOtherMinValue";
+            this.ColOtherMinValue.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.ColOtherMinValue.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            // 
+            // ColOtherMaxValue
+            // 
+            this.ColOtherMaxValue.DataPropertyName = "MaxValue";
+            this.ColOtherMaxValue.Frozen = true;
+            this.ColOtherMaxValue.HeaderText = "最大值";
+            this.ColOtherMaxValue.Name = "ColOtherMaxValue";
+            this.ColOtherMaxValue.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.ColOtherMaxValue.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            // 
+            // ColOtherCNDescription
+            // 
+            this.ColOtherCNDescription.DataPropertyName = "ChineseDescription";
+            this.ColOtherCNDescription.Frozen = true;
+            this.ColOtherCNDescription.HeaderText = "描述";
+            this.ColOtherCNDescription.Name = "ColOtherCNDescription";
+            this.ColOtherCNDescription.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.ColOtherCNDescription.Width = 150;
+            // 
+            // ColOtherENDescription
+            // 
+            this.ColOtherENDescription.DataPropertyName = "EnglishDescription";
+            this.ColOtherENDescription.Frozen = true;
+            this.ColOtherENDescription.HeaderText = "描述";
+            this.ColOtherENDescription.Name = "ColOtherENDescription";
+            // 
+            // ColOtherRegisterAddress
+            // 
+            this.ColOtherRegisterAddress.DataPropertyName = "Address";
+            this.ColOtherRegisterAddress.Frozen = true;
+            this.ColOtherRegisterAddress.HeaderText = "地址";
+            this.ColOtherRegisterAddress.Name = "ColOtherRegisterAddress";
+            // 
+            // ColOtherStartBit
+            // 
+            this.ColOtherStartBit.DataPropertyName = "StartBit";
+            this.ColOtherStartBit.Frozen = true;
+            this.ColOtherStartBit.HeaderText = "起始位";
+            this.ColOtherStartBit.Name = "ColOtherStartBit";
+            // 
+            // ColOtherStopBit
+            // 
+            this.ColOtherStopBit.DataPropertyName = "StopBit";
+            this.ColOtherStopBit.Frozen = true;
+            this.ColOtherStopBit.HeaderText = "终止位";
+            this.ColOtherStopBit.Name = "ColOtherStopBit";
+            // 
+            // ColOtherValue
+            // 
+            this.ColOtherValue.DataPropertyName = "Value";
+            this.ColOtherValue.Frozen = true;
+            this.ColOtherValue.HeaderText = "值";
+            this.ColOtherValue.Name = "ColOtherValue";
+            this.ColOtherValue.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            // 
+            // ColOtherSend
+            // 
+            this.ColOtherSend.DataPropertyName = "Send";
+            this.ColOtherSend.Frozen = true;
+            this.ColOtherSend.HeaderText = "";
+            this.ColOtherSend.Name = "ColOtherSend";
+            this.ColOtherSend.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.ColOtherSend.Text = "发送";
+            this.ColOtherSend.UseColumnTextForButtonValue = true;
             // 
             // btnReadReg
             // 
@@ -1051,8 +1056,6 @@
             // ckDebugMode
             // 
             this.ckDebugMode.AutoSize = true;
-            this.ckDebugMode.Checked = true;
-            this.ckDebugMode.CheckState = System.Windows.Forms.CheckState.Checked;
             this.ckDebugMode.Location = new System.Drawing.Point(506, 10);
             this.ckDebugMode.Name = "ckDebugMode";
             this.ckDebugMode.Size = new System.Drawing.Size(72, 16);
@@ -1117,10 +1120,6 @@
             this.groupBox3.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox3.Controls.Add(this.groupBox13);
-            this.groupBox3.Controls.Add(this.groupBox12);
-            this.groupBox3.Controls.Add(this.groupBox11);
-            this.groupBox3.Controls.Add(this.groupBox10);
             this.groupBox3.Controls.Add(this.groupBox8);
             this.groupBox3.Controls.Add(this.groupBox4);
             this.groupBox3.Controls.Add(this.label7);
@@ -1130,71 +1129,116 @@
             this.groupBox3.Controls.Add(this.gpTest);
             this.groupBox3.Location = new System.Drawing.Point(6, 6);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(1376, 564);
+            this.groupBox3.Size = new System.Drawing.Size(1376, 412);
             this.groupBox3.TabIndex = 12;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "FLASH操作";
             // 
-            // groupBox11
+            // groupBox9
             // 
-            this.groupBox11.Controls.Add(this.cbCalibrationOnOff);
-            this.groupBox11.Controls.Add(this.btnSendCalibrationOnOff);
-            this.groupBox11.Location = new System.Drawing.Point(363, 201);
-            this.groupBox11.Name = "groupBox11";
-            this.groupBox11.Size = new System.Drawing.Size(232, 63);
-            this.groupBox11.TabIndex = 20;
-            this.groupBox11.TabStop = false;
-            this.groupBox11.Text = "校正开关";
+            this.groupBox9.Controls.Add(this.btnSingleRegRead);
+            this.groupBox9.Controls.Add(this.label19);
+            this.groupBox9.Controls.Add(this.btnSetRegister);
+            this.groupBox9.Controls.Add(this.numSingleRegValue);
+            this.groupBox9.Controls.Add(this.numSingleRegAddr);
+            this.groupBox9.Controls.Add(this.label18);
+            this.groupBox9.Location = new System.Drawing.Point(434, 124);
+            this.groupBox9.Name = "groupBox9";
+            this.groupBox9.Size = new System.Drawing.Size(472, 67);
+            this.groupBox9.TabIndex = 19;
+            this.groupBox9.TabStop = false;
+            this.groupBox9.Text = "寄存器操作";
             // 
-            // groupBox10
+            // btnSingleRegRead
             // 
-            this.groupBox10.Controls.Add(this.button5);
-            this.groupBox10.Controls.Add(this.cbWorkMode);
-            this.groupBox10.Location = new System.Drawing.Point(601, 210);
-            this.groupBox10.Name = "groupBox10";
-            this.groupBox10.Size = new System.Drawing.Size(252, 54);
-            this.groupBox10.TabIndex = 19;
-            this.groupBox10.TabStop = false;
-            this.groupBox10.Text = "工装切换";
+            this.btnSingleRegRead.Location = new System.Drawing.Point(385, 27);
+            this.btnSingleRegRead.Name = "btnSingleRegRead";
+            this.btnSingleRegRead.Size = new System.Drawing.Size(75, 23);
+            this.btnSingleRegRead.TabIndex = 4;
+            this.btnSingleRegRead.Text = "读取";
+            this.btnSingleRegRead.UseVisualStyleBackColor = true;
+            this.btnSingleRegRead.Click += new System.EventHandler(this.btnSingleRegRead_Click);
             // 
-            // button5
+            // label19
             // 
-            this.button5.Location = new System.Drawing.Point(152, 18);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(75, 23);
-            this.button5.TabIndex = 20;
-            this.button5.Text = "加载";
-            this.button5.UseVisualStyleBackColor = true;
-            this.button5.Click += new System.EventHandler(this.button5_Click);
+            this.label19.AutoSize = true;
+            this.label19.Location = new System.Drawing.Point(175, 31);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(29, 12);
+            this.label19.TabIndex = 3;
+            this.label19.Text = "值：";
             // 
-            // cbWorkMode
+            // btnSetRegister
             // 
-            this.cbWorkMode.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbWorkMode.FormattingEnabled = true;
-            this.cbWorkMode.Location = new System.Drawing.Point(24, 19);
-            this.cbWorkMode.Name = "cbWorkMode";
-            this.cbWorkMode.Size = new System.Drawing.Size(121, 20);
-            this.cbWorkMode.TabIndex = 19;
+            this.btnSetRegister.Location = new System.Drawing.Point(303, 27);
+            this.btnSetRegister.Name = "btnSetRegister";
+            this.btnSetRegister.Size = new System.Drawing.Size(75, 23);
+            this.btnSetRegister.TabIndex = 2;
+            this.btnSetRegister.Text = "设置";
+            this.btnSetRegister.UseVisualStyleBackColor = true;
+            this.btnSetRegister.Click += new System.EventHandler(this.btnSetRegister_Click);
+            // 
+            // numSingleRegValue
+            // 
+            this.numSingleRegValue.Hexadecimal = true;
+            this.numSingleRegValue.Location = new System.Drawing.Point(206, 29);
+            this.numSingleRegValue.Maximum = new decimal(new int[] {
+            99999999,
+            0,
+            0,
+            0});
+            this.numSingleRegValue.Name = "numSingleRegValue";
+            this.numSingleRegValue.Size = new System.Drawing.Size(91, 21);
+            this.numSingleRegValue.TabIndex = 1;
+            // 
+            // numSingleRegAddr
+            // 
+            this.numSingleRegAddr.Hexadecimal = true;
+            this.numSingleRegAddr.Location = new System.Drawing.Point(65, 27);
+            this.numSingleRegAddr.Maximum = new decimal(new int[] {
+            99999999,
+            0,
+            0,
+            0});
+            this.numSingleRegAddr.Name = "numSingleRegAddr";
+            this.numSingleRegAddr.Size = new System.Drawing.Size(91, 21);
+            this.numSingleRegAddr.TabIndex = 1;
+            // 
+            // label18
+            // 
+            this.label18.AutoSize = true;
+            this.label18.Location = new System.Drawing.Point(18, 31);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(41, 12);
+            this.label18.TabIndex = 0;
+            this.label18.Text = "地址：";
             // 
             // groupBox8
             // 
-            this.groupBox8.Controls.Add(this.button6);
+            this.groupBox8.Controls.Add(this.button9);
+            this.groupBox8.Controls.Add(this.button8);
             this.groupBox8.Controls.Add(this.btnSDRAMToFlash);
+            this.groupBox8.Controls.Add(this.button7);
             this.groupBox8.Controls.Add(this.btnSetB6B7);
+            this.groupBox8.Controls.Add(this.button6);
             this.groupBox8.Controls.Add(this.btnOpenCalibration);
+            this.groupBox8.Controls.Add(this.btnWriteErrorCalibrationData);
+            this.groupBox8.Controls.Add(this.btnReadCalibration);
+            this.groupBox8.Controls.Add(this.button5);
             this.groupBox8.Controls.Add(this.btnUpgradeCalibration);
+            this.groupBox8.Controls.Add(this.btnChoseCalibrationFile);
             this.groupBox8.Controls.Add(this.txtCalibration);
             this.groupBox8.Controls.Add(this.label17);
             this.groupBox8.Location = new System.Drawing.Point(6, 139);
             this.groupBox8.Name = "groupBox8";
-            this.groupBox8.Size = new System.Drawing.Size(621, 55);
+            this.groupBox8.Size = new System.Drawing.Size(621, 219);
             this.groupBox8.TabIndex = 18;
             this.groupBox8.TabStop = false;
             this.groupBox8.Text = "校正数据读,写";
             // 
             // btnSDRAMToFlash
             // 
-            this.btnSDRAMToFlash.Location = new System.Drawing.Point(514, 17);
+            this.btnSDRAMToFlash.Location = new System.Drawing.Point(517, 17);
             this.btnSDRAMToFlash.Name = "btnSDRAMToFlash";
             this.btnSDRAMToFlash.Size = new System.Drawing.Size(102, 23);
             this.btnSDRAMToFlash.TabIndex = 13;
@@ -1204,7 +1248,7 @@
             // 
             // btnSetB6B7
             // 
-            this.btnSetB6B7.Location = new System.Drawing.Point(426, 17);
+            this.btnSetB6B7.Location = new System.Drawing.Point(426, 18);
             this.btnSetB6B7.Name = "btnSetB6B7";
             this.btnSetB6B7.Size = new System.Drawing.Size(87, 23);
             this.btnSetB6B7.TabIndex = 12;
@@ -1214,8 +1258,7 @@
             // 
             // btnOpenCalibration
             // 
-            this.btnOpenCalibration.Enabled = false;
-            this.btnOpenCalibration.Location = new System.Drawing.Point(346, 17);
+            this.btnOpenCalibration.Location = new System.Drawing.Point(346, 20);
             this.btnOpenCalibration.Name = "btnOpenCalibration";
             this.btnOpenCalibration.Size = new System.Drawing.Size(75, 23);
             this.btnOpenCalibration.TabIndex = 11;
@@ -1225,7 +1268,7 @@
             // 
             // btnUpgradeCalibration
             // 
-            this.btnUpgradeCalibration.Location = new System.Drawing.Point(267, 17);
+            this.btnUpgradeCalibration.Location = new System.Drawing.Point(269, 20);
             this.btnUpgradeCalibration.Name = "btnUpgradeCalibration";
             this.btnUpgradeCalibration.Size = new System.Drawing.Size(75, 23);
             this.btnUpgradeCalibration.TabIndex = 8;
@@ -1233,19 +1276,19 @@
             this.btnUpgradeCalibration.UseVisualStyleBackColor = true;
             this.btnUpgradeCalibration.Click += new System.EventHandler(this.btnUpgradeCalibration_Click);
             // 
-            // btnCompareChose1
+            // btnChoseCalibrationFile
             // 
-            this.btnCompareChose1.Location = new System.Drawing.Point(226, 20);
-            this.btnCompareChose1.Name = "btnCompareChose1";
-            this.btnCompareChose1.Size = new System.Drawing.Size(39, 23);
-            this.btnCompareChose1.TabIndex = 7;
-            this.btnCompareChose1.Text = "...";
-            this.btnCompareChose1.UseVisualStyleBackColor = true;
-            this.btnCompareChose1.Click += new System.EventHandler(this.btnCompareChose1_Click);
+            this.btnChoseCalibrationFile.Location = new System.Drawing.Point(220, 20);
+            this.btnChoseCalibrationFile.Name = "btnChoseCalibrationFile";
+            this.btnChoseCalibrationFile.Size = new System.Drawing.Size(39, 23);
+            this.btnChoseCalibrationFile.TabIndex = 7;
+            this.btnChoseCalibrationFile.Text = "...";
+            this.btnChoseCalibrationFile.UseVisualStyleBackColor = true;
+            this.btnChoseCalibrationFile.Click += new System.EventHandler(this.btnChoseCalibrationFile_Click);
             // 
             // txtCalibration
             // 
-            this.txtCalibration.Location = new System.Drawing.Point(50, 18);
+            this.txtCalibration.Location = new System.Drawing.Point(42, 20);
             this.txtCalibration.Name = "txtCalibration";
             this.txtCalibration.Size = new System.Drawing.Size(168, 21);
             this.txtCalibration.TabIndex = 6;
@@ -1253,7 +1296,7 @@
             // label17
             // 
             this.label17.AutoSize = true;
-            this.label17.Location = new System.Drawing.Point(15, 22);
+            this.label17.Location = new System.Drawing.Point(7, 23);
             this.label17.Name = "label17";
             this.label17.Size = new System.Drawing.Size(35, 12);
             this.label17.TabIndex = 5;
@@ -1637,242 +1680,75 @@
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
-            // btnBatchWriteCalibration
+            // button5
             // 
-            this.btnBatchWriteCalibration.Location = new System.Drawing.Point(266, 19);
-            this.btnBatchWriteCalibration.Name = "btnBatchWriteCalibration";
-            this.btnBatchWriteCalibration.Size = new System.Drawing.Size(75, 23);
-            this.btnBatchWriteCalibration.TabIndex = 17;
-            this.btnBatchWriteCalibration.Text = "写入";
-            this.btnBatchWriteCalibration.UseVisualStyleBackColor = true;
-            this.btnBatchWriteCalibration.Click += new System.EventHandler(this.btnBatchWriteCalibration_Click);
+            this.button5.Location = new System.Drawing.Point(269, 79);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(75, 23);
+            this.button5.TabIndex = 8;
+            this.button5.Text = "写入(上)";
+            this.button5.UseVisualStyleBackColor = true;
+            this.button5.Click += new System.EventHandler(this.button5_Click);
             // 
-            // btnSelectBatchCalibrationFolder
+            // btnReadCalibration
             // 
-            this.btnSelectBatchCalibrationFolder.Location = new System.Drawing.Point(221, 19);
-            this.btnSelectBatchCalibrationFolder.Name = "btnSelectBatchCalibrationFolder";
-            this.btnSelectBatchCalibrationFolder.Size = new System.Drawing.Size(39, 23);
-            this.btnSelectBatchCalibrationFolder.TabIndex = 16;
-            this.btnSelectBatchCalibrationFolder.Text = "...";
-            this.btnSelectBatchCalibrationFolder.UseVisualStyleBackColor = true;
-            this.btnSelectBatchCalibrationFolder.Click += new System.EventHandler(this.btnSelectBatchCalibrationFolder_Click);
+            this.btnReadCalibration.Location = new System.Drawing.Point(346, 50);
+            this.btnReadCalibration.Name = "btnReadCalibration";
+            this.btnReadCalibration.Size = new System.Drawing.Size(75, 23);
+            this.btnReadCalibration.TabIndex = 9;
+            this.btnReadCalibration.Text = "读取";
+            this.btnReadCalibration.UseVisualStyleBackColor = true;
+            this.btnReadCalibration.Click += new System.EventHandler(this.btnReadCalibration_Click);
             // 
-            // txtBatchCalibrationFolder
+            // btnWriteErrorCalibrationData
             // 
-            this.txtBatchCalibrationFolder.Location = new System.Drawing.Point(50, 20);
-            this.txtBatchCalibrationFolder.Name = "txtBatchCalibrationFolder";
-            this.txtBatchCalibrationFolder.Size = new System.Drawing.Size(168, 21);
-            this.txtBatchCalibrationFolder.TabIndex = 15;
-            this.txtBatchCalibrationFolder.Text = "D:\\tmp\\校正数据\\主色";
-            // 
-            // label20
-            // 
-            this.label20.AutoSize = true;
-            this.label20.Location = new System.Drawing.Point(3, 24);
-            this.label20.Name = "label20";
-            this.label20.Size = new System.Drawing.Size(47, 12);
-            this.label20.TabIndex = 14;
-            this.label20.Text = "文件夹:";
-            // 
-            // groupBox12
-            // 
-            this.groupBox12.Controls.Add(this.txtBatchCalibrationFolder);
-            this.groupBox12.Controls.Add(this.btnBatchWriteCalibration);
-            this.groupBox12.Controls.Add(this.label20);
-            this.groupBox12.Controls.Add(this.btnSelectBatchCalibrationFolder);
-            this.groupBox12.Location = new System.Drawing.Point(6, 201);
-            this.groupBox12.Name = "groupBox12";
-            this.groupBox12.Size = new System.Drawing.Size(351, 63);
-            this.groupBox12.TabIndex = 21;
-            this.groupBox12.TabStop = false;
-            this.groupBox12.Text = "校正数据批量写入";
-            // 
-            // groupBox13
-            // 
-            this.groupBox13.Controls.Add(this.txtCompareFile2);
-            this.groupBox13.Controls.Add(this.label22);
-            this.groupBox13.Controls.Add(this.txtCompareFile1);
-            this.groupBox13.Controls.Add(this.label21);
-            this.groupBox13.Controls.Add(this.rtCompare);
-            this.groupBox13.Controls.Add(this.btnCompareChose2);
-            this.groupBox13.Controls.Add(this.btnCompare);
-            this.groupBox13.Controls.Add(this.btnCompareChose1);
-            this.groupBox13.Location = new System.Drawing.Point(6, 284);
-            this.groupBox13.Name = "groupBox13";
-            this.groupBox13.Size = new System.Drawing.Size(621, 274);
-            this.groupBox13.TabIndex = 22;
-            this.groupBox13.TabStop = false;
-            this.groupBox13.Text = "文件比较";
-            // 
-            // btnCompare
-            // 
-            this.btnCompare.Location = new System.Drawing.Point(540, 20);
-            this.btnCompare.Name = "btnCompare";
-            this.btnCompare.Size = new System.Drawing.Size(75, 23);
-            this.btnCompare.TabIndex = 0;
-            this.btnCompare.Text = "比较";
-            this.btnCompare.UseVisualStyleBackColor = true;
-            this.btnCompare.Click += new System.EventHandler(this.btnCompare_Click);
-            // 
-            // rtCompare
-            // 
-            this.rtCompare.Location = new System.Drawing.Point(8, 50);
-            this.rtCompare.Name = "rtCompare";
-            this.rtCompare.Size = new System.Drawing.Size(607, 218);
-            this.rtCompare.TabIndex = 1;
-            this.rtCompare.Text = "";
-            // 
-            // txtCompareFile1
-            // 
-            this.txtCompareFile1.Location = new System.Drawing.Point(52, 21);
-            this.txtCompareFile1.Name = "txtCompareFile1";
-            this.txtCompareFile1.Size = new System.Drawing.Size(168, 21);
-            this.txtCompareFile1.TabIndex = 8;
-            // 
-            // label21
-            // 
-            this.label21.AutoSize = true;
-            this.label21.Location = new System.Drawing.Point(7, 25);
-            this.label21.Name = "label21";
-            this.label21.Size = new System.Drawing.Size(41, 12);
-            this.label21.TabIndex = 7;
-            this.label21.Text = "文件1:";
-            // 
-            // btnCompareChose2
-            // 
-            this.btnCompareChose2.Location = new System.Drawing.Point(496, 20);
-            this.btnCompareChose2.Name = "btnCompareChose2";
-            this.btnCompareChose2.Size = new System.Drawing.Size(39, 23);
-            this.btnCompareChose2.TabIndex = 7;
-            this.btnCompareChose2.Text = "...";
-            this.btnCompareChose2.UseVisualStyleBackColor = true;
-            this.btnCompareChose2.Click += new System.EventHandler(this.btnCompareChose2_Click);
-            // 
-            // label22
-            // 
-            this.label22.AutoSize = true;
-            this.label22.Location = new System.Drawing.Point(277, 25);
-            this.label22.Name = "label22";
-            this.label22.Size = new System.Drawing.Size(41, 12);
-            this.label22.TabIndex = 7;
-            this.label22.Text = "文件2:";
-            // 
-            // txtCompareFile2
-            // 
-            this.txtCompareFile2.Location = new System.Drawing.Point(322, 21);
-            this.txtCompareFile2.Name = "txtCompareFile2";
-            this.txtCompareFile2.Size = new System.Drawing.Size(168, 21);
-            this.txtCompareFile2.TabIndex = 8;
+            this.btnWriteErrorCalibrationData.Location = new System.Drawing.Point(269, 50);
+            this.btnWriteErrorCalibrationData.Name = "btnWriteErrorCalibrationData";
+            this.btnWriteErrorCalibrationData.Size = new System.Drawing.Size(75, 23);
+            this.btnWriteErrorCalibrationData.TabIndex = 10;
+            this.btnWriteErrorCalibrationData.Text = "写入错误数据";
+            this.btnWriteErrorCalibrationData.UseVisualStyleBackColor = true;
+            this.btnWriteErrorCalibrationData.Click += new System.EventHandler(this.btnWriteErrorCalibrationData_Click);
             // 
             // button6
             // 
-            this.button6.Location = new System.Drawing.Point(226, 16);
+            this.button6.Location = new System.Drawing.Point(346, 79);
             this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(39, 23);
-            this.button6.TabIndex = 17;
-            this.button6.Text = "...";
+            this.button6.Size = new System.Drawing.Size(75, 23);
+            this.button6.TabIndex = 11;
+            this.button6.Text = "开启校正";
             this.button6.UseVisualStyleBackColor = true;
-            this.button6.Click += new System.EventHandler(this.button6_Click);
+            this.button6.Click += new System.EventHandler(this.btnOpenCalibration_Click);
             // 
-            // btnSendCalibrationOnOff
+            // button7
             // 
-            this.btnSendCalibrationOnOff.Location = new System.Drawing.Point(139, 23);
-            this.btnSendCalibrationOnOff.Name = "btnSendCalibrationOnOff";
-            this.btnSendCalibrationOnOff.Size = new System.Drawing.Size(75, 23);
-            this.btnSendCalibrationOnOff.TabIndex = 1;
-            this.btnSendCalibrationOnOff.Text = "发送";
-            this.btnSendCalibrationOnOff.UseVisualStyleBackColor = true;
-            this.btnSendCalibrationOnOff.Click += new System.EventHandler(this.btnSendCalibrationOnOff_Click);
+            this.button7.Location = new System.Drawing.Point(426, 77);
+            this.button7.Name = "button7";
+            this.button7.Size = new System.Drawing.Size(87, 23);
+            this.button7.TabIndex = 12;
+            this.button7.Text = "设置数据长度";
+            this.button7.UseVisualStyleBackColor = true;
+            this.button7.Click += new System.EventHandler(this.btnSetB6B7_Click);
             // 
-            // cbCalibrationOnOff
+            // button8
             // 
-            this.cbCalibrationOnOff.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbCalibrationOnOff.FormattingEnabled = true;
-            this.cbCalibrationOnOff.Location = new System.Drawing.Point(12, 26);
-            this.cbCalibrationOnOff.Name = "cbCalibrationOnOff";
-            this.cbCalibrationOnOff.Size = new System.Drawing.Size(121, 20);
-            this.cbCalibrationOnOff.TabIndex = 20;
+            this.button8.Location = new System.Drawing.Point(517, 76);
+            this.button8.Name = "button8";
+            this.button8.Size = new System.Drawing.Size(102, 23);
+            this.button8.TabIndex = 13;
+            this.button8.Text = "SDRAM->FLASH";
+            this.button8.UseVisualStyleBackColor = true;
+            this.button8.Click += new System.EventHandler(this.btnSDRAMToFlash_Click);
             // 
-            // ColOtherCheckBox
+            // button9
             // 
-            this.ColOtherCheckBox.DataPropertyName = "IsSelected";
-            this.ColOtherCheckBox.Frozen = true;
-            this.ColOtherCheckBox.HeaderText = "";
-            this.ColOtherCheckBox.Name = "ColOtherCheckBox";
-            this.ColOtherCheckBox.Width = 30;
-            // 
-            // ColOtherMinValue
-            // 
-            this.ColOtherMinValue.DataPropertyName = "MinValue";
-            this.ColOtherMinValue.Frozen = true;
-            this.ColOtherMinValue.HeaderText = "最小值";
-            this.ColOtherMinValue.Name = "ColOtherMinValue";
-            this.ColOtherMinValue.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.ColOtherMinValue.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            // 
-            // ColOtherMaxValue
-            // 
-            this.ColOtherMaxValue.DataPropertyName = "MaxValue";
-            this.ColOtherMaxValue.Frozen = true;
-            this.ColOtherMaxValue.HeaderText = "最大值";
-            this.ColOtherMaxValue.Name = "ColOtherMaxValue";
-            this.ColOtherMaxValue.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.ColOtherMaxValue.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            // 
-            // ColOtherCNDescription
-            // 
-            this.ColOtherCNDescription.DataPropertyName = "ChineseDescription";
-            this.ColOtherCNDescription.Frozen = true;
-            this.ColOtherCNDescription.HeaderText = "描述";
-            this.ColOtherCNDescription.Name = "ColOtherCNDescription";
-            this.ColOtherCNDescription.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.ColOtherCNDescription.Width = 150;
-            // 
-            // ColOtherENDescription
-            // 
-            this.ColOtherENDescription.DataPropertyName = "EnglishDescription";
-            this.ColOtherENDescription.Frozen = true;
-            this.ColOtherENDescription.HeaderText = "描述";
-            this.ColOtherENDescription.Name = "ColOtherENDescription";
-            // 
-            // ColOtherRegisterAddress
-            // 
-            this.ColOtherRegisterAddress.DataPropertyName = "Address";
-            this.ColOtherRegisterAddress.Frozen = true;
-            this.ColOtherRegisterAddress.HeaderText = "地址";
-            this.ColOtherRegisterAddress.Name = "ColOtherRegisterAddress";
-            // 
-            // ColOtherStartBit
-            // 
-            this.ColOtherStartBit.DataPropertyName = "StartBit";
-            this.ColOtherStartBit.Frozen = true;
-            this.ColOtherStartBit.HeaderText = "起始位";
-            this.ColOtherStartBit.Name = "ColOtherStartBit";
-            // 
-            // ColOtherStopBit
-            // 
-            this.ColOtherStopBit.DataPropertyName = "StopBit";
-            this.ColOtherStopBit.Frozen = true;
-            this.ColOtherStopBit.HeaderText = "终止位";
-            this.ColOtherStopBit.Name = "ColOtherStopBit";
-            // 
-            // ColOtherValue
-            // 
-            this.ColOtherValue.DataPropertyName = "Value";
-            this.ColOtherValue.Frozen = true;
-            this.ColOtherValue.HeaderText = "值";
-            this.ColOtherValue.Name = "ColOtherValue";
-            this.ColOtherValue.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            // 
-            // ColOtherSend
-            // 
-            this.ColOtherSend.DataPropertyName = "Send";
-            this.ColOtherSend.Frozen = true;
-            this.ColOtherSend.HeaderText = "";
-            this.ColOtherSend.Name = "ColOtherSend";
-            this.ColOtherSend.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.ColOtherSend.Text = "发送";
-            this.ColOtherSend.UseColumnTextForButtonValue = true;
+            this.button9.Location = new System.Drawing.Point(269, 108);
+            this.button9.Name = "button9";
+            this.button9.Size = new System.Drawing.Size(75, 23);
+            this.button9.TabIndex = 14;
+            this.button9.Text = "写入(所有)";
+            this.button9.UseVisualStyleBackColor = true;
+            this.button9.Click += new System.EventHandler(this.button9_Click);
             // 
             // MainForm
             // 
@@ -1893,10 +1769,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.tbBrightness)).EndInit();
             this.tab2055Param.ResumeLayout(false);
             this.tabAdvance.ResumeLayout(false);
-            this.groupBox9.ResumeLayout(false);
-            this.groupBox9.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numSingleRegValue)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numSingleRegAddr)).EndInit();
             this.groupBox7.ResumeLayout(false);
             this.groupBox7.PerformLayout();
             this.groupBox6.ResumeLayout(false);
@@ -1908,13 +1780,16 @@
             this.tabRegister.ResumeLayout(false);
             this.tabPage2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.grid2055)).EndInit();
+            this.tabPage3.ResumeLayout(false);
             this.tabPage4.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.gridOtherReg)).EndInit();
             this.tabTest.ResumeLayout(false);
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
-            this.groupBox11.ResumeLayout(false);
-            this.groupBox10.ResumeLayout(false);
+            this.groupBox9.ResumeLayout(false);
+            this.groupBox9.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numSingleRegValue)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numSingleRegAddr)).EndInit();
             this.groupBox8.ResumeLayout(false);
             this.groupBox8.PerformLayout();
             this.groupBox4.ResumeLayout(false);
@@ -1930,10 +1805,6 @@
             this.gpTest.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numTestDataLen)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numTimeDelay)).EndInit();
-            this.groupBox12.ResumeLayout(false);
-            this.groupBox12.PerformLayout();
-            this.groupBox13.ResumeLayout(false);
-            this.groupBox13.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -2027,6 +1898,8 @@
         private System.Windows.Forms.ComboBox cbAdvChip;
         private System.Windows.Forms.TabControl tabRegister;
         private System.Windows.Forms.TabPage tabPage2;
+        private System.Windows.Forms.TabPage tabPage3;
+        private System.Windows.Forms.RichTextBox rtOtherReg;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.GroupBox groupBox4;
@@ -2046,11 +1919,12 @@
         private System.Windows.Forms.Button btnChoseMAP;
         private System.Windows.Forms.TextBox txtMap;
         private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.ComboBox cbMapPos;
         private System.Windows.Forms.GroupBox groupBox7;
         private System.Windows.Forms.DataGridView gridOtherReg;
         private System.Windows.Forms.GroupBox groupBox8;
         private System.Windows.Forms.Button btnUpgradeCalibration;
-        private System.Windows.Forms.Button btnCompareChose1;
+        private System.Windows.Forms.Button btnChoseCalibrationFile;
         private System.Windows.Forms.TextBox txtCalibration;
         private System.Windows.Forms.Label label17;
         private System.Windows.Forms.Button btnOpenCalibration;
@@ -2063,27 +1937,6 @@
         private System.Windows.Forms.NumericUpDown numSingleRegAddr;
         private System.Windows.Forms.Label label18;
         private System.Windows.Forms.Button btnSingleRegRead;
-        private System.Windows.Forms.GroupBox groupBox10;
-        private System.Windows.Forms.Button button5;
-        private System.Windows.Forms.ComboBox cbWorkMode;
-        private System.Windows.Forms.GroupBox groupBox11;
-        private System.Windows.Forms.Button btnRegSetDefault;
-        private System.Windows.Forms.GroupBox groupBox12;
-        private System.Windows.Forms.TextBox txtBatchCalibrationFolder;
-        private System.Windows.Forms.Button btnBatchWriteCalibration;
-        private System.Windows.Forms.Label label20;
-        private System.Windows.Forms.Button btnSelectBatchCalibrationFolder;
-        private System.Windows.Forms.GroupBox groupBox13;
-        private System.Windows.Forms.RichTextBox rtCompare;
-        private System.Windows.Forms.Button btnCompare;
-        private System.Windows.Forms.TextBox txtCompareFile2;
-        private System.Windows.Forms.Label label22;
-        private System.Windows.Forms.TextBox txtCompareFile1;
-        private System.Windows.Forms.Label label21;
-        private System.Windows.Forms.Button btnCompareChose2;
-        private System.Windows.Forms.Button button6;
-        private System.Windows.Forms.Button btnSendCalibrationOnOff;
-        private System.Windows.Forms.ComboBox cbCalibrationOnOff;
         private System.Windows.Forms.DataGridViewCheckBoxColumn ColOtherCheckBox;
         private DevComponents.DotNetBar.Controls.DataGridViewLabelXColumn ColOtherMinValue;
         private DevComponents.DotNetBar.Controls.DataGridViewLabelXColumn ColOtherMaxValue;
@@ -2094,6 +1947,13 @@
         private DevComponents.DotNetBar.Controls.DataGridViewLabelXColumn ColOtherStopBit;
         private DevComponents.DotNetBar.Controls.DataGridViewLabelXColumn ColOtherValue;
         private System.Windows.Forms.DataGridViewButtonColumn ColOtherSend;
+        private System.Windows.Forms.Button button9;
+        private System.Windows.Forms.Button button8;
+        private System.Windows.Forms.Button button7;
+        private System.Windows.Forms.Button button6;
+        private System.Windows.Forms.Button btnWriteErrorCalibrationData;
+        private System.Windows.Forms.Button btnReadCalibration;
+        private System.Windows.Forms.Button button5;
     }
 }
 

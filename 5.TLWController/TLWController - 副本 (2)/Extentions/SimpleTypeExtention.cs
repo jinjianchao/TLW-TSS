@@ -31,10 +31,6 @@ namespace TLWController.Extentions
             return UInt16.Parse(source, styles);
         }
 
-        public static UInt32 ToUInt32(this string source, System.Globalization.NumberStyles styles = System.Globalization.NumberStyles.HexNumber)
-        {
-            return UInt32.Parse(source, styles);
-        }
 
         public static byte ToByte(this string source)
         {
