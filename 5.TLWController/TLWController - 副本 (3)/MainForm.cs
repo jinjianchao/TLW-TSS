@@ -76,7 +76,6 @@ namespace TLWController
             BindVideoCardParamType();
             BindWorkMode();
             BindCalibrationOnOff();
-            BindDistributeAddress();
             WriteOrReadInterfaceData(false); ;
             if (!Import2055Param(registerAddressFile))
             {
@@ -311,19 +310,6 @@ namespace TLWController
             cbCalibrationOnOff.ValueMember = "Value";
             cbCalibrationOnOff.DisplayMember = "Text";
             cbCalibrationOnOff.DataSource = items;
-        }
-
-        private void BindDistributeAddress()
-        {
-            List<ListItem> items = new List<ListItem>()
-            {
-                new ListItem(){ Value=0x00, Text="000000" },
-                new ListItem(){ Value=0xa0000, Text="0a0000" },
-                new ListItem(){ Value=0x140000, Text="140000" }
-            };
-            cbDistributeAddress.ValueMember = "Value";
-            cbDistributeAddress.DisplayMember = "Text";
-            cbDistributeAddress.DataSource = items;
         }
 
         #endregion
@@ -617,81 +603,7 @@ namespace TLWController
 
         private bool Import2055Param(string file)
         {
-            Register register = RegisterHelper.Load2055Register(file);
-            if (register == null) return false;
-            grid2055.Columns["CoCheckBox"].DisplayIndex = 0;
-            grid2055.Columns["ColOffset"].DisplayIndex = 1;
-            grid2055.Columns["ColENDescription"].DisplayIndex = 2;
-            grid2055.Columns["ColCNDescription"].DisplayIndex = 3;
-            grid2055.Columns["ColDescription"].DisplayIndex = 4;
-            grid2055.Columns["ColRegisterAddress"].DisplayIndex = 5;
-            grid2055.Columns["ColRedAddress"].DisplayIndex = 6;
-            grid2055.Columns["ColGreenAddress"].DisplayIndex = 7;
-            grid2055.Columns["ColBlueAddress"].DisplayIndex = 8;
-            grid2055.Columns["ColStartBit"].DisplayIndex = 9;
-            grid2055.Columns["ColStopBit"].DisplayIndex = 10;
-            grid2055.Columns["ColMinValue"].DisplayIndex = 11;
-            grid2055.Columns["ColMaxValue"].DisplayIndex = 12;
-
-            if (lang == "2052")
-            {
-                grid2055.Columns["ColENDescription"].Visible = false;
-                grid2055.Columns["ColCNDescription"].Width = 300;
-            }
-            else
-            {
-                grid2055.Columns["ColCNDescription"].Visible = false;
-                grid2055.Columns["ColENDescription"].Width = 300;
-            }
-            grid2055.Columns["ColOffset"].Width = 200;
-            grid2055.Columns["CoCheckBox"].Visible = false;
-            grid2055.Columns["ColDescription"].Visible = false;
-            grid2055.Columns["ColRegisterAddress"].Visible = false;
-            grid2055.Columns["ColRedAddress"].Visible = false;
-            grid2055.Columns["ColGreenAddress"].Visible = false;
-            grid2055.Columns["ColBlueAddress"].Visible = false;
-            grid2055.Columns["ColStartBit"].Visible = false;
-            grid2055.Columns["ColStopBit"].Visible = false;
-            grid2055.Columns["ColMinValue"].Visible = false;
-            grid2055.Columns["ColMaxValue"].Visible = false;
-            //grid2055.Columns["ColSend"].Visible = false;
-            grid2055.DataSource = register.Register2055ItemList;
-            grid2055.AllowUserToOrderColumns = false;
-            ckDebugMode.Checked = register.IsDebug;
-
-            gridOtherReg.DataSource = register.RegisterOtherItemList;
-            gridOtherReg.Columns["ColOtherCheckBox"].DisplayIndex = 0;
-            gridOtherReg.Columns["ColOtherENDescription"].DisplayIndex = 1;
-            gridOtherReg.Columns["ColOtherCNDescription"].DisplayIndex = 1;
-            gridOtherReg.Columns["ColOtherRegisterAddress"].DisplayIndex = 2;
-            gridOtherReg.Columns["ColOtherStartBit"].DisplayIndex = 4;
-            gridOtherReg.Columns["ColOtherStopBit"].DisplayIndex = 5;
-            gridOtherReg.Columns["ColOtherMinValue"].DisplayIndex = 6;
-            gridOtherReg.Columns["ColOtherMaxValue"].DisplayIndex = 7;
-
-            if (lang == "2052")
-            {
-                gridOtherReg.Columns["ColOtherENDescription"].Visible = false;
-                gridOtherReg.Columns["ColOtherCNDescription"].Width = 500;
-            }
-            else
-            {
-                gridOtherReg.Columns["ColOtherCNDescription"].Visible = false;
-                gridOtherReg.Columns["ColOtherENDescription"].Width = 500;
-            }
-            gridOtherReg.Columns["ColOtherCheckBox"].Visible = false;
-            gridOtherReg.Columns["ColOtherRegisterAddress"].Visible = true;
-            gridOtherReg.Columns["ColOtherStartBit"].Visible = false;
-            gridOtherReg.Columns["ColOtherStopBit"].Visible = false;
-            gridOtherReg.Columns["ColOtherMinValue"].Visible = false;
-            gridOtherReg.Columns["ColOtherMaxValue"].Visible = false;
-            gridOtherReg.AllowUserToOrderColumns = false;
-            return true;
-        }
-
-        private bool Import2072Param(string file)
-        {
-            Register register = RegisterHelper.Load2055Register(file);
+            Register register = RegisterHelper.LoadRegister(file);
             if (register == null) return false;
             grid2055.Columns["CoCheckBox"].DisplayIndex = 0;
             grid2055.Columns["ColOffset"].DisplayIndex = 1;
@@ -973,13 +885,12 @@ namespace TLWController
                 {
                     int result = 0;
                     UInt32 sdramAddr = (UInt32)numRegAddr.Value;
-                    int cx = 0;
                     int count = (int)(data.Length / 1024);
                     for (int i = 0; i < count; i++)
                     {
                         byte[] writeData = new byte[1024];
 
-                        Array.Copy(data, cx, writeData, 0, 1024);
+                        Array.Copy(data, sdramAddr - 0x1e0000, writeData, 0, 1024);
 
                         result = _TLWCommand.tlw_FLASH_Write(item.Value, GetCardAddress(), 0, chipPos, sdramAddr, writeData, 1024);
                         if ((sdramAddr & 0xffff) == 0)
@@ -1001,7 +912,6 @@ namespace TLWController
                         //    WriteTextFile($@"{path}\Read_{i + 1}.txt", readByte.ToString(" "));
                         //}
                         sdramAddr += 1024;
-                        cx += 1024;
                         SetPrograss($"{i + 1}/{count}", $"{i + 1}/{count}", (int)(((float)(i + 1) / count) * 100));
                     }
                 }
@@ -1077,27 +987,27 @@ namespace TLWController
             //    }
             //}
 
-            //for (int i = 1; i <= numFlashDataLen.Value; i++)
-            //{
-            //    data[i - 1] = 0xff;
-            //}
-            //for (int i = 0; i < data.Length / 4096; i++)
-            //{
-            //    if (i == 0 || i == 54 || i == 107)
-            //    {
-            //        for (int j = 0; j < 3072; j++)
-            //        {
-            //            data[i * 4096 + j] = 0xff;
-            //        }
-            //    }
-            //    else
-            //    {
-            //        for (int j = 0; j < 3072; j++)
-            //        {
-            //            data[i * 4096 + j] = 0x0;
-            //        }
-            //    }
-            //}
+            for (int i = 1; i <= numFlashDataLen.Value; i++)
+            {
+                data[i - 1] = 0xff;
+            }
+            for (int i = 0; i < data.Length / 4096; i++)
+            {
+                if (i == 0 || i == 54 || i == 107)
+                {
+                    for (int j = 0; j < 3072; j++)
+                    {
+                        data[i * 4096 + j] = 0xff;
+                    }
+                }
+                else
+                {
+                    for (int j = 0; j < 3072; j++)
+                    {
+                        data[i * 4096 + j] = 0x0;
+                    }
+                }
+            }
 
             //byte val = 1;
             //for (int j = 0; j < data.Length / 4; j++)
@@ -1108,17 +1018,7 @@ namespace TLWController
             //    data[j * 4 + 3] = val;
             //    val++;
             //}
-            UInt32 val = 0x1;
-            for (int j = 0; j < data.Length / 4; j++)
-            {
-                byte[] btData = val.GetBytes();
-                data[j * 4] = btData[0];
-                data[j * 4 + 1] = btData[1];
-                data[j * 4 + 2] = btData[2];
-                data[j * 4 + 3] = btData[3];
-                val++;
-                //if (val >= 255) val = 1;
-            }
+
             CalibrationHelper.Write(data, @"D:\tmp\Write_SDRAM.zdat");
             byte chipPos = (byte)cbChipPos.SelectedValue.ToString().ToByte();
             EnableControl(sender as Control, false);
@@ -3298,29 +3198,29 @@ namespace TLWController
                     }
                 }
 
-                //byte chipPos = (byte)cbRegChip.SelectedValue.ToString().ToByte();
-                //bool bSave = !ckDebugMode.Checked;
-                //foreach (var item in _DevIP)
-                //{
-                //    int result = 0;
-                //    UInt32 regLength = 108 * 4096;
-                //    UInt16 c0 = (UInt16)(regLength & 0x00ffff);
-                //    UInt16 c1 = (UInt16)(regLength >> 16);
-                //    result = _TLWCommand.tlw_WriteRegister(item.Value, GetCardAddress(0, 0), 0, chipPos, 0xc0, c0, bSave);
-                //    if (result != 0)
-                //    {
-                //        WriteMessage($"IP:{item.Key}设置寄存器C0失败");
-                //        EnableControl(sender as Control, true);
-                //        return;
-                //    }
-                //    result = _TLWCommand.tlw_WriteRegister(item.Value, GetCardAddress(0, 0), 0, chipPos, 0xc1, c1, bSave);
-                //    if (result != 0)
-                //    {
-                //        WriteMessage($"IP:{item.Key}设置寄存器C1失败");
-                //        EnableControl(sender as Control, true);
-                //        return;
-                //    }
-                //}
+                byte chipPos = (byte)cbRegChip.SelectedValue.ToString().ToByte();
+                bool bSave = !ckDebugMode.Checked;
+                foreach (var item in _DevIP)
+                {
+                    int result = 0;
+                    UInt32 regLength = 108 * 4096;
+                    UInt16 c0 = (UInt16)(regLength & 0x00ffff);
+                    UInt16 c1 = (UInt16)(regLength >> 16);
+                    result = _TLWCommand.tlw_WriteRegister(item.Value, GetCardAddress(0, 0), 0, chipPos, 0xc0, c0, bSave);
+                    if (result != 0)
+                    {
+                        WriteMessage($"IP:{item.Key}设置寄存器C0失败");
+                        EnableControl(sender as Control, true);
+                        return;
+                    }
+                    result = _TLWCommand.tlw_WriteRegister(item.Value, GetCardAddress(0, 0), 0, chipPos, 0xc1, c1, bSave);
+                    if (result != 0)
+                    {
+                        WriteMessage($"IP:{item.Key}设置寄存器C1失败");
+                        EnableControl(sender as Control, true);
+                        return;
+                    }
+                }
 
                 foreach (var item in _DevIP)
                 {
@@ -3340,8 +3240,8 @@ namespace TLWController
 
         private void btnCompare_Click(object sender, EventArgs e)
         {
-            string str1 = ReadTextFile(txtCompareFile1.Text).Trim();
-            string str2 = ReadTextFile(txtCompareFile2.Text).Trim();
+            string str1 = ReadTextFile(txtCompareFile1.Text);
+            string str2 = ReadTextFile(txtCompareFile2.Text);
             byte[] bt1 = str1.ToBytes(' ');
             byte[] bt2 = str2.ToBytes(' ');
             string compareStr = "";
@@ -3401,95 +3301,6 @@ namespace TLWController
                 }
                 EnableControl(btnSendCalibrationOnOff as Control, true);
             });
-        }
-
-        private void btnChoseDistributeBoardFPGA_Click(object sender, EventArgs e)
-        {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "*.bin|*.bin";
-            if (openFileDialog.ShowDialog(this) == DialogResult.Cancel) return;
-            txtDistributeBoardFPGA.Text = openFileDialog.FileName;
-        }
-
-        private void btnUpdateDistributeBoardFPGA_Click(object sender, EventArgs e)
-        {
-            if (CheckIsBusy()) return;
-            if (!CheckDeviceAddr())
-            {
-                MessageBox.Show(this, "设备地址错误");
-                return;
-            }
-            byte[] data = FileHelper.ReadBinaryFile(txtDistributeBoardFPGA.Text);
-            if (data == null)
-            {
-                MessageBox.Show(this, "文件读取失败");
-                return;
-            }
-            byte[] newData = null;
-            if (data.Length % 1024 != 0)
-            {
-                int yushu = data.Length % 1024;
-                int externalCount = 1024 - yushu;
-                newData = new byte[data.Length + externalCount].Fill(0xff);
-                Array.Copy(data, 0, newData, 0, data.Length);
-            }
-            else
-            {
-                newData = data;
-            }
-
-            byte chip = byte.Parse(cbAdvChip.SelectedValue.ToString());
-            UInt32 flashAddr = (UInt32)cbDistributeAddress.SelectedValue;
-
-            InvokeAsync(() =>
-            {
-                EnableControl(sender as Control, false);
-                foreach (var item in _DevIP)
-                {
-                    int result = 0;
-                    int cx = 0;
-                    int count = (int)(data.Length / 1024);
-                    for (int i = 0; i < count; i++)
-                    {
-                        byte[] writeData = new byte[1024];
-                        Array.Copy(data, cx, writeData, 0, 1024);
-
-                        result = _TLWCommand.tlw_FLASH_Write(item.Value, GetCardAddress(), 0, chip, flashAddr, writeData, 1024);
-                        if ((flashAddr & 0xffff) == 0)
-                        {
-                            System.Threading.Thread.Sleep(1000);
-                        }
-                        if (result != 0)
-                        {
-                            WriteMessage($"IP:{item.Key}写入失败");
-                            EnableControl(sender as Control, true);
-                            return;
-                        }
-                        flashAddr += 1024;
-                        cx += 1024;
-                        SetPrograss($"{i + 1}/{count}", $"{i + 1}/{count}", (int)(((float)(i + 1) / count) * 100));
-                    }
-                }
-                EnableControl(sender as Control, true);
-            });
-        }
-
-        private void btnReadbtnDistributeBoardFPGA_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void btnImport2072_Click(object sender, EventArgs e)
-        {
-            OpenFileDialog openFileDlg = new OpenFileDialog();
-            openFileDlg.Filter = "*.txt|*.txt";
-            openFileDlg.FileName = "Register2072.txt";
-            if (openFileDlg.ShowDialog(this) == DialogResult.Cancel) return;
-            if (!Import2055Param(openFileDlg.FileName))
-            {
-                MessageBox.Show(this, "导入2055参数失败");
-                return;
-            }
         }
     }
 }

@@ -127,10 +127,10 @@ namespace TLWController.Helper
 
         static RegisterHelper()
         {
-            Reload2055DefaultData();
+            ReloadDefaultData();
         }
 
-        public static void Reload2055DefaultData()
+        public static void ReloadDefaultData()
         {
             Data = new byte[1024].Fill(0xFF);
             ushort[] arrDefualt = {
@@ -155,9 +155,9 @@ namespace TLWController.Helper
             Array.Copy(bytesData, 0, Data, 0, bytesData.Length);
         }
 
-        public static Register Load2055Register(string file)
+        public static Register LoadRegister(string file)
         {
-            Reload2055DefaultData();
+            ReloadDefaultData();
             Register reg = new Register();
 
             if (!File.Exists(file))
@@ -330,7 +330,7 @@ namespace TLWController.Helper
                         return false;
                     }
                     registerItem.MaxValue = maxValue;
-                    registerItem.RedValue = data[9];
+                    registerItem.RedValue = data[9].ToUInt32().ToString();
                     registerItem.GreenValue = data[10];
                     registerItem.BlueValue = data[11];
                     registerItem.Offset = data[12];

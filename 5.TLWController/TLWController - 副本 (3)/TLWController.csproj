@@ -81,14 +81,12 @@
     <Compile Include="FrmSectionSet.Designer.cs">
       <DependentUpon>FrmSectionSet.cs</DependentUpon>
     </Compile>
-    <Compile Include="Helper\BytesDataHelper.cs" />
     <Compile Include="Helper\CalibrationHelper.cs" />
     <Compile Include="Helper\FileHelper.cs" />
     <Compile Include="Helper\InterfaceDataHelper.cs" />
     <Compile Include="Helper\MapHelper.cs" />
     <Compile Include="Helper\NetworkValidateHelper.cs" />
     <Compile Include="Helper\RegisterHelper.cs" />
-    <Compile Include="Helper\TimeElapsed.cs" />
     <Compile Include="Helper\TLWCommand.cs" />
     <Compile Include="Helper\UDPHelper.cs" />
     <Compile Include="MainForm.cs">
@@ -137,12 +135,6 @@
     <None Include="Lib\tlw.dll" />
     <None Include="Lib\TLWComm.dll" />
     <None Include="Lib\UnitInfo.dll" />
-    <Content Include="Config\Param2072.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Config\Param2072_Default.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="Config\Param2055_Default.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
