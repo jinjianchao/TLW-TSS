@@ -454,8 +454,8 @@
             <param name="hDevice">设备句柄</param>
             <param name="addr">设备地址</param>
             <param name="id">数据包识别号</param>
-            <param name="chip">哪个芯片 默认为0   1为从芯片</param>
-            <param name="mode"> 0 MCU韧件程序 , 1 FPGA韧件程序</param>
+            <param name="chip">对于分配卡和连接卡,表示程序区:0=区域1 1=区域2 2=区域3 ;对于视频卡,表示芯片:默认为0  1为从芯片</param>
+            <param name="mode">0 MCU韧件程序 , 1 FPGA韧件程序</param>
             <param name="path">文件路径</param>
             <param name="func">进度回调函数</param>
             <returns>0 —— 成功，其他值失败</returns>
@@ -488,9 +488,9 @@
             <param name="nLen">数据长度,默认为4</param>
             <returns>0 —— 成功，其他值失败</returns>
         </member>
-        <member name="M:TLWComm.TLWCommOper.tlw_VideoCardLoadParam(System.Int32,System.UInt16,System.UInt16,System.Byte)">
+        <member name="M:TLWComm.TLWCommOper.tlw_ConnectCardLoadParam(System.Int32,System.UInt16,System.UInt16,System.Byte)">
             <summary>
-            视频卡加载参数
+            连接卡加载参数
             </summary>
             <param name="hDevice">设备句柄</param>
             <param name="addr">设备地址</param>
@@ -508,6 +508,60 @@
             <param name="dat">数据数组</param>
             <param name="offset">偏移量</param>
             <param name="nLen">长度为12，分别是IP地址，子网掩码，网关地址各占4字节</param>
+            <returns>0 —— 成功，其他值失败</returns>
+        </member>
+        <member name="M:TLWComm.TLWCommOper.tlw_WriteCalibrationFileLength(System.Int32,System.UInt16,System.UInt16,System.UInt32)">
+            <summary>
+            设置灯板校正数据长度
+            </summary>
+            <param name="hDevice">设备句柄</param>
+            <param name="addr">设备地址</param>
+            <param name="id">数据包识别号</param>
+            <param name="dwLen">灯板校正数据长度</param>
+            <returns>0 —— 成功，其他值失败</returns>
+        </member>
+        <member name="M:TLWComm.TLWCommOper.tlw_WriteMAP(System.Int32,System.UInt16,System.UInt16,System.Byte[],System.Int32,System.Int32)">
+            <summary>
+            写入MAP数据
+            </summary>
+            <param name="hDevice">设备句柄</param>
+            <param name="addr">设备地址</param>
+            <param name="id">数据包识别号</param>
+            <param name="src">MAP数据数组</param>
+            <param name="offset">数据偏移量</param>
+            <param name="nLen">数据长度,默认为4096</param>
+            <returns>0 —— 成功，其他值失败</returns>
+        </member>
+        <member name="M:TLWComm.TLWCommOper.tlw_ReadMAP(System.Int32,System.UInt16,System.UInt16,System.Byte[],System.Int32,System.Int32)">
+            <summary>
+            读取MAP数据
+            </summary>
+            <param name="hDevice">设备句柄</param>
+            <param name="addr">设备地址</param>
+            <param name="id">数据包识别号</param>
+            <param name="src">MAP数据数组</param>
+            <param name="offset">数据偏移量</param>
+            <param name="nLen">数据长度,默认为4096</param>
+            <returns>0 —— 成功，其他值失败</returns>
+        </member>
+        <member name="M:TLWComm.TLWCommOper.tlw_SetDisplayMode(System.Int32,System.UInt16,System.UInt16,System.Byte)">
+            <summary>
+            设置显示工装模式
+            </summary>
+            <param name="hDevice">设备句柄</param>
+            <param name="addr">设备地址</param>
+            <param name="id">数据包识别号</param>
+            <param name="mode">显示模式0 = 视频，0x80=工装白，0x81=工装黑，0x82=工装蓝，0x83=工装绿，0x84=工装红，0x85=灰度渐变，0x86=低灰度渐变，0x87=斜线</param>
+            <returns>0 —— 成功，其他值失败</returns>
+        </member>
+        <member name="M:TLWComm.TLWCommOper.tlw_SetCalibrationONOFF(System.Int32,System.UInt16,System.UInt16,System.Byte)">
+            <summary>
+            设置校正开关
+            </summary>
+            <param name="hDevice">设备句柄</param>
+            <param name="addr">设备地址</param>
+            <param name="id">数据包识别号</param>
+            <param name="mode">0=校正关闭  1=校正打开</param>
             <returns>0 —— 成功，其他值失败</returns>
         </member>
     </members>

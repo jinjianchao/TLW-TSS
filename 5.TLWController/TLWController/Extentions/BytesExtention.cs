@@ -167,6 +167,16 @@ namespace TLWController.Extentions
             return val;
         }
 
+        public static ushort Sum(this byte[] data, int start, int end)
+        {
+            ushort val = 0;
+            for (int i = start; i <= end; i++)
+            {
+                val += data[i];
+            }
+            return val;
+        }
+
         public static string ToBinaryString(this byte source, int len)
         {
             string str1 = Convert.ToString(source, 2);

@@ -83,11 +83,13 @@
     </Compile>
     <Compile Include="Helper\BytesDataHelper.cs" />
     <Compile Include="Helper\CalibrationHelper.cs" />
+    <Compile Include="Helper\class2072Oper.cs" />
+    <Compile Include="Helper\classMBParam.cs" />
     <Compile Include="Helper\FileHelper.cs" />
     <Compile Include="Helper\InterfaceDataHelper.cs" />
     <Compile Include="Helper\MapHelper.cs" />
     <Compile Include="Helper\NetworkValidateHelper.cs" />
-    <Compile Include="Helper\RegisterHelper.cs" />
+    <Compile Include="Helper\Register2055Helper.cs" />
     <Compile Include="Helper\TimeElapsed.cs" />
     <Compile Include="Helper\TLWCommand.cs" />
     <Compile Include="Helper\UDPHelper.cs" />

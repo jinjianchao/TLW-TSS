@@ -40,6 +40,46 @@ namespace TLWController.Helper
             return true;
         }
 
+        public static bool SaveMap(string file, byte[] data)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine("-- Copyright (C) 1991-2013 Altera Corporation");
+            sb.AppendLine("-- Your use of Altera Corporation's design tools, logic functions ");
+            sb.AppendLine("-- and other software and tools, and its AMPP partner logic ");
+            sb.AppendLine("-- functions, and any output files from any of the foregoing ");
+            sb.AppendLine("-- (including device programming or simulation files), and any ");
+            sb.AppendLine("-- associated documentation or information are expressly subject ");
+            sb.AppendLine("-- to the terms and conditions of the Altera Program License ");
+            sb.AppendLine("-- Subscription Agreement, Altera MegaCore Function License ");
+            sb.AppendLine("-- Agreement, or other applicable license agreement, including,");
+            sb.AppendLine("-- without limitation, that your use is for the sole purpose of");
+            sb.AppendLine("-- programming logic devices manufactured by Altera and sold by");
+            sb.AppendLine("-- Altera or its authorized distributors.  Please refer to the ");
+            sb.AppendLine("-- applicable agreement for further details.");
+            sb.AppendLine("");
+            sb.AppendLine("-- Quartus II generated Memory Initialization File (.mif)");
+            sb.AppendLine("");
+            sb.AppendLine("WIDTH=16;");
+            sb.AppendLine("DEPTH=2048;");
+            sb.AppendLine("");
+            sb.AppendLine("ADDRESS_RADIX=HEX;");
+            sb.AppendLine("DATA_RADIX=HEX;");
+            sb.AppendLine("CONTENT BEGIN");
+            UInt16 addr = 0x0000;
+            for (int i = 0; i < data.Length / 2; i++)
+            {
+                byte[] tmp = new byte[2];
+                tmp[0] = data[i * 2];
+                tmp[1] = data[i * 2 + 1];
+                UInt16 val = tmp.GetUInt16();
+                sb.AppendLine($"\t{addr.ToString("X4")}:{tmp.GetUInt16().ToString("X4")};");
+                addr++;
+            }
+            sb.AppendLine("END;");
+            File.WriteAllText(file, sb.ToString());
+            return true;
+        }
+
         private static bool GetMapData(string file)
         {
             try
