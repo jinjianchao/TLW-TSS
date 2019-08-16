@@ -161,31 +161,50 @@ namespace TLWController.Helper
         public static void Reload2055DefaultData()
         {
             Data = new byte[1024].Fill(0xFF);
+            //ushort[] arrDefualt = {
+            //        0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0001,0x0001,0x0001,0x0000,0x0000,0x0000,0x0000,0x0000, //0 
+            //        0x0000,0x0000,0x021F,0x0310,0x0402,0x050A,0x0601,0x0780,0x0880,0x0980,0x0A80,0x0B80,0x0C10,0x0D01,0x0E01,0x0F11, //1
+            //        0x1001,0x110F,0x120F,0x1300,0x1400,0x1500,0x1600,0x17F0,0x182F,0x1900,0x1A0F,0x1B80,0x1C40,0x1D0A,0x1E5F,0x1F1F, //2
+            //        0x201F,0x2102,0x22FC,0x2300,0x021F,0x0310,0x0402,0x050A,0x0601,0x0780,0x0880,0x0980,0x0A80,0x0B80,0x0C10,0x0D01, //3
+            //        0x0E01,0x0F11,0x1001,0x110F,0x120F,0x1300,0x1400,0x1500,0x1600,0x17F0,0x182F,0x1900,0x1A0F,0x1B80,0x1C40,0x1D0A, //4
+            //        0x1E5F,0x1F1F,0x201F,0x2102,0x22FC,0x2300,0x021F,0x0310,0x0402,0x050A,0x0601,0x0780,0x0880,0x0980,0x0A80,0x0B80, //5
+            //        0x0C10,0x0D01,0x0E01,0x0F11,0x1001,0x110F,0x120F,0x1300,0x1400,0x1500,0x1600,0x17F0,0x182F,0x1900,0x1A0F,0x1B80, //6
+            //        0x1C40,0x1D0A,0x1E5F,0x1F1F,0x201F,0x2102,0x22FC,0x2300,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000, //7
+            //        0x00FA,0x0000,0x0000,0x0000,0x0001,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000, //8
+            //        0x0000,0x0000,0x7FFF,0x7FFF,0x7FFF,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000, //9
+            //        0x0020,0x000F,0x0030,0x000A,0xFFFF,0x3FFF,0x3FFF,0x3FFF,0xFFFF,0x3FFF,0x3FFF,0x03FF,0xFFFF, 0xFFFF,0xFFFF,0xFFFF,//a
+            //        0xFFFF,0xFFFF,0xFFFF,0xFFFF,0xFFFF,0xFFFF,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000, //b
+            //        0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000, //c
+            //        0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000, //d
+            //        0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000, //e 
+            //        0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000}; //f
+
             ushort[] arrDefualt = {
-                    0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0001,0x0001,0x0001,0x0000,0x0000,0x0000,0x0000,0x0000, //0 
-                    0x0000,0x0000,0x021F,0x0310,0x0402,0x050A,0x0601,0x0780,0x0880,0x0980,0x0A80,0x0B80,0x0C10,0x0D01,0x0E01,0x0F11, //1
-                    0x1001,0x110F,0x120F,0x1300,0x1400,0x1500,0x1600,0x17F0,0x182F,0x1900,0x1A0F,0x1B80,0x1C40,0x1D0A,0x1E5F,0x1F1F, //2
-                    0x201F,0x2102,0x22FC,0x2300,0x021F,0x0310,0x0402,0x050A,0x0601,0x0780,0x0880,0x0980,0x0A80,0x0B80,0x0C10,0x0D01, //3
-                    0x0E01,0x0F11,0x1001,0x110F,0x120F,0x1300,0x1400,0x1500,0x1600,0x17F0,0x182F,0x1900,0x1A0F,0x1B80,0x1C40,0x1D0A, //4
-                    0x1E5F,0x1F1F,0x201F,0x2102,0x22FC,0x2300,0x021F,0x0310,0x0402,0x050A,0x0601,0x0780,0x0880,0x0980,0x0A80,0x0B80, //5
-                    0x0C10,0x0D01,0x0E01,0x0F11,0x1001,0x110F,0x120F,0x1300,0x1400,0x1500,0x1600,0x17F0,0x182F,0x1900,0x1A0F,0x1B80, //6
-                    0x1C40,0x1D0A,0x1E5F,0x1F1F,0x201F,0x2102,0x22FC,0x2300,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000, //7
-                    0x00FA,0x0000,0x0000,0x0000,0x0001,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000, //8
+                    0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0001,0x0001,0x0000,0x0000,0x0002,0x0000,0x0000,0x0000, //0 
+                    0x0000,0x0000,0x021F,0x033F,0x0402,0x0504,0x0601,0x0720,0x0820,0x0908,0x0A08,0x0B00,0x0C20,0x0D01,0x0E04,0x0F81, //1
+                    0x1042,0x1121,0x1201,0x1300,0x1400,0x1500,0x1600,0x17F0,0x181F,0x1900,0x1A1F,0x1B10,0x1C97,0x1D0A,0x1E42,0x1F04, //2
+                    0x2054,0x2101,0x221C,0x2300,0x021F,0x033F,0x0402,0x0504,0x0601,0x0720,0x0820,0x0908,0x0A08,0x0B00,0x0C20,0x0D01, //3
+                    0x0E04,0x0F81,0x1042,0x1121,0x1201,0x1300,0x1400,0x1500,0x1600,0x17F0,0x18EF,0x1950,0x1A1F,0x1B10,0x1CAC,0x1D0A, //4
+                    0x1E46,0x1F20,0x2054,0x2101,0x221C,0x2300,0x021F,0x033F,0x0402,0x0504,0x0601,0x0720,0x0820,0x0908,0x0A08,0x0B00, //5
+                    0x0C20,0x0D01,0x0E04,0x0F81,0x1042,0x1121,0x1201,0x1300,0x1400,0x1500,0x1600,0x17F0,0x182F,0x1900,0x1A1F,0x1B10, //6
+                    0x1CB3,0x1D0A,0x1E48,0x1F20,0x2054,0x2101,0x221C,0x2300,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000, //7
+                    0x0080,0x0000,0x0000,0x0000,0x0001,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000, //8
                     0x0000,0x0000,0x7FFF,0x7FFF,0x7FFF,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000, //9
-                    0x0020,0x000F,0x0030,0x000A,0xFFFF,0x3FFF,0x3FFF,0x3FFF,0xFFFF,0x3FFF,0x3FFF,0x03FF,0xFFFF, 0xFFFF,0xFFFF,0xFFFF,//a
+                    0x0026,0x000A,0x002D,0x0023,0xFFFF,0x3FFF,0x3FFF,0x3FFF,0xFFFF,0x3FFF,0x3FFF,0x03FF,0xFFFF,0xFFFF,0xFFFF,0xFFFF,//a
                     0xFFFF,0xFFFF,0xFFFF,0xFFFF,0xFFFF,0xFFFF,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000, //b
                     0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000, //c
                     0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000, //d
                     0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000, //e 
-                    0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000}; //f
+                    0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000 //f
+        };
 
             byte[] bytesData = arrDefualt.ToBytes();
             Array.Copy(bytesData, 0, Data, 0, bytesData.Length);
         }
 
-        public static Register Load2055Register(string file)
+        public static Register Load2055Register(string file, bool bImport)
         {
-            Reload2055DefaultData();
+            //Reload2055DefaultData();
             Register reg = new Register();
 
             if (!File.Exists(file))
@@ -210,7 +229,7 @@ namespace TLWController.Helper
 
             using (TextReader reader = new StreamReader(file, Encoding.UTF8))
             {
-                if (ReadOtherRegister(ref reg, reader) == false)
+                if (ReadOtherRegister(ref reg, reader, bImport) == false)
                 {
                     return null;
                 }
@@ -358,9 +377,9 @@ namespace TLWController.Helper
                         return false;
                     }
                     registerItem.MaxValue = maxValue;
-                    registerItem.RedValue = data[9];
-                    registerItem.GreenValue = data[10];
-                    registerItem.BlueValue = data[11];
+                    registerItem.RedValue = data[9].ToUInt16(NumberStyles.HexNumber).ToString();
+                    registerItem.GreenValue = data[10].ToUInt16(NumberStyles.HexNumber).ToString();
+                    registerItem.BlueValue = data[11].ToUInt16(NumberStyles.HexNumber).ToString();
                     registerItem.Offset = data[12];
                     registerItem.Description = data[13];
                     registerItem.ChineseDescription = data[14];
@@ -372,7 +391,7 @@ namespace TLWController.Helper
             return true;
         }
 
-        private static bool ReadOtherRegister(ref Register reg, TextReader reader)
+        private static bool ReadOtherRegister(ref Register reg, TextReader reader, bool bImport)
         {
             int lineIndex = 0;
             string lineData = string.Empty;
@@ -433,8 +452,20 @@ namespace TLWController.Helper
                         return false;
                     }
                     registerItem.MaxValue = maxValue.ToString("X4");
-
-                    registerItem.Value = data[6];
+                    //if (registerItem.Address != "92")
+                    //{
+                    //    registerItem.Value = data[6].ToUInt32(NumberStyles.HexNumber).ToString();
+                    //}
+                    //else
+                    //{
+                    //    if (bImport == false)
+                    //        registerItem.Value = data[6].ToUInt32(NumberStyles.HexNumber).ToString();
+                    //    else
+                    //    {
+                    //        registerItem.Value = data[6].ToUInt32(NumberStyles.HexNumber).ToString();
+                    //    }
+                    //}
+                    registerItem.Value = data[6].ToUInt32(NumberStyles.HexNumber).ToString();
                     registerItem.ChineseDescription = data[7];
                     registerItem.EnglishDescription = data[8];
                     reg.Register2055OtherItemList.Add(registerItem);
@@ -459,7 +490,7 @@ namespace TLWController.Helper
                 foreach (var item in register.Register2055ItemList)
                 {
                     //序号    FPGA红色地址    FPGA绿色地址    FPGA蓝色地址    恒流源地址   起始位 结束位  最小值   最大值  红色值     绿色纸     蓝色值  偏移量   说明     中文说明    英文说明
-                    writer.WriteLine($"{cx}\t{item.RedAddress}\t{item.GreenAddress}\t{item.BlueAddress}\t{item.RegisterAddress}\t{item.StartBit}\t{item.StopBit}\t{item.MinValue.ToString("X2")}\t{item.MaxValue.ToString("X2")}\t{item.RedValue}\t{item.GreenValue}\t{item.BlueValue}\t{item.Offset}\t{item.Description}\t{item.ChineseDescription}\t{item.EnglishDescription}");
+                    writer.WriteLine($"{cx}\t{item.RedAddress}\t{item.GreenAddress}\t{item.BlueAddress}\t{item.RegisterAddress}\t{item.StartBit}\t{item.StopBit}\t{item.MinValue.ToString("X2")}\t{item.MaxValue.ToString("X2")}\t{item.RedValue.ToUInt16(NumberStyles.Number).ToString("X2")}\t{item.GreenValue.ToUInt16(NumberStyles.Number).ToString("X2")}\t{item.BlueValue.ToUInt16(NumberStyles.Number).ToString("X2")}\t{item.Offset}\t{item.Description}\t{item.ChineseDescription}\t{item.EnglishDescription}");
                     cx++;
                 }
                 writer.WriteLine("******************************************************************* End 2055 *************************************************************************");
@@ -468,7 +499,7 @@ namespace TLWController.Helper
                 cx = 0;
                 foreach (var item in register.Register2055OtherItemList)
                 {
-                    writer.WriteLine($"{cx}\t{item.Address}\t{item.StartBit.ToString("X2")}\t{item.StopBit.ToString("X2")}\t{item.MinValue}\t{item.MaxValue}\t{item.Value}\t{item.ChineseDescription}\t{item.EnglishDescription}");
+                    writer.WriteLine($"{cx}\t{item.Address}\t{item.StartBit.ToString("X2")}\t{item.StopBit.ToString("X2")}\t{item.MinValue}\t{item.MaxValue}\t{item.Value.ToUInt32(NumberStyles.Number).ToString("X4")}\t{item.ChineseDescription}\t{item.EnglishDescription}");
                     cx++;
                 }
                 writer.WriteLine("******************************************************************* End Other *************************************************************************");
@@ -505,18 +536,21 @@ namespace TLWController.Helper
                     if (item.Color == EnumRegColor.Red)
                     {
                         byte val = Register2055Helper.Data[position + 1].GetBitRangeValueFromByte(item.StartBit, item.StopBit);
-                        item.Register.RedValue = val.ToString("X2");
+                        //item.Register.RedValue = val.ToString("X2");
+                        item.Register.RedValue = val.ToString();
 
                     }
                     else if (item.Color == EnumRegColor.Green)
                     {
                         byte val = Register2055Helper.Data[position + 1].GetBitRangeValueFromByte(item.StartBit, item.StopBit);
-                        item.Register.GreenValue = val.ToString("X2");
+                        //item.Register.GreenValue = val.ToString("X2");
+                        item.Register.GreenValue = val.ToString();
                     }
                     else if (item.Color == EnumRegColor.Blue)
                     {
                         byte val = Register2055Helper.Data[position + 1].GetBitRangeValueFromByte(item.StartBit, item.StopBit);
-                        item.Register.BlueValue = val.ToString("X2");
+                        //item.Register.BlueValue = val.ToString("X2");
+                        item.Register.BlueValue = val.ToString();
                     }
                 }
                 position += 2;
@@ -582,7 +616,8 @@ namespace TLWController.Helper
                     vals[0] = Register2055Helper.Data[position];
                     vals[1] = Register2055Helper.Data[position + 1];
                     ushort data = vals.GetUInt16().GetBitRangeValueFromUInt16(item.StartBit, item.StopBit);
-                    item.Value = data.ToString("X4");
+                    //item.Value = data.ToString("X4");
+                    item.Value = data.ToString();
                 }
                 position += 2;
             }
@@ -599,7 +634,8 @@ namespace TLWController.Helper
                     vals[0] = Register2055Helper.Data[position];
                     vals[1] = Register2055Helper.Data[position + 1];
                     ushort data = vals.GetUInt16().GetBitRangeValueFromUInt16(item.StartBit, item.StopBit);
-                    item.Value = data.ToString("X4");
+                    //item.Value = data.ToString("X4");
+                    item.Value = data.ToString();
                 }
                 position += 2;
             }
@@ -615,7 +651,8 @@ namespace TLWController.Helper
                     vals[0] = Register2055Helper.Data[position];
                     vals[1] = Register2055Helper.Data[position + 1];
                     ushort data = vals.GetUInt16().GetBitRangeValueFromUInt16(item.StartBit, item.StopBit);
-                    item.Value = data.ToString("X4");
+                    //item.Value = data.ToString("X4");
+                    item.Value = data.ToString();
                 }
                 position += 2;
             }
@@ -631,12 +668,13 @@ namespace TLWController.Helper
                     vals[0] = Register2055Helper.Data[position];
                     vals[1] = Register2055Helper.Data[position + 1];
                     ushort data = vals.GetUInt16().GetBitRangeValueFromUInt16(item.StartBit, item.StopBit);
-                    item.Value = data.ToString("X4");
+                    //item.Value = data.ToString("X4");
+                    item.Value = data.ToString();
                 }
                 position += 2;
             }
-            position = 0xA4 * 2;
-            for (byte i = 0xA4; i <= 0xB5; i++)
+            position = 0xA0 * 2;
+            for (byte i = 0xA0; i <= 0xB5; i++)
             {
                 List<RegisterOtherItem> reg = GetOtherRegisterItem(regList, i);
                 foreach (var item in reg)
@@ -647,7 +685,8 @@ namespace TLWController.Helper
                     vals[0] = Register2055Helper.Data[position];
                     vals[1] = Register2055Helper.Data[position + 1];
                     ushort data = vals.GetUInt16().GetBitRangeValueFromUInt16(item.StartBit, item.StopBit);
-                    item.Value = data.ToString("X4");
+                    //item.Value = data.ToString("X4");
+                    item.Value = data.ToString();
                 }
                 position += 2;
             }
@@ -662,7 +701,8 @@ namespace TLWController.Helper
                     vals[0] = Register2055Helper.Data[position];
                     vals[1] = Register2055Helper.Data[position + 1];
                     ushort data = vals.GetUInt16().GetBitRangeValueFromUInt16(item.StartBit, item.StopBit);
-                    item.Value = data.ToString("X4");
+                    //item.Value = data.ToString("X4");
+                    item.Value = data.ToString();
                 }
                 position += 2;
             }
@@ -678,7 +718,8 @@ namespace TLWController.Helper
                     vals[0] = Register2055Helper.Data[position];
                     vals[1] = Register2055Helper.Data[position + 1];
                     ushort data = vals.GetUInt16().GetBitRangeValueFromUInt16(item.StartBit, item.StopBit);
-                    item.Value = data.ToString("X4");
+                    //item.Value = data.ToString("X4");
+                    item.Value = data.ToString();
                 }
                 position += 2;
             }
@@ -702,7 +743,7 @@ namespace TLWController.Helper
                 List<RegisterOtherItem> reg = GetOtherRegisterItem(regList, i);
                 foreach (var item in reg)
                 {
-                    CombinData(position, item.Value.ToUInt16(), item.StartBit, item.StopBit);
+                    CombinData(position, item.Value.ToUInt16(NumberStyles.Number), item.StartBit, item.StopBit);
                 }
                 position += 2;
             }
@@ -712,7 +753,7 @@ namespace TLWController.Helper
                 List<RegisterOtherItem> reg = GetOtherRegisterItem(regList, i);
                 foreach (var item in reg)
                 {
-                    CombinData(position, item.Value.ToUInt16(), item.StartBit, item.StopBit);
+                    CombinData(position, item.Value.ToUInt16(NumberStyles.Number), item.StartBit, item.StopBit);
                 }
                 position += 2;
             }
@@ -722,7 +763,7 @@ namespace TLWController.Helper
                 List<RegisterOtherItem> reg = GetOtherRegisterItem(regList, i);
                 foreach (var item in reg)
                 {
-                    CombinData(position, item.Value.ToUInt16(), item.StartBit, item.StopBit);
+                    CombinData(position, item.Value.ToUInt16(NumberStyles.Number), item.StartBit, item.StopBit);
                 }
                 position += 2;
             }
@@ -732,17 +773,20 @@ namespace TLWController.Helper
                 List<RegisterOtherItem> reg = GetOtherRegisterItem(regList, i);
                 foreach (var item in reg)
                 {
-                    CombinData(position, item.Value.ToUInt16(), item.StartBit, item.StopBit);
+                    CombinData(position, item.Value.ToUInt16(NumberStyles.Number), item.StartBit, item.StopBit);
                 }
                 position += 2;
             }
-            position = 0xA4 * 2;
-            for (byte i = 0xA4; i <= 0xB5; i++)
+            //position = 0xA4 * 2;
+            //for (byte i = 0xA4; i <= 0xB5; i++)
+            //2019-07-16 新增A0--A3寄存器
+            position = 0xA0 * 2;
+            for (byte i = 0xA0; i <= 0xB5; i++)
             {
                 List<RegisterOtherItem> reg = GetOtherRegisterItem(regList, i);
                 foreach (var item in reg)
                 {
-                    CombinData(position, item.Value.ToUInt16(), item.StartBit, item.StopBit);
+                    CombinData(position, item.Value.ToUInt16(NumberStyles.Number), item.StartBit, item.StopBit);
                 }
                 position += 2;
             }
@@ -752,7 +796,7 @@ namespace TLWController.Helper
                 List<RegisterOtherItem> reg = GetOtherRegisterItem(regList, i);
                 foreach (var item in reg)
                 {
-                    CombinData(position, item.Value.ToUInt16(), item.StartBit, item.StopBit);
+                    CombinData(position, item.Value.ToUInt16(NumberStyles.Number), item.StartBit, item.StopBit);
                 }
                 position += 2;
             }
@@ -762,7 +806,7 @@ namespace TLWController.Helper
                 List<RegisterOtherItem> reg = GetOtherRegisterItem(regList, i);
                 foreach (var item in reg)
                 {
-                    CombinData(position, item.Value.ToUInt16(), item.StartBit, item.StopBit);
+                    CombinData(position, item.Value.ToUInt16(NumberStyles.Number), item.StartBit, item.StopBit);
                 }
                 position += 2;
             }
@@ -770,13 +814,13 @@ namespace TLWController.Helper
 
         private static void CombinData(int position, UInt16 newData, int startBit, int stopBit)
         {
-            string binaryVal = newData.ToBinaryString(stopBit - startBit + 1).Reverse();
+            string binaryVal = newData.GetBinaryString(stopBit - startBit + 1).Reverse();
 
             byte[] data1 = new byte[2];
             data1[0] = Data[position];
             data1[1] = Data[position + 1];
             UInt16 uData1 = data1.GetUInt16();
-            string binaryVal1 = uData1.ToBinaryString(16).Reverse();
+            string binaryVal1 = uData1.GetBinaryString(16).Reverse();
             int index = 0;
             for (int i = startBit; i <= stopBit; i++)
             {
@@ -798,15 +842,22 @@ namespace TLWController.Helper
                 string strAddr = regAddr.ToString("X2");
                 if (item.RedAddress.ToUpper() == strAddr)
                 {
-                    result.Add(new RegisterSpectialItem()
+                    try
                     {
-                        RegisterAddress = byte.Parse(item.RedAddress, System.Globalization.NumberStyles.HexNumber),
-                        StartBit = item.StartBit,
-                        StopBit = item.StopBit,
-                        Value = item.RedValue.ToByte(),
-                        Color = EnumRegColor.Red,
-                        Register = item
-                    });
+                        result.Add(new RegisterSpectialItem()
+                        {
+                            RegisterAddress = byte.Parse(item.RedAddress, System.Globalization.NumberStyles.HexNumber),
+                            StartBit = item.StartBit,
+                            StopBit = item.StopBit,
+                            Value = item.RedValue.ToByte(NumberStyles.Number),
+                            Color = EnumRegColor.Red,
+                            Register = item
+                        });
+                    }
+                    catch (Exception ex)
+                    {
+
+                    }
                 }
                 if (item.GreenAddress.ToUpper() == strAddr)
                 {
@@ -815,7 +866,7 @@ namespace TLWController.Helper
                         RegisterAddress = byte.Parse(item.GreenAddress, System.Globalization.NumberStyles.HexNumber),
                         StartBit = item.StartBit,
                         StopBit = item.StopBit,
-                        Value = item.GreenValue.ToByte(),
+                        Value = item.GreenValue.ToByte(NumberStyles.Number),
                         Color = EnumRegColor.Green,
                         Register = item
                     });
@@ -827,7 +878,7 @@ namespace TLWController.Helper
                         RegisterAddress = byte.Parse(item.BlueAddress, System.Globalization.NumberStyles.HexNumber),
                         StartBit = item.StartBit,
                         StopBit = item.StopBit,
-                        Value = item.BlueValue.ToByte(),
+                        Value = item.BlueValue.ToByte(NumberStyles.Number),
                         Color = EnumRegColor.Blue,
                         Register = item
                     });
@@ -877,22 +928,57 @@ namespace TLWController.Helper
         {
             Data = new byte[1024].Fill(0xFF);
             ushort[] arrDefualt = {
-                    0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0001,0x0001,0x0001,0x0000,0x0000,0x0000,0x0000,0x0000, //0 
-                    0x0000,0x0000,0x021F,0x0310,0x0402,0x050A,0x0601,0x0780,0x0880,0x0980,0x0A80,0x0B80,0x0C10,0x0D01,0x0E01,0x0F11, //1
-                    0x1001,0x110F,0x120F,0x1300,0x1400,0x1500,0x1600,0x17F0,0x182F,0x1900,0x1A0F,0x1B80,0x1C40,0x1D0A,0x1E5F,0x1F1F, //2
-                    0x201F,0x2102,0x22FC,0x2300,0x021F,0x0310,0x0402,0x050A,0x0601,0x0780,0x0880,0x0980,0x0A80,0x0B80,0x0C10,0x0D01, //3
-                    0x0E01,0x0F11,0x1001,0x110F,0x120F,0x1300,0x1400,0x1500,0x1600,0x17F0,0x182F,0x1900,0x1A0F,0x1B80,0x1C40,0x1D0A, //4
-                    0x1E5F,0x1F1F,0x201F,0x2102,0x22FC,0x2300,0x021F,0x0310,0x0402,0x050A,0x0601,0x0780,0x0880,0x0980,0x0A80,0x0B80, //5
-                    0x0C10,0x0D01,0x0E01,0x0F11,0x1001,0x110F,0x120F,0x1300,0x1400,0x1500,0x1600,0x17F0,0x182F,0x1900,0x1A0F,0x1B80, //6
-                    0x1C40,0x1D0A,0x1E5F,0x1F1F,0x201F,0x2102,0x22FC,0x2300,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000, //7
-                    0x00FA,0x0000,0x0000,0x0000,0x0001,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000, //8
-                    0x0000,0x0000,0x7FFF,0x7FFF,0x7FFF,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000, //9
-                    0x0020,0x000F,0x0030,0x000A,0xFFFF,0x3FFF,0x3FFF,0x3FFF,0xFFFF,0x3FFF,0x3FFF,0x03FF,0xFFFF, 0xFFFF,0xFFFF,0xFFFF,//a
-                    0xFFFF,0xFFFF,0xFFFF,0xFFFF,0xFFFF,0xFFFF,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000, //b
-                    0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000, //c
-                    0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000, //d
-                    0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000, //e 
-                    0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000}; //f
+                    0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0001,0x0001,0x0000,0x0002,0x0000,0x0000,0x0000,
+                    0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,
+                    0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,
+                    0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,
+                    0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,
+                    0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0xB6B6,
+                    0xB6C0,0x0000,0x0306,0x0004,0x0200,0xF000,0x16E0,0x7F00,0x6F00,0x6B00,0x8100,0x0000,0x0000,0x0000,0x0000,0x101B,
+                    0x0000,0x0000,0x0802,0x0606,0x4111,0x4FFF,0x1FE0,0xE03D,0x0057,0x0050,0x0059,0x0010,0x0000,0x0000,0x0000,0x0000,
+                    0x00FA,0x0000,0x0000,0x0000,0x0001,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,
+                    0x0000,0x0000,0x7FFF,0x7FFF,0x7FFF,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,
+                    0x0020,0x000F,0x0030,0x000A,0xFFFF,0x3FFF,0x3FFF,0x3FFF,0xFFFF,0x3FFF,0x3FFF,0x03FF,0xFFFF,0xFFFF,0xFFFF,0xFFFF,
+                    0xFFFF,0xFFFF,0xFFFF,0xFFFF,0xFFFF,0xFFFF,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,
+                    0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,
+                    0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,
+                    0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,
+                    0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
             byte[] bytesData = arrDefualt.ToBytes();
             Array.Copy(bytesData, 0, Data, 0, bytesData.Length);
@@ -995,7 +1081,7 @@ namespace TLWController.Helper
             return true;
         }
 
-        private static bool ReadRegister2072(ref  Register reg, TextReader reader)
+        private static bool ReadRegister2072(ref Register reg, TextReader reader)
         {
             int lineIndex = 0;
             string lineData = string.Empty;
@@ -1485,13 +1571,13 @@ namespace TLWController.Helper
 
         private static void CombinData(int position, UInt16 newData, int startBit, int stopBit)
         {
-            string binaryVal = newData.ToBinaryString(stopBit - startBit + 1).Reverse();
+            string binaryVal = newData.GetBinaryString(stopBit - startBit + 1).Reverse();
 
             byte[] data1 = new byte[2];
             data1[0] = Data[position];
             data1[1] = Data[position + 1];
             UInt16 uData1 = data1.GetUInt16();
-            string binaryVal1 = uData1.ToBinaryString(16).Reverse();
+            string binaryVal1 = uData1.GetBinaryString(16).Reverse();
             int index = 0;
             for (int i = startBit; i <= stopBit; i++)
             {

@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<plugins version="2.0">
+  <dll name="BatchSeamCalibration.dll"/>
+  <item namespace="BatchSeamCalibration" guid="{F4F81AAB0-E14A-3201-B9AA-DC3f2FB212072}" form="frmMain" defaultTitle="亮暗线批量处理" position="0">
+    <lan_title>
+      <lan_2052>亮暗线批量处理</lan_2052>
+      <lan_0>Batch Process Seam Calibration</lan_0>
+    </lan_title>
+    <init>
+      <usedcommunicate value="1"/>
+      <controller text="DL-LVI">
+        <output text="All" value="0"/>
+        <output text="Output1" value="1"/>
+        <output text="Output2" value="2"/>
+        <output text="Output3" value="3"/>
+        <output text="Output4" value="4"/>
+      </controller>
+    </init>
+    <protected value="false" password="installer"/>
+  </item>
+</plugins>

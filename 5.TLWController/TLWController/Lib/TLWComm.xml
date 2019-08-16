@@ -564,5 +564,169 @@
             <param name="mode">0=校正关闭  1=校正打开</param>
             <returns>0 —— 成功，其他值失败</returns>
         </member>
+        <member name="M:TLWComm.TLWCommOper.tlw_WriteCalibrationFile(System.Int32,System.UInt16,System.UInt16,System.Byte,System.Int32,System.Int32,System.String,TLWComm.ProgressCallBackByDevice)">
+            <summary>
+            写入校正数据文件
+            </summary>
+            <param name="hDevice">设备句柄</param>
+            <param name="addr">设备地址</param>
+            <param name="id">数据包识别号</param>
+            <param name="chipPos">对TSS来说:0表示上灯板 1表示下灯板;对TLW来说,表示从左到右的序号:2、 3、 4 、5 四个位置</param>
+            <param name="width">像素宽度</param>
+            <param name="height">像素高度</param>
+            <param name="path">文件路径</param>
+            <param name="func">进度回调函数</param>
+            <returns>0 —— 成功，其他值失败</returns>
+        </member>
+        <member name="M:TLWComm.TLWCommOper.tlw_ReadCalibrationFile(System.Int32,System.UInt16,System.UInt16,System.Byte,System.Int32,System.Int32,System.String,TLWComm.ProgressCallBackByDevice)">
+            <summary>
+            读取校正数据文件
+            </summary>
+            <param name="hDevice">设备句柄</param>
+            <param name="addr">设备地址</param>
+            <param name="id">数据包识别号</param>
+            <param name="chipPos">对TSS来说:0表示上灯板 1表示下灯板;对TLW来说,表示从左到右的序号:2、 3、 4 、5 四个位置</param>
+            <param name="width">像素宽度</param>
+            <param name="height">像素高度</param>
+            <param name="path">文件路径</param>
+            <param name="func">进度回调函数</param>
+            <returns>0 —— 成功，其他值失败</returns>
+        </member>
+        <member name="M:TLWComm.TLWCommOper.tlw_WriteCalibrationFileToSDRAM(System.Int32,System.UInt16,System.UInt16,System.Byte,System.Int32,System.Int32,System.String,TLWComm.ProgressCallBackByDevice)">
+            <summary>
+            写入校正数据文件
+            </summary>
+            <param name="hDevice">设备句柄</param>
+            <param name="addr">设备地址</param>
+            <param name="id">数据包识别号</param>
+            <param name="chipPos">对TSS来说:0表示上灯板 1表示下灯板;对TLW来说,表示从左到右的序号:2、 3、 4 、5 四个位置</param>
+            <param name="width">像素宽度</param>
+            <param name="height">像素高度</param>
+            <param name="path">文件路径</param>
+            <param name="func">进度回调函数</param>
+            <returns>0 —— 成功，其他值失败</returns>
+        </member>
+        <member name="M:TLWComm.TLWCommOper.tlw_ReadCalibrationFileFromSDRAM(System.Int32,System.UInt16,System.UInt16,System.Byte,System.Int32,System.Int32,System.String,TLWComm.ProgressCallBackByDevice)">
+            <summary>
+            
+            </summary>
+            <param name="hDevice">设备句柄</param>
+            <param name="addr">设备地址</param>
+            <param name="id">数据包识别号</param>
+            <param name="chipPos">对TSS来说:0表示上灯板 1表示下灯板;对TLW来说,表示从左到右的序号:2、 3、 4 、5 四个位置</param>
+            <param name="width">像素宽度</param>
+            <param name="height">像素高度</param>
+            <param name="path">文件路径</param>
+            <param name="func">进度回调函数</param>
+            <returns>0 —— 成功，其他值失败</returns>
+        </member>
+        <member name="M:TLWComm.TLWCommOper.tlw_WriteSerialNumber(System.Int32,System.UInt16,System.UInt16,System.Byte,System.Byte[],System.Int32,System.Int32)">
+            <summary>
+            写入灯板序列号
+            </summary>
+            <param name="hDevice">设备句柄</param>
+            <param name="addr">设备地址</param>
+            <param name="id">数据包识别号</param>
+            <param name="chipPos">对TSS来说:0表示上灯板 1表示下灯板;对TLW来说,表示从左到右的序号:2、 3、 4 、5 四个位置</param>
+            <param name="data">序列号数据数组</param>
+            <param name="offset">偏移量</param>
+            <param name="nLen">数组长度,默认为1024</param>
+            <returns>0 —— 成功，其他值失败</returns>
+        </member>
+        <member name="M:TLWComm.TLWCommOper.tlw_ReadSerialNumber(System.Int32,System.UInt16,System.UInt16,System.Byte,System.Byte[],System.Int32,System.Int32)">
+            <summary>
+            读取灯板序列号
+            </summary>
+            <param name="hDevice">设备句柄</param>
+            <param name="addr">设备地址</param>
+            <param name="id">数据包识别号</param>
+            <param name="chipPos">对TSS来说:0表示上灯板 1表示下灯板;对TLW来说,表示从左到右的序号:2、 3、 4 、5 四个位置</param>
+            <param name="data">序列号数据数组</param>
+            <param name="offset">偏移量</param>
+            <param name="nLen">数组长度,默认为1024</param>
+            <returns>0 —— 成功，其他值失败</returns>
+        </member>
+        <member name="M:TLWComm.TLWCommOper.tlw_WriteCurrentGain(System.Int32,System.UInt16,System.UInt16,System.Byte,System.UInt16[],System.Int32)">
+            <summary>
+            写入电流增益值
+            </summary>
+            <param name="hDevice">设备句柄</param>
+            <param name="addr">设备地址</param>
+            <param name="id">数据包识别号</param>
+            <param name="chip">0=2055  1=2072</param>
+            <param name="data">数组，data[0]红色电流增益,data[1]绿色电流增益,data[2]蓝色电流增益</param>
+            <param name="nLen">数组长度，默认为3</param>
+            <returns>0 —— 成功，其他值失败</returns>
+        </member>
+        <member name="M:TLWComm.TLWCommOper.tlw_ReadCurrentGain(System.Int32,System.UInt16,System.UInt16,System.Byte,System.UInt16[],System.Int32)">
+            <summary>
+            读取电流增益值
+            </summary>
+            <param name="hDevice">设备句柄</param>
+            <param name="addr">设备地址</param>
+            <param name="id">数据包识别号</param>
+            <param name="chip">0=2055  1=2072</param>
+            <param name="data">数组，data[0]红色电流增益,data[1]绿色电流增益,data[2]蓝色电流增益</param>
+            <param name="nLen">数组长度，默认为3</param>
+            <returns>0 —— 成功，其他值失败</returns>
+        </member>
+        <member name="M:TLWComm.TLWCommOper.tlw_WriteColorTempData(System.Int32,System.UInt16,System.UInt16,System.Byte[],System.Int32,System.Int32)">
+            <summary>
+            写入色温数据
+            </summary>
+            <param name="hDevice">设备句柄</param>
+            <param name="addr">设备地址</param>
+            <param name="id">数据包识别号</param>
+            <param name="data">色温数据数组，长度为1024字节，占用前面256字节，后面768字节预留</param>
+            <param name="offset">偏移量</param>
+            <param name="nLen">数组长度，默认为1024</param>
+            <returns></returns>
+        </member>
+        <member name="M:TLWComm.TLWCommOper.tlw_ReadColorTempData(System.Int32,System.UInt16,System.UInt16,System.Byte[],System.Int32,System.Int32)">
+            <summary>
+            读取色温数据
+            </summary>
+            <param name="hDevice">设备句柄</param>
+            <param name="addr">设备地址</param>
+            <param name="id">数据包识别号</param>
+            <param name="data">色温数据数组，长度为1024字节，占用前面256字节，后面768字节预留</param>
+            <param name="offset">偏移量</param>
+            <param name="nLen">数组长度，默认为1024</param>
+            <returns></returns>
+        </member>
+        <member name="M:TLWComm.TLWCommOper.tlw_SelectColorTemp(System.Int32,System.UInt16,System.UInt16,System.Byte,System.Byte[],System.Byte[])">
+            <summary>
+            选择色温
+            </summary>
+            <param name="hDevice">设备句柄</param>
+            <param name="addr">设备地址</param>
+            <param name="id">数据包识别号</param>
+            <param name="chip"> 0=2055  1=2072</param>
+            <param name="group">数组指针，长度为1。group[0],选择的色温所在的方案，取值范围0-3</param>
+            <param name="pos">数组指针，长度为1。pos[0].选择的色温组内序号，取值范围0-9， 0=3200K，1=6500K，2=8500K，3=9300K ,其他值为自定义色温值。</param>
+            <returns></returns>
+        </member>
+        <member name="M:TLWComm.TLWCommOper.tlw_GetCurrentColorTemp(System.Int32,System.UInt16,System.UInt16,System.Byte,System.Byte[],System.Byte[])">
+            <summary>
+            获取当前选择的色温
+            </summary>
+            <param name="hDevice">设备句柄</param>
+            <param name="addr">设备地址</param>
+            <param name="id"> 数据包识别号</param>
+            <param name="chip">0=2055  1=2072</param>
+            <param name="group">数组指针，长度为1。group[0],选择的色温所在的方案，取值范围0-3</param>
+            <param name="pos">数组指针，长度为1。pos[0].选择的色温组内序号，取值范围0-9， 0=3200K，1=6500K，2=8500K，3=9300K ,其他值为自定义色温值</param>
+            <returns></returns>
+        </member>
+        <member name="M:TLWComm.TLWCommOper.tlw_SwitchFPGAProgram(System.Int32,System.UInt16,System.UInt16,System.Byte)">
+            <summary>
+            切换FPGA程序区域
+            </summary>
+            <param name="hDevice">设备句柄</param>
+            <param name="addr">设备地址</param>
+            <param name="id">数据包识别号</param>
+            <param name="val">程序区域编号 0=区域1, 1=区域2 , 2=区域3</param>
+            <returns></returns>
+        </member>
     </members>
 </doc>

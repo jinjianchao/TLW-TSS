@@ -406,6 +406,7 @@ namespace TLWController.Helper
                         returnParam[param.Index].IP = param.IP;
                         returnParam[param.Index].Dev = param.Dev;
                         returnParam[param.Index].ResultCode = _Command.tlw_WriteMAP(param.Dev, addr, id, src, 0, src.Length);
+                        _Command.sys_PacketDelay(param.Dev, 1);
                     },
                     new InParam()
                     {
@@ -435,7 +436,7 @@ namespace TLWController.Helper
         /// <param name="offset">数据偏移量</param>
         /// <param name="nLen">数据长度,默认为4096</param>
         /// <returns>0 —— 成功，其他值失败</returns>
-        public void tlw_ReadMAP(int hDevice, ushort addr, ushort id, Dictionary<string, int> ips, Action<ReturnParam[]> action)
+        public void tlw_ReadMAP(ushort addr, ushort id, Dictionary<string, int> ips, Action<ReturnParam[]> action)
         {
             Task<ReturnParam[]> task = new Task<ReturnParam[]>(obj =>
             {
@@ -507,6 +508,11 @@ namespace TLWController.Helper
                         else
                         {
                             returnParam[param.Index].ResultCode = _Command.tlw_SDRAM_BatchWrite(param.Dev, addr, 0, startAddr, pData, 0, pData.Length, ProgressCallBackFunc);
+
+
+
+
+
                             //startAddr = 0x1e0000;
                             //for (int j = 0; j < 216; j++)
                             //{
@@ -880,6 +886,7 @@ namespace TLWController.Helper
                         returnParam[param.Index].IP = param.IP;
                         returnParam[param.Index].Dev = param.Dev;
                         returnParam[param.Index].ResultCode = _Command.tlw_WriteRegister(param.Dev, addr, id, chip, regAddr, regVal, bSave);
+                        _Command.tlw_WriteRegister(param.Dev, addr, id, chip, 0x84, 1, true);
                     },
                     new InParam()
                     {
@@ -1435,12 +1442,71 @@ namespace TLWController.Helper
         {
             int result = 0;
             result = _Command.tlw_WriteRegister(device, addrMB, id, chip, regAddr, regVal, bSave);
+
+            if (result == 0)
+            {
+                System.Threading.Thread.Sleep(200);
+                result = _Command.tlw_WriteRegister(device, addrMB, id, chip, 0x84, 1, true);
+            }
+            System.Threading.Thread.Sleep(10);
+            return result;
+        }
+
+        private UInt32 ModifyUInt32Bits(UInt32 nSrc, byte nBitLow, byte nBitHigh, UInt32 nInput)
+        {
+            //取数并修改
+            UInt32 tmp = nSrc;
+            int nLen = nBitHigh - nBitLow + 1;
+
+            UInt32 mask = 0;
+            for (int i = 0; i < nLen; i++)
+            {
+                mask |= (UInt32)(1 << (nBitLow + i));
+            }
+
+            //输入值过滤
+            UInt32 nData = (UInt32)(nInput & (mask >> nBitLow));
+
+            //剔除原数据中的数据
+            tmp &= (UInt32)(~mask);
+
+            //将新数据放入指定位置
+            tmp |= (UInt32)(nData << nBitLow);
+
+            return tmp;
+        }
+
+        public int tlw_WriteRegister2072(int device, ushort addrMB, ushort id, byte chip, UInt32 regAddr, uint regVal, bool bSave)
+        {
+            int result = 0;
+            //byte[] read = new byte[1024];
+            //result = _Command.tlw_ReadRegisterGroup(device, addrMB, id, chip, read, 0, read.Length);
+            //UInt32[] regVal1 = new UInt32[1];
+            //_Command.tlw_ReadRegister(device, addrMB, id, chip, regAddr, regVal1);
+            //byte[] btVal = new byte[4];
+            //byte[] btWriteVal = regVal.GetBytes();
+
+            //uint newRegAddr = regAddr;
+            //btVal[0] = read[newRegAddr * 2 + 2];
+            //btVal[1] = read[newRegAddr * 2 + 3];
+            //btVal[2] = btWriteVal[3];
+            //btVal[3] = btWriteVal[2];
+            //UInt32 newVal = btVal.GetUInt32();
+            //result = _Command.tlw_WriteRegister(device, addrMB, id, chip, regAddr, newVal, bSave);
+            result = _Command.tlw_WriteRegister(device, addrMB, id, chip, regAddr, regVal, bSave);
+            //if (result == 0)
+            //{
+            //    System.Threading.Thread.Sleep(100);
+            //    result = _Command.tlw_WriteRegister(device, addrMB, id, chip, 0x84, 1, true);
+            //}
+            System.Threading.Thread.Sleep(10);
             return result;
         }
 
         public int tlw_SDRAM_WriteToFLASH(int device, ushort addrMB, ushort id)
         {
             int result = 0;
+
             result = _Command.tlw_SDRAM_WriteToFLASH(device, addrMB, id);
             return result;
         }
@@ -1461,6 +1527,26 @@ namespace TLWController.Helper
         {
             int result = 0;
             result = _Command.tlw_WriteRegisterGroup(hDevice, addr, id, chip, src, 0, src.Length, bSave);
+            System.Threading.Thread.Sleep(200);
+            result = _Command.tlw_WriteRegister(hDevice, addr, id, chip, 0x84, 1, true);
+            return result;
+        }
+
+        /// <summary>
+        /// 读取寄存器数组
+        /// </summary>
+        /// <param name="hDevice">设备句柄</param>
+        /// <param name="addr">设备地址</param>
+        /// <param name="id">数据包识别号</param>
+        /// <param name="chip">0 FPGA  1 4K视频芯片</param>
+        /// <param name="src">数据数组指针</param>
+        /// <param name="offset">偏移量</param>
+        /// <param name="len">数据长度</param>
+        /// <returns>0 —— 成功，其他值失败</returns>
+        public int tlw_ReadRegisterGroup(int hDevice, ushort addr, ushort id, byte chip, byte[] src)
+        {
+            int result = 0;
+            result = _Command.tlw_ReadRegisterGroup(hDevice, addr, id, chip, src, 0, src.Length);
             return result;
         }
 
@@ -1470,6 +1556,259 @@ namespace TLWController.Helper
             result = _Command.tlw_WriteGAMMA(hDevice, addr, id, mode, color, src, 0, src.Length);
             return result;
         }
+
+        /// <summary>
+        /// 写入校正数据文件
+        /// </summary>
+        /// <param name="hDevice">设备句柄</param>
+        /// <param name="addr">设备地址</param>
+        /// <param name="id">数据包识别号</param>
+        /// <param name="chipPos">对TSS来说:0表示上灯板 1表示下灯板;对TLW来说,表示从左到右的序号:2、 3、 4 、5 四个位置</param>
+        /// <param name="width">像素宽度</param>
+        /// <param name="height">像素高度</param>
+        /// <param name="path">文件路径</param>
+        /// <param name="func">进度回调函数</param>
+        /// <returns>0 —— 成功，其他值失败</returns>
+        public int tlw_WriteCalibrationFile(int hDevice, ushort addr, ushort id, byte chipPos, int width, int height, string path)
+        {
+            int result = 0;
+            result = _Command.tlw_WriteCalibrationFile(hDevice, addr, id, chipPos, width, height, path, ProgressCallBackFunc);
+            return result;
+        }
+
+        /// <summary>
+        /// 读取校正数据文件
+        /// </summary>
+        /// <param name="hDevice">设备句柄</param>
+        /// <param name="addr">设备地址</param>
+        /// <param name="id">数据包识别号</param>
+        /// <param name="chipPos">对TSS来说:0表示上灯板 1表示下灯板;对TLW来说,表示从左到右的序号:2、 3、 4 、5 四个位置</param>
+        /// <param name="width">像素宽度</param>
+        /// <param name="height">像素高度</param>
+        /// <param name="path">文件路径</param>
+        /// <param name="func">进度回调函数</param>
+        /// <returns>0 —— 成功，其他值失败</returns>
+        public int tlw_ReadCalibrationFile(int hDevice, ushort addr, ushort id, byte chipPos, int width, int height, string path)
+        {
+            int result = 0;
+            result = _Command.tlw_ReadCalibrationFile(hDevice, addr, id, chipPos, width, height, path, ProgressCallBackFunc);
+            return result;
+        }
+
+        /// <summary>
+        /// 写入校正数据文件到SDRAM
+        /// </summary>
+        /// <param name="hDevice">设备句柄</param>
+        /// <param name="addr">设备地址</param>
+        /// <param name="id">数据包识别号</param>
+        /// <param name="chipPos">对TSS来说:0表示上灯板 1表示下灯板;对TLW来说,表示从左到右的序号:2、 3、 4 、5 四个位置</param>
+        /// <param name="width">像素宽度</param>
+        /// <param name="height">像素高度</param>
+        /// <param name="path">文件路径</param>
+        /// <param name="func">进度回调函数</param>
+        /// <returns>0 —— 成功，其他值失败</returns>
+        public int tlw_WriteCalibrationFileToSDRAM(int hDevice, ushort addr, ushort id, byte chipPos, int width, int height, string path)
+        {
+            int result = 0;
+            result = _Command.tlw_WriteCalibrationFileToSDRAM(hDevice, addr, id, chipPos, width, height, path, ProgressCallBackFunc);
+            return result;
+        }
+
+        /// <summary>
+        /// 写入灯板序列号
+        /// </summary>
+        /// <param name="hDevice">设备句柄</param>
+        /// <param name="addr">设备地址</param>
+        /// <param name="id">数据包识别号</param>
+        /// <param name="chipPos">对TSS来说:0表示上灯板 1表示下灯板;对TLW来说,表示从左到右的序号:2、 3、 4 、5 四个位置</param>
+        /// <param name="data">序列号数据数组</param>
+        /// <param name="offset">偏移量</param>
+        /// <param name="nLen">数组长度,默认为1024</param>
+        /// <returns>0 —— 成功，其他值失败</returns>
+        public int tlw_WriteSerialNumber(int hDevice, ushort addr, ushort id, byte chipPos, byte[] data)
+        {
+            int result = 0;
+            result = _Command.tlw_WriteSerialNumber(hDevice, addr, id, chipPos, data, 0, data.Length);
+            return result;
+        }
+
+        /// <summary>
+        /// 读取灯板序列号
+        /// </summary>
+        /// <param name="hDevice">设备句柄</param>
+        /// <param name="addr">设备地址</param>
+        /// <param name="id">数据包识别号</param>
+        /// <param name="chipPos">对TSS来说:0表示上灯板 1表示下灯板;对TLW来说,表示从左到右的序号:2、 3、 4 、5 四个位置</param>
+        /// <param name="data">序列号数据数组</param>
+        /// <param name="offset">偏移量</param>
+        /// <param name="nLen">数组长度,默认为1024</param>
+        /// <returns>0 —— 成功，其他值失败</returns>
+        public int tlw_ReadSerialNumber(int hDevice, ushort addr, ushort id, byte chipPos, byte[] data)
+        {
+            int result = 0;
+            result = _Command.tlw_ReadSerialNumber(hDevice, addr, id, chipPos, data, 0, data.Length);
+            return result;
+        }
+
+        /// <summary>
+        /// 连接卡加载参数
+        /// </summary>
+        /// <param name="hDevice">设备句柄</param>
+        /// <param name="addr">设备地址</param>
+        /// <param name="id">数据包识别号</param>
+        /// <param name="mode">表示加载的内容 0 全部加载 1校正数据 2 红色GAMMA 3绿色GAMMA 4蓝色GAMMA 5 MAP  6 寄存器数组1  7 寄存器数组2</param>
+        /// <returns>0 —— 成功，其他值失败</returns>
+        public int tlw_ConnectCardLoadParam(int hDevice, ushort addr, ushort id, byte mode)
+        {
+            int result = 0;
+            result = _Command.tlw_ConnectCardLoadParam(hDevice, addr, id, mode);
+            return result;
+        }
+
+
+        public int tlw_ReadRegister(int hDevice, ushort addr, ushort id, byte chip, UInt32 regAddr, UInt32[] pData)
+        {
+            int result = 0;
+            result = _Command.tlw_ReadRegister(hDevice, addr, id, chip, regAddr, pData);
+            return result;
+        }
+
+        /// <summary>
+        /// 切换FPGA程序区域
+        /// </summary>
+        /// <param name="hDevice">设备句柄</param>
+        /// <param name="addr">设备地址</param>
+        /// <param name="id">数据包识别号</param>
+        /// <param name="val">程序区域编号 0=区域1, 1=区域2 , 2=区域3</param>
+        /// <returns></returns>
+        public int tlw_SwitchFPGAProgram(int hDevice, ushort addr, ushort id, byte val)
+        {
+            int result = 0;
+            result = _Command.tlw_SwitchFPGAProgram(hDevice, addr, id, val);
+            return result;
+        }
+
+        /// <summary>
+        /// 写入电流增益值
+        /// </summary>
+        /// <param name="hDevice">设备句柄</param>
+        /// <param name="addr">设备地址</param>
+        /// <param name="id">数据包识别号</param>
+        /// <param name="chip">0=2055  1=2072</param>
+        /// <param name="data">数组，data[0]红色电流增益,data[1]绿色电流增益,data[2]蓝色电流增益</param>
+        /// <param name="nLen">数组长度，默认为3</param>
+        /// <returns>0 —— 成功，其他值失败</returns>
+        public int tlw_WriteCurrentGain(int hDevice, ushort addr, ushort id, byte chip, ushort[] data)
+        {
+            int result = 0;
+            result = _Command.tlw_WriteCurrentGain(hDevice, addr, id, chip, data, data.Length);
+            return result;
+        }
+
+        /// <summary>
+        /// 读取电流增益值
+        /// </summary>
+        /// <param name="hDevice">设备句柄</param>
+        /// <param name="addr">设备地址</param>
+        /// <param name="id">数据包识别号</param>
+        /// <param name="chip">0=2055  1=2072</param>
+        /// <param name="data">数组，data[0]红色电流增益,data[1]绿色电流增益,data[2]蓝色电流增益</param>
+        /// <param name="nLen">数组长度，默认为3</param>
+        /// <returns>0 —— 成功，其他值失败</returns>
+        public int tlw_ReadCurrentGain(int hDevice, ushort addr, ushort id, byte chip, out ushort[] data)
+        {
+            int result = 0;
+            data = new ushort[3];
+            result = _Command.tlw_ReadCurrentGain(hDevice, addr, id, chip, data, data.Length);
+            return result;
+        }
+
+        /// <summary>
+        /// 写入色温数据
+        /// </summary>
+        /// <param name="hDevice">设备句柄</param>
+        /// <param name="addr">设备地址</param>
+        /// <param name="id">数据包识别号</param>
+        /// <param name="data">色温数据数组，长度为1024字节，占用前面256字节，后面768字节预留</param>
+        /// <param name="offset">偏移量</param>
+        /// <param name="nLen">数组长度，默认为1024</param>
+        /// <returns></returns>
+        public int tlw_WriteColorTempData(int hDevice, ushort addr, ushort id, byte[] data)
+        {
+            int result = 0;
+            result = _Command.tlw_WriteColorTempData(hDevice, addr, id, data, 0, data.Length);
+            return result;
+        }
+
+        /// <summary>
+        /// 读取色温数据
+        /// </summary>
+        /// <param name="hDevice">设备句柄</param>
+        /// <param name="addr">设备地址</param>
+        /// <param name="id">数据包识别号</param>
+        /// <param name="data">色温数据数组，长度为1024字节，占用前面256字节，后面768字节预留</param>
+        /// <param name="offset">偏移量</param>
+        /// <param name="nLen">数组长度，默认为1024</param>
+        /// <returns></returns>
+        public int tlw_ReadColorTempData(int hDevice, ushort addr, ushort id, out byte[] data)
+        {
+            int result = 0;
+            data = new byte[1024];
+            result = _Command.tlw_ReadColorTempData(hDevice, addr, id, data, 0, data.Length);
+            return result;
+        }
+
+        /// <summary>
+        /// 选择色温
+        /// </summary>
+        /// <param name="hDevice">设备句柄</param>
+        /// <param name="addr">设备地址</param>
+        /// <param name="id">数据包识别号</param>
+        /// <param name="chip"> 0=2055  1=2072</param>
+        /// <param name="group">数组指针，长度为1。group[0],选择的色温所在的方案，取值范围0-3</param>
+        /// <param name="pos">数组指针，长度为1。pos[0].选择的色温组内序号，取值范围0-9， 0=3200K，1=6500K，2=8500K，3=9300K ,其他值为自定义色温值。</param>
+        /// <returns></returns>
+        public int tlw_SelectColorTemp(int hDevice, ushort addr, ushort id, byte chip, byte[] group, byte[] pos)
+        {
+            int result = 0;
+            result = _Command.tlw_SelectColorTemp(hDevice, addr, id, chip, group, pos);
+            return result;
+        }
+
+        /// <summary>
+        /// 获取当前选择的色温
+        /// </summary>
+        /// <param name="hDevice">设备句柄</param>
+        /// <param name="addr">设备地址</param>
+        /// <param name="id"> 0=2055  1=2072</param>
+        /// <param name="chip">数组指针，长度为1。group[0],选择的色温所在的方案，取值范围0-3</param>
+        /// <param name="group">数组指针，长度为1。group[0],选择的色温所在的方案，取值范围0-3</param>
+        /// <param name="pos">数组指针，长度为1。pos[0].选择的色温组内序号，取值范围0-9， 0=3200K，1=6500K，2=8500K，3=9300K ,其他值为自定义色温值</param>
+        /// <returns></returns>
+        public int tlw_GetCurrentColorTemp(int hDevice, ushort addr, ushort id, byte chip, out byte[] group, out byte[] pos)
+        {
+            int result = 0;
+            group = new byte[1];
+            pos = new byte[1];
+            result = _Command.tlw_GetCurrentColorTemp(hDevice, addr, id, chip, group, pos);
+            return result;
+        }
+
+        /// <summary>
+        /// 设置灯板校正数据长度
+        /// </summary>
+        /// <param name="hDevice">设备句柄</param>
+        /// <param name="addr">设备地址</param>
+        /// <param name="id">数据包识别号</param>
+        /// <param name="dwLen">灯板校正数据长度</param>
+        /// <returns>0 —— 成功，其他值失败</returns>
+        public int tlw_WriteCalibrationFileLength(int hDevice, ushort addr, ushort id, UInt32 dwLen)
+        {
+            int result = 0;
+            result = _Command.tlw_WriteCalibrationFileLength(hDevice, addr, id, dwLen);
+            return result;
+        }
+
         #endregion
 
         #endregion

@@ -22,7 +22,7 @@ namespace TLWController.Helper
         /// <summary>
         /// 终止位
         /// </summary>
-        public byte nBitHigh;        
+        public byte nBitHigh;
     }
     public class classCtrlBindData
     {
@@ -33,7 +33,8 @@ namespace TLWController.Helper
 
         public int Count
         {
-            get {
+            get
+            {
                 return m_listPart.Count;
             }
         }
@@ -45,7 +46,7 @@ namespace TLWController.Helper
             ctrl = control;
             m_listPart = new List<classPartOfReg>();
         }
-        public void AddPart(ushort nRegAddr,byte nBitLow,byte nBitHigh)
+        public void AddPart(ushort nRegAddr, byte nBitLow, byte nBitHigh)
         {
             classPartOfReg item = new classPartOfReg();
             item.nRegAddr = nRegAddr;
@@ -58,17 +59,19 @@ namespace TLWController.Helper
     }
     public class class2072Oper
     {
+        public UInt16[] DefaultData { get; set; }
+
         /// <summary>
         /// 保存多组参数值
         /// </summary>
-        private Dictionary<int,UInt32[]> m_dict2072;
+        private Dictionary<int, UInt32[]> m_dict2072;
 
 
         /// <summary>
         /// 控件和参数
         /// </summary>
         //private List<classCtrlBindData> m_listCtrl;
-        public Dictionary<Control,classCtrlBindData> m_dictCtrl;
+        public Dictionary<Control, classCtrlBindData> m_dictCtrl;
 
 
         /// <summary>
@@ -147,48 +150,48 @@ namespace TLWController.Helper
         /// <param name="parent"></param>
         public void FindCtrls(Control parent)
         {
-           if (parent ==  null) return;
+            if (parent == null) return;
 
-                //遍历寻找符合要求的按钮
-                Control.ControlCollection sonControls = parent.Controls;
+            //遍历寻找符合要求的按钮
+            Control.ControlCollection sonControls = parent.Controls;
 
-                foreach (Control level1 in sonControls)
+            foreach (Control level1 in sonControls)
+            {
+                if (level1.Controls.Count > 1)
                 {
-                    if (level1.Controls.Count > 1)
+                    Control.ControlCollection level2 = level1.Controls;
+                    foreach (Control item in level2)
                     {
-                        Control.ControlCollection level2 = level1.Controls;
-                        foreach (Control item in level2)
+                        if (item.GetType().ToString() == "System.Windows.Forms.Button")
                         {
-                            if (item.GetType().ToString() == "System.Windows.Forms.Button")
+                            //if (item.Name == "btn2072Simple13_All")
+                            //{
+                            //    Thread.Sleep(1);
+                            //}
+                            if (item.Tag == null) continue;
+
+                            string szCmdLine = (string)item.Tag.ToString();
+                            if (szCmdLine.Trim() == "")
                             {
-                                //if (item.Name == "btn2072Simple13_All")
-                                //{
-                                //    Thread.Sleep(1);
-                                //}
-                                if (item.Tag == null) continue;
-
-                                string szCmdLine = (string)item.Tag.ToString();
-                                if (szCmdLine.Trim() == "")
-                                {
-                                    continue;
-                                }
-
-                                //找到需要的button
-                                List<string> list = parseCmdLine(szCmdLine);
-                                if (list == null) continue;
-
-                                //找到附加信息中指出的需要绑定的控件
-                                Control[] arrCtrl = parent.Controls.Find(list[0], true);
-                                if (arrCtrl.Length == 1)
-                                {
-                                    AddCtrl(arrCtrl[0], szCmdLine);
-                                }
-                                else
-                                    continue;
+                                continue;
                             }
+
+                            //找到需要的button
+                            List<string> list = parseCmdLine(szCmdLine);
+                            if (list == null) continue;
+
+                            //找到附加信息中指出的需要绑定的控件
+                            Control[] arrCtrl = parent.Controls.Find(list[0], true);
+                            if (arrCtrl.Length == 1)
+                            {
+                                AddCtrl(arrCtrl[0], szCmdLine);
+                            }
+                            else
+                                continue;
                         }
                     }
-                }            
+                }
+            }
         }
 
         /// <summary>
@@ -199,14 +202,14 @@ namespace TLWController.Helper
         public void AddCtrl(Control ctrl, string szCmdLine)
         {
             if (m_dictCtrl == null)
-                m_dictCtrl = new Dictionary<Control,classCtrlBindData>();
+                m_dictCtrl = new Dictionary<Control, classCtrlBindData>();
             List<string> list = parseCmdLine(szCmdLine);
-            if (list == null ) return;
+            if (list == null) return;
             if (list.Count < 3) return;
             classCtrlBindData item = new classCtrlBindData(ctrl);
-            int nCount = (list.Count - 1)/3;//看看有多少组寄存器部分
+            int nCount = (list.Count - 1) / 3;//看看有多少组寄存器部分
 
-            for (int i=0;i < nCount;i++)
+            for (int i = 0; i < nCount; i++)
             {
                 //添加一个寄存器的部分内容
                 try
@@ -215,7 +218,7 @@ namespace TLWController.Helper
                     byte nBitLow = byte.Parse(list[1 + 3 * i + 1]);
                     byte nBitHigh = byte.Parse(list[1 + 3 * i + 2]);
 
-                    item.AddPart(nRegAddr,nBitLow,nBitHigh);
+                    item.AddPart(nRegAddr, nBitLow, nBitHigh);
                 }
                 catch
                 {
@@ -229,7 +232,7 @@ namespace TLWController.Helper
                 m_dictCtrl = new Dictionary<Control, classCtrlBindData>();
             }
             m_dictCtrl[ctrl] = item;
-            
+
         }
 
         /// <summary>
@@ -240,16 +243,16 @@ namespace TLWController.Helper
         public bool Is2072Ready(int nMode)
         {
             if (m_dict2072 == null) return false;
-            return m_dict2072.ContainsKey(nMode);            
-        }       
-        
+            return m_dict2072.ContainsKey(nMode);
+        }
+
         /// <summary>
         /// 导入配置文件
         /// </summary>
         /// <param name="nMode">0-60Hz 1-50Hz 2-3D</param>
         /// <param name="path"></param>
         /// <returns></returns>
-        public bool ImportFile(int nMode,string path)
+        public bool ImportFile(int nMode, string path)
         {
             //根据规则文件导入到内存
 
@@ -337,7 +340,7 @@ namespace TLWController.Helper
                     //}
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 //string txt1 = "";
                 //txt1 = "文件打开失败!";
@@ -373,12 +376,12 @@ namespace TLWController.Helper
             //是否准备好参数
             if (Is2072Ready(nMode) == false) return false;
 
-            UInt32[] src = m_dict2072[nMode];            
+            UInt32[] src = m_dict2072[nMode];
 
             System.IO.StreamWriter sw = new System.IO.StreamWriter(path, false);
 
             StringBuilder sb = new StringBuilder();
-           
+
             string szLine = "";
             for (int i = 0; i < 17; i++)
             {
@@ -557,7 +560,7 @@ namespace TLWController.Helper
 
             //2019-03-25 新增128寄存器值的输出
             string sz128Register = string.Format("Register Address 128\tValue=\t{0}\r\n", src[21]);
-            sb.Append(sz128Register);           
+            sb.Append(sz128Register);
 
             try
             {
@@ -662,6 +665,30 @@ namespace TLWController.Helper
             return tmp;
         }
 
+        private UInt16 ModifyUInt16Bits(UInt16 nSrc, byte nBitLow, byte nBitHigh, UInt16 nInput)
+        {
+            //取数并修改
+            UInt16 tmp = nSrc;
+            int nLen = nBitHigh - nBitLow + 1;
+
+            UInt16 mask = 0;
+            for (int i = 0; i < nLen; i++)
+            {
+                mask |= (UInt16)(1 << (nBitLow + i));
+            }
+
+            //输入值过滤
+            UInt16 nData = (UInt16)(nInput & (mask >> nBitLow));
+
+            //剔除原数据中的数据
+            tmp &= (UInt16)(~mask);
+
+            //将新数据放入指定位置
+            tmp |= (UInt16)(nData << nBitLow);
+
+            return tmp;
+        }
+
         public void Change2072RegiseterVal(int nMode, int regAddr, int nBitLow, int nBitHigh, ushort val)
         {//修改内存中的数据
 
@@ -701,7 +728,7 @@ namespace TLWController.Helper
             {
                 //从控件上获取值
                 //foreach (classCtrlBindData item in m_listCtrl)
-                foreach (KeyValuePair<Control,classCtrlBindData> item in m_dictCtrl)
+                foreach (KeyValuePair<Control, classCtrlBindData> item in m_dictCtrl)
                 {
                     Control ctrl = item.Key;
 
@@ -772,7 +799,7 @@ namespace TLWController.Helper
                         }
                     }
                 }
-            } 
+            }
         }
 
         /// <summary>
@@ -810,6 +837,16 @@ namespace TLWController.Helper
             }
         }
 
+        public void UpdateGain(int nMode, ushort r, ushort g, ushort b)
+        {
+            ushort r1 = ModifyUInt16Bits(DefaultData[103], 8, 16, r);
+            ushort g1 = ModifyUInt16Bits(DefaultData[104], 8, 16, g);
+            ushort b1 = ModifyUInt16Bits(DefaultData[105], 8, 16, b);
+            DefaultData[103] = r1;
+            DefaultData[104] = g1;
+            DefaultData[105] = b1;
+        }
+
         /// <summary>
         /// 显示和保存128寄存器设置值
         /// </summary>
@@ -821,9 +858,9 @@ namespace TLWController.Helper
             if (m_dict2072.ContainsKey(nMode) == false) return;
 
             UInt32[] arrData = m_dict2072[nMode];
-           
+
             if (bUpdate)
-            {   
+            {
                 //寄存器地址，起始位，终止位，数值
                 TextBox ctrl = (TextBox)m_listCtrlRegister128[3];
 
@@ -854,7 +891,7 @@ namespace TLWController.Helper
                 ctrl4.Text = arrData[21].ToString();
 
             }
-    
+
         }
 
         /// <summary>
@@ -866,7 +903,7 @@ namespace TLWController.Helper
         {
             //------------寄存器地址和位的转换------------
             classPartOfReg objNew = new classPartOfReg();
-            
+
             byte nBitLow, nBitHigh;
             nBitLow = nBitHigh = 0;
             nBitLow = (byte)src.nBitLow;
@@ -928,7 +965,7 @@ namespace TLWController.Helper
         /// <param name="nMode">//0 = 60Hz  1=50Hz  2=3D</param>
         /// <param name="szUnitType">箱体名称</param>
         /// <returns></returns>
-        public ArrayList RunCalc(int nMode,string szUnitType)
+        public ArrayList RunCalc(int nMode, string szUnitType)
         {
             ArrayList list = new ArrayList();
 
@@ -948,10 +985,10 @@ namespace TLWController.Helper
 
             //input2072Simple6|4,0,4
             int nPLL_PRE_DIV = GetPartOfUInt32(nMode, 0x04, 0, 4);
-                       
+
             //根据60Hz ，50Hz ，3D的状态来选择
             double C = 0;
-            switch(nMode)//0 = 60Hz  1=50Hz  2=3D
+            switch (nMode)//0 = 60Hz  1=50Hz  2=3D
             {
                 case 0:
                     C = 16.67f;
@@ -999,7 +1036,7 @@ namespace TLWController.Helper
 
             //A * 4 * GCLK + 16 * DCLK <=  N * DCLK
 
-            int nLeft = (int)Math.Floor(4 * nPWMTime * 1000/((1000 / D) * nPLL_LOOP_DIV / nPLL_PRE_DIV));
+            int nLeft = (int)Math.Floor(4 * nPWMTime * 1000 / ((1000 / D) * nPLL_LOOP_DIV / nPLL_PRE_DIV));
             int nRight = (int)Math.Floor((N - 16) * D);
 
             //检验合规性结果
@@ -1007,7 +1044,7 @@ namespace TLWController.Helper
 
 
             //--------------------------输出结果:--------------------------
-                        
+
             //0:行扫 input2072Simple3|1,0,5
             list.Add(nScan);
 
@@ -1018,7 +1055,7 @@ namespace TLWController.Helper
             list.Add(nPWMTime);
 
             //3.
-            list.Add(nPLL_LOOP_DIV);            
+            list.Add(nPLL_LOOP_DIV);
 
             //4.
             list.Add(nPLL_PRE_DIV);
@@ -1040,7 +1077,7 @@ namespace TLWController.Helper
 
             //10:合规性判断
             list.Add(bCheckOK);
-            
+
             return list;
         }
 
@@ -1084,7 +1121,7 @@ namespace TLWController.Helper
         /// <param name="listBitHigh"></param>
         /// <param name="listVals"></param>
         /// <returns></returns>
-        public bool GetMultiRegAndValues(int nMode,bool bWith2019,List<ushort> listRegAddr, List<byte> listBitLow, List<byte> listBitHigh, List<ushort> listVals)
+        public bool GetMultiRegAndValues(int nMode, bool bWith2019, List<ushort> listRegAddr, List<byte> listBitLow, List<byte> listBitHigh, List<ushort> listVals)
         {
             if (Is2072Ready(nMode) == false) return false;
 
@@ -1108,7 +1145,7 @@ namespace TLWController.Helper
                 listRegAddr.Add(regAddr_Low);
                 listBitLow.Add(0);
                 listBitHigh.Add(15);
-                listVals.Add(nLow16);                
+                listVals.Add(nLow16);
             }
 
             //2018-09-10 新增2019参数的输出
@@ -1146,7 +1183,7 @@ namespace TLWController.Helper
             }
             UInt32[] arr = m_dict2072[nMode];
 
-            
+
             for (int i = 0; i < nLen; i++)
             {
                 arr[i] = src[nOffset + i];

@@ -28,7 +28,14 @@ namespace TLWController.Extentions
 
         public static UInt16 ToUInt16(this string source, System.Globalization.NumberStyles styles = System.Globalization.NumberStyles.HexNumber)
         {
+            try { 
             return UInt16.Parse(source, styles);
+            }
+            catch
+            {
+                string a = "b";
+            }
+            return 0;
         }
 
         public static UInt32 ToUInt32(this string source, System.Globalization.NumberStyles styles = System.Globalization.NumberStyles.HexNumber)
@@ -36,9 +43,9 @@ namespace TLWController.Extentions
             return UInt32.Parse(source, styles);
         }
 
-        public static byte ToByte(this string source)
+        public static byte ToByte(this string source, System.Globalization.NumberStyles styles = System.Globalization.NumberStyles.HexNumber)
         {
-            return byte.Parse(source, System.Globalization.NumberStyles.HexNumber);
+            return byte.Parse(source, styles);
         }
 
         public static byte[] ToBytes(this string source, char split = ' ', System.Globalization.NumberStyles numberStyles = System.Globalization.NumberStyles.HexNumber)
@@ -112,6 +119,43 @@ namespace TLWController.Extentions
             charArr[index] = (newValue.ToCharArray())[0];
             string str = new string(charArr);
             return str;
+        }
+
+        public static UInt32[] ToUInt32(this UInt16[] source)
+        {
+            UInt32[] data = new UInt32[source.Length / 2];
+            for (int i = 0; i < source.Length / 2; i++)
+            {
+                data[i] = (UInt32)source[i * 2] << 16 | source[i * 2 + 1];
+            }
+            return data;
+        }
+
+        public static byte[] ToBytes(this UInt32[] source)
+        {
+            byte[] data = new byte[source.Length * 4];
+            int index = 0;
+            for (int i = 0; i < source.Length; i++)
+            {
+                byte[] tmp = source[i].GetBytes();
+                Array.Copy(tmp, 0, data, index, 4);
+                index += 4;
+            }
+            return data;
+        }
+
+        public static bool IsNumber(this string source)
+        {
+            for (int i = 0; i < source.Length; i++)
+            {
+                string str = source.Substring(i, 1);
+                ushort val = str.ToUInt16();
+                if (val < 0 || val>9)
+                {
+                    return false;
+                }
+            }
+            return true;
         }
     }
 }

@@ -71,10 +71,21 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Events\TLWEvent.cs" />
     <Compile Include="Extentions\BytesExtention.cs" />
     <Compile Include="Extentions\ObjectExtention.cs" />
     <Compile Include="Extentions\SimpleTypeExtention.cs" />
+    <Compile Include="FrmColorTemp.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmColorTemp.Designer.cs">
+      <DependentUpon>FrmColorTemp.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrmCreateSN.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmCreateSN.Designer.cs">
+      <DependentUpon>FrmCreateSN.cs</DependentUpon>
+    </Compile>
     <Compile Include="FrmSectionSet.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -85,13 +96,13 @@
     <Compile Include="Helper\CalibrationHelper.cs" />
     <Compile Include="Helper\class2072Oper.cs" />
     <Compile Include="Helper\classMBParam.cs" />
+    <Compile Include="Helper\ColorTempHelper.cs" />
     <Compile Include="Helper\FileHelper.cs" />
     <Compile Include="Helper\InterfaceDataHelper.cs" />
     <Compile Include="Helper\MapHelper.cs" />
     <Compile Include="Helper\NetworkValidateHelper.cs" />
     <Compile Include="Helper\Register2055Helper.cs" />
     <Compile Include="Helper\TimeElapsed.cs" />
-    <Compile Include="Helper\TLWCommand.cs" />
     <Compile Include="Helper\UDPHelper.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
@@ -100,6 +111,13 @@
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Structs\ColorTemp.cs" />
+    <EmbeddedResource Include="FrmColorTemp.resx">
+      <DependentUpon>FrmColorTemp.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmCreateSN.resx">
+      <DependentUpon>FrmCreateSN.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FrmSectionSet.resx">
       <DependentUpon>FrmSectionSet.cs</DependentUpon>
     </EmbeddedResource>
@@ -139,6 +157,15 @@
     <None Include="Lib\tlw.dll" />
     <None Include="Lib\TLWComm.dll" />
     <None Include="Lib\UnitInfo.dll" />
+    <Content Include="Config\Param2055 - 复制%282%29.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Config\Param2055 - 复制.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Config\Param2055_Default - 复制.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Config\Param2072.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -156,6 +183,15 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\..\7.公共类\SFTHelper\SFTHelper.csproj">
+      <Project>{8b5e6a3d-d374-4e3f-a11f-1bb362ab6937}</Project>
+      <Name>SFTHelper</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\7.公共类\TLWCommand\TLWCommunication.csproj">
+      <Project>{fc81601a-1046-4168-8623-b974e6098108}</Project>
+      <Name>TLWCommunication</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

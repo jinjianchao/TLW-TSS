@@ -31,6 +31,27 @@ namespace TLWController.Helper
             return true;
         }
 
+        public static bool WriteTextFile(ushort[] data, string file, int lineLen)
+        {
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < data.Length; i++)
+            {
+                sb.Append("0x" + data[i].ToString("X4"));
+                sb.Append(",");
+                if ((i + 1) % lineLen == 0)
+                {
+                    sb.AppendLine();
+                }
+            }
+            string str = sb.ToString();
+            str = str.Remove(str.LastIndexOf('\n')).Remove(str.LastIndexOf(','));
+            TextWriter textWriter = new StreamWriter(file, false);
+            textWriter.Write(str);
+            textWriter.Flush();
+            textWriter.Close();
+            return true;
+        }
+
         public static string ReadTextFile(string file)
         {
             using (TextReader textReader = new StreamReader(file))
@@ -65,6 +86,37 @@ namespace TLWController.Helper
                 return null;
             }
             return data;
+        }
+
+        public static bool Find(string sourcePath, string filename, bool bFindSubDir, out string outFile)
+        {
+            outFile = "";
+            //在指定目录及子目录下查找文件
+            DirectoryInfo Dir = new DirectoryInfo(sourcePath);
+            DirectoryInfo[] DirSub = Dir.GetDirectories();
+            if (DirSub.Length <= 0)
+            {
+                foreach (FileInfo f in Dir.GetFiles($"{filename}", SearchOption.TopDirectoryOnly)) //查找文件
+                {
+                    outFile = Dir + @"\" + f.ToString();
+                    return true;
+                }
+            }
+            int t = 1;
+            foreach (DirectoryInfo d in DirSub)//查找子目录 
+            {
+                Find(Dir + @"\" + d.ToString(), filename, bFindSubDir, out outFile);
+                if (t == 1)
+                {
+                    foreach (FileInfo f in Dir.GetFiles($"{filename}", SearchOption.TopDirectoryOnly)) //查找文件
+                    {
+                        outFile = Dir + @"\" + f.ToString();
+                        return true;
+                    }
+                    t = t + 1;
+                }
+            }
+            return false;
         }
     }
 }

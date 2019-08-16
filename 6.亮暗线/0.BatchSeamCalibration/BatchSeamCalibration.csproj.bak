@@ -1,0 +1,155 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{A99522FF-5C2F-4936-A82A-3B314779C5DE}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>BatchSeamCalibration</RootNamespace>
+    <AssemblyName>BatchSeamCalibration</AssemblyName>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\1.Release\Plugin\Customer\BatchSeamCalibration\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="CalibrationProcess.cs" />
+    <Compile Include="frmDataAnalize.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmDataAnalize.Designer.cs">
+      <DependentUpon>frmDataAnalize.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmPreview.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmPreview.Designer.cs">
+      <DependentUpon>frmPreview.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmMain.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmMain.Designer.cs">
+      <DependentUpon>frmMain.cs</DependentUpon>
+    </Compile>
+    <Compile Include="InterfaceData.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="ProgressBarEx.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ProgressBarEx.Designer.cs">
+      <DependentUpon>ProgressBarEx.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ResourceUtil.cs" />
+    <Compile Include="SeamData.cs" />
+    <Compile Include="SerializeHelper.cs" />
+    <Compile Include="Structs\ComboxListItem.cs" />
+    <Compile Include="UserIPCommand.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserIPCommand.Designer.cs">
+      <DependentUpon>UserIPCommand.cs</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="frmDataAnalize.resx">
+      <DependentUpon>frmDataAnalize.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmPreview.resx">
+      <DependentUpon>frmPreview.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmMain.resx">
+      <DependentUpon>frmMain.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <EmbeddedResource Include="UserIPCommand.resx">
+      <DependentUpon>UserIPCommand.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="app.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="UnitInfo.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="BaseComm">
+      <HintPath>..\..\..\Libs\BaseComm.dll</HintPath>
+    </Reference>
+    <Reference Include="CalibrationProcessLib">
+      <HintPath>..\..\..\Libs\CalibrationProcessLib.dll</HintPath>
+    </Reference>
+    <Reference Include="CEComm">
+      <HintPath>..\..\..\Libs\CEComm.dll</HintPath>
+    </Reference>
+    <Reference Include="Common">
+      <HintPath>..\..\..\Libs\Common.dll</HintPath>
+    </Reference>
+    <Reference Include="FactoryComm">
+      <HintPath>..\..\..\Libs\FactoryComm.dll</HintPath>
+    </Reference>
+    <Reference Include="OperationCE">
+      <HintPath>..\..\..\Libs\OperationCE.dll</HintPath>
+    </Reference>
+    <Reference Include="OperationTS">
+      <HintPath>..\..\..\Libs\OperationTS.dll</HintPath>
+    </Reference>
+    <Reference Include="OperationTWA">
+      <HintPath>..\..\..\Libs\OperationTWA.dll</HintPath>
+    </Reference>
+    <Reference Include="OperationTWS">
+      <HintPath>..\..\..\Libs\OperationTWS.dll</HintPath>
+    </Reference>
+    <Reference Include="System">
+      <HintPath>C:\Windows\Microsoft.NET\Framework\v2.0.50727\System.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\packages\Fody.3.3.3\build\Fody.targets" Condition="Exists('..\packages\Fody.3.3.3\build\Fody.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>这台计算机上缺少此项目引用的 NuGet 程序包。使用“NuGet 程序包还原”可下载这些程序包。有关更多信息，请参见 http://go.microsoft.com/fwlink/?LinkID=322105。缺少的文件是 {0}。</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Fody.3.3.3\build\Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Fody.3.3.3\build\Fody.targets'))" />
+  </Target>
+</Project>

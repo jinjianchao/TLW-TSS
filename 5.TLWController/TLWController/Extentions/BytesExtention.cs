@@ -20,11 +20,6 @@ namespace TLWController.Extentions
 {
     public static class BytesExtention
     {
-        public static byte[] GetBytes(this byte data)
-        {
-            return new byte[1] { data };
-        }
-
         public static byte[] GetBytes(this ushort data, bool isHighFirst = true)
         {
             List<byte> bytes = new List<byte>();
@@ -84,6 +79,9 @@ namespace TLWController.Extentions
             }
             return bytes.ToArray();
         }
+
+
+
 
         public static ushort GetUInt16(this byte[] data, bool isHighFirst = true)
         {
@@ -157,27 +155,19 @@ namespace TLWController.Extentions
             return value;
         }
 
-        public static ushort Sum(this byte[] data)
+
+
+        public static ushort GetSum(this byte[] data,int startIndex,int stopIndex)
         {
             ushort val = 0;
-            for (int i = 0; i < data.Length; i++)
+            for (int i = startIndex; i < stopIndex; i++)
             {
                 val += data[i];
             }
             return val;
         }
 
-        public static ushort Sum(this byte[] data, int start, int end)
-        {
-            ushort val = 0;
-            for (int i = start; i <= end; i++)
-            {
-                val += data[i];
-            }
-            return val;
-        }
-
-        public static string ToBinaryString(this byte source, int len)
+        public static string GetBinaryString(this byte source, int len)
         {
             string str1 = Convert.ToString(source, 2);
             if (str1.Length < len)
@@ -191,7 +181,7 @@ namespace TLWController.Extentions
             return str1;
         }
 
-        public static string ToBinaryString(this UInt16 source, int len)
+        public static string GetBinaryString(this UInt16 source, int len)
         {
             string str1 = Convert.ToString(source, 2);
             if (str1.Length < len)
@@ -214,8 +204,6 @@ namespace TLWController.Extentions
         /// <returns></returns>
         public static byte GetBitRangeValueFromByte(this byte source, int startBit, int stopBit)
         {
-            //11111111
-            //11000000 start = 2 stop =4
             byte val1 = (byte)(source << (8 - stopBit - 1));
             byte val2 = (byte)(val1 >> (8 - (stopBit - startBit + 1)));
             return val2;
@@ -265,7 +253,7 @@ namespace TLWController.Extentions
             return source;
         }
 
-        public static bool IsEqual(this byte[] source, byte[] target)
+        public static bool CompareWith(this byte[] source, byte[] target)
         {
             for (int i = 0; i < source.Length; i++)
             {
@@ -274,7 +262,7 @@ namespace TLWController.Extentions
             return true;
         }
 
-        public static bool IsEqual(this byte[] source, byte[] target, out int diffIndex, out byte sourceData, out byte targetData)
+        public static bool CompareWith(this byte[] source, byte[] target, out int diffIndex, out byte sourceData, out byte targetData)
         {
             diffIndex = 0;
             sourceData = 0;
@@ -306,5 +294,20 @@ namespace TLWController.Extentions
             }
             return uintData;
         }
+
+        public static string ToHexString(this UInt16[] source, int lineLen)
+        {
+            StringBuilder sb = new StringBuilder();
+            int cx = 1;
+            foreach (var item in source)
+            {
+                sb.Append("0x" + item.ToString("X4"));
+                sb.Append(",");
+                if (cx % lineLen == 0) sb.AppendLine();
+                cx++;
+            }
+            return sb.ToString();
+        }
+
     }
 }

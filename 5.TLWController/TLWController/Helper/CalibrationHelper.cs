@@ -20,7 +20,7 @@ using TLWController.Extentions;
 
 namespace TLWController.Helper
 {
-    public static class CalibrationHelper
+    public static class CALHelper
     {
         public static byte[] Read(int row, int column, string file)
         {
@@ -33,37 +33,42 @@ namespace TLWController.Helper
             int cx = 0;
             while ((lineData = reader.ReadBytes(column * 16)).Length != 0)
             {
-                //if (cx == 0)
-                //{
-                //    lineData.Fill(0x00);
-                //    //lineData[0] = 0xff;
-                //    //lineData[1] = 0xff;
-                //    //for (int i = 0; i < 16; i++)
-                //    //{
-                //    //    lineData[i] = 0xff;
-                //    //}
-                //    lineData[0] = 0xff;
-                //    lineData[1] = 0xff;
-                //    lineData[5] = 0xff;
-                //    lineData[6] = 0xff;
-                //    lineData[10] = 0xff;
-                //    lineData[11] = 0xff;
-                //    //for (int i = 0; i < 16; i++)
-                //    //{
-                //    //    lineData[i + 1] = (byte)(0x11 + i);
-
-                //    //}
-                //}
-                //else
-                //{
-                //    lineData.Fill(0x00);
-                //}
                 Array.Copy(lineData, 0, data, position, lineData.Length);
                 position += 4096;
                 cx++;
             }
             reader.Close();
+            reader.Dispose();
+            reader = null;
+            fs.Close();
+            fs.Dispose();
             return data;
+
+
+            //FileStream fs = new FileStream(file, FileMode.Open, FileAccess.Read);
+            //BinaryReader reader = new BinaryReader(fs);
+            //int position = 0;
+            //byte[] lineData;
+            //int cx = 0;
+            //try
+            //{
+            //    while (true)
+            //    {
+            //        lineData = reader.ReadBytes(column * 16);
+            //        Array.Copy(lineData, 0, data, position, lineData.Length);
+            //        position += 4096;
+            //        cx++;
+            //    }
+            //}
+            //catch (EndOfStreamException exEnd)
+            //{
+
+            //}
+            //catch (Exception ex)
+            //{
+            //    return null;
+            //}
+            //return data;
         }
 
         public static void Write(byte[] data, string file)
