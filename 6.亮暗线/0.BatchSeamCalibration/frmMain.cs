@@ -660,7 +660,7 @@ namespace BatchSeamCalibration
                 {
                     operationResult.Message = string.Format(MultiLanguage.GetNames(Name, "WriteModuleDataFailed"), item.Y, item.X, modulePos);
                     operationResult.Status = false;
-                    return operationResult;
+                    return operationResult; 
                 }
 
                 if (calibrationHelper.ToZDat(changedFile, writeFile, EnumCALTarget.Module) == false)
