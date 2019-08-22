@@ -38,6 +38,7 @@
             this.btnSplit = new System.Windows.Forms.Button();
             this.btnSeamCorrection = new System.Windows.Forms.Button();
             this.btnRename = new System.Windows.Forms.Button();
+            this.btnBatchConvert = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnConvertDatToSdat
@@ -140,11 +141,22 @@
             this.btnRename.UseVisualStyleBackColor = true;
             this.btnRename.Click += new System.EventHandler(this.btnRename_Click);
             // 
+            // btnBatchConvert
+            // 
+            this.btnBatchConvert.Location = new System.Drawing.Point(401, 43);
+            this.btnBatchConvert.Name = "btnBatchConvert";
+            this.btnBatchConvert.Size = new System.Drawing.Size(75, 23);
+            this.btnBatchConvert.TabIndex = 5;
+            this.btnBatchConvert.Text = "批量转换";
+            this.btnBatchConvert.UseVisualStyleBackColor = true;
+            this.btnBatchConvert.Click += new System.EventHandler(this.btnBatchConvert_Click);
+            // 
             // FrmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.btnBatchConvert);
             this.Controls.Add(this.btnRename);
             this.Controls.Add(this.btnSeamCorrection);
             this.Controls.Add(this.btnSplit);
@@ -173,6 +185,7 @@
         private System.Windows.Forms.Button btnSplit;
         private System.Windows.Forms.Button btnSeamCorrection;
         private System.Windows.Forms.Button btnRename;
+        private System.Windows.Forms.Button btnBatchConvert;
     }
 }
 

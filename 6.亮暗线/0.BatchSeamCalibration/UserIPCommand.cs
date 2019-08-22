@@ -23,6 +23,8 @@ namespace BatchSeamCalibration
 
         public event EventHandler SendButtonClick;
 
+        public event EventHandler WriteToFlashButtonClick;
+
         public event EventHandler ViewFormButtonClick;
 
         public event SendWorkModeButtonClicHandler SendWorkModeButtonClick;
@@ -104,6 +106,12 @@ namespace BatchSeamCalibration
             }
         }
 
+        public string SaveButtonText
+        {
+            get { return btnWriteToFlash.Text; }
+            set { btnWriteToFlash.Text = value; }
+        }
+
         public bool ButtonApplyEnable
         {
             get { return btnApply.Enabled; }
@@ -126,6 +134,12 @@ namespace BatchSeamCalibration
             {
                 btnWorkMode.Enabled = value;
             }
+        }
+
+        public bool ButtonSaveButtonEnable
+        {
+            get { return btnWriteToFlash.Enabled; }
+            set { btnWriteToFlash.Enabled = value; }
         }
 
         public int Progress
@@ -214,7 +228,16 @@ namespace BatchSeamCalibration
             OnClick(e);
             if (ViewFormButtonClick != null)
             {
-                ViewFormButtonClick(sender, e);
+                ViewFormButtonClick(this, e);
+            }
+        }
+
+        private void btnWriteToFlash_Click(object sender, EventArgs e)
+        {
+            OnClick(e);
+            if (WriteToFlashButtonClick != null)
+            {
+                WriteToFlashButtonClick(this, e);
             }
         }
     }

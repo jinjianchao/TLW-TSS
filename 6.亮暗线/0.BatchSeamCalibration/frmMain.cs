@@ -2,6 +2,7 @@
 using EdgModel;
 using LanguageLib;
 using PluginLib;
+using SFTHelper.Enums;
 using SFTHelper.Helper;
 using SFTHelper.Structs;
 using System;
@@ -26,7 +27,7 @@ namespace BatchSeamCalibration
 {
     public partial class frmMain : BaseFormV2
     {
-        bool isDebugMode = true;//是否测试模式
+        bool isDebugMode = false;//是否测试模式
 
         private string LocalCalFolder;
         private Dictionary<string, string> currentModuleFolder;
@@ -57,8 +58,52 @@ namespace BatchSeamCalibration
         ushort GetMBAddr(int x, int y)
         {
             ushort cardAddr = (ushort)(x << 8 | y);
+            if (x >= 241 || x >= 241)
+            {
+                //主板地址
+                cardAddr = (ushort)(x << 8 | y);
+            }
+            else
+            {
+                int tmpY = y;
+                if (y % 2 == 0)
+                {
+                    tmpY = y / 2;
+                }
+                else
+                {
+                    tmpY = y / 2 + 1;
+                }
+                cardAddr = (ushort)(x << 8 | tmpY);
+            }
             return cardAddr;
         }
+
+        Point GetMBTrueAddr(int x, int y)
+        {
+            Point p = new Point(x, y);
+            if (x >= 241 || x >= 241)
+            {
+                //主板地址
+                p = new Point(x, y);
+            }
+            else
+            {
+                int tmpY = y;
+                if (y % 2 == 0)
+                {
+                    tmpY = y / 2;
+                }
+                else
+                {
+                    tmpY = y / 2 + 1;
+                }
+                p = new Point(x, tmpY);
+            }
+            return p;
+        }
+
+
 
         private string GetModuleCalFolder(string name)
         {
@@ -245,6 +290,8 @@ namespace BatchSeamCalibration
             //ViewForm.Show();
             ViewForm.Location = _interfaceData.ViewFormPosition;
             ViewForm.SelectedIPCommand = GetSelectedIPCommand();
+            ViewForm._baseCommunication = _baseCommunication;
+            ViewForm.IP = "";
             //frmMain_Move(null, null);
         }
 
@@ -343,8 +390,8 @@ namespace BatchSeamCalibration
                 return null;
             }
             tlwCommand.DataMonitorEvent += _baseCommunication_DataMonitorEvent;
-            tlwCommand.ProgressChangedEvent += _baseCommunication_ProgressChangedMonitorEvent;
             tlwCommand.ProgressChangedEvent -= _baseCommunication_ProgressChangedMonitorEvent;
+            tlwCommand.ProgressChangedEvent += _baseCommunication_ProgressChangedMonitorEvent;
 
             //_operator.DataMonitorEvent += _baseCommunication_DataMonitorEvent;
             return tlwCommand;
@@ -367,6 +414,7 @@ namespace BatchSeamCalibration
                     userIPCommand.ButtonApplyEnable = true;
                     userIPCommand.ButtonViewFormEnable = true;
                     userIPCommand.ButtonWorkModeEnable = true;
+                    userIPCommand.ButtonSaveButtonEnable = true;
                     userIPCommand.Tag3 = 0;
                     if (status)
                     {
@@ -474,6 +522,7 @@ namespace BatchSeamCalibration
                 userIPCommand.GreenText = MultiLanguage.GetNames(Name, "Green");
                 userIPCommand.BlueText = MultiLanguage.GetNames(Name, "Blue");
                 userIPCommand.ViewButtonText = MultiLanguage.GetNames(Name, "View");
+                userIPCommand.SaveButtonText = MultiLanguage.GetNames(Name, "writeToFlash");
                 userIPCommand.Progress = 0;
                 userIPCommand.Tag = i;
                 userIPCommand.Tag1 = InitSeamData();
@@ -483,6 +532,7 @@ namespace BatchSeamCalibration
                 userIPCommand.SendButtonClick += UserIPCommand_SendButtonClick;
                 userIPCommand.SendWorkModeButtonClick += UserIPCommand_SendWorkModeButtonClick;
                 userIPCommand.ViewFormButtonClick += UserIPCommand_ViewFormButtonClick;
+                userIPCommand.WriteToFlashButtonClick += UserIPCommand_WriteToFlashButtonClick;
                 userIPCommand.Click += UserIPCommand_Click;
                 flowIPList.Controls.Add(userIPCommand);
             }
@@ -494,181 +544,25 @@ namespace BatchSeamCalibration
             //}
         }
 
-
-        Structs.OperationResult ReadCalibrationDataFromCabinet(int devNum, string ip, string outFile)
+        private void UserIPCommand_WriteToFlashButtonClick(object sender, EventArgs e)
         {
-            ////从箱体读取数据
-            //Structs.OperationResult operationResult = new Structs.OperationResult();
-            //byte[] sz = new byte[1024];
-            //int isOK = _baseCommunication.tlw_ReadSerialNumber(devNum, GetMBAddr(1, 1), 0, 0, sz);
-            //operationResult.Status = SNHelper.AnalayzeSN(sz, out string timeCode);
-            //if (!operationResult.Status)
-            //{
-            //    //读取时间码失败
-            //    Log(ip, MultiLanguage.GetNames(Name, "ReadTimeCodeFailed"));
-            //    SetCommandStatus(ip, false);
-            //    return new Structs.OperationResult() { Status = false };
-            //}
-            //Thread.Sleep(200);
-            //operationResult = _baseCommunication.MainBoardReadCalibrationFile(operationResult.DeviceNumber, cmdAddr, cabinetSize.ModulePixelWidth, cabinetSize.ModulePixelHeight, outFile);
-            //return operationResult;
+            UserIPCommand userIPCommand = sender as UserIPCommand;
+            string ctrName = userIPCommand.Name;
+            string ip = userIPCommand.IP;
+            //userIPCommand.ButtonText = MultiLanguage.GetNames(Name, "Stop");
+            //userIPCommand.Tag3 = 1;
+            userIPCommand.BackColor = SystemColors.Control;
 
-            return new Structs.OperationResult();
-        }
 
-        Structs.OperationResult ReadModulesCalibrationDataFromFolder(int devNum, string sourceDataPath, int moduleWidth, int moduleHeight, int modulePixelWidth, int modulePixelHeight)
-        {
-            Structs.OperationResult operationResult = new Structs.OperationResult();
-            operationResult.Status = true;
-            string[,] sn = new string[moduleHeight, moduleWidth];
-            string[,] calFiles = new string[moduleHeight, moduleWidth];
-            string firstSn = "";
-            for (int i = 0; i < moduleHeight; i++)
-            {
-                for (int j = 0; j < moduleWidth; j++)
-                {
-                    string timeCode = "";
-                    byte[] sz = new byte[1024];
-                    int x = j + 1;
-                    int y = i / 2 + 1;
-                    byte pos = (byte)((i + 1) % 2);
-                    if (!isDebugMode)
-                    {
-                        int result = _baseCommunication.tlw_ReadSerialNumber(devNum, GetMBAddr(x, y), 0, pos, sz);
-                        string modulePos = pos == 0 ? MultiLanguage.GetNames(Name, "upmodule") : MultiLanguage.GetNames(Name, "bottommodule");
-                        if (result != 0)
-                        {
-                            operationResult.Status = false;
-                            operationResult.Message = string.Format(MultiLanguage.GetNames(Name, "ReadTimeCodeFailed"), x, y, modulePos);
-                            return operationResult;
-                        }
-                        operationResult = new Structs.OperationResult();
-                        if (SNHelper.AnalayzeSN(sz, out timeCode) == false)
-                        {
-                            operationResult.Status = false;
-                            operationResult.Message = string.Format(MultiLanguage.GetNames(Name, "ReadTimeCodeFailed"), x, y, modulePos);
-                            return operationResult;
-                        }
-                    }
-                    else
-                    {
-                        timeCode = $"{i}_{j}";
-                    }
-                    operationResult.strData = timeCode;
+            userIPCommand.ButtonText = MultiLanguage.GetNames(Name, "Stop");
+            userIPCommand.ButtonViewFormEnable = false;
+            userIPCommand.ButtonWorkModeEnable = false;
+            userIPCommand.ButtonSaveButtonEnable = false;
+            userIPCommand.Tag3 = 1;
+            userIPCommand.BackColor = SystemColors.Control;
 
-                    Thread.Sleep(200);
-                    sn[i, j] = operationResult.strData;
-                    if (i == 0 && j == 0) firstSn = sn[i, j];
-                    string filter = string.Format("*{0}*.dat", sn[i, j]);
-                    List<string> fileList = new List<string>();
-                    FileHelper.GetFiles(sourceDataPath, filter, (modulePixelWidth * 18 + 10) * modulePixelHeight, false, ref fileList);
-                    string[] files = fileList.ToArray();
-                    if (files.Length == 0)
-                    {
-                        operationResult.Status = false;
-                        operationResult.Message = string.Format(MultiLanguage.GetNames(Name, "FileForTimeCodeNotFound"), sn[i, j]);
-                        return operationResult;
-                    }
-                    calFiles[i, j] = files[0];
-                }
-            }
-            calFiles = ArrayHelper.Reverse(calFiles);
-            string tmpPath = System.IO.Path.Combine(GetModuleCalFolder(firstSn), "ModuleDat_Source"/* + System.IO.Path.GetRandomFileName().Replace(".tmp", "")*/);
-            if (!Directory.Exists(tmpPath))
-            {
-                Directory.CreateDirectory(tmpPath);
-            }
-            //int zdatLen = modulePixelWidth * modulePixelHeight * 16;
-            CalibrationHelper calibrationHelper = new CalibrationHelper(moduleWidth, moduleHeight, modulePixelWidth, modulePixelHeight);
-            for (int i = 0; i < calFiles.GetLength(0); i++)
-            {
-                for (int j = 0; j < calFiles.GetLength(1); j++)
-                {
-                    //if (fileInfo.Length != zdatLen)
-                    //{
-                    //    operationResult.Status = false;
-                    //    operationResult.Message = string.Format(MultiLanguage.GetNames(Name, "FileForTimeCodeNotFound"), sn[i, j]);
-                    //    return operationResult;
-                    //}
-                    if (calibrationHelper.GetType(calFiles[i, j], SFTHelper.Enums.EnumCALTarget.Module) == SFTHelper.Enums.EnumCALType.Unkown)
-                    {
-                        operationResult.Status = false;
-                        operationResult.Message = string.Format(MultiLanguage.GetNames(Name, "FileForTimeCodeNotFound"), sn[i, j]);
-                        return operationResult;
-                    }
-                    FileInfo fileInfo = new FileInfo(calFiles[i, j]);
-                    //File.Copy(calFiles[i, j], tmpPath + "/" + fileInfo.Name, true);
-                    //calFiles[i, j] = tmpPath + "/" + fileInfo.Name;
-                    string fileNameNewWithExt = System.IO.Path.GetFileNameWithoutExtension(calFiles[i, j]) + fileInfo.Extension;
-                    string newFile = System.IO.Path.Combine(tmpPath, fileNameNewWithExt);
-                    if (calibrationHelper.ToDat(calFiles[i, j], newFile, SFTHelper.Enums.EnumCALTarget.Module) == false)
-                    {
-                        operationResult.Status = false;
-                        operationResult.Message = MultiLanguage.GetNames(Name, "TranslateZdat2DatFailed");
-                        return operationResult;
-                    }
-                }
-            }
 
-            string[,] datFiles = new string[calFiles.GetLength(0), calFiles.GetLength(1)];
-            for (int i = 0; i < datFiles.GetLength(0); i++)
-            {
-                for (int j = 0; j < datFiles.GetLength(1); j++)
-                {
-                    datFiles[i, j] = System.IO.Path.Combine(tmpPath, System.IO.Path.GetFileNameWithoutExtension(calFiles[i, j]) + ".dat");
-                }
-            }
-            string allSource = GetModuleCalFolder(firstSn) + "/All_Source";
-            if (System.IO.Directory.Exists(allSource) == false) System.IO.Directory.CreateDirectory(allSource);
-            string outFile = allSource + " /" + sn[0, 0] + ".sdat";
-            //if (!calibrationProcess.MergeFile(moduleWidth, moduleHeight, modulePixelWidth, modulePixelHeight, datFiles, outFile))
-            if (!calibrationHelper.Merge(datFiles, outFile))
-            {
-                operationResult.Status = false;
-                operationResult.Message = MultiLanguage.GetNames(Name, "MergeCalibrationDataFailed");
-                return operationResult;
-            }
-
-            operationResult.strData = outFile;
-            return operationResult;
-        }
-
-        //nType:0模组数据，1箱体数据
-        Structs.OperationResult ReadCalibrationDataFormFolder(int devNum, string ip, string path, string saveDataPath)
-        {
-            Structs.OperationResult operationResult = null;
-            operationResult = ReadModulesCalibrationDataFromFolder(devNum, path, _unitType.ModuleWidth, _unitType.ModuleHeight, _unitType.ModulePixelWidth, _unitType.ModulePixelHeight);
-            return operationResult;
-        }
-
-        Structs.OperationResult TranslateCalibrationDataToSdat(string fileIn, int width, int height, string fileOut)
-        {
-            Structs.OperationResult operationResult = new Structs.OperationResult();
-            operationResult.Status = true;
-            CalibrationHelper calibrationHelper = new CalibrationHelper(_unitType.ModuleWidth, _unitType.ModuleHeight, _unitType.ModulePixelWidth, _unitType.ModulePixelHeight);
-            //if (calProcess.TranslateData2Sdat(fileIn, width, height, fileOut) == false)
-            if (calibrationHelper.ToSDat(fileIn, fileOut, SFTHelper.Enums.EnumCALTarget.Cabinet) == false)
-            {
-                //读取校正数据失败
-                operationResult.Status = false;
-                operationResult.Message = MultiLanguage.GetNames(Name, "TranslateDat2SdatFailed");
-            }
-            return operationResult;
-        }
-
-        Structs.OperationResult ChangeCalibrationData(string fileIn, string fileOut, int startGray, StructSeamItem[,] seamItemDatas, SFTHelper.Enums.EnumCALType enumDataType)
-        {
-            Structs.OperationResult operationResult = new Structs.OperationResult();
-            SeamCalibrationHelper seamCalibrationHelper = new SeamCalibrationHelper(startGray, _unitType.ModuleWidth, _unitType.ModuleHeight, _unitType.ModulePixelWidth, _unitType.ModulePixelHeight);
-            operationResult.Status = seamCalibrationHelper.ModifyBorder(fileIn, fileOut, seamItemDatas);
-            if (operationResult.Status == false)
-            {
-                //修改校正数据失败
-                operationResult.Message = MultiLanguage.GetNames(Name, "ModifyCalibrationFailed");
-                operationResult.Status = false;
-                return operationResult;
-            }
-            return operationResult;
+            ExecuteWriteToFlash(ctrName, ip);
         }
 
         StructModule[] GetChangedModuleAddress(StructSeamItem[,] seamItemDatas, bool isReset)
@@ -678,7 +572,7 @@ namespace BatchSeamCalibration
             {
                 for (int j = 0; j < seamItemDatas.GetLength(1); j++)
                 {
-                    byte position = (byte)((i + 1) % 2);
+                    byte position = (byte)((i) % 2);
                     StructSeamItem item = seamItemDatas[i, j];
                     if (isReset)
                     {
@@ -687,64 +581,115 @@ namespace BatchSeamCalibration
                     else
                     {
                         if (item.Left == 100 && item.Top == 100 && item.Right == 100 && item.Bottom == 100) continue;
-                        points.Add(new StructModule(j + 1, i + 1, position));
+                        //points.Add(new StructModule(j + 1, i + 1, position));
+                        points.Add(new StructModule(seamItemDatas.GetLength(1) - j, seamItemDatas.GetLength(0) - i, position));
                     }
                 }
             }
             return points.ToArray();
         }
 
-        Structs.OperationResult WriteModuleFiles(string ip, int devNum, string timeCode, string calFile, StructModule[] changedModuleAddress, string targetFolder)
+        Structs.OperationResult WriteModuleFiles(string ip, int devNum, StructSeamItem[,] seamItems, StructModule[] changedModuleAddress, byte startGray, string sourceFolder, string targetFolder, int readFrom/*0:从箱体，1：从文件夹*/)
         {
-            string tmpSdataFileName = System.IO.Path.GetFileName("All.sdat");
-            string tmpSdataFile = System.IO.Path.Combine(targetFolder, tmpSdataFileName);
-            Structs.OperationResult operationResult = TranslateCalibrationDataToSdat(calFile, _unitType.GetSize().Width, _unitType.GetSize().Height, tmpSdataFile);
-            if (!operationResult.Status)
-            {
-                operationResult.Message = MultiLanguage.GetNames(Name, "OutputSdatFileFailed");
-                operationResult.Status = false;
-                return operationResult;
-            }
-
             CalibrationHelper calibrationHelper = new CalibrationHelper(_unitType.ModuleWidth, _unitType.ModuleHeight, _unitType.ModulePixelWidth, _unitType.ModulePixelHeight);
-            if (calibrationHelper.Divide(tmpSdataFile, targetFolder) == false)
+            SeamCalibrationHelper seamCalibrationHelper = new SeamCalibrationHelper(startGray, _unitType.ModuleWidth, _unitType.ModuleHeight, _unitType.ModulePixelWidth, _unitType.ModulePixelHeight);
+            Structs.OperationResult operationResult = new Structs.OperationResult();
+            foreach (var item in changedModuleAddress)
             {
-                operationResult.Message = MultiLanguage.GetNames(Name, "DivideFileFailed");
-                operationResult.Status = false;
-                return operationResult;
-            }
-            for (int i = 0; i < _unitType.ModuleHeight; i++)
-            {
-                for (int j = 0; j < _unitType.ModuleWidth; j++)
-                {
+                ushort addr = GetMBAddr(item.X, item.Y);
+                string modulePos = item.Position == 0 ? MultiLanguage.GetNames(Name, "upmodule") : MultiLanguage.GetNames(Name, "bottommodule");
 
-                    string outzFile = targetFolder + "/" + i + "_" + j + ".zdat";
-                    bool isOk = calibrationHelper.ToZDat(targetFolder + "/" + i + "_" + j + ".dat", outzFile, SFTHelper.Enums.EnumCALTarget.Module);
-                    if (!isOk)
+                byte[] sz = new byte[1024];
+                string timeCode = "";
+                if (!isDebugMode)
+                {
+                    int result = _baseCommunication.tlw_ReadSerialNumber(devNum, addr, 0, item.Position, sz);
+                    if (result != 0)
                     {
-                        operationResult.Message = MultiLanguage.GetNames(Name, "ModuleFileData2ZdatFailed");
+                        //读取时间码失败
+                        Log(ip, string.Format(MultiLanguage.GetNames(Name, "ReadTimeCodeFailed"), 1, 1, modulePos));
+                        operationResult.Status = false;
+                        SetCommandStatus(ip, false);
+                        return operationResult;
+                    }
+                    if (SNHelper.AnalayzeSN(sz, out timeCode) == false)
+                    {
+                        //读取时间码失败
+                        Log(ip, string.Format(MultiLanguage.GetNames(Name, "ReadTimeCodeFailed"), 1, 1, modulePos));
+                        operationResult.Status = false;
+                        SetCommandStatus(ip, false);
+                        return operationResult;
+                    }
+                    Thread.Sleep(50);
+                }
+                else
+                {
+                    timeCode = $"{item.Y - 1}_{item.X - 1}";
+                }
+                string readFile = System.IO.Path.Combine(targetFolder, $"{timeCode}_read.dat");
+                string changedFile = System.IO.Path.Combine(targetFolder, $"{timeCode}_modify.sdat");
+                string writeFile = System.IO.Path.Combine(targetFolder, $"{timeCode}_write.zdat");
+
+                if (readFrom == 0)
+                {
+                    //从箱体读取
+                    int readResult = _baseCommunication.tlw_ReadCalibrationFile(devNum, addr, 0, item.Position, _unitType.ModulePixelWidth, _unitType.ModulePixelHeight, readFile);
+                    if (readResult != 0)
+                    {
+                        operationResult.Message = string.Format(MultiLanguage.GetNames(Name, "ReadCalibrationFailed"), item.Y, item.X, modulePos);
                         operationResult.Status = false;
                         return operationResult;
                     }
                 }
-            }
-
-            foreach (var item in changedModuleAddress)
-            {
-                string file = System.IO.Path.Combine(targetFolder, string.Format("{0}_{1}.zdat", item.Y - 1, item.X - 1));
-                ushort addr = GetMBAddr(item.X, item.Y);
-                string modulePos = item.Position == 0 ? MultiLanguage.GetNames(Name, "upmodule") : MultiLanguage.GetNames(Name, "bottommodule");
-                Log(ip, String.Format(MultiLanguage.GetNames(Name, "WriteModuleData"), item.Y, item.X, modulePos));
-                Thread.Sleep(200);
-                int isOk = _baseCommunication.tlw_WriteCalibrationFile(devNum, addr, 0, item.Position, _unitType.ModulePixelWidth, _unitType.ModulePixelHeight, file);
-                operationResult.Status = isOk == 0 ? true : false;
-                if (!operationResult.Status)
+                else if (readFrom == 1)
+                {
+                    //从文件夹读取
+                    List<string> searchFiles = new List<string>();
+                    FileHelper.GetFiles(sourceFolder, $"*{timeCode}*.dat", false, ref searchFiles);
+                    string[] files = searchFiles.ToArray();
+                    if (files.Length == 0)
+                    {
+                        operationResult.Status = false;
+                        operationResult.Message = string.Format(MultiLanguage.GetNames(Name, "FileForTimeCodeNotFound"), timeCode);
+                        return operationResult;
+                    }
+                    System.IO.File.Copy(files[0], readFile, true);
+                }
+                StructSeamItem seamItem = seamItems[_unitType.ModuleHeight - item.Y, _unitType.ModuleWidth - item.X];
+                if (seamCalibrationHelper.Modify(readFile, changedFile, seamItem) == false)
                 {
                     operationResult.Message = string.Format(MultiLanguage.GetNames(Name, "WriteModuleDataFailed"), item.Y, item.X, modulePos);
                     operationResult.Status = false;
                     return operationResult;
                 }
-                Log(ip, String.Format(MultiLanguage.GetNames(Name, "WriteModuleDataSuccess"), item.Y, item.X, modulePos));
+
+                if (calibrationHelper.ToZDat(changedFile, writeFile, EnumCALTarget.Module) == false)
+                {
+                    operationResult.Message = string.Format(MultiLanguage.GetNames(Name, "WriteModuleDataFailed"), item.X, item.Y, modulePos);
+                    operationResult.Status = false;
+                    return operationResult;
+                }
+
+                Log(ip, String.Format(MultiLanguage.GetNames(Name, "WriteModuleData"), GetMBTrueAddr(item.X, item.Y).X, GetMBTrueAddr(item.X, item.Y).Y, modulePos));
+                int isOk = 0;
+                if (!isDebugMode)
+                {
+                    //isOk = _baseCommunication.tlw_WriteCalibrationFile(devNum, addr, 0, item.Position, _unitType.ModulePixelWidth, _unitType.ModulePixelHeight, writeFile);
+                    isOk = _baseCommunication.tlw_WriteCalibrationFileToSDRAM(devNum, addr, 0, item.Position, _unitType.ModulePixelWidth, _unitType.ModulePixelHeight, writeFile);
+                }
+                operationResult.Status = isOk == 0 ? true : false;
+                if (!operationResult.Status)
+                {
+                    operationResult.Message = string.Format(MultiLanguage.GetNames(Name, "WriteModuleDataFailed"), item.X, item.Y, modulePos);
+                    operationResult.Status = false;
+                    return operationResult;
+                }
+                Thread.Sleep(50);
+                Log(ip, String.Format(MultiLanguage.GetNames(Name, "WriteModuleDataSuccess"), GetMBTrueAddr(item.X, item.Y).X, GetMBTrueAddr(item.X, item.Y).Y, modulePos));
+                Thread.Sleep(200);
+                File.Delete(readFile);
+                File.Delete(changedFile);
+                File.Delete(writeFile);
             }
             //_baseCommunication.SetRegister(devNum, cmdAddr, 143, 1);
             operationResult.Status = true;
@@ -776,106 +721,8 @@ namespace BatchSeamCalibration
                     string timeCode = "";
                     try
                     {
-                        if (!isDebugMode)
-                        {
-                            byte[] sz = new byte[1024];
-                            int result = _baseCommunication.tlw_ReadSerialNumber(devNum, GetMBAddr(1, 1), 0, 0, sz);
-                            string modulePos = 0 == 0 ? MultiLanguage.GetNames(Name, "upmodule") : MultiLanguage.GetNames(Name, "bottommodule");
-                            if (SNHelper.AnalayzeSN(sz, out timeCode) == false)
-                            {
-                                //读取时间码失败
-                                Log(ip, string.Format(MultiLanguage.GetNames(Name, "ReadTimeCodeFailed"), 1, 1, modulePos));
-                                operationResult.Status = false;
-                                SetCommandStatus(arg.IP, false);
-                                return;
-                            }
-                        }
-                        else
-                        {
-                            timeCode = "0_0";
-                        }
-
-                        string readFolder = System.IO.Path.Combine(GetModuleCalFolder(timeCode), "Read");
-                        if (System.IO.Directory.Exists(readFolder) == false) System.IO.Directory.CreateDirectory(readFolder);
-                        string tmpRead = System.IO.Path.Combine(readFolder, "All.dat");
-                        if (arg.ReadCalFrom == 0)
-                        {
-                            //从箱体读取数据
-                            Log(ip, MultiLanguage.GetNames(Name, "ReadCalibrationDataFromCabinet"));
-                            Thread.Sleep(200);
-                            operationResult = ReadCalibrationDataFromCabinet(operationResult.DeviceNumber, arg.IP, tmpRead);
-                        }
-                        else
-                        {
-                            //从文件夹读取数据
-                            Log(ip, MultiLanguage.GetNames(Name, "ReadCalibrationDataFromFolder"));
-                            operationResult = ReadCalibrationDataFormFolder(devNum, arg.IP, arg.LocalCalDataPath, GetModuleCalFolder(timeCode));
-                            if (!operationResult.Status)
-                            {
-                                //读取校正数据失败
-                                Log(arg.IP, operationResult.Message);
-                                SetCommandStatus(arg.IP, false);
-                                return;
-                            }
-                            tmpRead = operationResult.strData;
-                        }
-                        if (!operationResult.Status)
-                        {
-                            //读取校正数据失败
-                            Log(arg.IP, MultiLanguage.GetNames(Name, "ReadCalibrationFailed"));
-                            SetCommandStatus(arg.IP, false);
-                            return;
-                        }
-                        else
-                        {
-                            Log(arg.IP, MultiLanguage.GetNames(Name, "ReadCalibrationSuccess"));
-                        }
-
-                        string tmpSdatPath = System.IO.Path.GetDirectoryName(tmpRead);
-                        string tmpSdat = System.IO.Path.Combine(tmpSdatPath, "All_Translate.sdat");
-
-                        operationResult = TranslateCalibrationDataToSdat(tmpRead, width, height, tmpSdat);
-                        if (!operationResult.Status)
-                        {
-                            Log(arg.IP, operationResult.Message);
-                            SetCommandStatus(ip, false);
-                            return;
-                        }
-
-                        //保存原始数据
-                        CalibrationHelper calibrationHelper = new CalibrationHelper(arg.UnitType.ModuleWidth, arg.UnitType.ModuleHeight, arg.UnitType.ModulePixelWidth, arg.UnitType.ModulePixelHeight);
-                        calibrationHelper.GetExtName(tmpRead, out string extName, SFTHelper.Enums.EnumCALTarget.Cabinet);
-                        fileRead = System.IO.Path.Combine(LocalCalFolder, "read" + timeCode + extName);
-                        File.Copy(tmpRead, fileRead, true);
-
-                        //TODO:修改
-                        SFTHelper.Enums.EnumCALType dataType = calibrationHelper.GetType(tmpRead, SFTHelper.Enums.EnumCALTarget.Cabinet);
-                        fileWrite = System.IO.Path.Combine(LocalCalFolder, "write" + timeCode + "." + extName);
-                        operationResult = ChangeCalibrationData(tmpSdat, fileWrite, arg.StartGray, arg.SeamData, dataType);
-                        if (!operationResult.Status)
-                        {
-                            //读取时间码失败
-                            Log(ip, operationResult.Message);
-                            SetCommandStatus(ip, false);
-                            return;
-                        }
-
-                        //TODO:写入
-
-                        Log(ip, MultiLanguage.GetNames(Name, "WriteCalibrationData"));
-                        //operationResult = _baseCommunication.MainBoardUploadCalibrationFile(devNum, cmdAddr, uType.ModulePixelWidth, uType.ModulePixelHeight, fileWrite);
-
                         StructModule[] changedModuleAddress = GetChangedModuleAddress(arg.SeamData, isReset);
-                        string currentModuleFolderToWrite = GetModuleCalFolder(timeCode) + "/WriteFolder";
-                        if (System.IO.Directory.Exists(currentModuleFolderToWrite) == false) System.IO.Directory.CreateDirectory(currentModuleFolderToWrite);
-                        if (!isDebugMode)
-                        {
-                            operationResult = WriteModuleFiles(ip, devNum, timeCode, fileWrite, changedModuleAddress, currentModuleFolderToWrite);
-                        }
-                        else
-                        {
-                            operationResult.Status = true;
-                        }
+                        operationResult = WriteModuleFiles(ip, devNum, arg.SeamData, changedModuleAddress, arg.StartGray, arg.LocalCalDataPath, LocalCalFolder, arg.ReadCalFrom);
                         if (!operationResult.Status)
                         {
                             //写入校正数据失败
@@ -887,14 +734,12 @@ namespace BatchSeamCalibration
                         {
                             Log(arg.IP, MultiLanguage.GetNames(Name, "WriteCalibrationDataSuccess"));
                             SetCommandStatus(arg.IP, true);
-
-                            //File.Copy(fileWrite, fileRead, true);
                         }
                     }
                     finally
                     {
                         Thread.Sleep(200);
-                        Directory.Delete(GetModuleCalFolder(timeCode), true);
+                        //Directory.Delete(GetModuleCalFolder(timeCode), true);
                         _baseCommunication.Sys_CloseDev(devNum);
                         _devIP.Remove(devNum);
                         _threadList.Remove(ctrName);
@@ -965,6 +810,67 @@ namespace BatchSeamCalibration
                             return;
                         }
                         Log(ip, MultiLanguage.GetNames(Name, "SwitchDisplayModeSuccess"));
+                        operationResult.Status = true;
+                        SetCommandStatus(ip, true);
+                    }
+                    finally
+                    {
+                        _baseCommunication.Sys_CloseDev(devNum);
+                        _devIP.Remove(devNum);
+                        _threadList.Remove(ctrName);
+                    }
+                }));
+                thread.IsBackground = true;
+                _threadList.Add(ctrName, thread);
+                _threadList[ctrName].Start(new object[] { });
+            }
+        }
+
+        void ExecuteWriteToFlash(string ctrName, string ip)
+        {
+            if (!_threadList.ContainsKey(ctrName))
+            {
+                Thread thread = new Thread(new ParameterizedThreadStart((object param) =>
+                {
+                    if (_baseCommunication == null)
+                    {
+                        Log("", "basenull");
+                        return;
+                    }
+                    if (ip == null)
+                    {
+                        Log("", "ip"); return;
+                    }
+                    int devNum = _baseCommunication.OpenUDP(ip);
+                    Structs.OperationResult operationResult = new Structs.OperationResult();
+                    operationResult.DeviceNumber = devNum;
+                    operationResult.Status = true;
+                    if (!operationResult.Status)
+                    {
+                        //设备打开失败
+                        Log(ip, MultiLanguage.GetNames(Name, "OpenDeviceFailed"));
+                        return;
+                    }
+                    else
+                    {
+                        Log(ip, MultiLanguage.GetNames(Name, "OpenDeviceSuccess"));
+                    }
+                    if (!_devIP.ContainsKey(devNum))
+                    {
+                        _devIP.Add(devNum, ip);
+                    }
+                    try
+                    {
+                        operationResult.Status = _baseCommunication.tlw_SDRAM_WriteToFLASH(devNum, GetMBAddr(0, 0), 0) == 0 ? true : false;
+                        if (!operationResult.Status)
+                        {
+                            Log(ip, MultiLanguage.GetNames(Name, "writeToFlashfailed"));
+                            operationResult.Status = false;
+                            SetCommandStatus(ip, false);
+                            return;
+                        }
+                        Thread.Sleep(24 * 1000);
+                        Log(ip, MultiLanguage.GetNames(Name, "writeToFlashsuccess"));
                         operationResult.Status = true;
                         SetCommandStatus(ip, true);
                     }
@@ -1085,6 +991,7 @@ namespace BatchSeamCalibration
                 (sender as UserIPCommand).ButtonText = MultiLanguage.GetNames(Name, "Stop");
                 (sender as UserIPCommand).ButtonViewFormEnable = false;
                 (sender as UserIPCommand).ButtonWorkModeEnable = false;
+                (sender as UserIPCommand).ButtonSaveButtonEnable = false;
                 (sender as UserIPCommand).Tag3 = 1;
                 (sender as UserIPCommand).BackColor = SystemColors.Control;
             }
@@ -1095,6 +1002,7 @@ namespace BatchSeamCalibration
                 (sender as UserIPCommand).ButtonApplyEnable = false;
                 (sender as UserIPCommand).ButtonViewFormEnable = false;
                 (sender as UserIPCommand).ButtonWorkModeEnable = false;
+                (sender as UserIPCommand).ButtonSaveButtonEnable = false;
                 (sender as UserIPCommand).Tag3 = 0;
                 (sender as UserIPCommand).BackColor = SystemColors.Control;
             }
@@ -1129,6 +1037,7 @@ namespace BatchSeamCalibration
             {
                 if (ViewForm.Visible == false) ViewForm.Visible = true;
                 ViewForm.BringToFront();
+                ViewForm.IP = (sender as UserIPCommand).IP;
             }
         }
 
@@ -1340,6 +1249,7 @@ namespace BatchSeamCalibration
                 userIPCommand.ButtonViewFormEnable = false;
                 userIPCommand.ButtonApplyEnable = false;
                 userIPCommand.ButtonWorkModeEnable = false;
+                userIPCommand.ButtonSaveButtonEnable = false;
                 userIPCommand.Tag3 = 1;
                 userIPCommand.BackColor = SystemColors.Control;
 

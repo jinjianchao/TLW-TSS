@@ -59,6 +59,9 @@
       <Code name="SwitchDisplayModeSuccess" text="Switch display mode success"/>
       <Code name="upmodule" text="Top module"/>
       <Code name="bottommodule" text="Bottom module"/>
+      <Code name="writeToFlashfailed" text="Save to flash failed"/>
+      <Code name="writeToFlashsuccess" text="Save to Flash success"/>
+      <Code name="writeToFlash" text="Save"/>
     </Codes>
   </Form>
   <Form>

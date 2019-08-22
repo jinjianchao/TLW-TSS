@@ -59,6 +59,9 @@
       <Code name="SwitchDisplayModeSuccess" text="切换工作模式成功"/>
       <Code name="upmodule" text="上灯板"/>
       <Code name="bottommodule" text="下灯板"/>
+      <Code name="writeToFlashfailed" text="固化到Flash失败"/>
+      <Code name="writeToFlashsuccess" text="固化到Flash成功"/>
+      <Code name="writeToFlash" text="保存"/>
     </Codes>
   </Form>
   <Form>

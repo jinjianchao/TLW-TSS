@@ -137,40 +137,40 @@ namespace CalibrationTools
 
         private void btnSeamCorrection_Click(object sender, EventArgs e)
         {
-            SeamCalibrationHelper seamCalibrationHelper = new SeamCalibrationHelper(255, _moduleWidth, _moduleHeight, _modulePixelWith, _modulePixelHeight);
-            StructSeamItem[,] seamItems = new StructSeamItem[_moduleHeight, _moduleWidth];
-            for (int row = 0; row < _moduleHeight; row++)
-            {
-                for (int col = 0; col < _moduleWidth; col++)
-                {
-                    seamItems[row, col] = new StructSeamItem()
-                    {
-                        Left = 0,
-                        Top = 0,
-                        Right = 0,
-                        Bottom = 0,
-                        Center = 100
-                    };
-                }
-            }
+            //SeamCalibrationHelper seamCalibrationHelper = new SeamCalibrationHelper(255, _moduleWidth, _moduleHeight, _modulePixelWith, _modulePixelHeight);
+            //StructSeamItem[,] seamItems = new StructSeamItem[_moduleHeight, _moduleWidth];
+            //for (int row = 0; row < _moduleHeight; row++)
+            //{
+            //    for (int col = 0; col < _moduleWidth; col++)
+            //    {
+            //        seamItems[row, col] = new StructSeamItem()
+            //        {
+            //            Left = 0,
+            //            Top = 0,
+            //            Right = 0,
+            //            Bottom = 0,
+            //            Center = 100
+            //        };
+            //    }
+            //}
 
-            string sz = @"C:\Users\Jinjianchao\Desktop\0808\0_0.sdat";
-            string target = @"C:\Users\Jinjianchao\Desktop\0808\modify.sdat";
-            bool isOk = seamCalibrationHelper.ModifyBorder(sz, target, seamItems);
-            if (isOk == false)
-            {
-                MessageBox.Show("error");
-            }
+            //string sz = @"C:\Users\Jinjianchao\Desktop\0808\0_0.sdat";
+            //string target = @"C:\Users\Jinjianchao\Desktop\0808\modify.sdat";
+            //bool isOk = seamCalibrationHelper.Modify(sz, target, seamItems, SFTHelper.Enums.EnumCALTarget.Module);
+            //if (isOk == false)
+            //{
+            //    MessageBox.Show("error");
+            //}
 
-            CalibrationHelper calibrationHelper = new CalibrationHelper(_moduleWidth, _moduleHeight, _modulePixelWith, _modulePixelHeight);
+            //CalibrationHelper calibrationHelper = new CalibrationHelper(_moduleWidth, _moduleHeight, _modulePixelWith, _modulePixelHeight);
 
-            sz = @"C:\Users\Jinjianchao\Desktop\0808\modify.sdat";
-            target = @"C:\Users\Jinjianchao\Desktop\0808\split";
-            isOk = calibrationHelper.Divide(sz, target);
-            if (isOk == false)
-            {
-                MessageBox.Show("error");
-            }
+            //sz = @"C:\Users\Jinjianchao\Desktop\0808\modify.sdat";
+            //target = @"C:\Users\Jinjianchao\Desktop\0808\split";
+            //isOk = calibrationHelper.Divide(sz, target);
+            //if (isOk == false)
+            //{
+            //    MessageBox.Show("error");
+            //}
         }
 
         private void btnRename_Click(object sender, EventArgs e)
@@ -199,6 +199,33 @@ namespace CalibrationTools
                     col = 0;
                     row++;
                 }
+            });
+        }
+
+        private void btnBatchConvert_Click(object sender, EventArgs e)
+        {
+            string folder = @"C:\Users\Jinjianchao\Desktop\0808";
+            string zdatfolder = @"C:\Users\Jinjianchao\Desktop\0808\zdat";
+            string datfolder = @"C:\Users\Jinjianchao\Desktop\0808\dat";
+            string sdatfolder = @"C:\Users\Jinjianchao\Desktop\0808\sdat";
+
+            List<string> fileList = new List<string>();
+            FileHelper.GetFiles(folder, "*.dat", false, ref fileList);
+
+            fileList.ForEach((item) =>
+            {
+                CalibrationHelper calibrationHelper = new CalibrationHelper(1, 1, 192, 108);
+                string fileName = Path.GetFileNameWithoutExtension(item);
+                string zname = $"{fileName}.zdat";
+                string sname = $"{fileName}.sdat";
+                string dname = $"{fileName}.dat";
+                string zfile = Path.Combine(zdatfolder, zname);
+                string dfile = Path.Combine(datfolder, dname);
+                string sfile = Path.Combine(sdatfolder, sname);
+
+                calibrationHelper.ToZDat(item, zfile, SFTHelper.Enums.EnumCALTarget.Module);
+                calibrationHelper.ToSDat(item, sfile, SFTHelper.Enums.EnumCALTarget.Module);
+                calibrationHelper.ToDat(item, dfile, SFTHelper.Enums.EnumCALTarget.Module);
             });
         }
     }

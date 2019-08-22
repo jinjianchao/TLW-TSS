@@ -28,8 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.tabCommonCommand = new System.Windows.Forms.TabPage();
             this.groupBox21 = new System.Windows.Forms.GroupBox();
@@ -38,6 +38,8 @@
             this.cbGammFileColor = new System.Windows.Forms.ComboBox();
             this.btnWriteGammaFile = new System.Windows.Forms.Button();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.label11 = new System.Windows.Forms.Label();
+            this.numGammaBit = new System.Windows.Forms.NumericUpDown();
             this.btnCreateGammaFile = new System.Windows.Forms.Button();
             this.numGamma = new System.Windows.Forms.NumericUpDown();
             this.cbGammaColor = new System.Windows.Forms.ComboBox();
@@ -757,6 +759,7 @@
             this.tabCommonCommand.SuspendLayout();
             this.groupBox21.SuspendLayout();
             this.groupBox5.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numGammaBit)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numGamma)).BeginInit();
             this.groupBox11.SuspendLayout();
             this.groupBox10.SuspendLayout();
@@ -957,6 +960,8 @@
             // 
             // groupBox5
             // 
+            this.groupBox5.Controls.Add(this.label11);
+            this.groupBox5.Controls.Add(this.numGammaBit);
             this.groupBox5.Controls.Add(this.btnCreateGammaFile);
             this.groupBox5.Controls.Add(this.numGamma);
             this.groupBox5.Controls.Add(this.cbGammaColor);
@@ -969,6 +974,27 @@
             this.groupBox5.TabIndex = 3;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "GAMMA设置";
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(7, 28);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(23, 12);
+            this.label11.TabIndex = 7;
+            this.label11.Text = "Bit";
+            // 
+            // numGammaBit
+            // 
+            this.numGammaBit.Location = new System.Drawing.Point(42, 24);
+            this.numGammaBit.Name = "numGammaBit";
+            this.numGammaBit.Size = new System.Drawing.Size(56, 21);
+            this.numGammaBit.TabIndex = 6;
+            this.numGammaBit.Value = new decimal(new int[] {
+            13,
+            0,
+            0,
+            0});
             // 
             // btnCreateGammaFile
             // 
@@ -983,14 +1009,14 @@
             // numGamma
             // 
             this.numGamma.DecimalPlaces = 1;
-            this.numGamma.Location = new System.Drawing.Point(171, 25);
+            this.numGamma.Location = new System.Drawing.Point(188, 25);
             this.numGamma.Maximum = new decimal(new int[] {
             65535,
             0,
             0,
             0});
             this.numGamma.Name = "numGamma";
-            this.numGamma.Size = new System.Drawing.Size(94, 21);
+            this.numGamma.Size = new System.Drawing.Size(77, 21);
             this.numGamma.TabIndex = 4;
             this.numGamma.Value = new decimal(new int[] {
             24,
@@ -1002,7 +1028,7 @@
             // 
             this.cbGammaColor.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbGammaColor.FormattingEnabled = true;
-            this.cbGammaColor.Location = new System.Drawing.Point(89, 25);
+            this.cbGammaColor.Location = new System.Drawing.Point(106, 25);
             this.cbGammaColor.Name = "cbGammaColor";
             this.cbGammaColor.Size = new System.Drawing.Size(76, 20);
             this.cbGammaColor.TabIndex = 3;
@@ -1011,10 +1037,11 @@
             // 
             this.cbGammaBit.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbGammaBit.FormattingEnabled = true;
-            this.cbGammaBit.Location = new System.Drawing.Point(7, 25);
+            this.cbGammaBit.Location = new System.Drawing.Point(89, 51);
             this.cbGammaBit.Name = "cbGammaBit";
             this.cbGammaBit.Size = new System.Drawing.Size(76, 20);
             this.cbGammaBit.TabIndex = 3;
+            this.cbGammaBit.Visible = false;
             // 
             // btnGammaRead
             // 
@@ -1777,7 +1804,7 @@
             // 
             // btnReadMap
             // 
-            this.btnReadMap.Location = new System.Drawing.Point(513, 143);
+            this.btnReadMap.Location = new System.Drawing.Point(595, 145);
             this.btnReadMap.Name = "btnReadMap";
             this.btnReadMap.Size = new System.Drawing.Size(75, 23);
             this.btnReadMap.TabIndex = 4;
@@ -1788,46 +1815,49 @@
             // btnLoadModuleSection
             // 
             this.btnLoadModuleSection.Enabled = false;
-            this.btnLoadModuleSection.Location = new System.Drawing.Point(674, 86);
+            this.btnLoadModuleSection.Location = new System.Drawing.Point(1036, 93);
             this.btnLoadModuleSection.Name = "btnLoadModuleSection";
             this.btnLoadModuleSection.Size = new System.Drawing.Size(75, 23);
             this.btnLoadModuleSection.TabIndex = 20;
             this.btnLoadModuleSection.Text = "加载";
             this.btnLoadModuleSection.UseVisualStyleBackColor = true;
+            this.btnLoadModuleSection.Visible = false;
             this.btnLoadModuleSection.Click += new System.EventHandler(this.btnLoadModuleSection_Click);
             // 
             // btnLoadFPGA
             // 
             this.btnLoadFPGA.Enabled = false;
-            this.btnLoadFPGA.Location = new System.Drawing.Point(674, 113);
+            this.btnLoadFPGA.Location = new System.Drawing.Point(1036, 120);
             this.btnLoadFPGA.Name = "btnLoadFPGA";
             this.btnLoadFPGA.Size = new System.Drawing.Size(75, 23);
             this.btnLoadFPGA.TabIndex = 20;
             this.btnLoadFPGA.Text = "加载";
             this.btnLoadFPGA.UseVisualStyleBackColor = true;
+            this.btnLoadFPGA.Visible = false;
             this.btnLoadFPGA.Click += new System.EventHandler(this.btnLoadFPGA_Click);
             // 
             // txtMap
             // 
-            this.txtMap.Location = new System.Drawing.Point(79, 144);
+            this.txtMap.Location = new System.Drawing.Point(79, 146);
             this.txtMap.Name = "txtMap";
-            this.txtMap.Size = new System.Drawing.Size(298, 21);
+            this.txtMap.Size = new System.Drawing.Size(385, 21);
             this.txtMap.TabIndex = 5;
             // 
             // btnReadDivideVersion
             // 
             this.btnReadDivideVersion.Enabled = false;
-            this.btnReadDivideVersion.Location = new System.Drawing.Point(593, 113);
+            this.btnReadDivideVersion.Location = new System.Drawing.Point(955, 120);
             this.btnReadDivideVersion.Name = "btnReadDivideVersion";
             this.btnReadDivideVersion.Size = new System.Drawing.Size(75, 23);
             this.btnReadDivideVersion.TabIndex = 5;
             this.btnReadDivideVersion.Text = "读取版本号";
             this.btnReadDivideVersion.UseVisualStyleBackColor = true;
+            this.btnReadDivideVersion.Visible = false;
             this.btnReadDivideVersion.Click += new System.EventHandler(this.btnReadDivideVersion_Click);
             // 
             // btnUpgradeMAP
             // 
-            this.btnUpgradeMAP.Location = new System.Drawing.Point(433, 143);
+            this.btnUpgradeMAP.Location = new System.Drawing.Point(515, 145);
             this.btnUpgradeMAP.Name = "btnUpgradeMAP";
             this.btnUpgradeMAP.Size = new System.Drawing.Size(75, 23);
             this.btnUpgradeMAP.TabIndex = 7;
@@ -1837,7 +1867,7 @@
             // 
             // btnReadBoardVersion
             // 
-            this.btnReadBoardVersion.Location = new System.Drawing.Point(593, 85);
+            this.btnReadBoardVersion.Location = new System.Drawing.Point(675, 87);
             this.btnReadBoardVersion.Name = "btnReadBoardVersion";
             this.btnReadBoardVersion.Size = new System.Drawing.Size(75, 23);
             this.btnReadBoardVersion.TabIndex = 5;
@@ -1848,7 +1878,7 @@
             // label16
             // 
             this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(44, 148);
+            this.label16.Location = new System.Drawing.Point(44, 150);
             this.label16.Name = "label16";
             this.label16.Size = new System.Drawing.Size(29, 12);
             this.label16.TabIndex = 4;
@@ -1856,7 +1886,7 @@
             // 
             // btnReadMbVersion
             // 
-            this.btnReadMbVersion.Location = new System.Drawing.Point(593, 56);
+            this.btnReadMbVersion.Location = new System.Drawing.Point(675, 58);
             this.btnReadMbVersion.Name = "btnReadMbVersion";
             this.btnReadMbVersion.Size = new System.Drawing.Size(75, 23);
             this.btnReadMbVersion.TabIndex = 5;
@@ -1866,7 +1896,7 @@
             // 
             // btnChoseMAP
             // 
-            this.btnChoseMAP.Location = new System.Drawing.Point(383, 143);
+            this.btnChoseMAP.Location = new System.Drawing.Point(470, 145);
             this.btnChoseMAP.Name = "btnChoseMAP";
             this.btnChoseMAP.Size = new System.Drawing.Size(39, 23);
             this.btnChoseMAP.TabIndex = 6;
@@ -1876,7 +1906,7 @@
             // 
             // btnReadMCUVersion
             // 
-            this.btnReadMCUVersion.Location = new System.Drawing.Point(593, 26);
+            this.btnReadMCUVersion.Location = new System.Drawing.Point(675, 28);
             this.btnReadMCUVersion.Name = "btnReadMCUVersion";
             this.btnReadMCUVersion.Size = new System.Drawing.Size(75, 23);
             this.btnReadMCUVersion.TabIndex = 5;
@@ -1889,54 +1919,59 @@
             this.cbDistributeChip.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbDistributeChip.Enabled = false;
             this.cbDistributeChip.FormattingEnabled = true;
-            this.cbDistributeChip.Location = new System.Drawing.Point(314, 114);
+            this.cbDistributeChip.Location = new System.Drawing.Point(676, 121);
             this.cbDistributeChip.Name = "cbDistributeChip";
             this.cbDistributeChip.Size = new System.Drawing.Size(108, 20);
             this.cbDistributeChip.TabIndex = 17;
+            this.cbDistributeChip.Visible = false;
             // 
             // cbModuleChip
             // 
             this.cbModuleChip.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbModuleChip.Enabled = false;
             this.cbModuleChip.FormattingEnabled = true;
-            this.cbModuleChip.Location = new System.Drawing.Point(314, 86);
+            this.cbModuleChip.Location = new System.Drawing.Point(676, 93);
             this.cbModuleChip.Name = "cbModuleChip";
             this.cbModuleChip.Size = new System.Drawing.Size(108, 20);
             this.cbModuleChip.TabIndex = 17;
+            this.cbModuleChip.Visible = false;
             // 
             // cbMBFPGAChip
             // 
             this.cbMBFPGAChip.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbMBFPGAChip.Enabled = false;
             this.cbMBFPGAChip.FormattingEnabled = true;
-            this.cbMBFPGAChip.Location = new System.Drawing.Point(314, 58);
+            this.cbMBFPGAChip.Location = new System.Drawing.Point(676, 59);
             this.cbMBFPGAChip.Name = "cbMBFPGAChip";
             this.cbMBFPGAChip.Size = new System.Drawing.Size(108, 20);
             this.cbMBFPGAChip.TabIndex = 17;
+            this.cbMBFPGAChip.Visible = false;
             // 
             // cbMCUChip
             // 
             this.cbMCUChip.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbMCUChip.Enabled = false;
             this.cbMCUChip.FormattingEnabled = true;
-            this.cbMCUChip.Location = new System.Drawing.Point(314, 28);
+            this.cbMCUChip.Location = new System.Drawing.Point(676, 35);
             this.cbMCUChip.Name = "cbMCUChip";
             this.cbMCUChip.Size = new System.Drawing.Size(108, 20);
             this.cbMCUChip.TabIndex = 17;
+            this.cbMCUChip.Visible = false;
             // 
             // btnReadbtnDistributeBoardFPGA
             // 
-            this.btnReadbtnDistributeBoardFPGA.Location = new System.Drawing.Point(513, 113);
+            this.btnReadbtnDistributeBoardFPGA.Location = new System.Drawing.Point(595, 115);
             this.btnReadbtnDistributeBoardFPGA.Name = "btnReadbtnDistributeBoardFPGA";
             this.btnReadbtnDistributeBoardFPGA.Size = new System.Drawing.Size(75, 23);
             this.btnReadbtnDistributeBoardFPGA.TabIndex = 4;
             this.btnReadbtnDistributeBoardFPGA.Text = "读取";
             this.btnReadbtnDistributeBoardFPGA.UseVisualStyleBackColor = true;
+            this.btnReadbtnDistributeBoardFPGA.Visible = false;
             this.btnReadbtnDistributeBoardFPGA.Click += new System.EventHandler(this.btnReadbtnDistributeBoardFPGA_Click);
             // 
             // btnReadMbFPGA
             // 
-            this.btnReadMbFPGA.Location = new System.Drawing.Point(513, 56);
+            this.btnReadMbFPGA.Location = new System.Drawing.Point(595, 58);
             this.btnReadMbFPGA.Name = "btnReadMbFPGA";
             this.btnReadMbFPGA.Size = new System.Drawing.Size(75, 23);
             this.btnReadMbFPGA.TabIndex = 4;
@@ -1946,7 +1981,7 @@
             // 
             // btnReadFPGA
             // 
-            this.btnReadFPGA.Location = new System.Drawing.Point(513, 85);
+            this.btnReadFPGA.Location = new System.Drawing.Point(595, 87);
             this.btnReadFPGA.Name = "btnReadFPGA";
             this.btnReadFPGA.Size = new System.Drawing.Size(75, 23);
             this.btnReadFPGA.TabIndex = 4;
@@ -1956,7 +1991,7 @@
             // 
             // btnReadMCU
             // 
-            this.btnReadMCU.Location = new System.Drawing.Point(513, 25);
+            this.btnReadMCU.Location = new System.Drawing.Point(595, 28);
             this.btnReadMCU.Name = "btnReadMCU";
             this.btnReadMCU.Size = new System.Drawing.Size(75, 23);
             this.btnReadMCU.TabIndex = 4;
@@ -1966,7 +2001,7 @@
             // 
             // btnUpdateDistributeBoardFPGA
             // 
-            this.btnUpdateDistributeBoardFPGA.Location = new System.Drawing.Point(433, 113);
+            this.btnUpdateDistributeBoardFPGA.Location = new System.Drawing.Point(515, 115);
             this.btnUpdateDistributeBoardFPGA.Name = "btnUpdateDistributeBoardFPGA";
             this.btnUpdateDistributeBoardFPGA.Size = new System.Drawing.Size(75, 23);
             this.btnUpdateDistributeBoardFPGA.TabIndex = 3;
@@ -1976,7 +2011,7 @@
             // 
             // btnUpgradeMbFPGA
             // 
-            this.btnUpgradeMbFPGA.Location = new System.Drawing.Point(433, 56);
+            this.btnUpgradeMbFPGA.Location = new System.Drawing.Point(515, 58);
             this.btnUpgradeMbFPGA.Name = "btnUpgradeMbFPGA";
             this.btnUpgradeMbFPGA.Size = new System.Drawing.Size(75, 23);
             this.btnUpgradeMbFPGA.TabIndex = 3;
@@ -1986,7 +2021,7 @@
             // 
             // btnUpgradeFPGA
             // 
-            this.btnUpgradeFPGA.Location = new System.Drawing.Point(433, 85);
+            this.btnUpgradeFPGA.Location = new System.Drawing.Point(515, 87);
             this.btnUpgradeFPGA.Name = "btnUpgradeFPGA";
             this.btnUpgradeFPGA.Size = new System.Drawing.Size(75, 23);
             this.btnUpgradeFPGA.TabIndex = 3;
@@ -1996,7 +2031,7 @@
             // 
             // btnUpgradeMCU
             // 
-            this.btnUpgradeMCU.Location = new System.Drawing.Point(433, 25);
+            this.btnUpgradeMCU.Location = new System.Drawing.Point(515, 28);
             this.btnUpgradeMCU.Name = "btnUpgradeMCU";
             this.btnUpgradeMCU.Size = new System.Drawing.Size(75, 23);
             this.btnUpgradeMCU.TabIndex = 3;
@@ -2006,7 +2041,7 @@
             // 
             // btnChoseDistributeBoardFPGA
             // 
-            this.btnChoseDistributeBoardFPGA.Location = new System.Drawing.Point(270, 113);
+            this.btnChoseDistributeBoardFPGA.Location = new System.Drawing.Point(470, 115);
             this.btnChoseDistributeBoardFPGA.Name = "btnChoseDistributeBoardFPGA";
             this.btnChoseDistributeBoardFPGA.Size = new System.Drawing.Size(39, 23);
             this.btnChoseDistributeBoardFPGA.TabIndex = 2;
@@ -2016,7 +2051,7 @@
             // 
             // btnChoseMbFPGA
             // 
-            this.btnChoseMbFPGA.Location = new System.Drawing.Point(270, 58);
+            this.btnChoseMbFPGA.Location = new System.Drawing.Point(470, 58);
             this.btnChoseMbFPGA.Name = "btnChoseMbFPGA";
             this.btnChoseMbFPGA.Size = new System.Drawing.Size(39, 23);
             this.btnChoseMbFPGA.TabIndex = 2;
@@ -2026,7 +2061,7 @@
             // 
             // btnChoseFPGA
             // 
-            this.btnChoseFPGA.Location = new System.Drawing.Point(270, 85);
+            this.btnChoseFPGA.Location = new System.Drawing.Point(470, 87);
             this.btnChoseFPGA.Name = "btnChoseFPGA";
             this.btnChoseFPGA.Size = new System.Drawing.Size(39, 23);
             this.btnChoseFPGA.TabIndex = 2;
@@ -2036,7 +2071,7 @@
             // 
             // btnChoseMCU
             // 
-            this.btnChoseMCU.Location = new System.Drawing.Point(270, 27);
+            this.btnChoseMCU.Location = new System.Drawing.Point(470, 28);
             this.btnChoseMCU.Name = "btnChoseMCU";
             this.btnChoseMCU.Size = new System.Drawing.Size(39, 23);
             this.btnChoseMCU.TabIndex = 2;
@@ -2046,29 +2081,29 @@
             // 
             // txtDistributeBoardFPGA
             // 
-            this.txtDistributeBoardFPGA.Location = new System.Drawing.Point(79, 114);
+            this.txtDistributeBoardFPGA.Location = new System.Drawing.Point(79, 116);
             this.txtDistributeBoardFPGA.Name = "txtDistributeBoardFPGA";
-            this.txtDistributeBoardFPGA.Size = new System.Drawing.Size(187, 21);
+            this.txtDistributeBoardFPGA.Size = new System.Drawing.Size(385, 21);
             this.txtDistributeBoardFPGA.TabIndex = 1;
             // 
             // txtMbFPGA
             // 
-            this.txtMbFPGA.Location = new System.Drawing.Point(79, 55);
+            this.txtMbFPGA.Location = new System.Drawing.Point(79, 59);
             this.txtMbFPGA.Name = "txtMbFPGA";
-            this.txtMbFPGA.Size = new System.Drawing.Size(187, 21);
+            this.txtMbFPGA.Size = new System.Drawing.Size(385, 21);
             this.txtMbFPGA.TabIndex = 1;
             // 
             // txtFPGA
             // 
-            this.txtFPGA.Location = new System.Drawing.Point(79, 86);
+            this.txtFPGA.Location = new System.Drawing.Point(79, 88);
             this.txtFPGA.Name = "txtFPGA";
-            this.txtFPGA.Size = new System.Drawing.Size(187, 21);
+            this.txtFPGA.Size = new System.Drawing.Size(385, 21);
             this.txtFPGA.TabIndex = 1;
             // 
             // label27
             // 
             this.label27.AutoSize = true;
-            this.label27.Location = new System.Drawing.Point(16, 61);
+            this.label27.Location = new System.Drawing.Point(16, 63);
             this.label27.Name = "label27";
             this.label27.Size = new System.Drawing.Size(59, 12);
             this.label27.TabIndex = 0;
@@ -2077,7 +2112,7 @@
             // label23
             // 
             this.label23.AutoSize = true;
-            this.label23.Location = new System.Drawing.Point(7, 118);
+            this.label23.Location = new System.Drawing.Point(7, 120);
             this.label23.Name = "label23";
             this.label23.Size = new System.Drawing.Size(71, 12);
             this.label23.TabIndex = 0;
@@ -2086,7 +2121,7 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(16, 90);
+            this.label10.Location = new System.Drawing.Point(16, 92);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(59, 12);
             this.label10.TabIndex = 0;
@@ -2094,15 +2129,15 @@
             // 
             // txtMcu
             // 
-            this.txtMcu.Location = new System.Drawing.Point(79, 27);
+            this.txtMcu.Location = new System.Drawing.Point(79, 29);
             this.txtMcu.Name = "txtMcu";
-            this.txtMcu.Size = new System.Drawing.Size(187, 21);
+            this.txtMcu.Size = new System.Drawing.Size(385, 21);
             this.txtMcu.TabIndex = 1;
             // 
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(44, 30);
+            this.label8.Location = new System.Drawing.Point(44, 33);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(29, 12);
             this.label8.TabIndex = 0;
@@ -2171,8 +2206,8 @@
             this.grid2055.AllowUserToOrderColumns = true;
             this.grid2055.AllowUserToResizeColumns = false;
             this.grid2055.AllowUserToResizeRows = false;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.grid2055.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.grid2055.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle3;
             this.grid2055.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.grid2055.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.CoCheckBox,
@@ -2206,6 +2241,7 @@
             this.grid2055.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.grid2055_CellBeginEdit);
             this.grid2055.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.grid2055_CellContentClick);
             this.grid2055.CellEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.grid2055_CellEnter);
+            this.grid2055.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.grid2055_CellFormatting);
             this.grid2055.CellLeave += new System.Windows.Forms.DataGridViewCellEventHandler(this.grid2055_CellLeave);
             this.grid2055.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(this.grid2055_EditingControlShowing);
             this.grid2055.Scroll += new System.Windows.Forms.ScrollEventHandler(this.grid2055_Scroll);
@@ -2366,8 +2402,8 @@
             this.gridOtherReg.AllowUserToOrderColumns = true;
             this.gridOtherReg.AllowUserToResizeColumns = false;
             this.gridOtherReg.AllowUserToResizeRows = false;
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.gridOtherReg.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.gridOtherReg.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle4;
             this.gridOtherReg.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.gridOtherReg.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ColOtherCheckBox,
@@ -2394,6 +2430,7 @@
             this.gridOtherReg.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.gridOtherReg_CellBeginEdit);
             this.gridOtherReg.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.gridOtherReg_CellContentClick);
             this.gridOtherReg.CellEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.gridOtherReg_CellEnter);
+            this.gridOtherReg.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.gridOtherReg_CellFormatting);
             this.gridOtherReg.CellLeave += new System.Windows.Forms.DataGridViewCellEventHandler(this.gridOtherReg_CellLeave);
             this.gridOtherReg.Scroll += new System.Windows.Forms.ScrollEventHandler(this.gridOtherReg_Scroll);
             // 
@@ -9256,6 +9293,8 @@
             this.groupBox21.ResumeLayout(false);
             this.groupBox21.PerformLayout();
             this.groupBox5.ResumeLayout(false);
+            this.groupBox5.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numGammaBit)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numGamma)).EndInit();
             this.groupBox11.ResumeLayout(false);
             this.groupBox10.ResumeLayout(false);
@@ -10066,33 +10105,6 @@
         private System.Windows.Forms.Button btnReadMbVersion;
         private System.Windows.Forms.Button btnReadDivideVersion;
         private System.Windows.Forms.Button btnReadBoardVersion;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn ColOtherCheckBox;
-        private DevComponents.DotNetBar.Controls.DataGridViewLabelXColumn ColOtherMinValue;
-        private DevComponents.DotNetBar.Controls.DataGridViewLabelXColumn ColOtherMaxValue;
-        private DevComponents.DotNetBar.Controls.DataGridViewLabelXColumn ColOtherCNDescription;
-        private DevComponents.DotNetBar.Controls.DataGridViewLabelXColumn ColOtherENDescription;
-        private DevComponents.DotNetBar.Controls.DataGridViewLabelXColumn ColOtherRegisterAddress;
-        private DevComponents.DotNetBar.Controls.DataGridViewLabelXColumn ColOtherStartBit;
-        private DevComponents.DotNetBar.Controls.DataGridViewLabelXColumn ColOtherStopBit;
-        private DevComponents.DotNetBar.Controls.DataGridViewLabelXColumn ColOtherValue;
-        private System.Windows.Forms.DataGridViewButtonColumn ColOtherSend;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn CoCheckBox;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ColMinValue;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ColMaxValue;
-        private DevComponents.DotNetBar.Controls.DataGridViewLabelXColumn ColCNDescription;
-        private DevComponents.DotNetBar.Controls.DataGridViewLabelXColumn ColENDescription;
-        private DevComponents.DotNetBar.Controls.DataGridViewLabelXColumn ColDescription;
-        private DevComponents.DotNetBar.Controls.DataGridViewLabelXColumn ColOffset;
-        private DevComponents.DotNetBar.Controls.DataGridViewLabelXColumn ColRegisterAddress;
-        private DevComponents.DotNetBar.Controls.DataGridViewLabelXColumn ColRedAddress;
-        private DevComponents.DotNetBar.Controls.DataGridViewLabelXColumn ColGreenAddress;
-        private DevComponents.DotNetBar.Controls.DataGridViewLabelXColumn ColBlueAddress;
-        private DevComponents.DotNetBar.Controls.DataGridViewLabelXColumn ColStartBit;
-        private DevComponents.DotNetBar.Controls.DataGridViewLabelXColumn ColStopBit;
-        private DevComponents.DotNetBar.Controls.DataGridViewLabelXColumn ColRedValue;
-        private DevComponents.DotNetBar.Controls.DataGridViewLabelXColumn ColGreenValue;
-        private DevComponents.DotNetBar.Controls.DataGridViewLabelXColumn ColBlueValue;
-        private System.Windows.Forms.DataGridViewButtonColumn ColSend;
         private System.Windows.Forms.Button button13;
         private System.Windows.Forms.ComboBox cbDistributeChip;
         private System.Windows.Forms.ComboBox cbModuleChip;
@@ -10149,6 +10161,35 @@
         private System.Windows.Forms.GroupBox groupBox22;
         private System.Windows.Forms.NumericUpDown numPreview128Reg;
         private System.Windows.Forms.Button btnPreview128Reg;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.NumericUpDown numGammaBit;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn CoCheckBox;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ColMinValue;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ColMaxValue;
+        private DevComponents.DotNetBar.Controls.DataGridViewLabelXColumn ColCNDescription;
+        private DevComponents.DotNetBar.Controls.DataGridViewLabelXColumn ColENDescription;
+        private DevComponents.DotNetBar.Controls.DataGridViewLabelXColumn ColDescription;
+        private DevComponents.DotNetBar.Controls.DataGridViewLabelXColumn ColOffset;
+        private DevComponents.DotNetBar.Controls.DataGridViewLabelXColumn ColRegisterAddress;
+        private DevComponents.DotNetBar.Controls.DataGridViewLabelXColumn ColRedAddress;
+        private DevComponents.DotNetBar.Controls.DataGridViewLabelXColumn ColGreenAddress;
+        private DevComponents.DotNetBar.Controls.DataGridViewLabelXColumn ColBlueAddress;
+        private DevComponents.DotNetBar.Controls.DataGridViewLabelXColumn ColStartBit;
+        private DevComponents.DotNetBar.Controls.DataGridViewLabelXColumn ColStopBit;
+        private DevComponents.DotNetBar.Controls.DataGridViewLabelXColumn ColRedValue;
+        private DevComponents.DotNetBar.Controls.DataGridViewLabelXColumn ColGreenValue;
+        private DevComponents.DotNetBar.Controls.DataGridViewLabelXColumn ColBlueValue;
+        private System.Windows.Forms.DataGridViewButtonColumn ColSend;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn ColOtherCheckBox;
+        private DevComponents.DotNetBar.Controls.DataGridViewLabelXColumn ColOtherMinValue;
+        private DevComponents.DotNetBar.Controls.DataGridViewLabelXColumn ColOtherMaxValue;
+        private DevComponents.DotNetBar.Controls.DataGridViewLabelXColumn ColOtherCNDescription;
+        private DevComponents.DotNetBar.Controls.DataGridViewLabelXColumn ColOtherENDescription;
+        private DevComponents.DotNetBar.Controls.DataGridViewLabelXColumn ColOtherRegisterAddress;
+        private DevComponents.DotNetBar.Controls.DataGridViewLabelXColumn ColOtherStartBit;
+        private DevComponents.DotNetBar.Controls.DataGridViewLabelXColumn ColOtherStopBit;
+        private DevComponents.DotNetBar.Controls.DataGridViewLabelXColumn ColOtherValue;
+        private System.Windows.Forms.DataGridViewButtonColumn ColOtherSend;
     }
 }
 

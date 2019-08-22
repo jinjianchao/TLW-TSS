@@ -50,6 +50,7 @@
     <Compile Include="Extentions\ByteArrayExt.cs" />
     <Compile Include="Extentions\ByteExt.cs" />
     <Compile Include="Extentions\UInt16Ext.cs" />
+    <Compile Include="Extentions\UInt32Ext.cs" />
     <Compile Include="Helper\ArrayHelper.cs" />
     <Compile Include="Helper\CalibrationHelper.cs" />
     <Compile Include="Helper\FileHelper.cs" />

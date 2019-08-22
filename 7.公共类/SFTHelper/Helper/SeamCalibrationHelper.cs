@@ -11,6 +11,7 @@
 ************************************************************************/
 #endregion
 
+using SFTHelper.Enums;
 using SFTHelper.Structs;
 using System;
 using System.Collections.Generic;
@@ -162,40 +163,72 @@ namespace SFTHelper.Helper
             dataOut = null;
             if (seamItemData == null) return false;
 
-            int width, height;//箱体像素宽、高
+            int width, height, moduleColCount, moduleRowCount;//箱体像素宽、高
             width = height = 0;
 
             width = _cabinetWidth;
             height = _cabinetHeight;
+            moduleColCount = _moduleWidth;
+            moduleRowCount = _moduleHeight;
 
             //--------处理数据-----------
             ushort[] uValue = dataIn.Clone() as ushort[];
 
             //每个模块都处理系数
-            for (int row = 0; row < _moduleHeight; row++)
+            for (int row = 0; row < moduleRowCount; row++)
             {
-                for (int col = 0; col < _moduleWidth; col++)
+                for (int col = 0; col < moduleColCount; col++)
                 {
                     StructSeamItem itemData = seamItemData[row, col];
-                    ChangeModuleValue2((byte)_startGray, itemData, row, col, _modulePixelWidth, _modulePixelHeight, _moduleWidth, _moduleHeight, uValue);
+                    ChangeModuleValue2((byte)_startGray, itemData, row, col, _modulePixelWidth, _modulePixelHeight, moduleColCount, moduleRowCount, uValue);
                 }
             }
             dataOut = uValue.Clone() as ushort[];
             return true;
         }
 
+        private bool ChangCalibrationFile(StructSeamItem seamItemData, ushort[] dataIn, out ushort[] dataOut)
+        {
+            dataOut = null;
+
+            int width, height, moduleColCount, moduleRowCount;//箱体像素宽、高
+            width = height = 0;
+            moduleColCount = moduleRowCount = 0;
+
+            width = _modulePixelWidth;
+            height = _modulePixelHeight;
+            moduleColCount = 1;
+            moduleRowCount = 1;
+            //--------处理数据-----------
+            ushort[] uValue = dataIn.Clone() as ushort[];
+
+            //每个模块都处理系数
+            StructSeamItem itemData = seamItemData;
+            ChangeModuleValue2((byte)_startGray, itemData, 0, 0, _modulePixelWidth, _modulePixelHeight, moduleColCount, moduleRowCount, uValue);
+
+            dataOut = uValue.Clone() as ushort[];
+            return true;
+        }
+
         /// <summary>
-        /// 修改校正数据边缘
+        /// 修改整箱体校正数据边缘，输出SDat
         /// </summary>
         /// <param name="fileIn">要被修改的数据(支持SDat,Dat,ZDat)</param>
-        /// <param name="fileOut"></param>
+        /// <param name="fileOut">输出SDat</param>
         /// <param name="seamItemDatas"></param>
         /// <returns></returns>
-        public bool ModifyBorder(string fileIn, string fileOut,StructSeamItem[,] seamItemDatas)
+        public bool Modify(string fileIn, string fileOut, StructSeamItem[,] seamItemDatas)
         {
-            byte[] data = new byte[_cabinetWidth * _cabinetHeight * 18];
             CalibrationHelper calibrationHelper = new CalibrationHelper(_moduleWidth, _moduleHeight, _modulePixelWidth, _modulePixelHeight);
-            bool isOK = calibrationHelper.Read(fileIn, out data, Enums.EnumCALTarget.Cabinet);//读取纯校正数据
+
+            byte[] data = null;
+            int width = 0;
+            int height = 0;
+
+            width = _cabinetWidth;
+            height = _cabinetHeight;
+
+            bool isOK = calibrationHelper.Read(fileIn, out data, EnumCALTarget.Cabinet);//读取纯校正数据
             if (!isOK)
             {
                 return false;
@@ -206,15 +239,16 @@ namespace SFTHelper.Helper
                 coeff[i] = (float)(_startGray / (255 * 1.0f));
             }
 
-            isOK = calibrationHelper.TakeCoeff(data, 0, _cabinetWidth, _cabinetHeight, coeff);//修改校正系数，整体调整幅度
+            isOK = calibrationHelper.TakeCoeff(data, 0, width, height, coeff);//修改校正系数，整体调整幅度
             if (!isOK)
             {
                 //整体调整校正数据系数失败
                 return false;
             }
 
-            if (calibrationHelper.ConvertToUshort(data, out ushort[] uDataIn, Enums.EnumCALTarget.Cabinet) == false) return false;
-            isOK = ChangCalibrationFile(seamItemDatas, uDataIn, out ushort[]uDataOut);
+            if (calibrationHelper.ConvertToUshort(data, out ushort[] uDataIn, EnumCALTarget.Cabinet) == false) return false;
+            ushort[] uDataOut = null;
+            isOK = ChangCalibrationFile(seamItemDatas, uDataIn, out uDataOut);
             if (!isOK)
             {
                 //修改校正数据失败
@@ -222,6 +256,57 @@ namespace SFTHelper.Helper
             }
             if (calibrationHelper.ConvertToByte(uDataOut, out byte[] bDataOut, Enums.EnumCALTarget.Cabinet) == false) return false;
             if (calibrationHelper.ToSDat(bDataOut, fileOut, Enums.EnumCALTarget.Cabinet) == false) return false;
+            return true;
+        }
+
+        /// <summary>
+        /// 修改单个模组边缘，输出SDat
+        /// </summary>
+        /// <param name="fileIn">要被修改的数据(支持SDat,Dat,ZDat)</param>
+        /// <param name="fileOut">输出SDat</param>
+        /// <param name="seamItemDatas"></param>
+        /// <param name="style"></param>
+        /// <returns></returns>
+        public bool Modify(string fileIn, string fileOut, StructSeamItem seamItemData)
+        {
+            CalibrationHelper calibrationHelper = new CalibrationHelper(_moduleWidth, _moduleHeight, _modulePixelWidth, _modulePixelHeight);
+
+            byte[] data = null;
+            int width = 0;
+            int height = 0;
+
+            width = _modulePixelWidth;
+            height = _modulePixelHeight;
+            bool isOK = calibrationHelper.Read(fileIn, out data, EnumCALTarget.Module);//读取纯校正数据
+            if (!isOK)
+            {
+                return false;
+            }
+            float[] coeff = new float[9];
+            for (int i = 0; i < coeff.Length; i++)
+            {
+                coeff[i] = (float)(_startGray / (255 * 1.0f));
+            }
+
+            isOK = calibrationHelper.TakeCoeff(data, 0, width, height, coeff);//修改校正系数，整体调整幅度
+            if (!isOK)
+            {
+                //整体调整校正数据系数失败
+                return false;
+            }
+
+            if (calibrationHelper.ConvertToUshort(data, out ushort[] uDataIn, EnumCALTarget.Module) == false) return false;
+            ushort[] uDataOut = null;
+
+            isOK = ChangCalibrationFile(seamItemData, uDataIn, out uDataOut);
+
+            if (!isOK)
+            {
+                //修改校正数据失败
+                return false;
+            }
+            if (calibrationHelper.ConvertToByte(uDataOut, out byte[] bDataOut, EnumCALTarget.Module) == false) return false;
+            if (calibrationHelper.ToSDat(bDataOut, fileOut, EnumCALTarget.Module) == false) return false;
             return true;
         }
     }

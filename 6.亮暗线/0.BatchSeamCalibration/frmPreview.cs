@@ -8,6 +8,7 @@ using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
+using TLWCommunication;
 
 namespace BatchSeamCalibration
 {
@@ -17,6 +18,9 @@ namespace BatchSeamCalibration
         {
             public SelectedBorder SelectedBorder { get; set; }
         }
+
+        public TLWCommand _baseCommunication;//通讯操作类
+        public string IP = "";
 
         public event EventHandler<EventArgEx> SelectedBorderChanged;
 
@@ -515,7 +519,7 @@ namespace BatchSeamCalibration
 
         private void Form1_MouseDown(object sender, MouseEventArgs e)
         {
-            if(e.Button==MouseButtons.Right)
+            if (e.Button == MouseButtons.Right)
             {
 
                 return;
@@ -643,6 +647,74 @@ namespace BatchSeamCalibration
         private void ctxClose_Click(object sender, EventArgs e)
         {
             this.Hide();
+        }
+
+        ushort GetMBAddr(int x, int y)
+        {
+            ushort cardAddr = (ushort)(x << 8 | y);
+            if (x >= 241 || x >= 241)
+            {
+                //主板地址
+                cardAddr = (ushort)(x << 8 | y);
+            }
+            else
+            {
+                int tmpY = y;
+                if (y % 2 == 0)
+                {
+                    tmpY = y / 2;
+                }
+                else
+                {
+                    tmpY = y / 2 + 1;
+                }
+                cardAddr = (ushort)(x << 8 | tmpY);
+            }
+            return cardAddr;
+        }
+
+        private void ctxInit_Click(object sender, EventArgs e)
+        {
+            int mX = MousePosition.X - this.Left;
+            int mY = MousePosition.Y - this.Top;
+            int x, y;
+            x = y = 0;
+            for (int i = 0; i < this._cabinetType.ModuleHeight; i++)
+            {
+                bool isFind = false;
+                for (int j = 0; j < _cabinetType.ModuleWidth; j++)
+                {
+                    Rectangle rect = new Rectangle(j * _cabinetType.ModulePixelWidth, i * _cabinetType.ModulePixelHeight, _cabinetType.ModulePixelWidth, _cabinetType.ModulePixelHeight);
+                    if (rect.IntersectsWith(new Rectangle(mX, mY, 1, 1)))
+                    {
+                        x = j;
+                        y = i;
+                        isFind = true;
+                        break;
+                    }
+                }
+                if (isFind) break;
+            }
+
+            int addrX = _cabinetType.ModuleWidth - x;
+            int addrY = _cabinetType.ModuleHeight - y;
+            //MessageBox.Show(addrX + "_" + addrY);
+            int dev = _baseCommunication.OpenUDP(IP);
+            if (dev != 0)
+            {
+                _baseCommunication.tlw_ConnectCardLoadParam(dev, GetMBAddr(addrX, addrY), 0, 1);
+                if (y % 2 == 0)
+                {
+                    SeamData[y, x].Left = SeamData[y, x].Top = SeamData[y, x].Bottom = SeamData[y, x].Right = 100;
+                    SeamData[y + 1, x].Left = SeamData[y + 1, x].Top = SeamData[y + 1, x].Bottom = SeamData[y + 1, x].Right = 100;
+                }
+                else
+                {
+                    SeamData[y, x].Left = SeamData[y, x].Top = SeamData[y, x].Bottom = SeamData[y, x].Right = 100;
+                    SeamData[y - 1, x].Left = SeamData[y - 1, x].Top = SeamData[y - 1, x].Bottom = SeamData[y - 1, x].Right = 100;
+                }
+                Draw();
+            }
         }
     }
 }

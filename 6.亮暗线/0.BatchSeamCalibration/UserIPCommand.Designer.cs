@@ -43,6 +43,7 @@
             this.btnWorkMode = new System.Windows.Forms.Button();
             this.btnViewForm = new System.Windows.Forms.Button();
             this.progress = new BatchSeamCalibration.ProgressBarEx();
+            this.btnWriteToFlash = new System.Windows.Forms.Button();
             this.ctxWorkMode.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -119,7 +120,7 @@
             // 
             this.menuWhite.Name = "menuWhite";
             this.menuWhite.Size = new System.Drawing.Size(100, 22);
-            this.menuWhite.Tag = "4";
+            this.menuWhite.Tag = "128";
             this.menuWhite.Text = "白";
             this.menuWhite.Click += new System.EventHandler(this.视频ToolStripMenuItem_Click);
             // 
@@ -127,7 +128,7 @@
             // 
             this.menuRed.Name = "menuRed";
             this.menuRed.Size = new System.Drawing.Size(100, 22);
-            this.menuRed.Tag = "1";
+            this.menuRed.Tag = "132";
             this.menuRed.Text = "红";
             this.menuRed.Click += new System.EventHandler(this.视频ToolStripMenuItem_Click);
             // 
@@ -135,7 +136,7 @@
             // 
             this.menuGreen.Name = "menuGreen";
             this.menuGreen.Size = new System.Drawing.Size(100, 22);
-            this.menuGreen.Tag = "2";
+            this.menuGreen.Tag = "131";
             this.menuGreen.Text = "绿";
             this.menuGreen.Click += new System.EventHandler(this.视频ToolStripMenuItem_Click);
             // 
@@ -143,7 +144,7 @@
             // 
             this.menuBlue.Name = "menuBlue";
             this.menuBlue.Size = new System.Drawing.Size(100, 22);
-            this.menuBlue.Tag = "3";
+            this.menuBlue.Tag = "130";
             this.menuBlue.Text = "蓝";
             this.menuBlue.Click += new System.EventHandler(this.视频ToolStripMenuItem_Click);
             // 
@@ -178,10 +179,21 @@
             this.progress.TabIndex = 1;
             this.progress.Click += new System.EventHandler(this.progress_Click);
             // 
+            // btnWriteToFlash
+            // 
+            this.btnWriteToFlash.Location = new System.Drawing.Point(555, 1);
+            this.btnWriteToFlash.Name = "btnWriteToFlash";
+            this.btnWriteToFlash.Size = new System.Drawing.Size(75, 23);
+            this.btnWriteToFlash.TabIndex = 9;
+            this.btnWriteToFlash.Text = "保存";
+            this.btnWriteToFlash.UseVisualStyleBackColor = true;
+            this.btnWriteToFlash.Click += new System.EventHandler(this.btnWriteToFlash_Click);
+            // 
             // UserIPCommand
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.btnWriteToFlash);
             this.Controls.Add(this.btnViewForm);
             this.Controls.Add(this.btnWorkMode);
             this.Controls.Add(this.lblContent);
@@ -191,7 +203,7 @@
             this.Controls.Add(this.progress);
             this.Controls.Add(this.lblIP);
             this.Name = "UserIPCommand";
-            this.Size = new System.Drawing.Size(689, 31);
+            this.Size = new System.Drawing.Size(641, 31);
             this.ctxWorkMode.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -214,5 +226,6 @@
         private System.Windows.Forms.ToolStripMenuItem menuGreen;
         private System.Windows.Forms.ToolStripMenuItem menuBlue;
         private System.Windows.Forms.Button btnViewForm;
+        private System.Windows.Forms.Button btnWriteToFlash;
     }
 }

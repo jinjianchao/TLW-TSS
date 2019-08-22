@@ -34,6 +34,7 @@
             this.ctxShowBorder = new System.Windows.Forms.ToolStripMenuItem();
             this.ctxShowValue = new System.Windows.Forms.ToolStripMenuItem();
             this.ctxClose = new System.Windows.Forms.ToolStripMenuItem();
+            this.ctxInit = new System.Windows.Forms.ToolStripMenuItem();
             this.ctxMenu.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -45,32 +46,40 @@
             // ctxMenu
             // 
             this.ctxMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.ctxInit,
             this.ctxShowBorder,
             this.ctxShowValue,
             this.ctxClose});
             this.ctxMenu.Name = "ctxMenu";
-            this.ctxMenu.Size = new System.Drawing.Size(181, 92);
+            this.ctxMenu.Size = new System.Drawing.Size(181, 114);
             // 
             // ctxShowBorder
             // 
             this.ctxShowBorder.Name = "ctxShowBorder";
-            this.ctxShowBorder.Size = new System.Drawing.Size(180, 22);
+            this.ctxShowBorder.Size = new System.Drawing.Size(160, 22);
             this.ctxShowBorder.Text = "显示边框";
             this.ctxShowBorder.Click += new System.EventHandler(this.ctxShowBorder_Click);
             // 
             // ctxShowValue
             // 
             this.ctxShowValue.Name = "ctxShowValue";
-            this.ctxShowValue.Size = new System.Drawing.Size(180, 22);
+            this.ctxShowValue.Size = new System.Drawing.Size(160, 22);
             this.ctxShowValue.Text = "显示百分比数据";
             this.ctxShowValue.Click += new System.EventHandler(this.ctxShowValue_Click);
             // 
             // ctxClose
             // 
             this.ctxClose.Name = "ctxClose";
-            this.ctxClose.Size = new System.Drawing.Size(180, 22);
+            this.ctxClose.Size = new System.Drawing.Size(160, 22);
             this.ctxClose.Text = "关闭";
             this.ctxClose.Click += new System.EventHandler(this.ctxClose_Click);
+            // 
+            // ctxInit
+            // 
+            this.ctxInit.Name = "ctxInit";
+            this.ctxInit.Size = new System.Drawing.Size(180, 22);
+            this.ctxInit.Text = "初始化";
+            this.ctxInit.Click += new System.EventHandler(this.ctxInit_Click);
             // 
             // frmPreview
             // 
@@ -103,6 +112,7 @@
         private System.Windows.Forms.ToolStripMenuItem ctxShowBorder;
         private System.Windows.Forms.ToolStripMenuItem ctxShowValue;
         private System.Windows.Forms.ToolStripMenuItem ctxClose;
+        private System.Windows.Forms.ToolStripMenuItem ctxInit;
     }
 }
 

@@ -97,7 +97,6 @@
     <Compile Include="Helper\class2072Oper.cs" />
     <Compile Include="Helper\classMBParam.cs" />
     <Compile Include="Helper\ColorTempHelper.cs" />
-    <Compile Include="Helper\FileHelper.cs" />
     <Compile Include="Helper\InterfaceDataHelper.cs" />
     <Compile Include="Helper\MapHelper.cs" />
     <Compile Include="Helper\NetworkValidateHelper.cs" />

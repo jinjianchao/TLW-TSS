@@ -12,12 +12,14 @@
 #endregion
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
 using TLWController.Extentions;
+using SFTHelper.Extentions;
 
 namespace TLWController.Helper
 {
@@ -910,6 +912,174 @@ namespace TLWController.Helper
                 }
             }
             return result;
+        }
+
+        private static ushort GetRegVal(List<RegisterItem> reg2055List, int regAddr)
+        {
+            ushort val = 0;
+            //reg2055List.ForEach((item) => {
+            //    if(item.RegisterAddress.ToUInt32(NumberStyles.HexNumber)==regAddr)
+            //    {
+            //        val = item.RedValue.ToUInt16(NumberStyles.HexNumber);
+            //        return;
+            //    }
+            //});
+            ushort result = 0;
+            foreach(var item in reg2055List)
+            {
+                if (item.RegisterAddress.ToUInt32(NumberStyles.HexNumber) == regAddr)
+                {
+                    val = item.RedValue.ToUInt16(NumberStyles.Number);
+                    result = result.Modify(item.StartBit, item.StopBit, val);
+                    //break;
+                }
+            }
+            return result;
+        }
+
+        private static int GetGAMMAbit(ushort nMaxGrayLevel)
+        {
+            nMaxGrayLevel = (ushort)(nMaxGrayLevel - 1);//2018-09-18
+            int nBit = 0;
+            for (int i = 15; i > 0; i--)
+            {
+                //if ((nMaxGrayLevel >> i) > 0)
+                //{
+                //    //
+                //    ushort tmp = (ushort)((UInt32)(1 << (i + 1)) - 1);
+                //    if (nMaxGrayLevel < tmp)
+                //    {
+                //        nBit = i - 1;
+                //    }
+                //    else
+                //    {
+                //        nBit = i;
+                //    }
+                //    break;
+                //}
+
+                if (((nMaxGrayLevel >> i) & 0x01) == 1)
+                {
+                    nBit = i + 1;
+                    break;
+                }
+            }
+            return nBit;
+        }
+
+        /// <summary>
+        /// 从几个参数算出一些东西
+        /// </summary>
+        /// <param name="nMode">//0 = 60Hz  1=50Hz  2=3D</param>
+        /// <param name="szUnitType">箱体名称</param>
+        /// <returns></returns>
+        public static ArrayList RunCalc(int nMode, List<RegisterItem> reg2055List)
+        {
+            nMode = 0;//固定写死，目前只有60hz
+            ArrayList list = new ArrayList();
+
+            //--------------取出数值 -------------
+
+            //行扫 input2072Simple3|1,0,5
+            //int nScan = GetPartOfUInt32(nMode, 0x01, 0, 5);
+            int nScan = GetRegVal(reg2055List, 0x02).GetPartOfUInt16(0, 5);
+
+            //刷新组数 input2072Simple2|1,8,14 
+            //int nGroup = GetPartOfUInt32(nMode, 0x01, 8, 14);
+            int nGroup = GetRegVal(reg2055List, 0x03).GetPartOfUInt16(0, 6);
+
+            //每行每组寄存器值(reg0x02[31:24],PWM显示时间) input2072Simple7|2,24,31;2,16,23;3,24,31
+            //int nPWMTime = GetPartOfUInt32(nMode, 0x02, 24, 31);
+            int nPWMTime = GetRegVal(reg2055List, 0x07).GetPartOfUInt16(0, 7);
+
+            //input2072Simple5|4,8,12
+            //int nPLL_LOOP_DIV = GetPartOfUInt32(nMode, 0x04, 8, 12);
+            int nPLL_LOOP_DIV = GetRegVal(reg2055List, 0x05).GetPartOfUInt16(0, 4);
+
+            //input2072Simple6|4,0,4
+            //int nPLL_PRE_DIV = GetPartOfUInt32(nMode, 0x04, 0, 4);
+            int nPLL_PRE_DIV = GetRegVal(reg2055List, 0x04).GetPartOfUInt16(0, 4);
+
+            //根据60Hz ，50Hz ，3D的状态来选择
+            double C = 0;
+            switch (nMode)//0 = 60Hz  1=50Hz  2=3D
+            {
+                case 0:
+                    C = 16.67f;
+                    break;
+                case 1:
+                    C = 20f;
+                    break;
+                case 2:
+                    C = 5.33f;
+                    break;
+            }
+
+            //
+            double D = 62.5f;//单位：ns
+
+            //if (szUnitType == "TWA0.9(A)")
+            //{
+            //    D = 50f;
+            //}
+
+            //计算出N 128寄存器的值
+            //int N = (int)Math.Floor((double)(1000000 * C) / (double)(D * (nScan + 1) * (nGroup + 1))) - 2;//2018-10-8 结果上减2
+            int N = (int)Math.Floor((double)(1000000 * C) / (double)(D * (nScan + 1) * (nGroup + 1))) - 2;//2018-10-8 结果上减2
+            //60hz分之一, * 10的9次方，除以NGROUP + 1 除以行扫 + 1  除以62.5(16M 跟DLOCK有关，界面输入) 减去2
+            //int N = (int)(1 / 60f * Math.Pow(10, 9) / (nGroup + 1) / (nScan + 1) / 62.5) - 2;
+
+            //计算出最大灰度级数
+            int nMaxGrayLevel = nPWMTime * 4 * (nGroup + 1);
+
+            //计算出GAMMA最大值位数
+            int nMaxGAMMAValueBit = GetGAMMAbit((ushort)nMaxGrayLevel);
+
+
+            int nLeft = (int)Math.Floor(4 * nPWMTime * 1000 / ((1000 / D) * nPLL_LOOP_DIV / nPLL_PRE_DIV));
+            int nRight = (int)Math.Floor((N - 16) * D);
+
+            //检验合规性结果
+            bool bCheckOK = (nLeft <= nRight);
+
+
+            //--------------------------输出结果:--------------------------
+
+            //0:行扫 input2072Simple3|1,0,5
+            list.Add(nScan);
+
+            //1:刷新组数 input2072Simple2|1,8,14 
+            list.Add(nGroup);
+
+            //2:每行每组寄存器值(reg0x02[31:24],PWM显示时间) input2072Simple7|2,24,31;2,16,23;3,24,31
+            list.Add(nPWMTime);
+
+            //3.
+            list.Add(nPLL_LOOP_DIV);
+
+            //4.
+            list.Add(nPLL_PRE_DIV);
+
+            //5:128寄存器的值
+            list.Add(N);
+
+            //6:计算出最大灰度级数
+            list.Add(nMaxGrayLevel);
+
+            //7:计算出GAMMA最大值位数
+            list.Add(nMaxGAMMAValueBit);
+
+            //8:左侧计算
+            list.Add(nLeft);
+
+            //9:右侧计算
+            list.Add(nRight);
+
+            //10:合规性判断
+            //list.Add(bCheckOK);
+            list.Add(true);
+
+            return list;
         }
     }
 
