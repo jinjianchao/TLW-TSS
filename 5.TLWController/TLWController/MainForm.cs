@@ -2391,7 +2391,7 @@ namespace TLWController
             sb.AppendLine(string.Format("{0}:{1}", Trans("最大值位数"), nMaxGAMMAValueBit));//2019-02-20 恢复
 
             sb.Append(string.Format("{0}: {1}<={2} {3}",
-                Trans("参数合规性检查"),
+                Trans("参数合规性检查."),
                 nLeft, nRight,
                 (bCheckOK ? Trans("成功") : Trans("失败"))));
 
