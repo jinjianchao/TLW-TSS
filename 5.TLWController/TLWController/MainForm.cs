@@ -9,7 +9,6 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using TLWController.Helper;
-using TLWController.Extentions;
 using System.IO;
 using System.Threading.Tasks;
 using System.Runtime.InteropServices;
@@ -19,6 +18,8 @@ using System.Threading;
 using GAMMAProcessLib;
 using TLWController.Structs;
 using SFTHelper.Helper;
+using SFTHelper.Extentions;
+using TLWCommunicationSharp;
 
 namespace TLWController
 {
@@ -31,10 +32,17 @@ namespace TLWController
         private int _CurrentOtherGridColumnIndex = 0;
 
         private Dictionary<string, int> _DevIP = new Dictionary<string, int>();
+        private Dictionary<string, int> _DevIPSharp = new Dictionary<string, int>();
         private TLWCommand _TLWCommand = null;
         private bool _isBusy = false;
         private InterfaceData _InterfaceData = null;
         private string registerAddressFile = string.Empty;
+
+        #region Sharp Command
+
+        TLWCommandSharp _commandSharp = null;
+
+        #endregion
 
         #region 2072
 
@@ -172,6 +180,8 @@ namespace TLWController
                 return;
             }
             TransForm();
+
+            #region 初始化C++通讯库
             _TLWCommand = new TLWCommand();
             if (!_TLWCommand.Sys_Initial(Path))
             {
@@ -179,11 +189,19 @@ namespace TLWController
                 tab2055Param.Enabled = false;
                 return;
             }
-#if DEBUG
-            _TLWCommand.Sys_WriteLog(true);
-#endif
             _TLWCommand.DataMonitorEvent += _TLWCommand_DataMonitorEvent;
             _TLWCommand.ProgressChangedEvent += _TLWCommand_ProgressChangedEvent;
+            #endregion
+
+            #region 初始化C Sharp通讯库
+            _commandSharp = new TLWCommandSharp();
+            _commandSharp.Sys_PackageDelay(GetSendDataTime());
+            _commandSharp.Sys_SendWait(GetReceiveDataTime());
+            _commandSharp.Sys_ShowPackage(GetShowDataPackage());
+            _commandSharp.PackageEvent += CommandSharp_PackageEvent;
+            _commandSharp.ProgressEvent += _commandSharp_ProgressEvent;
+            _commandSharp.Sys_Initial();
+            #endregion
         }
 
         #region 构造函数
@@ -711,7 +729,7 @@ namespace TLWController
             string str = "";
             try
             {
-                byte[] bytes = text.ToBytes();
+                byte[] bytes = text.GetBytes(' ', System.Globalization.NumberStyles.HexNumber);
                 for (int i = 0; i < bytes.Length; i++)
                 {
                     str += " " + bytes[i].ToString("X2");
@@ -798,6 +816,7 @@ namespace TLWController
 
         void OpenUDPDevice()
         {
+            #region 初始化C++ 通讯库
             _TLWCommand.PackageDelay = GetSendDataTime();
             _TLWCommand.SendWait = GetReceiveDataTime();
 
@@ -807,8 +826,8 @@ namespace TLWController
             string startIP = GetCommunicationType().StartIPAddress;
             string endIP = GetCommunicationType().EndIPAddress;
             string ipHeader = startIP.Substring(0, startIP.LastIndexOf('.'));
-            int numStart = startIP.Substring(startIP.LastIndexOf('.') + 1).ToInit32();
-            int numEnd = endIP.Substring(endIP.LastIndexOf('.') + 1).ToInit32();
+            int numStart = startIP.Substring(startIP.LastIndexOf('.') + 1).GetInt32(System.Globalization.NumberStyles.Number);
+            int numEnd = endIP.Substring(endIP.LastIndexOf('.') + 1).GetInt32(System.Globalization.NumberStyles.Number);
             _DevIP.Clear();
             for (int i = numStart; i <= numEnd; i++)
             {
@@ -816,26 +835,59 @@ namespace TLWController
                 int dev = _TLWCommand.OpenUDP(ip);
                 _DevIP.Add(ip, dev);
             }
+            #endregion
+
+            #region 初始化C Sharp通讯库
+
+            _commandSharp.Sys_PackageDelay(GetSendDataTime());
+            _commandSharp.Sys_SendWait(GetReceiveDataTime());
+            _commandSharp.Sys_ShowPackage(GetShowDataPackage());
+
+            _DevIPSharp.Clear();
+            for (int i = numStart; i <= numEnd; i++)
+            {
+                string ip = $"{ipHeader}.{i}";
+                int dev = _commandSharp.Sys_Open(SFTHelper.Enums.EnumCommType.UDP, ip, 8001);
+                _DevIPSharp.Add(ip, dev);
+            }
+            #endregion
         }
 
         void OpenUDPDevice(string ip)
         {
+            #region 初始化C++ 通讯库
             _TLWCommand.PackageDelay = GetSendDataTime();
             _TLWCommand.SendWait = GetReceiveDataTime();
 
             _DevIP.Clear();
             int dev = _TLWCommand.OpenUDP(ip);
             _DevIP.Add(ip, dev);
+            #endregion
+
+            #region 初始化C Sharp通讯库
+            _commandSharp.Sys_PackageDelay(GetSendDataTime());
+            _commandSharp.Sys_SendWait(GetReceiveDataTime());
+            _commandSharp.Sys_ShowPackage(GetShowDataPackage());
+
+            _DevIPSharp.Clear();
+            dev = _commandSharp.Sys_Open(SFTHelper.Enums.EnumCommType.UDP, ip, 8001);
+            _DevIPSharp.Add(ip, dev);
+            #endregion
         }
 
         void CloseUDPDevice(int deviceNumber)
         {
             _TLWCommand.Sys_CloseDev(deviceNumber);
+            _commandSharp.Sys_Close(deviceNumber);
         }
 
         void CloseUDPDevice()
         {
             foreach (var item in _DevIP)
+            {
+                CloseUDPDevice(item.Value);
+            }
+            foreach (var item in _DevIPSharp)
             {
                 CloseUDPDevice(item.Value);
             }
@@ -988,6 +1040,11 @@ namespace TLWController
                     _TLWCommand.OpenDataMonitor(item.Value, isShowDataPackage);
                 }
             }
+            if (_commandSharp != null)
+            {
+                _commandSharp.Sys_ShowPackage(isShowDataPackage);
+
+            }
         }
 
         private void _TLWCommand_DataMonitorEvent(object sender, TLWCommunication.Events.DataMonitorEventArgs e)
@@ -996,11 +1053,11 @@ namespace TLWController
             {
                 if (e.IsReceived)
                 {
-                    WriteMessage($"{Trans("Send")}:{e.Data.ToString(" ")}");
+                    WriteMessage($"{Trans("Send")}:{e.Data.GetString(" ")}");
                 }
                 else
                 {
-                    WriteMessage($"{Trans("Read")}:{e.Data.ToString(" ")}");
+                    WriteMessage($"{Trans("Read")}:{e.Data.GetString(" ")}");
                 }
             }
         }
@@ -1205,7 +1262,7 @@ namespace TLWController
             //if (frmSectionSet.ShowDialog(this) == DialogResult.Cancel) return;
             uint sectorSize = 1024;
             uint regAddr = (uint)numRegAddr.Value;
-            byte chipPos = (byte)cbChipPos.SelectedValue.ToString().ToByte();
+            byte chipPos = (byte)cbChipPos.SelectedValue.ToString().GetByte(System.Globalization.NumberStyles.HexNumber);
             //EnableControl(sender as Control, false);
 
             //_TLWCommand.tlw_FLASH_Write(GetCardAddress(), GetId(), chipPos, regAddr, data, sectorSize, _DevIP, (param) =>
@@ -1274,7 +1331,7 @@ namespace TLWController
 
             string ip = ShowSelectIPDialog();
             uint regAddr = (uint)numRegAddr.Value;
-            byte chipPos = (byte)cbChipPos.SelectedValue.ToString().ToByte();
+            byte chipPos = (byte)cbChipPos.SelectedValue.ToString().GetByte(System.Globalization.NumberStyles.HexNumber);
 
             EnableControl(sender as Control, false, ip);
             _TLWCommand.tlw_FLASH_Read(GetMBAddr(), GetId(), chipPos, regAddr, (int)numFlashDataLen.Value, _DevIP, (param) =>
@@ -1370,7 +1427,7 @@ namespace TLWController
             //}
 
             CALHelper.Write(data, @"D:\tmp\Write_SDRAM.zdat");
-            byte chipPos = (byte)cbChipPos.SelectedValue.ToString().ToByte();
+            byte chipPos = (byte)cbChipPos.SelectedValue.ToString().GetByte(System.Globalization.NumberStyles.HexNumber);
             EnableControl(sender as Control, false);
             //data[10] = 0xaa;
             //data[11] = 0x8E;
@@ -1408,46 +1465,7 @@ namespace TLWController
             if (System.IO.Directory.Exists(folder)) System.IO.Directory.Delete(folder, true);
             System.IO.Directory.CreateDirectory(folder);
             string compare = "";
-            //读取525字节数据 每行50个数据
-            //compare += "aa 8e 41 51 04 00 00 00 20 00 1e 00 00 00 00 00 01 00 02 00 03 00 04 00 05 00 06 00 07 00 08 00 09 00 0a 00 0b 00 0c 00 0d 00 0e 00 0f 00 10 00 11 00";
-            //compare += "12 00 13 00 14 00 15 00 16 00 17 00 18 00 19 00 1a 00 1b 00 1c 00 1d 00 1e 00 1f 00 20 00 21 00 22 00 23 00 24 00 25 00 26 00 27 00 28 00 29 00 2a 00";
-            //compare += "2b 00 2c 00 2d 00 2e 00 2f 00 30 00 31 00 32 00 33 00 34 00 35 00 36 00 37 00 38 00 39 00 3a 00 3b 00 3c 00 3d 00 3e 00 3f 00 40 00 41 00 42 00 43 00";
-            //compare += "44 00 45 00 46 00 47 00 48 00 49 00 4a 00 4b 00 4c 00 4d 00 4e 00 4f 00 50 00 51 00 52 00 53 00 54 00 55 00 56 00 57 00 58 00 59 00 5a 00 5b 00 5c 00";
-            //compare += "5d 00 5e 00 5f 00 60 00 61 00 62 00 63 00 64 00 65 00 66 00 67 00 68 00 69 00 6a 00 6b 00 6c 00 6d 00 6e 00 6f 00 70 00 71 00 72 00 73 00 74 00 75 00";
-            //compare += "76 00 77 00 78 00 79 00 7a 00 7b 00 7c 00 7d 00 7e 00 7f 00 80 00 81 00 82 00 83 00 84 00 85 00 86 00 87 00 88 00 89 00 8a 00 8b 00 8c 00 8d 00 8e 00";
-            //compare += "8f 00 90 00 91 00 72 00 93 00 94 00 95 00 96 00 97 00 98 00 99 00 9a 00 9b 00 9c 00 9d 00 9e 00 9f 00 a0 00 a1 00 a2 00 a3 00 a4 00 a5 00 a6 00 a7 00";
-            //compare += "a8 00 a9 00 aa 00 ab 00 ac 00 ad 00 ae 00 af 00 b0 00 b1 00 b2 00 b3 00 b4 00 b5 00 b6 00 b7 00 b8 00 b9 00 ba 00 bb 00 bc 00 bd 00 be 00 bf 00 c0 00";
-            //compare += "c1 00 c2 00 c3 00 c4 00 c5 00 c6 00 c7 00 c8 00 c9 00 ca 00 cb 00 cc 00 cd 00 ce 00 cf 00 d0 00 d1 00 d2 00 d3 00 d4 00 d5 00 d6 00 d7 00 d8 00 d9 00";
-            //compare += "da 00 db 00 dc 00 dd 00 de 00 df 00 e0 00 e1 00 e2 00 e3 00 e4 00 e5 00 e6 00 e7 00 e8 00 e9 00 ea 00 eb 00 ec 00 ed 00 ee 00 ef 00 f0 00 f1 00 f2 00";
-            //compare += "f3 00 f4 00 f5 00 f6 00 f7 00 f8 00 f9 00 fa 00 fb 00 fc 00 fd 00 fe 00 ff";
-            //aa 8e 41 51 04 00 00 00 20 00 00 00 00 0e 0f 10 11 12  --- 0d  4轮  FE 75 55 71 BE
-
-            //            compare = "aa 8e 42 04 19 01 01 00 00 00 03 00 00 00 00 00 01 00 01 01 00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15 16 17 18 19 1a 1b 1c 1d 1e 1f 20 21 22 23 24 25 26 27 28 29 2a 2b 2c 2d 2e 2f 30 31 32 33 ";
-            //            compare += "34 35 36 37 38 39 3a 3b 3c 3d 3e 3f 40 41 42 43 44 45 46 47 48 49 4a 4b 4c 4d 4e 4f 50 51 52 53 54 55 56 57 58 59 5a 5b 5c 5d 5e 5f 60 61 62 63 64 65 66 67 68 69 6a 6b 6c 6d 6e 6f 70 71 72 73 74 75 76 77 78 79 7a 7b ";
-            //            compare += "7c 7d 7e 7f 80 81 82 83 84 85 86 87 88 89 8a 8b 8c 8d 8e 8f 90 91 92 93 94 95 96 97 98 99 9a 9b 9c 9d 9e 9f a0 a1 a2 a3 a4 a5 a6 a7 a8 a9 aa ab ac ad ae af b0 b1 b2 b3 b4 b5 b6 b7 b8 b9 ba bb bc bd be bf c0 c1 c2 c3 ";
-            //            compare += "c4 c5 c6 c7 c8 c9 ca cb cc cd ce cf d0 d1 d2 d3 d4 d5 d6 d7 d8 d9 da db dc dd de df e0 e1 e2 e3 e4 e5 e6 e7 e8 e9 ea eb ec ed ee ef f0 f1 f2 f3 f4 f5 f6 f7 f8 f9 fa fb fc fd fe ff 00 01 02 03 04 05 06 07 08 09 0a 0b ";
-            //            compare += "0c 0d 0e 0f 10 11 12 13 14 15 16 17 18 19 1a 1b 1c 1d 1e 1f 20 21 22 23 24 25 26 27 28 29 2a 2b 2c 2d 2e 2f 30 31 32 33 34 35 36 37 38 39 3a 3b 3c 3d 3e 3f 40 41 42 43 44 45 46 47 48 49 4a 4b 4c 4d 4e 4f 50 51 52 53 54 ";
-            //            compare += "55 56 57 58 59 5a 5b 5c 5d 5e 5f 60 61 62 63 64 65 66 67 68 69 6a 6b 6c 6d 6e 6f 70 71 72 73 74 75 76 77 78 79 7a 7b 7c 7d 7e 7f 80 81 82 83 84 85 86 87 88 89 8a 8b 8c 8d 8e 8f 90 91 92 93 94 95 96 97 98 99 9a 9b 9c 9d ";
-            //            compare += "9e 9f a0 a1 a2 a3 a4 a5 a6 a7 a8 a9 aa ab ac ad ae af b0 b1 b2 b3 b4 b5 b6 b7 b8 b9 ba bb bc bd be bf c0 c1 c2 c3 c4 c5 c6 c7 c8 c9 ca cb cc cd ce cf d0 d1 d2 d3 d4 d5 d6 d7 d8 d9 da db dc dd de df e0 e1 e2 e3 e4 e5 e6 ";
-            //            compare += "e7 e8 e9 ea eb ec ed ee ef f0 f1 f2 f3 f4 f5 f6 f7 f8 f9 fa fb fc fd fe ff 00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15 16 17 18 19 1a 1b 1c 1d 1e 1f 20 21 22 23 24 25 26 27 28 29 2a 2b 2c 2d 2e 2f ";
-            //            compare += "30 31 32 33 34 35 36 37 38 39 3a 3b 3c 3d 3e 3f 40 41 42 43 44 45 46 47 48 49 4a 4b 4c 4d 4e 4f 50 51 52 53 54 55 56 57 58 59 5a 5b 5c 5d 5e 5f 60 61 62 63 64 65 66 67 68 69 6a 6b 6c 6d 6e 6f 70 71 72 73 74 75 76 77 78 ";
-            //            compare += "79 7a 7b 7c 7d 7e 7f 80 81 82 83 84 85 86 87 88 89 8a 8b 8c 8d 8e 8f 90 91 92 93 94 95 96
-            //97 98 99 9a 9b 9c 9d 9e 9f a0 a1 a2 a3 a4 a5 a6 a7 a8 a9 aa ab ac ad ae af b0 b1 b2 b3 b4 b5 b6 b7 b8 b9 ba bb bc bd be bf c0 c1 c2 c3 c4 c5 c6 c7 c8 c9 ca cb cc cd ce cf d0 d1 d2 d3 d4 d5 d6 d7 d8 d9 da db dc dd de df e0 e1 e2 e3 e4 e5 e6 e7 e8 e9 ea eb ec ed ee ef f0 f1 f2 f3 f4 f5 f6 f7 f8 f9 fa fb fc fd fe ff 00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15 16 17 18 19 1a 1b 1c 1d 1e 1f 20 21 22 23 24 25 26 27 28 29 2a 2b 2c 2d 2e 2f 30 31 32 33 34 35 36 37 38 39 3a 3b 3c 3d 3e 3f 40 41 42 43 44 45 46 47 48 49 4a 4b 4c 4d 4e 4f 50 51 52 53 54 55 56 57 58 59 5a 5b 5c 5d 5e 5f 60 61 62 63 64 65 66 67 68 69 6a 6b 6c 6d 6e 6f 70 71 72 73 74 75 76 77 78 79 7a 7b 7c 7d 7e 7f 80 81 82 83 84 85 86 87 88 89 8a 8b 8c 8d 8e 8f 90 91 92 93 94 95 96 97 98 99 9a 9b 9c 9d 9e 9f a0 a1 a2 a3 a4 a5 a6 a7 a8 a9 aa ab ac ad ae af b0 b1 b2 b3 b4 b5 b6 b7 b8 b9 ba bb bc bd be bf c0 c1 c2 c3 c4 c5 c6 c7 c8 c9 ca cb cc cd ce cf d0 d1 d2 d3 d4 d5 d6 d7 d8 d9 da db dc dd de df e0 e1 e2 e3 e4 e5 e6 e7 e8 e9 ea eb ec
-            // ed ee ef f0 f1 f2 f3 f4 f5 f6 f7 f8 f9 fa fb fc fd";
-
-            //compare += "aa 8e 41 51 04 00 00 00 20 00 1e 00 00 00 00 00 01 00 02 00 03 00 04 00 05 00 06 00 07 00 08 00 09 00 0a 00 0b 00 0c 00 0d 00 0e 00 0f 00 10 00 11 00";
-            //compare += "12 00 13 00 14 00 15 00 16 00 17 00 18 00 19 00 1a 00 1b 00 1c 00 1d 00 1e 00 1f 00 20 00 21 00 22 00 23 00 24 00 25 00 26 00 27 00 28 00 29 00 2a 00";
-            //compare += "2b 00 2c 00 2d 00 2e 00 2f 00 30 00 31 00 32 00 33 00 34 00 35 00 36 00 37 00 38 00 39 00 3a 00 3b 00 3c 00 3d 00 3e 00 3f 00 40 00 41 00 42 00 43 00";
-            //compare += "44 00 45 00 46 00 47 00 48 00 49 00 4a 00 4b 00 4c 00 4d 00 4e 00 4f 00 50 00 51 00 52 00 53 00 54 00 55 00 56 00 57 00 58 00 59 00 5a 00 5b 00 5c 00";
-            //compare += "5d 00 5e 00 5f 00 60 00 61 00 62 00 63 00 64 00 65 00 66 00 67 00 68 00 69 00 6a 00 6b 00 6c 00 6d 00 6e 00 6f 00 70 00 71 00 72 00 73 00 74 00 75 00";
-            //compare += "76 00 77 00 78 00 79 00 7a 00 7b 00 7c 00 7d 00 7e 00 7f 00 80 00 81 00 82 00 83 00 84 00 85 00 86 00 87 00 88 00 89 00 8a 00 8b 00 8c 00 8d 00 8e 00";
-            //compare += "8f 00 90 00 91 00 72 00 93 00 94 00 95 00 96 00 97 00 98 00 99 00 9a 00 9b 00 9c 00 9d 00 9e 00 9f 00 a0 00 a1 00 a2 00 a3 00 a4 00 a5 00 a6 00 a7 00";
-            //compare += "a8 00 a9 00 aa 00 ab 00 ac 00 ad 00 ae 00 af 00 b0 00 b1 00 b2 00 b3 00 b4 00 b5 00 b6 00 b7 00 b8 00 b9 00 ba 00 bb 00 bc 00 bd 00 be 00 bf 00 c0 00";
-            //compare += "c1 00 c2 00 c3 00 c4 00 c5 00 c6 00 c7 00 c8 00 c9 00 ca 00 cb 00 cc 00 cd 00 ce 00 cf 00 d0 00 d1 00 d2 00 d3 00 d4 00 d5 00 d6 00 d7 00 d8 00 d9 00";
-            //compare += "da 00 db 00 dc 00 dd 00 de 00 df 00 e0 00 e1 00 e2 00 e3 00 e4 00 e5 00 e6 00 e7 00 e8 00 e9 00 ea 00 eb 00 ec 00 ed 00 ee 00 ef 00 f0 00 f1 00 f2 00";
-            //compare += "f3 00 f4 00 f5 00 f6 00 f7 00 f8 00 f9 00 fa 00 fb 00 fc 00 fd 00 fe 00 ff";
-
-            byte[] readFlash = "AA 8E 42 00 1D 01 01 00 00 00 03 00 00 00 00 00 01 00 01 00 02 3E 80 00 00 E4 55 71 BD".ToBytes();
+            byte[] readFlash = "AA 8E 42 00 1D 01 01 00 00 00 03 00 00 00 00 00 01 00 01 00 02 3E 80 00 00 E4 55 71 BD".GetBytes(' ', System.Globalization.NumberStyles.HexNumber);
             int errCount = 0;
             int currentCount = 0;
             isStop = false;
@@ -1461,7 +1479,7 @@ namespace TLWController
                 while (!isStop)
                 {
                     byte[] revReadFlash = null;
-                    int revLen = UDPHelper.Send(readFlash, ip, out revReadFlash, 100);
+                    int revLen = Helper.UDPHelper.Send(readFlash, ip, out revReadFlash, 100);
                     if (revLen == 0)
                     {
                         errCount++;
@@ -1473,12 +1491,12 @@ namespace TLWController
                     }
                     if (index == 0)
                     {
-                        compare = revReadFlash.ToString(" ").ToUpper();
+                        compare = revReadFlash.GetString(" ").ToUpper();
                         index++;
                         continue;
                     }
 
-                    string newStr = revReadFlash.ToString(" ").ToUpper();
+                    string newStr = revReadFlash.GetString(" ").ToUpper();
                     if (newStr != compare)
                     {
                         errCount++;
@@ -1514,8 +1532,8 @@ namespace TLWController
             compare += "c1 00 c2 00 c3 00 c4 00 c5 00 c6 00 c7 00 c8 00 c9 00 ca 00 cb 00 cc 00 cd 00 ce 00 cf 00 d0 00 d1 00 d2 00 d3 00 d4 00 d5 00 d6 00 d7 00 d8 00 d9 00 da 00 db 00 dc 00 dd 00 de 00 df 00 e0 00 e1 00 e2 00 e3 00 e4 00 e5 00 e6 00 e7 00 e8 00 e9 00 ea 00 eb 00 ec 00 ed 00 ee 00 ef 00 f0 00 f1 00 f2 00";
             compare += "f3 00 f4 00 f5 00 f6 00 f7 00 f8 00 f9 00 fa 00 fb 00 fc 00 fd 00 fe 00 ff";
 
-            byte[] writeFlash = "65 00 2D 00 01 FF FF 00 00 00 00 00 00 00 55 00 1D 00 00 02 05 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 24 AA 73 F8".ToBytes();
-            byte[] readFlash = "65 00 2D 00 01 01 01 00 00 00 00 00 00 00 55 00 1D 00 00 04 10 00 00 00 00 FF FF FF FF FF FF 00 00 00 00 00 00 00 00 00 00 2B AA 85 F8".ToBytes();
+            byte[] writeFlash = "65 00 2D 00 01 FF FF 00 00 00 00 00 00 00 55 00 1D 00 00 02 05 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 24 AA 73 F8".GetBytes(' ', System.Globalization.NumberStyles.HexNumber);
+            byte[] readFlash = "65 00 2D 00 01 01 01 00 00 00 00 00 00 00 55 00 1D 00 00 04 10 00 00 00 00 FF FF FF FF FF FF 00 00 00 00 00 00 00 00 00 00 2B AA 85 F8".GetBytes(' ', System.Globalization.NumberStyles.HexNumber);
             int errCount = 0;
             int currentCount = 0;
             isStop = false;
@@ -1526,7 +1544,7 @@ namespace TLWController
                 EnableControl(sender as Control, false);
                 while (!isStop)
                 {
-                    int revLen = UDPHelper.Send(writeFlash, ip, out byte[] revWriteFlash);
+                    int revLen = Helper.UDPHelper.Send(writeFlash, ip, out byte[] revWriteFlash);
                     if (revLen == 0)
                     {
                         errCount++;
@@ -1538,7 +1556,7 @@ namespace TLWController
                     }
                     System.Threading.Thread.Sleep(1000);
 
-                    revLen = UDPHelper.Send(readFlash, ip, out byte[] revReadFlash);
+                    revLen = Helper.UDPHelper.Send(readFlash, ip, out byte[] revReadFlash);
                     if (revLen == 0)
                     {
                         errCount++;
@@ -1558,7 +1576,7 @@ namespace TLWController
                         }
                     }
 
-                    string revData = newData.ToString(" ").ToLower();
+                    string revData = newData.GetString(" ").ToLower();
                     if (revData != compare)
                     {
                         errCount++;
@@ -1582,11 +1600,11 @@ namespace TLWController
             System.IO.Directory.CreateDirectory(folder);
 
             //写SDRAM
-            byte[] WriteSDRAM = "65 00 2D 00 01 FF FF 00 00 00 00 00 00 00 55 00 1D 00 00 04 25 00 00 00 00 03 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 49 AA BD F8".ToBytes();
+            byte[] WriteSDRAM = "65 00 2D 00 01 FF FF 00 00 00 00 00 00 00 55 00 1D 00 00 04 25 00 00 00 00 03 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 49 AA BD F8".GetBytes(' ', System.Globalization.NumberStyles.HexNumber);
             //SDRAM搬移到FLASH
-            byte[] writeFlash = "65 00 2D 00 01 FF FF 00 00 00 00 00 00 00 55 00 1D 00 00 04 04 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 25 AA 75 F8".ToBytes();
+            byte[] writeFlash = "65 00 2D 00 01 FF FF 00 00 00 00 00 00 00 55 00 1D 00 00 04 04 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 25 AA 75 F8".GetBytes(' ', System.Globalization.NumberStyles.HexNumber);
             //读FLASH
-            byte[] readFlash = "65 00 2D 00 01 FF FF 00 00 00 00 00 00 00 55 00 1D 00 00 04 10 00 00 00 00 0F 5C 0F 5C 0F 5C 00 00 00 00 00 00 00 00 00 00 72 AA 0F F8".ToBytes();
+            byte[] readFlash = "65 00 2D 00 01 FF FF 00 00 00 00 00 00 00 55 00 1D 00 00 04 10 00 00 00 00 0F 5C 0F 5C 0F 5C 00 00 00 00 00 00 00 00 00 00 72 AA 0F F8".GetBytes(' ', System.Globalization.NumberStyles.HexNumber);
             string compare = "aa 8e 41 51 04 00 00 00 20 00 1e 00 00 00 00 00 01 00 02 00 03 00 04 00 05 00 06 00 07 00 08 00 09 00 0a 00 0b 00 0c 00 0d 00 0e 00 0f 00 10 00 11 00 12 00 13 00 14 00 15 00 16 00 17 00 18 00 19 00 1a 00 1b 00 1c 00 1d 00 1e 00 1f 00 20 00 21 00 22 00 23 00 24 00 25 00 26 00 27 00 28 00 29 00 2a 00 ";
             compare += "2b 00 2c 00 2d 00 2e 00 2f 00 30 00 31 00 32 00 33 00 34 00 35 00 36 00 37 00 38 00 39 00 3a 00 3b 00 3c 00 3d 00 3e 00 3f 00 40 00 41 00 42 00 43 00 44 00 45 00 46 00 47 00 48 00 49 00 4a 00 4b 00 4c 00 4d 00 4e 00 4f 00 50 00 51 00 52 00 53 00 54 00 55 00 56 00 57 00 58 00 59 00 5a 00 5b 00 5c 00 ";
             compare += "5d 00 5e 00 5f 00 60 00 61 00 62 00 63 00 64 00 65 00 66 00 67 00 68 00 69 00 6a 00 6b 00 6c 00 6d 00 6e 00 6f 00 70 00 71 00 72 00 73 00 74 00 75 00 76 00 77 00 78 00 79 00 7a 00 7b 00 7c 00 7d 00 7e 00 7f 00 80 00 81 00 82 00 83 00 84 00 85 00 86 00 87 00 88 00 89 00 8a 00 8b 00 8c 00 8d 00 8e 00 ";
@@ -1608,7 +1626,7 @@ namespace TLWController
                 EnableControl(sender as Control, false);
                 while (!isStop)
                 {
-                    int revLen = UDPHelper.Send(WriteSDRAM, ip, out byte[] revWriteSDRAM, 200);
+                    int revLen = Helper.UDPHelper.Send(WriteSDRAM, ip, out byte[] revWriteSDRAM, 200);
                     if (revLen == 0)
                     {
                         errCount++;
@@ -1620,7 +1638,7 @@ namespace TLWController
                     }
                     System.Threading.Thread.Sleep(5);
 
-                    revLen = UDPHelper.Send(writeFlash, ip, out byte[] revWriteFlash, 2000);
+                    revLen = Helper.UDPHelper.Send(writeFlash, ip, out byte[] revWriteFlash, 2000);
                     if (revLen == 0)
                     {
                         errCount++;
@@ -1632,7 +1650,7 @@ namespace TLWController
                     }
                     System.Threading.Thread.Sleep(5);
 
-                    revLen = UDPHelper.Send(readFlash, ip, out byte[] revReadFlash, 200);
+                    revLen = Helper.UDPHelper.Send(readFlash, ip, out byte[] revReadFlash, 200);
                     if (revLen == 0)
                     {
                         errCount++;
@@ -1654,7 +1672,7 @@ namespace TLWController
                         }
                     }
 
-                    string revData = newData.ToString(" ").ToUpper();
+                    string revData = newData.GetString(" ").ToUpper();
                     if (revData != compare.ToUpper())
                     {
                         errCount++;
@@ -1677,7 +1695,7 @@ namespace TLWController
 
         void ReRead(byte[] readFlash, string ip, string folder, int readDataLen, string compare)
         {
-            int revLen = UDPHelper.Send(readFlash, ip, out byte[] revReadFlash, 200);
+            int revLen = Helper.UDPHelper.Send(readFlash, ip, out byte[] revReadFlash, 200);
             if (revLen == 0)
             {
                 WriteTextFile($@"{folder}\error_{5000}.txt", "读FLASH没有收到返回数据");
@@ -1695,7 +1713,7 @@ namespace TLWController
                 }
             }
 
-            string revData = newData.ToString(" ").ToUpper();
+            string revData = newData.GetString(" ").ToUpper();
             if (revData != compare.ToUpper())
             {
                 string writeData = $"原数据:{compare.ToUpper()}\r\n读数据:{revData.ToUpper()}";
@@ -1886,7 +1904,7 @@ namespace TLWController
 
             uint sectorSize = (uint)numFlashDataLen.Value;
             uint regAddr = (uint)numRegAddr.Value;
-            byte chipPos = (byte)cbChipPos.SelectedValue.ToString().ToByte();
+            byte chipPos = (byte)cbChipPos.SelectedValue.ToString().GetByte(System.Globalization.NumberStyles.HexNumber);
 
             EnableControl(sender as Control, false);
             InvokeAsync(() =>
@@ -1901,7 +1919,7 @@ namespace TLWController
 
                         Random rnd = new Random();
                         rnd.NextBytes(bytesWrite);
-                        string compare = bytesWrite.ToString(" ");
+                        string compare = bytesWrite.GetString(" ");
 
                         int result = _TLWCommand.tlw_FLASH_Write(item.Value, GetMBAddr(), GetId(), chipPos, regAddr, bytesWrite, sectorSize);
                         System.Threading.Thread.Sleep(1000);
@@ -1910,13 +1928,13 @@ namespace TLWController
                             result = _TLWCommand.tlw_FLASH_Read(item.Value, GetMBAddr(), GetId(), chipPos, regAddr, bytesRead, sectorSize);
                             if (result == 0)
                             {
-                                if (compare.ToUpper() != bytesRead.ToString(" ").ToUpper())
+                                if (compare.ToUpper() != bytesRead.GetString(" ").ToUpper())
                                 {
                                     errCount++;
                                     WriteMessage("错误:" + errCount.ToString());
-                                    string writeData = $"{compare.ToUpper()}\r\n{bytesRead.ToString(" ").ToUpper()}";
+                                    string writeData = $"{compare.ToUpper()}\r\n{bytesRead.GetString(" ").ToUpper()}";
 
-                                    byte[] b1 = compare.ToBytes();
+                                    byte[] b1 = compare.GetBytes(' ', System.Globalization.NumberStyles.HexNumber);
                                     byte[] b2 = bytesRead;
                                     string msg = "";
                                     if (b1.Length != b2.Length)
@@ -2049,10 +2067,10 @@ namespace TLWController
 
             string compare = "AA 8E 42 04 19 00 00 00 00 00 03 00 00 00 00 00 01 00 01 01 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F 10 11 12 13 14 15 16 17 18 19 1A 1B 1C 1D 1E 1F 20 21 22 23 24 25 26 27 28 29 2A 2B 2C 2D 2E 2F 30 31 32 33 34 35 36 37 38 39 3A 3B 3C 3D 3E 3F 40 41 42 43 44 45 46 47 48 49 4A 4B 4C 4D 4E 4F 50 51 52 53 54 55 56 57 58 59 5A 5B 5C 5D 5E 5F 60 61 62 63 64 65 66 67 68 69 6A 6B 6C 6D 6E 6F 70 71 72 73 74 75 76 77 78 79 7A 7B 7C 7D 7E 7F 80 81 82 83 84 85 86 87 88 89 8A 8B 8C 8D 8E 8F 90 91 92 93 94 95 96 97 98 99 9A 9B 9C 9D 9E 9F A0 A1 A2 A3 A4 A5 A6 A7 A8 A9 AA AB AC AD AE AF B0 B1 B2 B3 B4 B5 B6 B7 B8 B9 BA BB BC BD BE BF C0 C1 C2 C3 C4 C5 C6 C7 C8 C9 CA CB CC CD CE CF D0 D1 D2 D3 D4 D5 D6 D7 D8 D9 DA DB DC DD DE DF E0 E1 E2 E3 E4 E5 E6 E7 E8 E9 EA EB EC ED EE EF F0 F1 F2 F3 F4 F5 F6 F7 F8 F9 FA FB FC FD FE FF 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F 10 11 12 13 14 15 16 17 18 19 1A 1B 1C 1D 1E 1F 20 21 22 23 24 25 26 27 28 29 2A 2B 2C 2D 2E 2F 30 31 32 33 34 35 36 37 38 39 3A 3B 3C 3D 3E 3F 40 41 42 43 44 45 46 47 48 49 4A 4B 4C 4D 4E 4F 50 51 52 53 54 55 56 57 58 59 5A 5B 5C 5D 5E 5F 60 61 62 63 64 65 66 67 68 69 6A 6B 6C 6D 6E 6F 70 71 72 73 74 75 76 77 78 79 7A 7B 7C 7D 7E 7F 80 81 82 83 84 85 86 87 88 89 8A 8B 8C 8D 8E 8F 90 91 92 93 94 95 96 97 98 99 9A 9B 9C 9D 9E 9F A0 A1 A2 A3 A4 A5 A6 A7 A8 A9 AA AB AC AD AE AF B0 B1 B2 B3 B4 B5 B6 B7 B8 B9 BA BB BC BD BE BF C0 C1 C2 C3 C4 C5 C6 C7 C8 C9 CA CB CC CD CE CF D0 D1 D2 D3 D4 D5 D6 D7 D8 D9 DA DB DC DD DE DF E0 E1 E2 E3 E4 E5 E6 E7 E8 E9 EA EB EC ED EE EF F0 F1 F2 F3 F4 F5 F6 F7 F8 F9 FA FB FC FD FE FF 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F 10 11 12 13 14 15 16 17 18 19 1A 1B 1C 1D 1E 1F 20 21 22 23 24 25 26 27 28 29 2A 2B 2C 2D 2E 2F 30 31 32 33 34 35 36 37 38 39 3A 3B 3C 3D 3E 3F 40 41 42 43 44 45 46 47 48 49 4A 4B 4C 4D 4E 4F 50 51 52 53 54 55 56 57 58 59 5A 5B 5C 5D 5E 5F 60 61 62 63 64 65 66 67 68 69 6A 6B 6C 6D 6E 6F 70 71 72 73 74 75 76 77 78 79 7A 7B 7C 7D 7E 7F 80 81 82 83 84 85 86 87 88 89 8A 8B 8C 8D 8E 8F 90 91 92 93 94 95 96 97 98 99 9A 9B 9C 9D 9E 9F A0 A1 A2 A3 A4 A5 A6 A7 A8 A9 AA AB AC AD AE AF B0 B1 B2 B3 B4 B5 B6 B7 B8 B9 BA BB BC BD BE BF C0 C1 C2 C3 C4 C5 C6 C7 C8 C9 CA CB CC CD CE CF D0 D1 D2 D3 D4 D5 D6 D7 D8 D9 DA DB DC DD DE DF E0 E1 E2 E3 E4 E5 E6 E7 E8 E9 EA EB EC ED EE EF F0 F1 F2 F3 F4 F5 F6 F7 F8 F9 FA FB FC FD FE FF 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F 10 11 12 13 14 15 16 17 18 19 1A 1B 1C 1D 1E 1F 20 21 22 23 24 25 26 27 28 29 2A 2B 2C 2D 2E 2F 30 31 32 33 34 35 36 37 38 39 3A 3B 3C 3D 3E 3F 40 41 42 43 44 45 46 47 48 49 4A 4B 4C 4D 4E 4F 50 51 52 53 54 55 56 57 58 59 5A 5B 5C 5D 5E 5F 60 61 62 63 64 65 66 67 68 69 6A 6B 6C 6D 6E 6F 70 71 72 73 74 75 76 77 78 79 7A 7B 7C 7D 7E 7F 80 81 82 83 84 85 86 87 88 89 8A 8B 8C 8D 8E 8F 90 91 92 93 94 95 96 97 98 99 9A 9B 9C 9D 9E 9F A0 A1 A2 A3 A4 A5 A6 A7 A8 A9 AA AB AC AD AE AF B0 B1 B2 B3 B4 B5 B6 B7 B8 B9 BA BB BC BD BE BF C0 C1 C2 C3 C4 C5 C6 C7 C8 C9 CA CB CC CD CE CF D0 D1 D2 D3 D4 D5 D6 D7 D8 D9 DA DB DC DD DE DF E0 E1 E2 E3 E4 E5 E6 E7 E8 E9 EA EB EC ED EE EF F0 F1 F2 F3 F4 F5 F6 F7 F8 F9 FA FB FC FD FE FF 01 02 03 04 FE 2D 55 71 BD";
 
-            byte[] writeSDRAM = "AA 8E 42 04 1C 00 00 00 00 00 06 00 00 00 00 00 01 00 01 00 00 00 00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F 10 11 12 13 14 15 16 17 18 19 1A 1B 1C 1D 1E 1F 20 21 22 23 24 25 26 27 28 29 2A 2B 2C 2D 2E 2F 30 31 32 33 34 35 36 37 38 39 3A 3B 3C 3D 3E 3F 40 41 42 43 44 45 46 47 48 49 4A 4B 4C 4D 4E 4F 50 51 52 53 54 55 56 57 58 59 5A 5B 5C 5D 5E 5F 60 61 62 63 64 65 66 67 68 69 6A 6B 6C 6D 6E 6F 70 71 72 73 74 75 76 77 78 79 7A 7B 7C 7D 7E 7F 80 81 82 83 84 85 86 87 88 89 8A 8B 8C 8D 8E 8F 90 91 92 93 94 95 96 97 98 99 9A 9B 9C 9D 9E 9F A0 A1 A2 A3 A4 A5 A6 A7 A8 A9 AA AB AC AD AE AF B0 B1 B2 B3 B4 B5 B6 B7 B8 B9 BA BB BC BD BE BF C0 C1 C2 C3 C4 C5 C6 C7 C8 C9 CA CB CC CD CE CF D0 D1 D2 D3 D4 D5 D6 D7 D8 D9 DA DB DC DD DE DF E0 E1 E2 E3 E4 E5 E6 E7 E8 E9 EA EB EC ED EE EF F0 F1 F2 F3 F4 F5 F6 F7 F8 F9 FA FB FC FD FE FF 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F 10 11 12 13 14 15 16 17 18 19 1A 1B 1C 1D 1E 1F 20 21 22 23 24 25 26 27 28 29 2A 2B 2C 2D 2E 2F 30 31 32 33 34 35 36 37 38 39 3A 3B 3C 3D 3E 3F 40 41 42 43 44 45 46 47 48 49 4A 4B 4C 4D 4E 4F 50 51 52 53 54 55 56 57 58 59 5A 5B 5C 5D 5E 5F 60 61 62 63 64 65 66 67 68 69 6A 6B 6C 6D 6E 6F 70 71 72 73 74 75 76 77 78 79 7A 7B 7C 7D 7E 7F 80 81 82 83 84 85 86 87 88 89 8A 8B 8C 8D 8E 8F 90 91 92 93 94 95 96 97 98 99 9A 9B 9C 9D 9E 9F A0 A1 A2 A3 A4 A5 A6 A7 A8 A9 AA AB AC AD AE AF B0 B1 B2 B3 B4 B5 B6 B7 B8 B9 BA BB BC BD BE BF C0 C1 C2 C3 C4 C5 C6 C7 C8 C9 CA CB CC CD CE CF D0 D1 D2 D3 D4 D5 D6 D7 D8 D9 DA DB DC DD DE DF E0 E1 E2 E3 E4 E5 E6 E7 E8 E9 EA EB EC ED EE EF F0 F1 F2 F3 F4 F5 F6 F7 F8 F9 FA FB FC FD FE FF 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F 10 11 12 13 14 15 16 17 18 19 1A 1B 1C 1D 1E 1F 20 21 22 23 24 25 26 27 28 29 2A 2B 2C 2D 2E 2F 30 31 32 33 34 35 36 37 38 39 3A 3B 3C 3D 3E 3F 40 41 42 43 44 45 46 47 48 49 4A 4B 4C 4D 4E 4F 50 51 52 53 54 55 56 57 58 59 5A 5B 5C 5D 5E 5F 60 61 62 63 64 65 66 67 68 69 6A 6B 6C 6D 6E 6F 70 71 72 73 74 75 76 77 78 79 7A 7B 7C 7D 7E 7F 80 81 82 83 84 85 86 87 88 89 8A 8B 8C 8D 8E 8F 90 91 92 93 94 95 96 97 98 99 9A 9B 9C 9D 9E 9F A0 A1 A2 A3 A4 A5 A6 A7 A8 A9 AA AB AC AD AE AF B0 B1 B2 B3 B4 B5 B6 B7 B8 B9 BA BB BC BD BE BF C0 C1 C2 C3 C4 C5 C6 C7 C8 C9 CA CB CC CD CE CF D0 D1 D2 D3 D4 D5 D6 D7 D8 D9 DA DB DC DD DE DF E0 E1 E2 E3 E4 E5 E6 E7 E8 E9 EA EB EC ED EE EF F0 F1 F2 F3 F4 F5 F6 F7 F8 F9 FA FB FC FD FE FF 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F 10 11 12 13 14 15 16 17 18 19 1A 1B 1C 1D 1E 1F 20 21 22 23 24 25 26 27 28 29 2A 2B 2C 2D 2E 2F 30 31 32 33 34 35 36 37 38 39 3A 3B 3C 3D 3E 3F 40 41 42 43 44 45 46 47 48 49 4A 4B 4C 4D 4E 4F 50 51 52 53 54 55 56 57 58 59 5A 5B 5C 5D 5E 5F 60 61 62 63 64 65 66 67 68 69 6A 6B 6C 6D 6E 6F 70 71 72 73 74 75 76 77 78 79 7A 7B 7C 7D 7E 7F 80 81 82 83 84 85 86 87 88 89 8A 8B 8C 8D 8E 8F 90 91 92 93 94 95 96 97 98 99 9A 9B 9C 9D 9E 9F A0 A1 A2 A3 A4 A5 A6 A7 A8 A9 AA AB AC AD AE AF B0 B1 B2 B3 B4 B5 B6 B7 B8 B9 BA BB BC BD BE BF C0 C1 C2 C3 C4 C5 C6 C7 C8 C9 CA CB CC CD CE CF D0 D1 D2 D3 D4 D5 D6 D7 D8 D9 DA DB DC DD DE DF E0 E1 E2 E3 E4 E5 E6 E7 E8 E9 EA EB EC ED EE EF F0 F1 F2 F3 F4 F5 F6 F7 F8 F9 FA FB FC FD FE FF 01 02 03 04 FE 32 55 71 BD".ToBytes();
-            byte[] readSDRAM = "AA 8E 42 00 1D 00 00 00 00 00 03 00 00 00 00 00 01 00 01 00 00 00 00 00 00 22 55 71 BD".ToBytes();
+            byte[] writeSDRAM = "AA 8E 42 04 1C 00 00 00 00 00 06 00 00 00 00 00 01 00 01 00 00 00 00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F 10 11 12 13 14 15 16 17 18 19 1A 1B 1C 1D 1E 1F 20 21 22 23 24 25 26 27 28 29 2A 2B 2C 2D 2E 2F 30 31 32 33 34 35 36 37 38 39 3A 3B 3C 3D 3E 3F 40 41 42 43 44 45 46 47 48 49 4A 4B 4C 4D 4E 4F 50 51 52 53 54 55 56 57 58 59 5A 5B 5C 5D 5E 5F 60 61 62 63 64 65 66 67 68 69 6A 6B 6C 6D 6E 6F 70 71 72 73 74 75 76 77 78 79 7A 7B 7C 7D 7E 7F 80 81 82 83 84 85 86 87 88 89 8A 8B 8C 8D 8E 8F 90 91 92 93 94 95 96 97 98 99 9A 9B 9C 9D 9E 9F A0 A1 A2 A3 A4 A5 A6 A7 A8 A9 AA AB AC AD AE AF B0 B1 B2 B3 B4 B5 B6 B7 B8 B9 BA BB BC BD BE BF C0 C1 C2 C3 C4 C5 C6 C7 C8 C9 CA CB CC CD CE CF D0 D1 D2 D3 D4 D5 D6 D7 D8 D9 DA DB DC DD DE DF E0 E1 E2 E3 E4 E5 E6 E7 E8 E9 EA EB EC ED EE EF F0 F1 F2 F3 F4 F5 F6 F7 F8 F9 FA FB FC FD FE FF 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F 10 11 12 13 14 15 16 17 18 19 1A 1B 1C 1D 1E 1F 20 21 22 23 24 25 26 27 28 29 2A 2B 2C 2D 2E 2F 30 31 32 33 34 35 36 37 38 39 3A 3B 3C 3D 3E 3F 40 41 42 43 44 45 46 47 48 49 4A 4B 4C 4D 4E 4F 50 51 52 53 54 55 56 57 58 59 5A 5B 5C 5D 5E 5F 60 61 62 63 64 65 66 67 68 69 6A 6B 6C 6D 6E 6F 70 71 72 73 74 75 76 77 78 79 7A 7B 7C 7D 7E 7F 80 81 82 83 84 85 86 87 88 89 8A 8B 8C 8D 8E 8F 90 91 92 93 94 95 96 97 98 99 9A 9B 9C 9D 9E 9F A0 A1 A2 A3 A4 A5 A6 A7 A8 A9 AA AB AC AD AE AF B0 B1 B2 B3 B4 B5 B6 B7 B8 B9 BA BB BC BD BE BF C0 C1 C2 C3 C4 C5 C6 C7 C8 C9 CA CB CC CD CE CF D0 D1 D2 D3 D4 D5 D6 D7 D8 D9 DA DB DC DD DE DF E0 E1 E2 E3 E4 E5 E6 E7 E8 E9 EA EB EC ED EE EF F0 F1 F2 F3 F4 F5 F6 F7 F8 F9 FA FB FC FD FE FF 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F 10 11 12 13 14 15 16 17 18 19 1A 1B 1C 1D 1E 1F 20 21 22 23 24 25 26 27 28 29 2A 2B 2C 2D 2E 2F 30 31 32 33 34 35 36 37 38 39 3A 3B 3C 3D 3E 3F 40 41 42 43 44 45 46 47 48 49 4A 4B 4C 4D 4E 4F 50 51 52 53 54 55 56 57 58 59 5A 5B 5C 5D 5E 5F 60 61 62 63 64 65 66 67 68 69 6A 6B 6C 6D 6E 6F 70 71 72 73 74 75 76 77 78 79 7A 7B 7C 7D 7E 7F 80 81 82 83 84 85 86 87 88 89 8A 8B 8C 8D 8E 8F 90 91 92 93 94 95 96 97 98 99 9A 9B 9C 9D 9E 9F A0 A1 A2 A3 A4 A5 A6 A7 A8 A9 AA AB AC AD AE AF B0 B1 B2 B3 B4 B5 B6 B7 B8 B9 BA BB BC BD BE BF C0 C1 C2 C3 C4 C5 C6 C7 C8 C9 CA CB CC CD CE CF D0 D1 D2 D3 D4 D5 D6 D7 D8 D9 DA DB DC DD DE DF E0 E1 E2 E3 E4 E5 E6 E7 E8 E9 EA EB EC ED EE EF F0 F1 F2 F3 F4 F5 F6 F7 F8 F9 FA FB FC FD FE FF 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F 10 11 12 13 14 15 16 17 18 19 1A 1B 1C 1D 1E 1F 20 21 22 23 24 25 26 27 28 29 2A 2B 2C 2D 2E 2F 30 31 32 33 34 35 36 37 38 39 3A 3B 3C 3D 3E 3F 40 41 42 43 44 45 46 47 48 49 4A 4B 4C 4D 4E 4F 50 51 52 53 54 55 56 57 58 59 5A 5B 5C 5D 5E 5F 60 61 62 63 64 65 66 67 68 69 6A 6B 6C 6D 6E 6F 70 71 72 73 74 75 76 77 78 79 7A 7B 7C 7D 7E 7F 80 81 82 83 84 85 86 87 88 89 8A 8B 8C 8D 8E 8F 90 91 92 93 94 95 96 97 98 99 9A 9B 9C 9D 9E 9F A0 A1 A2 A3 A4 A5 A6 A7 A8 A9 AA AB AC AD AE AF B0 B1 B2 B3 B4 B5 B6 B7 B8 B9 BA BB BC BD BE BF C0 C1 C2 C3 C4 C5 C6 C7 C8 C9 CA CB CC CD CE CF D0 D1 D2 D3 D4 D5 D6 D7 D8 D9 DA DB DC DD DE DF E0 E1 E2 E3 E4 E5 E6 E7 E8 E9 EA EB EC ED EE EF F0 F1 F2 F3 F4 F5 F6 F7 F8 F9 FA FB FC FD FE FF 01 02 03 04 FE 32 55 71 BD".GetBytes(' ', System.Globalization.NumberStyles.HexNumber);
+            byte[] readSDRAM = "AA 8E 42 00 1D 00 00 00 00 00 03 00 00 00 00 00 01 00 01 00 00 00 00 00 00 22 55 71 BD".GetBytes(' ', System.Globalization.NumberStyles.HexNumber);
 
-            byte[] arrCompare = compare.ToBytes();
+            byte[] arrCompare = compare.GetBytes(' ', System.Globalization.NumberStyles.HexNumber);
             //前面20字节是附加内容
             //数据部分data[20] - data[1043]
             //校验是data[len - 5] data[len - 4]
@@ -2107,7 +2125,7 @@ namespace TLWController
 
                     //compare = arrRandomCompareSDRAM.ToString(" ").ToUpper();
 
-                    int revLen = UDPHelper.Send(arrRandomWriteSDRAM, ip, out byte[] revWriteSDRAM);
+                    int revLen = Helper.UDPHelper.Send(arrRandomWriteSDRAM, ip, out byte[] revWriteSDRAM);
                     if (revLen == 0)
                     {
                         errCount++;
@@ -2120,7 +2138,7 @@ namespace TLWController
                     if (delay > 0)
                         System.Threading.Thread.Sleep(delay);
 
-                    revLen = UDPHelper.Send(readSDRAM, ip, out byte[] revReadSDRAM);
+                    revLen = Helper.UDPHelper.Send(readSDRAM, ip, out byte[] revReadSDRAM);
                     if (revLen == 0)
                     {
                         errCount++;
@@ -2268,7 +2286,7 @@ namespace TLWController
 
             string ip = ShowSelectIPDialog();
             uint regAddr = (uint)numRegAddr.Value;
-            byte chipPos = (byte)cbChipPos.SelectedValue.ToString().ToByte();
+            byte chipPos = (byte)cbChipPos.SelectedValue.ToString().GetByte(System.Globalization.NumberStyles.HexNumber);
 
             byte mode = byte.Parse(cbGammaBit.SelectedValue.ToString());
             int dateLen = 0;
@@ -2301,7 +2319,7 @@ namespace TLWController
                      WriteOutput(t, "读取GAMMA");
                      if (t.ResultCode == 0)
                      {
-                         WriteTextFile(file, (t.Data as byte[]).ToString(" "));
+                         WriteTextFile(file, (t.Data as byte[]).GetString(" "));
                      }
                  });
                  EnableControl(sender as Control, true);
@@ -2317,7 +2335,7 @@ namespace TLWController
                 return;
             }
 
-            byte chipPos = (byte)cbRegChip.SelectedValue.ToString().ToByte();
+            byte chipPos = (byte)cbRegChip.SelectedValue.ToString().GetByte(System.Globalization.NumberStyles.HexNumber);
             bool bSave = !ckDebugMode.Checked;
             int color = (int)cbParam2055Color.SelectedValue;
 
@@ -2339,7 +2357,8 @@ namespace TLWController
 #endif
             byte[] tmp = new byte[510];
             Array.Copy(data, 0, tmp, 0, 510);
-            ushort sum = tmp.GetSum(0, tmp.Length);
+            //ushort sum = tmp.GetSum(0, tmp.Length);
+            ushort sum = tmp.CheckSumForByte(0, tmp.Length);
             byte[] byteSum = sum.GetBytes();
             data[510] = byteSum[0];
             data[511] = byteSum[1];
@@ -2456,13 +2475,13 @@ namespace TLWController
             List<RegisterOtherItem> items = gridOtherReg.DataSource as List<RegisterOtherItem>;
             foreach (var item in items)
             {
-                if (item.Address.ToUInt16(System.Globalization.NumberStyles.HexNumber) == 0x80)
+                if (item.Address.GetUInt16(System.Globalization.NumberStyles.HexNumber) == 0x80)
                 {
                     item128 = item;
                     break;
                 }
             }
-            if (nReg128 != item128.Value.ToUInt32())
+            if (nReg128 != item128.Value.GetUInt32(System.Globalization.NumberStyles.HexNumber))
             {
                 if (MessageBox.Show(this, $"自动计算得出128寄存器值为:{nReg128},当前128寄存器值为:{item128.Value},是否采用自动计算结果？", "", MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
@@ -2549,7 +2568,7 @@ namespace TLWController
                 return;
             }
 
-            byte chipPos = (byte)cbRegChip.SelectedValue.ToString().ToByte();
+            byte chipPos = (byte)cbRegChip.SelectedValue.ToString().GetByte(System.Globalization.NumberStyles.HexNumber);
             bool bSave = !ckDebugMode.Checked;
             int color = (int)cbParam2055Color.SelectedValue;
             List<RegisterItem> regList = grid2055.DataSource as List<RegisterItem>;
@@ -2672,7 +2691,7 @@ namespace TLWController
                 {
                     RegisterItem regItemData = grid2055.Rows[grid2055.SelectedRows[0].Index].DataBoundItem as TLWController.Helper.RegisterItem;
 
-                    byte chipPos = (byte)cbRegChip.SelectedValue.ToString().ToByte();
+                    byte chipPos = (byte)cbRegChip.SelectedValue.ToString().GetByte(System.Globalization.NumberStyles.HexNumber);
                     bool bSave = !ckDebugMode.Checked;
                     byte color = byte.Parse(cbParam2055Color.SelectedValue.ToString());
                     //int color = (int)cbParam2055Color.SelectedValue;
@@ -2684,11 +2703,11 @@ namespace TLWController
                     if (color == 0)
                     {
                         string tmp = regItemData.RegisterAddress.PadLeft(2, '0');
-                        string tmp2 = regItemData.RedValue.ToByte(System.Globalization.NumberStyles.Number).ToString("X2");
+                        string tmp2 = regItemData.RedValue.GetByte(System.Globalization.NumberStyles.Number).ToString("X2");
                         string tmp3 = tmp + tmp2;
-                        UInt16 val = tmp3.ToUInt16();
+                        UInt16 val = tmp3.GetUInt16(System.Globalization.NumberStyles.HexNumber);
 
-                        _TLWCommand.tlw_WriteRegister(GetMBAddr(), GetId(), chipPos, regItemData.RedAddress.ToByte(), val, bSave, _DevIP, (param) =>
+                        _TLWCommand.tlw_WriteRegister(GetMBAddr(), GetId(), chipPos, regItemData.RedAddress.GetByte(System.Globalization.NumberStyles.HexNumber), val, bSave, _DevIP, (param) =>
                          {
                              Array.ForEach(param, t =>
                              {
@@ -2696,10 +2715,10 @@ namespace TLWController
                                  if (t.ResultCode == 0)
                                  {
                                      tmp = regItemData.RegisterAddress.PadLeft(2, '0');
-                                     tmp2 = regItemData.GreenValue.ToByte(System.Globalization.NumberStyles.Number).ToString("X2");
+                                     tmp2 = regItemData.GreenValue.GetByte(System.Globalization.NumberStyles.Number).ToString("X2");
                                      tmp3 = tmp + tmp2;
-                                     val = tmp3.ToUInt16();
-                                     _TLWCommand.tlw_WriteRegister(GetMBAddr(), GetId(), chipPos, regItemData.GreenAddress.ToByte(), val, bSave, _DevIP, (param1) =>
+                                     val = tmp3.GetUInt16(System.Globalization.NumberStyles.HexNumber);
+                                     _TLWCommand.tlw_WriteRegister(GetMBAddr(), GetId(), chipPos, regItemData.GreenAddress.GetByte(System.Globalization.NumberStyles.HexNumber), val, bSave, _DevIP, (param1) =>
                                      {
                                          Array.ForEach(param1, t1 =>
                                          {
@@ -2707,10 +2726,10 @@ namespace TLWController
                                              if (t1.ResultCode == 0)
                                              {
                                                  tmp = regItemData.RegisterAddress.PadLeft(2, '0');
-                                                 tmp2 = regItemData.BlueValue.ToByte(System.Globalization.NumberStyles.Number).ToString("X2");
+                                                 tmp2 = regItemData.BlueValue.GetByte(System.Globalization.NumberStyles.Number).ToString("X2");
                                                  tmp3 = tmp + tmp2;
-                                                 val = tmp3.ToUInt16();
-                                                 _TLWCommand.tlw_WriteRegister(GetMBAddr(), GetId(), chipPos, regItemData.BlueAddress.ToByte(), val, bSave, _DevIP, (param2) =>
+                                                 val = tmp3.GetUInt16(System.Globalization.NumberStyles.HexNumber);
+                                                 _TLWCommand.tlw_WriteRegister(GetMBAddr(), GetId(), chipPos, regItemData.BlueAddress.GetByte(System.Globalization.NumberStyles.HexNumber), val, bSave, _DevIP, (param2) =>
                                                  {
                                                      Array.ForEach(param2, t2 =>
                                                      {
@@ -2748,10 +2767,10 @@ namespace TLWController
                     else if (color == 1)
                     {
                         string tmp = regItemData.RegisterAddress.PadLeft(2, '0');
-                        string tmp2 = regItemData.RedValue.ToByte(System.Globalization.NumberStyles.Number).ToString("X2");
+                        string tmp2 = regItemData.RedValue.GetByte(System.Globalization.NumberStyles.Number).ToString("X2");
                         string tmp3 = tmp + tmp2;
-                        UInt16 val = tmp3.ToUInt16();
-                        _TLWCommand.tlw_WriteRegister(GetMBAddr(), GetId(), chipPos, regItemData.RedAddress.ToByte(), val, bSave, _DevIP, (param) =>
+                        UInt16 val = tmp3.GetUInt16(System.Globalization.NumberStyles.HexNumber);
+                        _TLWCommand.tlw_WriteRegister(GetMBAddr(), GetId(), chipPos, regItemData.RedAddress.GetByte(System.Globalization.NumberStyles.HexNumber), val, bSave, _DevIP, (param) =>
                         {
                             Array.ForEach(param, t =>
                             {
@@ -2763,10 +2782,10 @@ namespace TLWController
                     else if (color == 2)
                     {
                         string tmp = regItemData.RegisterAddress.PadLeft(2, '0');
-                        string tmp2 = regItemData.GreenValue.ToByte(System.Globalization.NumberStyles.Number).ToString("X2");
+                        string tmp2 = regItemData.GreenValue.GetByte(System.Globalization.NumberStyles.Number).ToString("X2");
                         string tmp3 = tmp + tmp2;
-                        UInt16 val = tmp3.ToUInt16();
-                        _TLWCommand.tlw_WriteRegister(GetMBAddr(), GetId(), chipPos, regItemData.GreenAddress.ToByte(), val, bSave, _DevIP, (param) =>
+                        UInt16 val = tmp3.GetUInt16(System.Globalization.NumberStyles.HexNumber);
+                        _TLWCommand.tlw_WriteRegister(GetMBAddr(), GetId(), chipPos, regItemData.GreenAddress.GetByte(System.Globalization.NumberStyles.HexNumber), val, bSave, _DevIP, (param) =>
                         {
                             Array.ForEach(param, t =>
                             {
@@ -2778,10 +2797,10 @@ namespace TLWController
                     else if (color == 3)
                     {
                         string tmp = regItemData.RegisterAddress.PadLeft(2, '0');
-                        string tmp2 = regItemData.BlueValue.ToByte(System.Globalization.NumberStyles.Number).ToString("X2");
+                        string tmp2 = regItemData.BlueValue.GetByte(System.Globalization.NumberStyles.Number).ToString("X2");
                         string tmp3 = tmp + tmp2;
-                        UInt16 val = tmp3.ToUInt16();
-                        _TLWCommand.tlw_WriteRegister(GetMBAddr(), GetId(), chipPos, regItemData.BlueAddress.ToByte(), val, bSave, _DevIP, (param) =>
+                        UInt16 val = tmp3.GetUInt16(System.Globalization.NumberStyles.HexNumber);
+                        _TLWCommand.tlw_WriteRegister(GetMBAddr(), GetId(), chipPos, regItemData.BlueAddress.GetByte(System.Globalization.NumberStyles.HexNumber), val, bSave, _DevIP, (param) =>
                         {
                             Array.ForEach(param, t =>
                             {
@@ -2917,7 +2936,7 @@ namespace TLWController
                 return;
             }
             string ip = ShowSelectIPDialog();
-            byte chipPos = (byte)cbMCUChip.SelectedValue.ToString().ToByte();
+            byte chipPos = (byte)cbMCUChip.SelectedValue.ToString().GetByte(System.Globalization.NumberStyles.HexNumber);
 
             EnableControl(sender as Control, false, ip);
             _TLWCommand.tlw_GetVersion(GetMBAddr(), GetId(), chipPos, 0, _DevIP, (param) =>
@@ -2949,7 +2968,7 @@ namespace TLWController
             saveFileDialog.Filter = "*.bin|*.bin";
 
             string ip = ShowSelectIPDialog();
-            byte chipPos = (byte)cbMCUChip.SelectedValue.ToString().ToByte();
+            byte chipPos = (byte)cbMCUChip.SelectedValue.ToString().GetByte(System.Globalization.NumberStyles.HexNumber);
 
             EnableControl(sender as Control, false, ip);
             _TLWCommand.tlw_GetVersion(GetMBAddr(), GetId(), chipPos, 0, _DevIP, (param) =>
@@ -3010,7 +3029,7 @@ namespace TLWController
             saveFileDialog.Filter = "*.bin|*.bin";
 
             string ip = ShowSelectIPDialog();
-            byte chipPos = (byte)cbModuleChip.SelectedValue.ToString().ToByte();
+            byte chipPos = (byte)cbModuleChip.SelectedValue.ToString().GetByte(System.Globalization.NumberStyles.HexNumber);
 
             EnableControl(sender as Control, false, ip);
             _TLWCommand.tlw_GetVersion(GetMBAddr(), GetId(), chipPos, 1, _DevIP, (param) =>
@@ -3241,11 +3260,11 @@ namespace TLWController
 
             //长度为12，分别是IP地址，子网掩码，网关地址各占4字节
             byte[] data = new byte[12];
-            byte[] ipData = txtIP.Text.Replace(".", " ").ToBytes(' ', System.Globalization.NumberStyles.Integer);
+            byte[] ipData = txtIP.Text.Replace(".", " ").GetBytes(' ', System.Globalization.NumberStyles.Integer);
             Array.Copy(ipData, 0, data, 0, ipData.Length);
-            byte[] maskData = txtMask.Text.Replace(".", " ").ToBytes(' ', System.Globalization.NumberStyles.Integer);
+            byte[] maskData = txtMask.Text.Replace(".", " ").GetBytes(' ', System.Globalization.NumberStyles.Integer);
             Array.Copy(maskData, 0, data, 4, ipData.Length);
-            byte[] gatewayData = txtGateway.Text.Replace(".", " ").ToBytes(' ', System.Globalization.NumberStyles.Integer);
+            byte[] gatewayData = txtGateway.Text.Replace(".", " ").GetBytes(' ', System.Globalization.NumberStyles.Integer);
             Array.Copy(gatewayData, 0, data, 8, ipData.Length);
             string ip = ShowSelectIPDialog();
             EnableControl(sender as Control, false, ip);
@@ -3453,7 +3472,7 @@ namespace TLWController
                 foreach (var item in _DevIP)
                 {
                     int result = 0;
-                    byte chipPos = (byte)cbRegChip.SelectedValue.ToString().ToByte();
+                    byte chipPos = (byte)cbRegChip.SelectedValue.ToString().GetByte(System.Globalization.NumberStyles.HexNumber);
                     bool bSave = !ckDebugMode.Checked;
                     result = _TLWCommand.tlw_WriteRegister(item.Value, GetMBAddr(), 0, chipPos, 0x91, 1, bSave);
                     if (result != 0)
@@ -3476,7 +3495,7 @@ namespace TLWController
                 MessageBox.Show(this, "设备地址错误");
                 return;
             }
-            byte chipPos = (byte)cbRegChip.SelectedValue.ToString().ToByte();
+            byte chipPos = (byte)cbRegChip.SelectedValue.ToString().GetByte(System.Globalization.NumberStyles.HexNumber);
             bool bSave = !ckDebugMode.Checked;
 
             InvokeAsync(() =>
@@ -3538,7 +3557,7 @@ namespace TLWController
         private void btnSetRegister_Click(object sender, EventArgs e)
         {
             EnableControl(sender as Control, false);
-            byte chipPos = (byte)cbRegChip.SelectedValue.ToString().ToByte();
+            byte chipPos = (byte)cbRegChip.SelectedValue.ToString().GetByte(System.Globalization.NumberStyles.HexNumber);
             uint addr = (uint)numSingleRegAddr.Value;
             _TLWCommand.tlw_WriteRegister(GetMBAddr(), GetId(), chipPos, addr, (uint)numSingleRegValue.Value, true, _DevIP, (param2) =>
              {
@@ -3562,7 +3581,7 @@ namespace TLWController
         private void btnSingleRegRead_Click(object sender, EventArgs e)
         {
             EnableControl(sender as Control, false);
-            byte chipPos = (byte)cbRegChip.SelectedValue.ToString().ToByte();
+            byte chipPos = (byte)cbRegChip.SelectedValue.ToString().GetByte(System.Globalization.NumberStyles.HexNumber);
             uint addr = (uint)numSingleRegAddr.Value;
             _TLWCommand.tlw_ReadRegister(GetMBAddr(), GetId(), chipPos, addr, _DevIP, (param2) =>
              {
@@ -3608,14 +3627,14 @@ namespace TLWController
 
                     Rectangle rect = gridOtherReg.Rows[e.RowIndex].Cells[e.ColumnIndex].ContentBounds;
 
-                    if (regItemData.MaxValue.ToInit32(System.Globalization.NumberStyles.HexNumber) - regItemData.MinValue.ToInit32(System.Globalization.NumberStyles.HexNumber) <= 10)
+                    if (regItemData.MaxValue.GetInt32(System.Globalization.NumberStyles.HexNumber) - regItemData.MinValue.GetInt32(System.Globalization.NumberStyles.HexNumber) <= 10)
                     {
                         //combobox
                         gridOtherReg.Controls["cbOtherValue"].Bounds = rect;
                         gridOtherReg.Controls["cbOtherValue"].Location = new Point(cellX, cellY);
 
                         List<ListItem> items = new List<ListItem>();
-                        for (int i = regItemData.MinValue.ToInit32(System.Globalization.NumberStyles.HexNumber); i <= regItemData.MaxValue.ToInit32(System.Globalization.NumberStyles.HexNumber); i++)
+                        for (int i = regItemData.MinValue.GetInt32(System.Globalization.NumberStyles.HexNumber); i <= regItemData.MaxValue.GetInt32(System.Globalization.NumberStyles.HexNumber); i++)
                         {
                             items.Add(new ListItem() { Value = i, Text = i.ToString("X2") });
                         }
@@ -3635,8 +3654,8 @@ namespace TLWController
                         //numValue
                         gridOtherReg.Controls["numOtherValue"].Bounds = rect;
                         gridOtherReg.Controls["numOtherValue"].Location = new Point(cellX, cellY);
-                        (gridOtherReg.Controls["numOtherValue"] as NumericUpDown).Minimum = regItemData.MinValue.ToInit32(System.Globalization.NumberStyles.HexNumber);
-                        (gridOtherReg.Controls["numOtherValue"] as NumericUpDown).Maximum = regItemData.MaxValue.ToInit32(System.Globalization.NumberStyles.HexNumber);
+                        (gridOtherReg.Controls["numOtherValue"] as NumericUpDown).Minimum = regItemData.MinValue.GetInt32(System.Globalization.NumberStyles.HexNumber);
+                        (gridOtherReg.Controls["numOtherValue"] as NumericUpDown).Maximum = regItemData.MaxValue.GetInt32(System.Globalization.NumberStyles.HexNumber);
                         object obj = gridOtherReg.Rows[e.RowIndex].Cells[e.ColumnIndex].Value;
                         (gridOtherReg.Controls["numOtherValue"] as NumericUpDown).Hexadecimal = false;
                         string str1 = (string)obj;
@@ -3655,7 +3674,7 @@ namespace TLWController
             if (gridOtherReg.Rows[e.RowIndex].Cells[e.ColumnIndex].OwningColumn.Name == "ColOtherValue" && gridOtherReg.SelectedRows.Count != 0)
             {
                 RegisterOtherItem regItemData = gridOtherReg.Rows[gridOtherReg.SelectedRows[0].Index].DataBoundItem as TLWController.Helper.RegisterOtherItem;
-                if (regItemData.MaxValue.ToInit32(System.Globalization.NumberStyles.HexNumber) - regItemData.MinValue.ToInit32(System.Globalization.NumberStyles.HexNumber) <= 10)
+                if (regItemData.MaxValue.GetInt32(System.Globalization.NumberStyles.HexNumber) - regItemData.MinValue.GetInt32(System.Globalization.NumberStyles.HexNumber) <= 10)
                 {
                     gridOtherReg.Rows[e.RowIndex].Cells[e.ColumnIndex].Value = ((int)(gridOtherReg.Controls["cbOtherValue"] as ComboBox).SelectedValue).ToString();
                 }
@@ -3682,13 +3701,13 @@ namespace TLWController
                 {
                     RegisterOtherItem regItemData = gridOtherReg.Rows[gridOtherReg.SelectedRows[0].Index].DataBoundItem as TLWController.Helper.RegisterOtherItem;
 
-                    byte chipPos = (byte)cbRegChip.SelectedValue.ToString().ToByte();
+                    byte chipPos = (byte)cbRegChip.SelectedValue.ToString().GetByte(System.Globalization.NumberStyles.HexNumber);
                     bool bSave = !ckDebugMode.Checked;
                     byte color = byte.Parse(cbParam2055Color.SelectedValue.ToString());
 
                     EnableControl(gridOtherReg as Control, false);
 
-                    _TLWCommand.tlw_WriteRegister(GetMBAddr(), GetId(), chipPos, regItemData.Address.ToUInt32(), regItemData.Value.ToUInt32(System.Globalization.NumberStyles.Number), bSave, _DevIP, (param) =>
+                    _TLWCommand.tlw_WriteRegister(GetMBAddr(), GetId(), chipPos, regItemData.Address.GetUInt32(System.Globalization.NumberStyles.HexNumber), regItemData.Value.GetUInt32(System.Globalization.NumberStyles.Number), bSave, _DevIP, (param) =>
                     {
                         Array.ForEach(param, t =>
                         {
@@ -3710,7 +3729,7 @@ namespace TLWController
                 if (gridOtherReg.Rows[_CurrentOtherGridRowIndex].Cells[_CurrentOtherGridColumnIndex].OwningColumn.Name == "ColOtherValue")
                 {
                     RegisterOtherItem regItemData = gridOtherReg.Rows[gridOtherReg.SelectedRows[0].Index].DataBoundItem as TLWController.Helper.RegisterOtherItem;
-                    if (regItemData.MaxValue.ToInit32(System.Globalization.NumberStyles.HexNumber) - regItemData.MinValue.ToInit32(System.Globalization.NumberStyles.HexNumber) <= 10)
+                    if (regItemData.MaxValue.GetInt32(System.Globalization.NumberStyles.HexNumber) - regItemData.MinValue.GetInt32(System.Globalization.NumberStyles.HexNumber) <= 10)
                     {
                         gridOtherReg.Rows[_CurrentOtherGridRowIndex].Cells[_CurrentOtherGridColumnIndex].Value = ((int)(gridOtherReg.Controls["cbOtherValue"] as ComboBox).SelectedValue);
                     }
@@ -3750,7 +3769,7 @@ namespace TLWController
         private void button5_Click(object sender, EventArgs e)
         {
             EnableControl(sender as Control, false);
-            byte chipPos = (byte)cbRegChip.SelectedValue.ToString().ToByte();
+            byte chipPos = (byte)cbRegChip.SelectedValue.ToString().GetByte(System.Globalization.NumberStyles.HexNumber);
             uint addr = (uint)numSingleRegAddr.Value;
             ushort cardAddr = (ushort)(241 << 8 | 241);
             byte val = byte.Parse(cbWorkMode.SelectedValue.ToString());
@@ -4130,8 +4149,8 @@ namespace TLWController
         {
             string str1 = ReadTextFile(txtCompareFile1.Text).Trim();
             string str2 = ReadTextFile(txtCompareFile2.Text).Trim();
-            byte[] bt1 = str1.ToBytes(' ');
-            byte[] bt2 = str2.ToBytes(' ');
+            byte[] bt1 = str1.GetBytes(' ', System.Globalization.NumberStyles.HexNumber);
+            byte[] bt2 = str2.GetBytes(' ', System.Globalization.NumberStyles.HexNumber);
             string compareStr = "";
             for (int i = 0; i < bt1.Length; i++)
             {
@@ -4171,7 +4190,7 @@ namespace TLWController
         {
             EnableControl(sender as Control, false);
             ushort cardAddr = GetMBAddr();
-            byte chipPos = (byte)cbRegChip.SelectedValue.ToString().ToByte();
+            byte chipPos = (byte)cbRegChip.SelectedValue.ToString().GetByte(System.Globalization.NumberStyles.HexNumber);
             byte val = byte.Parse(cbCalibrationOnOff.SelectedValue.ToString());
             //_TLWCommand.tlw_SetCalibrationONOFF(cardAddr, GetId(), val, _DevIP, (param2) =>
             //{
@@ -4299,7 +4318,8 @@ namespace TLWController
             byte[] tmpData = list.ToArray();
             Array.Copy(tmpData, 0, data, 0, tmpData.Length);
 
-            byte[] sum = data.GetSum(3, 20).GetBytes();
+            //byte[] sum = data.GetSum(3, 20).GetBytes();
+            byte[] sum = data.CheckSumForUInt16(3, 18).GetBytes();
             data[21] = sum[0];
             data[22] = sum[1];
 
@@ -4327,15 +4347,15 @@ namespace TLWController
             InvokeAsync(() =>
             {
                 EnableControl(sender as Control, false);
-                WriteMessage("发送数据:" + data.ToString(" "));
-                int revLen = UDPHelper.Send(data, ip, out byte[] revWriteFlash);
+                WriteMessage("发送数据:" + data.GetString(" "));
+                int revLen = Helper.UDPHelper.Send(data, ip, out byte[] revWriteFlash);
                 if (revLen == 0)
                 {
                     WriteMessage("没有收到返回数据");
                 }
                 else
                 {
-                    WriteMessage("收到数据:" + revWriteFlash.ToString(" "));
+                    WriteMessage("收到数据:" + revWriteFlash.GetString(" "));
                 }
                 EnableControl(sender as Control, true);
             });
@@ -4804,7 +4824,7 @@ namespace TLWController
                 //    nColorValueExt = 3;//颜色序号附加值
                 //}
 
-                byte chip = (byte)cbRegChip.SelectedValue.ToString().ToByte();
+                byte chip = (byte)cbRegChip.SelectedValue.ToString().GetByte(System.Globalization.NumberStyles.HexNumber);
                 foreach (var item in _DevIP)
                 {
                     int hDevice = item.Value;
@@ -4903,7 +4923,7 @@ namespace TLWController
                 return;
             }
 
-            byte chipPos = (byte)cbRegChip.SelectedValue.ToString().ToByte();
+            byte chipPos = (byte)cbRegChip.SelectedValue.ToString().GetByte(System.Globalization.NumberStyles.HexNumber);
             bool bSave = !ckDebugMode.Checked;
             int color = (int)cbParam2055Color.SelectedValue;
             List<RegisterItem> regList = grid2055.DataSource as List<RegisterItem>;
@@ -4916,12 +4936,12 @@ namespace TLWController
                     WriteOutput(t, "批量读取寄存器");
                     if (t.ResultCode == 0)
                     {
-                        WriteTextFile(@"d:\tmp\register_reader.txt", (t.Data as byte[]).ToString(" "));
+                        WriteTextFile(@"d:\tmp\register_reader.txt", (t.Data as byte[]).GetString(" "));
                         byte[] data = t.Data as byte[];
                         byte[] tmp = new byte[2];
                         tmp[0] = data[510];
                         tmp[1] = data[511];
-                        UInt32 val = tmp.GetUInt16();
+                        UInt32 val = tmp.GetUInt16(0);
                         string str = val.ToString("X4");
                         MessageBox.Show(str);
                         Invoke(new MethodInvoker(() =>
@@ -5088,7 +5108,7 @@ namespace TLWController
                 return;
             }
 
-            byte chipPos = (byte)cbRegChip.SelectedValue.ToString().ToByte();
+            byte chipPos = (byte)cbRegChip.SelectedValue.ToString().GetByte(System.Globalization.NumberStyles.HexNumber);
             bool bSave = !ckDebugMode.Checked;
             int color = (int)cbParam2055Color.SelectedValue;
             List<RegisterItem> regList = grid2055.DataSource as List<RegisterItem>;
@@ -5119,7 +5139,7 @@ namespace TLWController
             byte[] tmp2 = new byte[tmp1.Length * 2];
             for (int i = 0; i < tmp1.Length; i++)
             {
-                byte[] tmp3 = tmp1[i].ToUInt16().GetBytes();
+                byte[] tmp3 = tmp1[i].GetUInt16(System.Globalization.NumberStyles.HexNumber).GetBytes();
                 Array.Copy(tmp3, 0, data, i * 2, 2);
             }
 
@@ -5152,7 +5172,7 @@ namespace TLWController
                 return;
             }
 
-            byte chipPos = (byte)cbRegChip.SelectedValue.ToString().ToByte();
+            byte chipPos = (byte)cbRegChip.SelectedValue.ToString().GetByte(System.Globalization.NumberStyles.HexNumber);
             bool bSave = !ckDebugMode.Checked;
             int color = (int)cbParam2055Color.SelectedValue;
             List<RegisterItem> regList = grid2055.DataSource as List<RegisterItem>;
@@ -5166,20 +5186,21 @@ namespace TLWController
                     if (t.ResultCode == 0)
                     {
 #if DEBUG
-                        WriteTextFile(@"d:\tmp\register_reader1.txt", (t.Data as byte[]).ToString(" "));
+                        WriteTextFile(@"d:\tmp\register_reader1.txt", (t.Data as byte[]).GetString(" "));
 #endif 
                         byte[] data = t.Data as byte[];
                         byte[] tmp = new byte[2];
                         tmp[0] = data[510];
                         tmp[1] = data[511];
-                        UInt32 val = tmp.GetUInt16();
+                        UInt32 val = tmp.GetUInt16(0);
                         string str = val.ToString("X4");
                         //MessageBox.Show(str);
                         Invoke(new MethodInvoker(() =>
                         {
                             byte[] tmp1 = new byte[512];
                             Array.Copy(data, 0, tmp1, 0, 512);
-                            string str1 = tmp1.ToUInt16().ToHexString(16);
+                            //string str1 = tmp1.ToUInt16().ToHexString(16);
+                            string str1 = tmp1.GetUInt16Array().GetHexString(16);
                             str1 = str1.Remove(str1.LastIndexOf('\n')).Remove(str1.LastIndexOf(','));
                             rtRead.Text = str1;
                         }));
@@ -5243,7 +5264,7 @@ namespace TLWController
 
             ////////////////////////////////////////////////////////////////////////////////////////////////////////
             EnableControl(sender as Control, false);
-            byte chipPos = (byte)cbRegChip.SelectedValue.ToString().ToByte();
+            byte chipPos = (byte)cbRegChip.SelectedValue.ToString().GetByte(System.Globalization.NumberStyles.HexNumber);
             //uint addr = (uint)numSingleRegAddr.Value;
 
             int nIndex = int.Parse((sender as Button).Tag.ToString());
@@ -5431,7 +5452,7 @@ namespace TLWController
                         {
                             //2019-03-25 新增一行用于表示128寄存器的值
                             //Register Address 128  \t Value=\t 123
-                            numPreview128Reg.Value = arr[2].ToUInt16(System.Globalization.NumberStyles.Number);
+                            numPreview128Reg.Value = arr[2].GetUInt16(System.Globalization.NumberStyles.Number);
                         }
                         else if (i == nMaxLine - 2)
                         {
@@ -5664,7 +5685,7 @@ namespace TLWController
             {
                 tabControl1.Enabled = false;
                 EnableControl(sender as Control, false);
-                byte chipPos = (byte)cbRegChip.SelectedValue.ToString().ToByte();
+                byte chipPos = (byte)cbRegChip.SelectedValue.ToString().GetByte(System.Globalization.NumberStyles.HexNumber);
                 foreach (var item in _DevIP)
                 {
                     int hDevice = item.Value;
@@ -5735,7 +5756,7 @@ namespace TLWController
 
                     tabControl1.Enabled = false;
                     EnableControl(sender as Control, false);
-                    byte chipPos = (byte)cbRegChip.SelectedValue.ToString().ToByte();
+                    byte chipPos = (byte)cbRegChip.SelectedValue.ToString().GetByte(System.Globalization.NumberStyles.HexNumber);
 
                     string info = "";
 
@@ -6422,7 +6443,7 @@ namespace TLWController
                 return;
             }
 
-            byte chip = (byte)cbRegChip.SelectedValue.ToString().ToByte();
+            byte chip = (byte)cbRegChip.SelectedValue.ToString().GetByte(System.Globalization.NumberStyles.HexNumber);
             new Thread(new ThreadStart(delegate ()//2018-11-15改成线程方式
             {
                 EnableControl(sender as Control, false);
@@ -6722,7 +6743,7 @@ namespace TLWController
             //}
 
             EnableControl(sender as Control, false);
-            byte chipPos = (byte)cbRegChip.SelectedValue.ToString().ToByte();
+            byte chipPos = (byte)cbRegChip.SelectedValue.ToString().GetByte(System.Globalization.NumberStyles.HexNumber);
             new Thread(new ThreadStart(delegate ()
             {
                 string info = "";
@@ -6851,7 +6872,7 @@ namespace TLWController
                 classCtrlBindData obj = m_2072FactoryParam.FindCtrlAndData((sender as Control).Tag.ToString());
                 if (obj != null)
                 {
-                    byte chipPos = (byte)cbRegChip.SelectedValue.ToString().ToByte();
+                    byte chipPos = (byte)cbRegChip.SelectedValue.ToString().GetByte(System.Globalization.NumberStyles.HexNumber);
                     EnableControl(sender as Control, false);
 
                     //new Thread(new ThreadStart(delegate ()//2018-11-15改成线程方式
@@ -6958,7 +6979,7 @@ namespace TLWController
                 return;
             }
 
-            byte chipPos = (byte)cbRegChip.SelectedValue.ToString().ToByte();
+            byte chipPos = (byte)cbRegChip.SelectedValue.ToString().GetByte(System.Globalization.NumberStyles.HexNumber);
             new Thread(new ThreadStart(delegate ()//2018-11-15改成线程方式
             {
                 EnableControl(sender as Control, false);
@@ -7078,7 +7099,7 @@ namespace TLWController
             saveFileDialog.Filter = "*.rpd|*.rpd";
 
             string ip = ShowSelectIPDialog();
-            byte chipPos = (byte)cbMBFPGAChip.SelectedValue.ToString().ToByte();
+            byte chipPos = (byte)cbMBFPGAChip.SelectedValue.ToString().GetByte(System.Globalization.NumberStyles.HexNumber);
 
             EnableControl(sender as Control, false, ip);
             _TLWCommand.tlw_GetVersion(GetMBAddr(241, 241), GetId(), chipPos, 1, _DevIP, (param) =>
@@ -7208,7 +7229,7 @@ namespace TLWController
                 return;
             }
 
-            byte chipPos = (byte)cbRegChip.SelectedValue.ToString().ToByte();
+            byte chipPos = (byte)cbRegChip.SelectedValue.ToString().GetByte(System.Globalization.NumberStyles.HexNumber);
             bool bSave = !ckDebugMode.Checked;
             int color = (int)cbParam2055Color.SelectedValue;
             List<RegisterItem> regList = grid2055.DataSource as List<RegisterItem>;
@@ -7239,7 +7260,7 @@ namespace TLWController
             byte[] tmp2 = new byte[tmp1.Length * 2];
             for (int i = 0; i < tmp1.Length; i++)
             {
-                byte[] tmp3 = tmp1[i].ToUInt16().GetBytes();
+                byte[] tmp3 = tmp1[i].GetUInt16(System.Globalization.NumberStyles.HexNumber).GetBytes();
                 Array.Copy(tmp3, 0, data, i * 2, 2);
             }
 
@@ -7247,7 +7268,7 @@ namespace TLWController
             //Array.Copy(bytesData, 0, data, 0, bytesData.Length);
             //WriteTextFile(@"d:\tmp\register_Write.txt", data.ToString(" "));
 #if DEBUG
-            WriteTextFile(@"d:\tmp\write2072Param1.txt", data.ToString(" "));
+            WriteTextFile(@"d:\tmp\write2072Param1.txt", data.GetString(" "));
 #endif
             byte[] tmp = new byte[510];
             Array.Copy(data, 0, tmp, 0, 510);
@@ -7272,7 +7293,7 @@ namespace TLWController
                 return;
             }
 
-            byte chipPos = (byte)cbRegChip.SelectedValue.ToString().ToByte();
+            byte chipPos = (byte)cbRegChip.SelectedValue.ToString().GetByte(System.Globalization.NumberStyles.HexNumber);
             bool bSave = !ckDebugMode.Checked;
             int color = (int)cbParam2055Color.SelectedValue;
             List<RegisterItem> regList = grid2055.DataSource as List<RegisterItem>;
@@ -7314,7 +7335,7 @@ namespace TLWController
                 return;
             }
 
-            byte chipPos = (byte)cbRegChip.SelectedValue.ToString().ToByte();
+            byte chipPos = (byte)cbRegChip.SelectedValue.ToString().GetByte(System.Globalization.NumberStyles.HexNumber);
             bool bSave = !ckDebugMode.Checked;
             int color = (int)cbParam2055Color.SelectedValue;
             List<RegisterItem> regList = grid2055.DataSource as List<RegisterItem>;
@@ -7356,7 +7377,7 @@ namespace TLWController
                 return;
             }
 
-            byte chipPos = (byte)cbRegChip.SelectedValue.ToString().ToByte();
+            byte chipPos = (byte)cbRegChip.SelectedValue.ToString().GetByte(System.Globalization.NumberStyles.HexNumber);
             bool bSave = !ckDebugMode.Checked;
             int color = (int)cbParam2055Color.SelectedValue;
             List<RegisterItem> regList = grid2055.DataSource as List<RegisterItem>;
@@ -7397,7 +7418,7 @@ namespace TLWController
                 return;
             }
 
-            byte chipPos = (byte)cbRegChip.SelectedValue.ToString().ToByte();
+            byte chipPos = (byte)cbRegChip.SelectedValue.ToString().GetByte(System.Globalization.NumberStyles.HexNumber);
             bool bSave = !ckDebugMode.Checked;
             int color = (int)cbParam2055Color.SelectedValue;
             List<RegisterItem> regList = grid2055.DataSource as List<RegisterItem>;
@@ -7873,14 +7894,15 @@ namespace TLWController
             Array.Copy(r.GetBytes(), 0, package, 21, 2);
             Array.Copy(g.GetBytes(), 0, package, 23, 2);
             Array.Copy(b.GetBytes(), 0, package, 25, 2);
-            Array.Copy(package.GetSum(3, package.Length - 3).GetBytes(), 0, package, 27, 2);
+            //Array.Copy(package.GetSum(3, package.Length - 3).GetBytes(), 0, package, 27, 2);
+            Array.Copy(package.CheckSumForUInt16(3, package.Length - 3).GetBytes(), 0, package, 27, 2);
             package[29] = 0x55;
             package[30] = 0x71;
             package[31] = 0xBD;
 
-            WriteMessage(package.ToString(" "));
-            UDPHelper.Send(package, "192.168.0.32", out byte[] rev);
-            WriteMessage(rev.ToString(" "));
+            WriteMessage(package.GetString(" "));
+            Helper.UDPHelper.Send(package, "192.168.0.32", out byte[] rev);
+            WriteMessage(rev.GetString(" "));
         }
 
         private void btnReadCalibration_Click(object sender, EventArgs e)
@@ -7940,7 +7962,7 @@ namespace TLWController
                 return;
             }
             string ip = ShowSelectIPDialog();
-            byte chipPos = (byte)cbMBFPGAChip.SelectedValue.ToString().ToByte();
+            byte chipPos = (byte)cbMBFPGAChip.SelectedValue.ToString().GetByte(System.Globalization.NumberStyles.HexNumber);
 
             EnableControl(sender as Control, false, ip);
             _TLWCommand.tlw_GetVersion(GetMBAddr(241, 241), GetId(), chipPos, 1, _DevIP, (param1) =>
@@ -8406,7 +8428,7 @@ namespace TLWController
                     if (result == 0)
                     {
                         UInt16 val = (UInt16)(data[0]);
-                        WriteMessage("状态1:" + val.GetBinaryString(16));
+                        WriteMessage("状态1:" + val.GetBinaryString());
                     }
                     else
                     {
@@ -8448,7 +8470,7 @@ namespace TLWController
                     if (result == 0)
                     {
                         UInt16 val = (UInt16)(data[0]);
-                        WriteMessage("状态2:" + val.GetBinaryString(16));
+                        WriteMessage("状态2:" + val.GetBinaryString());
                     }
                     else
                     {
@@ -8461,7 +8483,7 @@ namespace TLWController
                     if (result == 0)
                     {
                         UInt16 val = (UInt16)(data[0]);
-                        WriteMessage("状态3:" + val.GetBinaryString(16));
+                        WriteMessage("状态3:" + val.GetBinaryString());
                     }
                     else
                     {
@@ -8488,7 +8510,7 @@ namespace TLWController
                     if (result == 0)
                     {
                         UInt16 val = (UInt16)(data[0]);
-                        WriteMessage("状态1:" + val.GetBinaryString(16));
+                        WriteMessage("状态1:" + val.GetBinaryString());
                     }
                     else
                     {
@@ -8617,7 +8639,7 @@ namespace TLWController
                 if (result == 0)
                 {
                     UInt16 val = (UInt16)(data[0]);
-                    WriteMessage("状态1:" + val.GetBinaryString(16));
+                    WriteMessage("状态1:" + val.GetBinaryString());
                 }
                 else
                 {
@@ -8937,9 +8959,9 @@ namespace TLWController
 
         private void btnSetColorTemp_Click(object sender, EventArgs e)
         {
-            ushort chip = cbChip.SelectedValue.ToString().ToUInt16();
-            ushort hz = cbHz.SelectedValue.ToString().ToUInt16();
-            ushort mode = cbColorTempType.SelectedValue.ToString().ToUInt16();
+            ushort chip = cbChip.SelectedValue.ToString().GetUInt16(System.Globalization.NumberStyles.HexNumber);
+            ushort hz = cbHz.SelectedValue.ToString().GetUInt16(System.Globalization.NumberStyles.HexNumber);
+            ushort mode = cbColorTempType.SelectedValue.ToString().GetUInt16(System.Globalization.NumberStyles.HexNumber);
 
             byte[] group = new byte[1];
             group[0] = (byte)hz;
@@ -8967,7 +8989,7 @@ namespace TLWController
 
         private void btnReadColorTemp_Click(object sender, EventArgs e)
         {
-            ushort chip = cbChip.SelectedValue.ToString().ToUInt16();
+            ushort chip = cbChip.SelectedValue.ToString().GetUInt16(System.Globalization.NumberStyles.HexNumber);
             InvokeAsync(() =>
             {
                 EnableControl(sender as Control, false);
@@ -8991,7 +9013,7 @@ namespace TLWController
 
         private void btnSetGain_Click(object sender, EventArgs e)
         {
-            ushort chip = cbChipType.SelectedValue.ToString().ToUInt16();
+            ushort chip = cbChipType.SelectedValue.ToString().GetUInt16(System.Globalization.NumberStyles.HexNumber);
             ushort[] data = new ushort[3];
             data[0] = (ushort)numRed.Value;
             data[1] = (ushort)numGreen.Value;
@@ -9017,7 +9039,7 @@ namespace TLWController
 
         private void btnReadGain_Click(object sender, EventArgs e)
         {
-            ushort chip = cbChipType.SelectedValue.ToString().ToUInt16();
+            ushort chip = cbChipType.SelectedValue.ToString().GetUInt16(System.Globalization.NumberStyles.HexNumber);
 
             InvokeAsync(() =>
             {
@@ -9050,7 +9072,7 @@ namespace TLWController
                 return;
             }
 
-            byte chipPos = (byte)cbRegChip.SelectedValue.ToString().ToByte();
+            byte chipPos = (byte)cbRegChip.SelectedValue.ToString().GetByte(System.Globalization.NumberStyles.HexNumber);
             bool bSave = !ckDebugMode.Checked;
             int color = (int)cbParam2055Color.SelectedValue;
             List<RegisterItem> regList = grid2055.DataSource as List<RegisterItem>;
@@ -9064,20 +9086,21 @@ namespace TLWController
                     if (t.ResultCode == 0)
                     {
 #if DEBUG
-                        WriteTextFile(@"d:\tmp\register_reader1.txt", (t.Data as byte[]).ToString(" "));
+                        WriteTextFile(@"d:\tmp\register_reader1.txt", (t.Data as byte[]).GetString(" "));
 #endif 
                         byte[] data = t.Data as byte[];
                         byte[] tmp = new byte[2];
                         tmp[0] = data[510];
                         tmp[1] = data[511];
-                        UInt32 val = tmp.GetUInt16();
+                        UInt32 val = tmp.GetUInt16(0);
                         string str = val.ToString("X4");
                         //MessageBox.Show(str);
                         Invoke(new MethodInvoker(() =>
                         {
                             byte[] tmp1 = new byte[512];
                             Array.Copy(data, 0, tmp1, 0, 512);
-                            string str1 = tmp1.ToUInt16().ToHexString(16);
+                            //string str1 = tmp1.ToUInt16().ToHexString(16);
+                            string str1 = tmp1.GetUInt16Array().GetHexString(16);
                             str1 = str1.Remove(str1.LastIndexOf('\n')).Remove(str1.LastIndexOf(','));
                             rt2072.Text = str1;
                         }));
@@ -9097,7 +9120,7 @@ namespace TLWController
                 return;
             }
 
-            byte chipPos = (byte)cbRegChip.SelectedValue.ToString().ToByte();
+            byte chipPos = (byte)cbRegChip.SelectedValue.ToString().GetByte(System.Globalization.NumberStyles.HexNumber);
             bool bSave = !ckDebugMode.Checked;
             int color = (int)cbParam2055Color.SelectedValue;
             List<RegisterItem> regList = grid2055.DataSource as List<RegisterItem>;
@@ -9111,20 +9134,20 @@ namespace TLWController
                     if (t.ResultCode == 0)
                     {
 #if DEBUG
-                        WriteTextFile(@"d:\tmp\register_reader1.txt", (t.Data as byte[]).ToString(" "));
+                        WriteTextFile(@"d:\tmp\register_reader1.txt", (t.Data as byte[]).GetString(" "));
 #endif 
                         byte[] data = t.Data as byte[];
                         byte[] tmp = new byte[2];
                         tmp[0] = data[510];
                         tmp[1] = data[511];
-                        UInt32 val = tmp.GetUInt16();
+                        UInt32 val = tmp.GetUInt16(0);
                         string str = val.ToString("X4");
                         //MessageBox.Show(str);
                         Invoke(new MethodInvoker(() =>
                         {
                             byte[] tmp1 = new byte[512];
                             Array.Copy(data, 0, tmp1, 0, 512);
-                            string str1 = tmp1.ToUInt16().ToHexString(16);
+                            string str1 = tmp1.GetUInt16Array().GetHexString(16);
                             str1 = str1.Remove(str1.LastIndexOf('\n')).Remove(str1.LastIndexOf(','));
                             rt2055Send1.Text = str1;
                         }));
@@ -9146,7 +9169,7 @@ namespace TLWController
                 return;
             }
 
-            byte chipPos = (byte)cbRegChip.SelectedValue.ToString().ToByte();
+            byte chipPos = (byte)cbRegChip.SelectedValue.ToString().GetByte(System.Globalization.NumberStyles.HexNumber);
             bool bSave = !ckDebugMode.Checked;
             int color = (int)cbParam2055Color.SelectedValue;
             List<RegisterItem> regList = grid2055.DataSource as List<RegisterItem>;
@@ -9161,7 +9184,7 @@ namespace TLWController
             byte[] tmp2 = new byte[tmp1.Length * 2];
             for (int i = 0; i < tmp1.Length; i++)
             {
-                byte[] tmp3 = tmp1[i].ToUInt16().GetBytes();
+                byte[] tmp3 = tmp1[i].GetUInt16(System.Globalization.NumberStyles.HexNumber).GetBytes();
                 Array.Copy(tmp3, 0, data, i * 2, 2);
             }
 
@@ -9169,7 +9192,7 @@ namespace TLWController
             //Array.Copy(bytesData, 0, data, 0, bytesData.Length);
             //WriteTextFile(@"d:\tmp\register_Write.txt", data.ToString(" "));
 #if DEBUG
-            WriteTextFile(@"d:\tmp\write2072Param1.txt", data.ToString(" "));
+            WriteTextFile(@"d:\tmp\write2072Param1.txt", data.GetString(" "));
 #endif
             byte[] tmp = new byte[510];
             Array.Copy(data, 0, tmp, 0, 510);
@@ -9196,7 +9219,7 @@ namespace TLWController
                 return;
             }
 
-            byte chipPos = (byte)cbRegChip.SelectedValue.ToString().ToByte();
+            byte chipPos = (byte)cbRegChip.SelectedValue.ToString().GetByte(System.Globalization.NumberStyles.HexNumber);
             bool bSave = !ckDebugMode.Checked;
             int color = (int)cbParam2055Color.SelectedValue;
             List<RegisterItem> regList = grid2055.DataSource as List<RegisterItem>;
@@ -9210,20 +9233,20 @@ namespace TLWController
                     if (t.ResultCode == 0)
                     {
 #if DEBUG
-                        WriteTextFile(@"d:\tmp\register_reader1.txt", (t.Data as byte[]).ToString(" "));
+                        WriteTextFile(@"d:\tmp\register_reader1.txt", (t.Data as byte[]).GetString(" "));
 #endif 
                         byte[] data = t.Data as byte[];
                         byte[] tmp = new byte[2];
                         tmp[0] = data[510];
                         tmp[1] = data[511];
-                        UInt32 val = tmp.GetUInt16();
+                        UInt32 val = tmp.GetUInt16(0);
                         string str = val.ToString("X4");
                         //MessageBox.Show(str);
                         Invoke(new MethodInvoker(() =>
                         {
                             byte[] tmp1 = new byte[512];
                             Array.Copy(data, 0, tmp1, 0, 512);
-                            string str1 = tmp1.ToUInt16().ToHexString(16);
+                            string str1 = tmp1.GetUInt16Array().GetHexString(16);
                             str1 = str1.Remove(str1.LastIndexOf('\n')).Remove(str1.LastIndexOf(','));
                             rt2055Send2.Text = str1;
                         }));
@@ -9244,7 +9267,7 @@ namespace TLWController
                 return;
             }
 
-            byte chipPos = (byte)cbRegChip.SelectedValue.ToString().ToByte();
+            byte chipPos = (byte)cbRegChip.SelectedValue.ToString().GetByte(System.Globalization.NumberStyles.HexNumber);
             bool bSave = !ckDebugMode.Checked;
             int color = (int)cbParam2055Color.SelectedValue;
             List<RegisterItem> regList = grid2055.DataSource as List<RegisterItem>;
@@ -9259,7 +9282,7 @@ namespace TLWController
             byte[] tmp2 = new byte[tmp1.Length * 2];
             for (int i = 0; i < tmp1.Length; i++)
             {
-                byte[] tmp3 = tmp1[i].ToUInt16().GetBytes();
+                byte[] tmp3 = tmp1[i].GetUInt16(System.Globalization.NumberStyles.HexNumber).GetBytes();
                 Array.Copy(tmp3, 0, data, i * 2, 2);
             }
 
@@ -9267,7 +9290,7 @@ namespace TLWController
             //Array.Copy(bytesData, 0, data, 0, bytesData.Length);
             //WriteTextFile(@"d:\tmp\register_Write.txt", data.ToString(" "));
 #if DEBUG
-            WriteTextFile(@"d:\tmp\write2072Param1.txt", data.ToString(" "));
+            WriteTextFile(@"d:\tmp\write2072Param1.txt", data.GetString(" "));
 #endif
             byte[] tmp = new byte[510];
             Array.Copy(data, 0, tmp, 0, 510);
@@ -9336,7 +9359,7 @@ namespace TLWController
                 return;
             }
 
-            byte color = cbGammFileColor.SelectedValue.ToString().ToByte();
+            byte color = cbGammFileColor.SelectedValue.ToString().GetByte(System.Globalization.NumberStyles.HexNumber);
             byte mode = 0;
             EnableControl(sender as Control, false);
             CALHelper.Write(arrData, @"d:\tmp\gfile1.zdat");
@@ -9411,7 +9434,7 @@ namespace TLWController
 
         private void btnPreview128Reg_Click(object sender, EventArgs e)
         {
-            byte chipPos = (byte)cbRegChip.SelectedValue.ToString().ToByte();
+            byte chipPos = (byte)cbRegChip.SelectedValue.ToString().GetByte(System.Globalization.NumberStyles.HexNumber);
             new Thread(new ThreadStart(delegate ()//2018-11-15改成线程方式
             {
                 EnableControl(sender as Control, false);
@@ -9471,10 +9494,276 @@ namespace TLWController
                 if (e.RowIndex != -1)
                 {
                     RegisterOtherItem item = gridOtherReg.Rows[e.RowIndex].DataBoundItem as RegisterOtherItem;
-                    e.Value += $"[{item.MinValue.ToInit32(System.Globalization.NumberStyles.HexNumber)} - {item.MaxValue.ToInit32(System.Globalization.NumberStyles.HexNumber)}]";
+                    e.Value += $"[{item.MinValue.GetInt32(System.Globalization.NumberStyles.HexNumber)} - {item.MaxValue.GetInt32(System.Globalization.NumberStyles.HexNumber)}]";
 
                 }
             }
+        }
+
+        private void btnSetVol_Click(object sender, EventArgs e)
+        {
+            string ip = GetCommunicationType().StartIPAddress;
+            int vol1 = 255 - tbVol.Value;
+            TLWCommandSharp commandSharp = new TLWCommandSharp();
+            commandSharp.Sys_ShowPackage(true);
+            commandSharp.PackageEvent += CommandSharp_PackageEvent;
+            commandSharp.Sys_Initial();
+            int dev = commandSharp.Sys_Open(SFTHelper.Enums.EnumCommType.UDP, ip, 8001);
+
+            try
+            {
+                if (dev == -1)
+                {
+                    WriteMessage("设备打开失败");
+                    return;
+                }
+                if (commandSharp.TLW_SetVolumn1(dev, GetMBAddr(0xf1, 0xf1), GetId(), (byte)vol1) != 0)
+                {
+                    WriteMessage("音量设置失败");
+                    return;
+                }
+                WriteMessage("音量设置成功");
+            }
+            finally
+            {
+                commandSharp.Sys_Close(dev);
+            }
+
+            //byte[] bt = new byte[4];
+            //for (int i = 0; i < bt.Length; i++)
+            //{
+            //    bt[i] = (byte)(i + 1);
+            //}
+            //List<byte[]> items = bt.Split(10, true, 0xff);
+            //List<byte[]> item1 = bt.Split(10, false, 0xff);
+
+        }
+
+        private void CommandSharp_PackageEvent(object sender, SFTHelper.Events.PackageEventArgs e)
+        {
+            if (e.PackageFlag == SFTHelper.Enums.EnumPackageInOut.Input)
+            {
+                WriteMessage($"发送:{e.Data.GetString(" ")}");
+            }
+            else if (e.PackageFlag == SFTHelper.Enums.EnumPackageInOut.Output)
+            {
+                WriteMessage($"接收:{e.Data.GetString(" ")}");
+            }
+        }
+
+
+        private void _commandSharp_ProgressEvent(object sender, SFTHelper.Events.ProgressEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void tbVol_MouseUp(object sender, MouseEventArgs e)
+        {
+            int vol1 = 255 - tbVol.Value;
+            int percent = (int)(tbVol.Value * 1.0 / 255 * 100);
+            label36.Text = $"{percent}%[{vol1.ToString("X2")}]";
+
+            byte[] data = new byte[26];
+
+            UInt64 header = 0xAA8E42;
+            byte[] btheader = header.GetBytes();
+            Array.Copy(btheader, 5, data, 0, 3);
+
+            UInt16 packageLen = 0x001A;
+            byte[] btPackageLen = packageLen.GetBytes();
+            Array.Copy(btPackageLen, 0, data, 3, 2);
+
+            UInt16 addr = GetMBAddr(0xF1, 0xF1);
+            byte[] btAddr = addr.GetBytes();
+            Array.Copy(btAddr, 0, data, 5, 2);
+
+            byte[] btId = new byte[2];
+            Array.Copy(btId, 0, data, 7, 2);
+
+            UInt16 cmdId = 0x0022;
+            byte[] btCmdId = cmdId.GetBytes();
+            Array.Copy(btCmdId, 0, data, 9, 2);
+
+            byte[] reserve = new byte[4];
+            Array.Copy(reserve, 0, data, 11, 4);
+
+            UInt16 packageCount = 1;
+            byte[] btPackageCount = packageCount.GetBytes();
+            Array.Copy(btPackageCount, 0, data, 15, 2);
+
+            UInt16 packageNum = 1;
+            byte[] btPackageNum = packageNum.GetBytes();
+            Array.Copy(btPackageNum, 0, data, 17, 2);
+
+            byte[] executeState = new byte[1].Fill(0x01);
+            Array.Copy(executeState, 0, data, 19, 1);
+
+            byte[] vol = new byte[1];
+            vol[0] = (byte)vol1;
+            Array.Copy(vol, 0, data, 20, 1);
+
+            UInt16 checkSum = data.CheckSumForUInt16(3, 18);
+            byte[] btcheckSum = checkSum.GetBytes();
+            Array.Copy(btcheckSum, 0, data, 21, 2);
+
+            UInt64 foolter = 0x5571BD;
+            byte[] btfoolter = foolter.GetBytes();
+            Array.Copy(btfoolter, 5, data, 23, 3);
+            WriteMessage(data.GetString(" "));
+            UDPHelper.Send(data, "192.168.0.32", out byte[] rev);
+            if (rev != null)
+                WriteMessage(rev.GetString(" "));
+
+        }
+
+        private void tbVol2_MouseUp(object sender, MouseEventArgs e)
+        {
+            int vol1 = 255 - tbVol2.Value;
+            int percent = (int)(vol1 * 1.0 / 255 * 100);
+            label103.Text = $"{percent}%[{vol1.ToString("X2")}]";
+
+
+            byte[] data = new byte[26];
+
+            UInt64 header = 0xAA8E42;
+            byte[] btheader = header.GetBytes();
+            Array.Copy(btheader, 5, data, 0, 3);
+
+            UInt16 packageLen = 0x001A;
+            byte[] btPackageLen = packageLen.GetBytes();
+            Array.Copy(btPackageLen, 0, data, 3, 2);
+
+            UInt16 addr = GetMBAddr(0xF1, 0xF1);
+            byte[] btAddr = addr.GetBytes();
+            Array.Copy(btAddr, 0, data, 5, 2);
+
+            byte[] btId = new byte[2];
+            Array.Copy(btId, 0, data, 7, 2);
+
+            UInt16 cmdId = 0x0023;
+            byte[] btCmdId = cmdId.GetBytes();
+            Array.Copy(btCmdId, 0, data, 9, 2);
+
+            byte[] reserve = new byte[4];
+            Array.Copy(reserve, 0, data, 11, 4);
+
+            UInt16 packageCount = 1;
+            byte[] btPackageCount = packageCount.GetBytes();
+            Array.Copy(btPackageCount, 0, data, 15, 2);
+
+            UInt16 packageNum = 1;
+            byte[] btPackageNum = packageNum.GetBytes();
+            Array.Copy(btPackageNum, 0, data, 17, 2);
+
+            byte[] executeState = new byte[1];
+            Array.Copy(executeState, 0, data, 19, 1);
+
+            byte[] vol = new byte[1];
+            vol[0] = (byte)vol1;
+            Array.Copy(vol, 0, data, 20, 1);
+
+            UInt16 checkSum = data.CheckSumForUInt16(3, 18);
+            byte[] btcheckSum = checkSum.GetBytes();
+            Array.Copy(btcheckSum, 0, data, 21, 2);
+
+            UInt64 foolter = 0x5571BD;
+            byte[] btfoolter = foolter.GetBytes();
+            Array.Copy(btfoolter, 5, data, 23, 3);
+            WriteMessage("发送:" + data.GetString(" "));
+            UDPHelper.Send(data, "192.168.0.32", out byte[] rev);
+            if (rev != null)
+                WriteMessage("接收:" + rev.GetString(" "));
+        }
+
+        private void tbVol_Scroll(object sender, EventArgs e)
+        {
+
+        }
+
+        private void tbVolumn1_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (CheckIsBusy()) return;
+            if (!CheckDeviceAddr())
+            {
+                MessageBox.Show(this, "设备地址错误");
+                return;
+            }
+            int vol = 255 - tbVolumn1.Value;
+
+            InvokeAsync(() =>
+            {
+                EnableControl(sender as Control, false);
+                foreach (var item in _DevIPSharp)
+                {
+                    //int result = _commandSharp.tlw_SelectColorTemp(item.Value, GetMBAddr(), GetId(), (byte)chip, group, pos);
+                    int result = _commandSharp.TLW_SetVolumn1(item.Value, GetMBAddr(), GetId(), (byte)vol);
+                    if (result != 0)
+                    {
+                        WriteMessage($"IP:{item.Key}音量设置失败");
+                    }
+                    else
+                    {
+                        WriteMessage($"IP:{item.Key}音量设置成功");
+                    }
+                }
+                EnableControl(sender as Control, true);
+            });
+        }
+
+        private void tbVolumn1_Scroll(object sender, EventArgs e)
+        {
+            if (CheckIsBusy()) return;
+            if (!CheckDeviceAddr())
+            {
+                MessageBox.Show(this, "设备地址错误");
+                return;
+            }
+
+            int percent = (int)(tbVolumn1.Value * 1.0 / 255 * 100);
+            lblVolumn1.Text = $"{percent}%";
+        }
+
+        private void tbVolumn2_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (CheckIsBusy()) return;
+            if (!CheckDeviceAddr())
+            {
+                MessageBox.Show(this, "设备地址错误");
+                return;
+            }
+            int vol = 255 - tbVolumn2.Value;
+
+            InvokeAsync(() =>
+            {
+                EnableControl(sender as Control, false);
+                foreach (var item in _DevIPSharp)
+                {
+                    //int result = _commandSharp.tlw_SelectColorTemp(item.Value, GetMBAddr(), GetId(), (byte)chip, group, pos);
+                    int result = _commandSharp.TLW_SetVolumn2(item.Value, GetMBAddr(), GetId(), (byte)vol);
+                    if (result != 0)
+                    {
+                        WriteMessage($"IP:{item.Key}音量设置失败");
+                    }
+                    else
+                    {
+                        WriteMessage($"IP:{item.Key}音量设置成功");
+                    }
+                }
+                EnableControl(sender as Control, true);
+            });
+        }
+
+        private void tbVolumn2_Scroll(object sender, EventArgs e)
+        {
+            if (CheckIsBusy()) return;
+            if (!CheckDeviceAddr())
+            {
+                MessageBox.Show(this, "设备地址错误");
+                return;
+            }
+
+            int percent = (int)(tbVolumn2.Value * 1.0 / 255 * 100);
+            lblVolumn2.Text = $"{percent}%";
         }
     }
 }

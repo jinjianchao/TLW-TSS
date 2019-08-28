@@ -2,10 +2,10 @@
 /************************************************************************
 *文件名： UInt32Ext
 *创建人： JIN
-*创建时间：2019/8/16 10:45:47
+*创建时间：2019/8/26 9:43:27
 *描述：
 *=======================================================================
-*修改时间：2019/8/16 10:45:47
+*修改时间：2019/8/26 9:43:27
 *修改人：
 *描述：
 ************************************************************************/
@@ -18,23 +18,21 @@ using System.Text;
 
 namespace SFTHelper.Extentions
 {
-    public static class UInt32Ext
+    public static class UInt64Ext
     {
-        public static byte[] GetBytes(this uint data, bool isHighFirst = true)
+        public static byte[] GetBytes(this UInt64 data, bool isHighFirst = true)
         {
-            int btLen = 4;
-            int maxLen = 32;
             List<byte> bytes = new List<byte>();
             if (isHighFirst)
             {
-                for (int i = 0; i < btLen; i++)
+                for (int i = 0; i < 8; i++)
                 {
-                    bytes.Add((byte)((data >> (maxLen - ((i + 1) << 3))) & 0xff));
+                    bytes.Add((byte)((data >> (64 - ((i + 1) << 3))) & 0xff));
                 }
             }
             else
             {
-                for (int i = 0; i < btLen; i++)
+                for (int i = 0; i < 8; i++)
                 {
                     bytes.Add((byte)((data >> (i << 3)) & 0xff));
                 }
@@ -49,47 +47,47 @@ namespace SFTHelper.Extentions
         /// <param name="nBitLow"></param>
         /// <param name="nBitHigh"></param>
         /// <returns></returns>
-        public static int GetPart(this uint src, byte nBitLow, byte nBitHigh)
+        public static long GetPart(this UInt64 src, byte nBitLow, byte nBitHigh)
         {
             //取数
-            int nResult = 0;
-            UInt32 tmp = src;
+            long nResult = 0;
+            UInt64 tmp = src;
             int nLen = nBitHigh - nBitLow + 1;
 
-            UInt32 mask = 0;
+            UInt64 mask = 0;
             for (int i = 0; i < nLen; i++)
             {
-                mask |= (UInt32)(1 << (nBitLow + i));
+                mask |= (UInt64)((long)1 << (nBitLow + i));
             }
 
             //使用掩码
-            tmp &= (UInt32)(mask);
+            tmp &= (UInt64)(mask);
 
-            nResult = (int)(tmp >> nBitLow);
+            nResult = (long)(tmp >> nBitLow);
 
             return nResult;
         }
 
-        public static UInt32 ModifyPart(this UInt32 nSrc, byte nBitLow, byte nBitHigh, UInt32 nInput)
+        public static UInt64 ModifyPart(this UInt64 nSrc, byte nBitLow, byte nBitHigh, UInt64 nInput)
         {
             //取数并修改
-            UInt32 tmp = nSrc;
+            UInt64 tmp = nSrc;
             int nLen = nBitHigh - nBitLow + 1;
 
-            UInt32 mask = 0;
+            UInt64 mask = 0;
             for (int i = 0; i < nLen; i++)
             {
-                mask |= (UInt32)(1 << (nBitLow + i));
+                mask |= (UInt64)((long)1 << (nBitLow + i));
             }
 
             //输入值过滤
-            UInt32 nData = (UInt32)(nInput & (mask >> nBitLow));
+            UInt64 nData = (UInt64)(nInput & (mask >> nBitLow));
 
             //剔除原数据中的数据
-            tmp &= (UInt32)(~mask);
+            tmp &= (UInt64)(~mask);
 
             //将新数据放入指定位置
-            tmp |= (UInt32)(nData << nBitLow);
+            tmp |= (UInt64)(nData << nBitLow);
 
             return tmp;
         }

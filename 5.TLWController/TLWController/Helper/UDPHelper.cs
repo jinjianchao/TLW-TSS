@@ -17,7 +17,6 @@ using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
-using TLWController.Extentions;
 
 namespace TLWController.Helper
 {
@@ -42,7 +41,6 @@ namespace TLWController.Helper
                 return 0;
             }
             return receiveBytes.Length;
-
         }
     }
 }

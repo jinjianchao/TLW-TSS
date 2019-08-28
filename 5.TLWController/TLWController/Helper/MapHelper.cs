@@ -16,7 +16,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using TLWController.Extentions;
+using SFTHelper.Extentions;
 
 namespace TLWController.Helper
 {
@@ -71,8 +71,8 @@ namespace TLWController.Helper
                 byte[] tmp = new byte[2];
                 tmp[0] = data[i * 2];
                 tmp[1] = data[i * 2 + 1];
-                UInt16 val = tmp.GetUInt16();
-                sb.AppendLine($"\t{addr.ToString("X4")}:{tmp.GetUInt16().ToString("X4")};");
+                UInt16 val = tmp.GetUInt16(0);
+                sb.AppendLine($"\t{addr.ToString("X4")}:{tmp.GetUInt16(0).ToString("X4")};");
                 addr++;
             }
             sb.AppendLine("END;");
@@ -108,17 +108,17 @@ namespace TLWController.Helper
                                 //多个连续寄存器数据
                                 addrAndValueArr[0] = addrAndValueArr[0].Replace("[", "").Replace("]", "");
                                 string[] addrRange = addrAndValueArr[0].Split(new[] { ".." }, StringSplitOptions.None);
-                                Int32 startaddr = addrRange[0].ToInit32(System.Globalization.NumberStyles.HexNumber);
-                                Int32 endaddr = addrRange[1].ToInit32(System.Globalization.NumberStyles.HexNumber);
+                                Int32 startaddr = addrRange[0].GetInt32(System.Globalization.NumberStyles.HexNumber);
+                                Int32 endaddr = addrRange[1].GetInt32(System.Globalization.NumberStyles.HexNumber);
                                 for (int i = startaddr; i <= endaddr; i++)
                                 {
-                                    MapData.Add(i.ToString("X4"), addrAndValueArr[1].Trim().ToInit32(System.Globalization.NumberStyles.HexNumber).ToString("X4"));
+                                    MapData.Add(i.ToString("X4"), addrAndValueArr[1].Trim().GetInt32(System.Globalization.NumberStyles.HexNumber).ToString("X4"));
                                 }
                             }
                             else
                             {
                                 //单个寄存器数据
-                                MapData.Add(addrAndValueArr[0].Trim().ToInit32(System.Globalization.NumberStyles.HexNumber).ToString("X4"), addrAndValueArr[1].Replace(";", "").Trim().ToInit32(System.Globalization.NumberStyles.HexNumber).ToString("X4"));
+                                MapData.Add(addrAndValueArr[0].Trim().GetInt32(System.Globalization.NumberStyles.HexNumber).ToString("X4"), addrAndValueArr[1].Replace(";", "").Trim().GetInt32(System.Globalization.NumberStyles.HexNumber).ToString("X4"));
                             }
                         }
                     }
@@ -136,7 +136,7 @@ namespace TLWController.Helper
             List<byte> data = new List<byte>();
             foreach (var item in MapData)
             {
-                byte[] byteData = item.Value.ToUInt16(System.Globalization.NumberStyles.HexNumber).GetBytes();
+                byte[] byteData = item.Value.GetUInt16(System.Globalization.NumberStyles.HexNumber).GetBytes();
                 data.Add(byteData[0]);
                 data.Add(byteData[1]);
             }

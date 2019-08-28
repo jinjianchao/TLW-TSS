@@ -40,6 +40,30 @@ namespace SFTHelper.Extentions
             return (byte)(source & 0xFF);
         }
 
+        public static byte[] GetBytes(this ushort source, bool isHighFirst = true)
+        {
+            List<byte> value = new List<byte>();
+            int btLen = 2;
+            int maxLen = 16;
+
+            List<byte> bytes = new List<byte>();
+            if (isHighFirst)
+            {
+                for (int i = 0; i < btLen; i++)
+                {
+                    bytes.Add((byte)((source >> (maxLen - ((i + 1) << 3))) & 0xff));
+                }
+            }
+            else
+            {
+                for (int i = 0; i < 2; i++)
+                {
+                    bytes.Add((byte)((source >> (i << 3)) & 0xff));
+                }
+            }
+            return bytes.ToArray();
+        }
+
         /// <summary>
         /// 获取32位数值中的一部分
         /// </summary>
@@ -47,7 +71,7 @@ namespace SFTHelper.Extentions
         /// <param name="nBitLow"></param>
         /// <param name="nBitHigh"></param>
         /// <returns></returns>
-        public static ushort GetPartOfUInt16(this ushort src, byte nBitLow, byte nBitHigh)
+        public static ushort GetPart(this ushort src, int nBitLow, int nBitHigh)
         {
             //取数
             ushort nResult = 0;
@@ -68,7 +92,7 @@ namespace SFTHelper.Extentions
             return nResult;
         }
 
-        public static UInt16 Modify(this UInt16 nSrc, byte nBitLow, byte nBitHigh, UInt16 nInput)
+        public static UInt16 ModifyPart(this UInt16 nSrc, int nBitLow, int nBitHigh, UInt16 nInput)
         {
             //取数并修改
             UInt16 tmp = nSrc;
@@ -91,5 +115,21 @@ namespace SFTHelper.Extentions
 
             return tmp;
         }
+
+        public static string GetBinaryString(this UInt16 source)
+        {
+            int len = 16;
+            string str1 = Convert.ToString(source, 2);
+            if (str1.Length < len)
+            {
+                int length = len - str1.Length;
+                for (int i = 0; i < length; i++)
+                {
+                    str1 = "0" + str1;
+                }
+            }
+            return str1;
+        }
+
     }
 }

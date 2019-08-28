@@ -28,8 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.tabCommonCommand = new System.Windows.Forms.TabPage();
             this.groupBox21 = new System.Windows.Forms.GroupBox();
@@ -684,6 +684,11 @@
             this.rt2072 = new System.Windows.Forms.RichTextBox();
             this.tabTest = new System.Windows.Forms.TabPage();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.label103 = new System.Windows.Forms.Label();
+            this.label36 = new System.Windows.Forms.Label();
+            this.tbVol2 = new System.Windows.Forms.TrackBar();
+            this.btnSetVol = new System.Windows.Forms.Button();
+            this.tbVol = new System.Windows.Forms.TrackBar();
             this.button16 = new System.Windows.Forms.Button();
             this.button10 = new System.Windows.Forms.Button();
             this.button11 = new System.Windows.Forms.Button();
@@ -756,6 +761,11 @@
             this.button1 = new System.Windows.Forms.Button();
             this.numTimeDelay = new System.Windows.Forms.NumericUpDown();
             this.button2 = new System.Windows.Forms.Button();
+            this.gpVolumn = new System.Windows.Forms.GroupBox();
+            this.tbVolumn1 = new System.Windows.Forms.TrackBar();
+            this.tbVolumn2 = new System.Windows.Forms.TrackBar();
+            this.lblVolumn2 = new System.Windows.Forms.Label();
+            this.lblVolumn1 = new System.Windows.Forms.Label();
             this.tabCommonCommand.SuspendLayout();
             this.groupBox21.SuspendLayout();
             this.groupBox5.SuspendLayout();
@@ -877,6 +887,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.numGainR)).BeginInit();
             this.tabTest.SuspendLayout();
             this.groupBox3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.tbVol2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tbVol)).BeginInit();
             this.groupBox12.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numStopRow)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numStartRow)).BeginInit();
@@ -892,11 +904,15 @@
             this.gpTest.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numTestDataLen)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numTimeDelay)).BeginInit();
+            this.gpVolumn.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.tbVolumn1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tbVolumn2)).BeginInit();
             this.SuspendLayout();
             // 
             // tabCommonCommand
             // 
             this.tabCommonCommand.BackColor = System.Drawing.SystemColors.Control;
+            this.tabCommonCommand.Controls.Add(this.gpVolumn);
             this.tabCommonCommand.Controls.Add(this.groupBox21);
             this.tabCommonCommand.Controls.Add(this.groupBox5);
             this.tabCommonCommand.Controls.Add(this.groupBox11);
@@ -2206,8 +2222,8 @@
             this.grid2055.AllowUserToOrderColumns = true;
             this.grid2055.AllowUserToResizeColumns = false;
             this.grid2055.AllowUserToResizeRows = false;
-            dataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.grid2055.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.grid2055.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle5;
             this.grid2055.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.grid2055.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.CoCheckBox,
@@ -2402,8 +2418,8 @@
             this.gridOtherReg.AllowUserToOrderColumns = true;
             this.gridOtherReg.AllowUserToResizeColumns = false;
             this.gridOtherReg.AllowUserToResizeRows = false;
-            dataGridViewCellStyle4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.gridOtherReg.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle6.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.gridOtherReg.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle6;
             this.gridOtherReg.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.gridOtherReg.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ColOtherCheckBox,
@@ -8483,6 +8499,11 @@
             this.groupBox3.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox3.Controls.Add(this.label103);
+            this.groupBox3.Controls.Add(this.label36);
+            this.groupBox3.Controls.Add(this.tbVol2);
+            this.groupBox3.Controls.Add(this.btnSetVol);
+            this.groupBox3.Controls.Add(this.tbVol);
             this.groupBox3.Controls.Add(this.button16);
             this.groupBox3.Controls.Add(this.button10);
             this.groupBox3.Controls.Add(this.button11);
@@ -8501,6 +8522,57 @@
             this.groupBox3.TabIndex = 12;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "FLASH操作";
+            // 
+            // label103
+            // 
+            this.label103.AutoSize = true;
+            this.label103.Location = new System.Drawing.Point(894, 429);
+            this.label103.Name = "label103";
+            this.label103.Size = new System.Drawing.Size(47, 12);
+            this.label103.TabIndex = 29;
+            this.label103.Text = "label36";
+            // 
+            // label36
+            // 
+            this.label36.AutoSize = true;
+            this.label36.Location = new System.Drawing.Point(894, 385);
+            this.label36.Name = "label36";
+            this.label36.Size = new System.Drawing.Size(47, 12);
+            this.label36.TabIndex = 29;
+            this.label36.Text = "label36";
+            // 
+            // tbVol2
+            // 
+            this.tbVol2.AutoSize = false;
+            this.tbVol2.Location = new System.Drawing.Point(635, 428);
+            this.tbVol2.Maximum = 255;
+            this.tbVol2.Name = "tbVol2";
+            this.tbVol2.Size = new System.Drawing.Size(259, 30);
+            this.tbVol2.TabIndex = 28;
+            this.tbVol2.TickFrequency = 10;
+            this.tbVol2.MouseUp += new System.Windows.Forms.MouseEventHandler(this.tbVol2_MouseUp);
+            // 
+            // btnSetVol
+            // 
+            this.btnSetVol.Location = new System.Drawing.Point(970, 380);
+            this.btnSetVol.Name = "btnSetVol";
+            this.btnSetVol.Size = new System.Drawing.Size(75, 23);
+            this.btnSetVol.TabIndex = 27;
+            this.btnSetVol.Text = "设置";
+            this.btnSetVol.UseVisualStyleBackColor = true;
+            this.btnSetVol.Click += new System.EventHandler(this.btnSetVol_Click);
+            // 
+            // tbVol
+            // 
+            this.tbVol.AutoSize = false;
+            this.tbVol.Location = new System.Drawing.Point(635, 380);
+            this.tbVol.Maximum = 255;
+            this.tbVol.Name = "tbVol";
+            this.tbVol.Size = new System.Drawing.Size(259, 30);
+            this.tbVol.TabIndex = 26;
+            this.tbVol.TickFrequency = 10;
+            this.tbVol.Scroll += new System.EventHandler(this.tbVol_Scroll);
+            this.tbVol.MouseUp += new System.Windows.Forms.MouseEventHandler(this.tbVol_MouseUp);
             // 
             // button16
             // 
@@ -9276,6 +9348,63 @@
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
+            // gpVolumn
+            // 
+            this.gpVolumn.Controls.Add(this.lblVolumn2);
+            this.gpVolumn.Controls.Add(this.lblVolumn1);
+            this.gpVolumn.Controls.Add(this.tbVolumn2);
+            this.gpVolumn.Controls.Add(this.tbVolumn1);
+            this.gpVolumn.Location = new System.Drawing.Point(8, 135);
+            this.gpVolumn.Name = "gpVolumn";
+            this.gpVolumn.Size = new System.Drawing.Size(484, 97);
+            this.gpVolumn.TabIndex = 22;
+            this.gpVolumn.TabStop = false;
+            this.gpVolumn.Text = "音量调节";
+            // 
+            // tbVolumn1
+            // 
+            this.tbVolumn1.AutoSize = false;
+            this.tbVolumn1.Location = new System.Drawing.Point(7, 20);
+            this.tbVolumn1.Maximum = 255;
+            this.tbVolumn1.Name = "tbVolumn1";
+            this.tbVolumn1.Size = new System.Drawing.Size(425, 30);
+            this.tbVolumn1.TabIndex = 1;
+            this.tbVolumn1.TickFrequency = 10;
+            this.tbVolumn1.Value = 25;
+            this.tbVolumn1.Scroll += new System.EventHandler(this.tbVolumn1_Scroll);
+            this.tbVolumn1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.tbVolumn1_MouseUp);
+            // 
+            // tbVolumn2
+            // 
+            this.tbVolumn2.AutoSize = false;
+            this.tbVolumn2.Location = new System.Drawing.Point(7, 61);
+            this.tbVolumn2.Maximum = 255;
+            this.tbVolumn2.Name = "tbVolumn2";
+            this.tbVolumn2.Size = new System.Drawing.Size(425, 30);
+            this.tbVolumn2.TabIndex = 1;
+            this.tbVolumn2.TickFrequency = 10;
+            this.tbVolumn2.Value = 25;
+            this.tbVolumn2.Scroll += new System.EventHandler(this.tbVolumn2_Scroll);
+            this.tbVolumn2.MouseUp += new System.Windows.Forms.MouseEventHandler(this.tbVolumn2_MouseUp);
+            // 
+            // lblVolumn2
+            // 
+            this.lblVolumn2.AutoSize = true;
+            this.lblVolumn2.Location = new System.Drawing.Point(431, 69);
+            this.lblVolumn2.Name = "lblVolumn2";
+            this.lblVolumn2.Size = new System.Drawing.Size(23, 12);
+            this.lblVolumn2.TabIndex = 30;
+            this.lblVolumn2.Text = "10%";
+            // 
+            // lblVolumn1
+            // 
+            this.lblVolumn1.AutoSize = true;
+            this.lblVolumn1.Location = new System.Drawing.Point(431, 25);
+            this.lblVolumn1.Name = "lblVolumn1";
+            this.lblVolumn1.Size = new System.Drawing.Size(23, 12);
+            this.lblVolumn1.TabIndex = 31;
+            this.lblVolumn1.Text = "10%";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -9437,6 +9566,8 @@
             this.tabTest.ResumeLayout(false);
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.tbVol2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tbVol)).EndInit();
             this.groupBox12.ResumeLayout(false);
             this.groupBox12.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numStopRow)).EndInit();
@@ -9459,6 +9590,10 @@
             this.gpTest.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numTestDataLen)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numTimeDelay)).EndInit();
+            this.gpVolumn.ResumeLayout(false);
+            this.gpVolumn.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.tbVolumn1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tbVolumn2)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -10190,6 +10325,16 @@
         private DevComponents.DotNetBar.Controls.DataGridViewLabelXColumn ColOtherStopBit;
         private DevComponents.DotNetBar.Controls.DataGridViewLabelXColumn ColOtherValue;
         private System.Windows.Forms.DataGridViewButtonColumn ColOtherSend;
+        private System.Windows.Forms.Button btnSetVol;
+        private System.Windows.Forms.TrackBar tbVol;
+        private System.Windows.Forms.TrackBar tbVol2;
+        private System.Windows.Forms.Label label103;
+        private System.Windows.Forms.Label label36;
+        private System.Windows.Forms.GroupBox gpVolumn;
+        private System.Windows.Forms.TrackBar tbVolumn2;
+        private System.Windows.Forms.TrackBar tbVolumn1;
+        private System.Windows.Forms.Label lblVolumn2;
+        private System.Windows.Forms.Label lblVolumn1;
     }
 }
 

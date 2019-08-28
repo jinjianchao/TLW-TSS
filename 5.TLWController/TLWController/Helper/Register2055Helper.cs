@@ -18,7 +18,6 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
-using TLWController.Extentions;
 using SFTHelper.Extentions;
 
 namespace TLWController.Helper
@@ -200,7 +199,7 @@ namespace TLWController.Helper
                     0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000 //f
         };
 
-            byte[] bytesData = arrDefualt.ToBytes();
+            byte[] bytesData = arrDefualt.GetBytes();
             Array.Copy(bytesData, 0, Data, 0, bytesData.Length);
         }
 
@@ -379,9 +378,9 @@ namespace TLWController.Helper
                         return false;
                     }
                     registerItem.MaxValue = maxValue;
-                    registerItem.RedValue = data[9].ToUInt16(NumberStyles.HexNumber).ToString();
-                    registerItem.GreenValue = data[10].ToUInt16(NumberStyles.HexNumber).ToString();
-                    registerItem.BlueValue = data[11].ToUInt16(NumberStyles.HexNumber).ToString();
+                    registerItem.RedValue = data[9].GetUInt16(System.Globalization.NumberStyles.HexNumber).ToString();
+                    registerItem.GreenValue = data[10].GetUInt16(System.Globalization.NumberStyles.HexNumber).ToString();
+                    registerItem.BlueValue = data[11].GetUInt16(System.Globalization.NumberStyles.HexNumber).ToString();
                     registerItem.Offset = data[12];
                     registerItem.Description = data[13];
                     registerItem.ChineseDescription = data[14];
@@ -467,7 +466,7 @@ namespace TLWController.Helper
                     //        registerItem.Value = data[6].ToUInt32(NumberStyles.HexNumber).ToString();
                     //    }
                     //}
-                    registerItem.Value = data[6].ToUInt32(NumberStyles.HexNumber).ToString();
+                    registerItem.Value = data[6].GetUInt32(NumberStyles.HexNumber).ToString();
                     registerItem.ChineseDescription = data[7];
                     registerItem.EnglishDescription = data[8];
                     reg.Register2055OtherItemList.Add(registerItem);
@@ -492,7 +491,7 @@ namespace TLWController.Helper
                 foreach (var item in register.Register2055ItemList)
                 {
                     //序号    FPGA红色地址    FPGA绿色地址    FPGA蓝色地址    恒流源地址   起始位 结束位  最小值   最大值  红色值     绿色纸     蓝色值  偏移量   说明     中文说明    英文说明
-                    writer.WriteLine($"{cx}\t{item.RedAddress}\t{item.GreenAddress}\t{item.BlueAddress}\t{item.RegisterAddress}\t{item.StartBit}\t{item.StopBit}\t{item.MinValue.ToString("X2")}\t{item.MaxValue.ToString("X2")}\t{item.RedValue.ToUInt16(NumberStyles.Number).ToString("X2")}\t{item.GreenValue.ToUInt16(NumberStyles.Number).ToString("X2")}\t{item.BlueValue.ToUInt16(NumberStyles.Number).ToString("X2")}\t{item.Offset}\t{item.Description}\t{item.ChineseDescription}\t{item.EnglishDescription}");
+                    writer.WriteLine($"{cx}\t{item.RedAddress}\t{item.GreenAddress}\t{item.BlueAddress}\t{item.RegisterAddress}\t{item.StartBit}\t{item.StopBit}\t{item.MinValue.ToString("X2")}\t{item.MaxValue.ToString("X2")}\t{item.RedValue.GetUInt16(NumberStyles.Number).ToString("X2")}\t{item.GreenValue.GetUInt16(NumberStyles.Number).ToString("X2")}\t{item.BlueValue.GetUInt16(NumberStyles.Number).ToString("X2")}\t{item.Offset}\t{item.Description}\t{item.ChineseDescription}\t{item.EnglishDescription}");
                     cx++;
                 }
                 writer.WriteLine("******************************************************************* End 2055 *************************************************************************");
@@ -501,7 +500,7 @@ namespace TLWController.Helper
                 cx = 0;
                 foreach (var item in register.Register2055OtherItemList)
                 {
-                    writer.WriteLine($"{cx}\t{item.Address}\t{item.StartBit.ToString("X2")}\t{item.StopBit.ToString("X2")}\t{item.MinValue}\t{item.MaxValue}\t{item.Value.ToUInt32(NumberStyles.Number).ToString("X4")}\t{item.ChineseDescription}\t{item.EnglishDescription}");
+                    writer.WriteLine($"{cx}\t{item.Address}\t{item.StartBit.ToString("X2")}\t{item.StopBit.ToString("X2")}\t{item.MinValue}\t{item.MaxValue}\t{item.Value.GetUInt32(NumberStyles.Number).ToString("X4")}\t{item.ChineseDescription}\t{item.EnglishDescription}");
                     cx++;
                 }
                 writer.WriteLine("******************************************************************* End Other *************************************************************************");
@@ -537,20 +536,20 @@ namespace TLWController.Helper
                     //CombinData(position, item.Value, item.StartBit, item.StopBit);
                     if (item.Color == EnumRegColor.Red)
                     {
-                        byte val = Register2055Helper.Data[position + 1].GetBitRangeValueFromByte(item.StartBit, item.StopBit);
+                        byte val = Register2055Helper.Data[position + 1].GetPart(item.StartBit, item.StopBit);
                         //item.Register.RedValue = val.ToString("X2");
                         item.Register.RedValue = val.ToString();
 
                     }
                     else if (item.Color == EnumRegColor.Green)
                     {
-                        byte val = Register2055Helper.Data[position + 1].GetBitRangeValueFromByte(item.StartBit, item.StopBit);
+                        byte val = Register2055Helper.Data[position + 1].GetPart(item.StartBit, item.StopBit);
                         //item.Register.GreenValue = val.ToString("X2");
                         item.Register.GreenValue = val.ToString();
                     }
                     else if (item.Color == EnumRegColor.Blue)
                     {
-                        byte val = Register2055Helper.Data[position + 1].GetBitRangeValueFromByte(item.StartBit, item.StopBit);
+                        byte val = Register2055Helper.Data[position + 1].GetPart(item.StartBit, item.StopBit);
                         //item.Register.BlueValue = val.ToString("X2");
                         item.Register.BlueValue = val.ToString();
                     }
@@ -617,7 +616,7 @@ namespace TLWController.Helper
                     //vals[1] = RegisterHelper.Data[position + 1].GetBitRangeValueFromUInt16(item.StartBit, item.StopBit);
                     vals[0] = Register2055Helper.Data[position];
                     vals[1] = Register2055Helper.Data[position + 1];
-                    ushort data = vals.GetUInt16().GetBitRangeValueFromUInt16(item.StartBit, item.StopBit);
+                    ushort data = vals.GetUInt16(0).GetPart(item.StartBit, item.StopBit);
                     //item.Value = data.ToString("X4");
                     item.Value = data.ToString();
                 }
@@ -635,7 +634,7 @@ namespace TLWController.Helper
                     //vals[1] = RegisterHelper.Data[position + 1].GetBitRangeValueFromUInt16(item.StartBit, item.StopBit);
                     vals[0] = Register2055Helper.Data[position];
                     vals[1] = Register2055Helper.Data[position + 1];
-                    ushort data = vals.GetUInt16().GetBitRangeValueFromUInt16(item.StartBit, item.StopBit);
+                    ushort data = vals.GetUInt16(0).GetPart(item.StartBit, item.StopBit);
                     //item.Value = data.ToString("X4");
                     item.Value = data.ToString();
                 }
@@ -652,7 +651,7 @@ namespace TLWController.Helper
                     //vals[1] = RegisterHelper.Data[position + 1].GetBitRangeValueFromUInt16(item.StartBit, item.StopBit);
                     vals[0] = Register2055Helper.Data[position];
                     vals[1] = Register2055Helper.Data[position + 1];
-                    ushort data = vals.GetUInt16().GetBitRangeValueFromUInt16(item.StartBit, item.StopBit);
+                    ushort data = vals.GetUInt16(0).GetPart(item.StartBit, item.StopBit);
                     //item.Value = data.ToString("X4");
                     item.Value = data.ToString();
                 }
@@ -669,7 +668,7 @@ namespace TLWController.Helper
                     //vals[1] = RegisterHelper.Data[position + 1].GetBitRangeValueFromUInt16(item.StartBit, item.StopBit);
                     vals[0] = Register2055Helper.Data[position];
                     vals[1] = Register2055Helper.Data[position + 1];
-                    ushort data = vals.GetUInt16().GetBitRangeValueFromUInt16(item.StartBit, item.StopBit);
+                    ushort data = vals.GetUInt16(0).GetPart(item.StartBit, item.StopBit);
                     //item.Value = data.ToString("X4");
                     item.Value = data.ToString();
                 }
@@ -686,7 +685,7 @@ namespace TLWController.Helper
                     //vals[1] = RegisterHelper.Data[position + 1].GetBitRangeValueFromUInt16(item.StartBit, item.StopBit);
                     vals[0] = Register2055Helper.Data[position];
                     vals[1] = Register2055Helper.Data[position + 1];
-                    ushort data = vals.GetUInt16().GetBitRangeValueFromUInt16(item.StartBit, item.StopBit);
+                    ushort data = vals.GetUInt16(0).GetPart(item.StartBit, item.StopBit);
                     //item.Value = data.ToString("X4");
                     item.Value = data.ToString();
                 }
@@ -702,7 +701,7 @@ namespace TLWController.Helper
                     byte[] vals = new byte[2];
                     vals[0] = Register2055Helper.Data[position];
                     vals[1] = Register2055Helper.Data[position + 1];
-                    ushort data = vals.GetUInt16().GetBitRangeValueFromUInt16(item.StartBit, item.StopBit);
+                    ushort data = vals.GetUInt16(0).GetPart(item.StartBit, item.StopBit);
                     //item.Value = data.ToString("X4");
                     item.Value = data.ToString();
                 }
@@ -719,7 +718,7 @@ namespace TLWController.Helper
                     byte[] vals = new byte[2];
                     vals[0] = Register2055Helper.Data[position];
                     vals[1] = Register2055Helper.Data[position + 1];
-                    ushort data = vals.GetUInt16().GetBitRangeValueFromUInt16(item.StartBit, item.StopBit);
+                    ushort data = vals.GetUInt16(0).GetPart(item.StartBit, item.StopBit);
                     //item.Value = data.ToString("X4");
                     item.Value = data.ToString();
                 }
@@ -745,7 +744,7 @@ namespace TLWController.Helper
                 List<RegisterOtherItem> reg = GetOtherRegisterItem(regList, i);
                 foreach (var item in reg)
                 {
-                    CombinData(position, item.Value.ToUInt16(NumberStyles.Number), item.StartBit, item.StopBit);
+                    CombinData(position, item.Value.GetUInt16(NumberStyles.Number), item.StartBit, item.StopBit);
                 }
                 position += 2;
             }
@@ -755,7 +754,7 @@ namespace TLWController.Helper
                 List<RegisterOtherItem> reg = GetOtherRegisterItem(regList, i);
                 foreach (var item in reg)
                 {
-                    CombinData(position, item.Value.ToUInt16(NumberStyles.Number), item.StartBit, item.StopBit);
+                    CombinData(position, item.Value.GetUInt16(NumberStyles.Number), item.StartBit, item.StopBit);
                 }
                 position += 2;
             }
@@ -765,7 +764,7 @@ namespace TLWController.Helper
                 List<RegisterOtherItem> reg = GetOtherRegisterItem(regList, i);
                 foreach (var item in reg)
                 {
-                    CombinData(position, item.Value.ToUInt16(NumberStyles.Number), item.StartBit, item.StopBit);
+                    CombinData(position, item.Value.GetUInt16(NumberStyles.Number), item.StartBit, item.StopBit);
                 }
                 position += 2;
             }
@@ -775,7 +774,7 @@ namespace TLWController.Helper
                 List<RegisterOtherItem> reg = GetOtherRegisterItem(regList, i);
                 foreach (var item in reg)
                 {
-                    CombinData(position, item.Value.ToUInt16(NumberStyles.Number), item.StartBit, item.StopBit);
+                    CombinData(position, item.Value.GetUInt16(NumberStyles.Number), item.StartBit, item.StopBit);
                 }
                 position += 2;
             }
@@ -788,7 +787,7 @@ namespace TLWController.Helper
                 List<RegisterOtherItem> reg = GetOtherRegisterItem(regList, i);
                 foreach (var item in reg)
                 {
-                    CombinData(position, item.Value.ToUInt16(NumberStyles.Number), item.StartBit, item.StopBit);
+                    CombinData(position, item.Value.GetUInt16(NumberStyles.Number), item.StartBit, item.StopBit);
                 }
                 position += 2;
             }
@@ -798,7 +797,7 @@ namespace TLWController.Helper
                 List<RegisterOtherItem> reg = GetOtherRegisterItem(regList, i);
                 foreach (var item in reg)
                 {
-                    CombinData(position, item.Value.ToUInt16(NumberStyles.Number), item.StartBit, item.StopBit);
+                    CombinData(position, item.Value.GetUInt16(NumberStyles.Number), item.StartBit, item.StopBit);
                 }
                 position += 2;
             }
@@ -808,7 +807,7 @@ namespace TLWController.Helper
                 List<RegisterOtherItem> reg = GetOtherRegisterItem(regList, i);
                 foreach (var item in reg)
                 {
-                    CombinData(position, item.Value.ToUInt16(NumberStyles.Number), item.StartBit, item.StopBit);
+                    CombinData(position, item.Value.GetUInt16(NumberStyles.Number), item.StartBit, item.StopBit);
                 }
                 position += 2;
             }
@@ -816,24 +815,38 @@ namespace TLWController.Helper
 
         private static void CombinData(int position, UInt16 newData, int startBit, int stopBit)
         {
-            string binaryVal = newData.GetBinaryString(stopBit - startBit + 1).Reverse();
+            //string binaryVal = newData.GetBinaryString(stopBit - startBit + 1).Reverse();
 
-            byte[] data1 = new byte[2];
-            data1[0] = Data[position];
-            data1[1] = Data[position + 1];
-            UInt16 uData1 = data1.GetUInt16();
-            string binaryVal1 = uData1.GetBinaryString(16).Reverse();
-            int index = 0;
-            for (int i = startBit; i <= stopBit; i++)
-            {
-                string str1 = binaryVal.Substring(index++, 1);
-                binaryVal1 = binaryVal1.Replace(i, str1);
-            }
-            binaryVal1 = binaryVal1.Reverse();
-            UInt16 data2 = Convert.ToUInt16(binaryVal1, 2);
-            byte[] data3 = data2.GetBytes();
-            Data[position] = data3[0];
-            Data[position + 1] = data3[1];
+            //byte[] data1 = new byte[2];
+            //data1[0] = Data[position];
+            //data1[1] = Data[position + 1];
+            //UInt16 uData1 = data1.GetUInt16();
+            //string binaryVal1 = uData1.GetBinaryString(16).Reverse();
+            //int index = 0;
+            //for (int i = startBit; i <= stopBit; i++)
+            //{
+            //    string str1 = binaryVal.Substring(index++, 1);
+            //    binaryVal1 = binaryVal1.Replace(i, str1);
+            //}
+            //binaryVal1 = binaryVal1.Reverse();
+            //UInt16 data2 = Convert.ToUInt16(binaryVal1, 2);
+            //byte[] data3 = data2.GetBytes();
+            //Data[position] = data3[0];
+            //Data[position + 1] = data3[1];
+
+            //byte[] data1 = new byte[2];
+            //data1[0] = Data[position];
+            //data1[1] = Data[position + 1];
+            //UInt16 uData1 = data1.GetUInt16();
+            //ushort data2 = uData1.ModifyPart(startBit, stopBit, newData);
+            //byte[] data3 = data2.GetBytes();
+            //Data[position] = data3[0];
+            //Data[position + 1] = data3[1];
+
+            UInt16 tmp = Data.GetUInt16(position).ModifyPart(startBit, stopBit, newData);
+            byte[] tmp1 = tmp.GetBytes();
+            Data[position] = tmp1[0];
+            Data[position + 1] = tmp1[1];
         }
 
         private static List<RegisterSpectialItem> GetRegisterItem(List<RegisterItem> reg2055List, byte regAddr)
@@ -851,7 +864,7 @@ namespace TLWController.Helper
                             RegisterAddress = byte.Parse(item.RedAddress, System.Globalization.NumberStyles.HexNumber),
                             StartBit = item.StartBit,
                             StopBit = item.StopBit,
-                            Value = item.RedValue.ToByte(NumberStyles.Number),
+                            Value = item.RedValue.GetByte(NumberStyles.Number),
                             Color = EnumRegColor.Red,
                             Register = item
                         });
@@ -868,7 +881,7 @@ namespace TLWController.Helper
                         RegisterAddress = byte.Parse(item.GreenAddress, System.Globalization.NumberStyles.HexNumber),
                         StartBit = item.StartBit,
                         StopBit = item.StopBit,
-                        Value = item.GreenValue.ToByte(NumberStyles.Number),
+                        Value = item.GreenValue.GetByte(NumberStyles.Number),
                         Color = EnumRegColor.Green,
                         Register = item
                     });
@@ -880,7 +893,7 @@ namespace TLWController.Helper
                         RegisterAddress = byte.Parse(item.BlueAddress, System.Globalization.NumberStyles.HexNumber),
                         StartBit = item.StartBit,
                         StopBit = item.StopBit,
-                        Value = item.BlueValue.ToByte(NumberStyles.Number),
+                        Value = item.BlueValue.GetByte(NumberStyles.Number),
                         Color = EnumRegColor.Blue,
                         Register = item
                     });
@@ -906,7 +919,7 @@ namespace TLWController.Helper
             foreach (var item in regItemList)
             {
                 //string strAddr = regAddr.ToString("X2");
-                if (item.Address.ToByte() == regAddr)
+                if (item.Address.GetByte(NumberStyles.HexNumber) == regAddr)
                 {
                     result.Add(item);
                 }
@@ -925,12 +938,12 @@ namespace TLWController.Helper
             //    }
             //});
             ushort result = 0;
-            foreach(var item in reg2055List)
+            foreach (var item in reg2055List)
             {
-                if (item.RegisterAddress.ToUInt32(NumberStyles.HexNumber) == regAddr)
+                if (item.RegisterAddress.GetUInt32(NumberStyles.HexNumber) == regAddr)
                 {
-                    val = item.RedValue.ToUInt16(NumberStyles.Number);
-                    result = result.Modify(item.StartBit, item.StopBit, val);
+                    val = item.RedValue.GetUInt16(NumberStyles.Number);
+                    result = result.ModifyPart(item.StartBit, item.StopBit, val);
                     //break;
                 }
             }
@@ -982,23 +995,23 @@ namespace TLWController.Helper
 
             //行扫 input2072Simple3|1,0,5
             //int nScan = GetPartOfUInt32(nMode, 0x01, 0, 5);
-            int nScan = GetRegVal(reg2055List, 0x02).GetPartOfUInt16(0, 5);
+            int nScan = GetRegVal(reg2055List, 0x02).GetPart(0, 5);
 
             //刷新组数 input2072Simple2|1,8,14 
             //int nGroup = GetPartOfUInt32(nMode, 0x01, 8, 14);
-            int nGroup = GetRegVal(reg2055List, 0x03).GetPartOfUInt16(0, 6);
+            int nGroup = GetRegVal(reg2055List, 0x03).GetPart(0, 6);
 
             //每行每组寄存器值(reg0x02[31:24],PWM显示时间) input2072Simple7|2,24,31;2,16,23;3,24,31
             //int nPWMTime = GetPartOfUInt32(nMode, 0x02, 24, 31);
-            int nPWMTime = GetRegVal(reg2055List, 0x07).GetPartOfUInt16(0, 7);
+            int nPWMTime = GetRegVal(reg2055List, 0x07).GetPart(0, 7);
 
             //input2072Simple5|4,8,12
             //int nPLL_LOOP_DIV = GetPartOfUInt32(nMode, 0x04, 8, 12);
-            int nPLL_LOOP_DIV = GetRegVal(reg2055List, 0x05).GetPartOfUInt16(0, 4);
+            int nPLL_LOOP_DIV = GetRegVal(reg2055List, 0x05).GetPart(0, 4);
 
             //input2072Simple6|4,0,4
             //int nPLL_PRE_DIV = GetPartOfUInt32(nMode, 0x04, 0, 4);
-            int nPLL_PRE_DIV = GetRegVal(reg2055List, 0x04).GetPartOfUInt16(0, 4);
+            int nPLL_PRE_DIV = GetRegVal(reg2055List, 0x04).GetPart(0, 4);
 
             //根据60Hz ，50Hz ，3D的状态来选择
             double C = 0;
@@ -1150,7 +1163,7 @@ namespace TLWController.Helper
 
 
 
-            byte[] bytesData = arrDefualt.ToBytes();
+            byte[] bytesData = arrDefualt.GetBytes();
             Array.Copy(bytesData, 0, Data, 0, bytesData.Length);
         }
 
@@ -1475,18 +1488,18 @@ namespace TLWController.Helper
                     //CombinData(position, item.Value, item.StartBit, item.StopBit);
                     if (item.Color == EnumRegColor.Red)
                     {
-                        byte val = Register2055Helper.Data[position + 1].GetBitRangeValueFromByte(item.StartBit, item.StopBit);
+                        byte val = Register2055Helper.Data[position + 1].GetPart(item.StartBit, item.StopBit);
                         item.Register.RedValue = val.ToString("X2");
 
                     }
                     else if (item.Color == EnumRegColor.Green)
                     {
-                        byte val = Register2055Helper.Data[position + 1].GetBitRangeValueFromByte(item.StartBit, item.StopBit);
+                        byte val = Register2055Helper.Data[position + 1].GetPart(item.StartBit, item.StopBit);
                         item.Register.GreenValue = val.ToString("X2");
                     }
                     else if (item.Color == EnumRegColor.Blue)
                     {
-                        byte val = Register2055Helper.Data[position + 1].GetBitRangeValueFromByte(item.StartBit, item.StopBit);
+                        byte val = Register2055Helper.Data[position + 1].GetPart(item.StartBit, item.StopBit);
                         item.Register.BlueValue = val.ToString("X2");
                     }
                 }
@@ -1552,7 +1565,7 @@ namespace TLWController.Helper
                     //vals[1] = RegisterHelper.Data[position + 1].GetBitRangeValueFromUInt16(item.StartBit, item.StopBit);
                     vals[0] = Register2055Helper.Data[position];
                     vals[1] = Register2055Helper.Data[position + 1];
-                    ushort data = vals.GetUInt16().GetBitRangeValueFromUInt16(item.StartBit, item.StopBit);
+                    ushort data = vals.GetUInt16(0).GetPart(item.StartBit, item.StopBit);
                     item.Value = data.ToString("X4");
                 }
                 position += 2;
@@ -1569,7 +1582,7 @@ namespace TLWController.Helper
                     //vals[1] = RegisterHelper.Data[position + 1].GetBitRangeValueFromUInt16(item.StartBit, item.StopBit);
                     vals[0] = Register2055Helper.Data[position];
                     vals[1] = Register2055Helper.Data[position + 1];
-                    ushort data = vals.GetUInt16().GetBitRangeValueFromUInt16(item.StartBit, item.StopBit);
+                    ushort data = vals.GetUInt16(0).GetPart(item.StartBit, item.StopBit);
                     item.Value = data.ToString("X4");
                 }
                 position += 2;
@@ -1585,7 +1598,7 @@ namespace TLWController.Helper
                     //vals[1] = RegisterHelper.Data[position + 1].GetBitRangeValueFromUInt16(item.StartBit, item.StopBit);
                     vals[0] = Register2055Helper.Data[position];
                     vals[1] = Register2055Helper.Data[position + 1];
-                    ushort data = vals.GetUInt16().GetBitRangeValueFromUInt16(item.StartBit, item.StopBit);
+                    ushort data = vals.GetUInt16(0).GetPart(item.StartBit, item.StopBit);
                     item.Value = data.ToString("X4");
                 }
                 position += 2;
@@ -1601,7 +1614,7 @@ namespace TLWController.Helper
                     //vals[1] = RegisterHelper.Data[position + 1].GetBitRangeValueFromUInt16(item.StartBit, item.StopBit);
                     vals[0] = Register2055Helper.Data[position];
                     vals[1] = Register2055Helper.Data[position + 1];
-                    ushort data = vals.GetUInt16().GetBitRangeValueFromUInt16(item.StartBit, item.StopBit);
+                    ushort data = vals.GetUInt16(0).GetPart(item.StartBit, item.StopBit);
                     item.Value = data.ToString("X4");
                 }
                 position += 2;
@@ -1617,7 +1630,7 @@ namespace TLWController.Helper
                     //vals[1] = RegisterHelper.Data[position + 1].GetBitRangeValueFromUInt16(item.StartBit, item.StopBit);
                     vals[0] = Register2055Helper.Data[position];
                     vals[1] = Register2055Helper.Data[position + 1];
-                    ushort data = vals.GetUInt16().GetBitRangeValueFromUInt16(item.StartBit, item.StopBit);
+                    ushort data = vals.GetUInt16(0).GetPart(item.StartBit, item.StopBit);
                     item.Value = data.ToString("X4");
                 }
                 position += 2;
@@ -1632,7 +1645,7 @@ namespace TLWController.Helper
                     byte[] vals = new byte[2];
                     vals[0] = Register2055Helper.Data[position];
                     vals[1] = Register2055Helper.Data[position + 1];
-                    ushort data = vals.GetUInt16().GetBitRangeValueFromUInt16(item.StartBit, item.StopBit);
+                    ushort data = vals.GetUInt16(0).GetPart(item.StartBit, item.StopBit);
                     item.Value = data.ToString("X4");
                 }
                 position += 2;
@@ -1648,7 +1661,7 @@ namespace TLWController.Helper
                     byte[] vals = new byte[2];
                     vals[0] = Register2055Helper.Data[position];
                     vals[1] = Register2055Helper.Data[position + 1];
-                    ushort data = vals.GetUInt16().GetBitRangeValueFromUInt16(item.StartBit, item.StopBit);
+                    ushort data = vals.GetUInt16(0).GetPart(item.StartBit, item.StopBit);
                     item.Value = data.ToString("X4");
                 }
                 position += 2;
@@ -1673,7 +1686,7 @@ namespace TLWController.Helper
                 List<RegisterOtherItem> reg = GetOtherRegisterItem(regList, i);
                 foreach (var item in reg)
                 {
-                    CombinData(position, item.Value.ToUInt16(), item.StartBit, item.StopBit);
+                    CombinData(position, item.Value.GetUInt16(NumberStyles.HexNumber), item.StartBit, item.StopBit);
                 }
                 position += 2;
             }
@@ -1683,7 +1696,7 @@ namespace TLWController.Helper
                 List<RegisterOtherItem> reg = GetOtherRegisterItem(regList, i);
                 foreach (var item in reg)
                 {
-                    CombinData(position, item.Value.ToUInt16(), item.StartBit, item.StopBit);
+                    CombinData(position, item.Value.GetUInt16(NumberStyles.HexNumber), item.StartBit, item.StopBit);
                 }
                 position += 2;
             }
@@ -1693,7 +1706,7 @@ namespace TLWController.Helper
                 List<RegisterOtherItem> reg = GetOtherRegisterItem(regList, i);
                 foreach (var item in reg)
                 {
-                    CombinData(position, item.Value.ToUInt16(), item.StartBit, item.StopBit);
+                    CombinData(position, item.Value.GetUInt16(NumberStyles.HexNumber), item.StartBit, item.StopBit);
                 }
                 position += 2;
             }
@@ -1703,7 +1716,7 @@ namespace TLWController.Helper
                 List<RegisterOtherItem> reg = GetOtherRegisterItem(regList, i);
                 foreach (var item in reg)
                 {
-                    CombinData(position, item.Value.ToUInt16(), item.StartBit, item.StopBit);
+                    CombinData(position, item.Value.GetUInt16(NumberStyles.HexNumber), item.StartBit, item.StopBit);
                 }
                 position += 2;
             }
@@ -1713,7 +1726,7 @@ namespace TLWController.Helper
                 List<RegisterOtherItem> reg = GetOtherRegisterItem(regList, i);
                 foreach (var item in reg)
                 {
-                    CombinData(position, item.Value.ToUInt16(), item.StartBit, item.StopBit);
+                    CombinData(position, item.Value.GetUInt16(NumberStyles.HexNumber), item.StartBit, item.StopBit);
                 }
                 position += 2;
             }
@@ -1723,7 +1736,7 @@ namespace TLWController.Helper
                 List<RegisterOtherItem> reg = GetOtherRegisterItem(regList, i);
                 foreach (var item in reg)
                 {
-                    CombinData(position, item.Value.ToUInt16(), item.StartBit, item.StopBit);
+                    CombinData(position, item.Value.GetUInt16(NumberStyles.HexNumber), item.StartBit, item.StopBit);
                 }
                 position += 2;
             }
@@ -1733,7 +1746,7 @@ namespace TLWController.Helper
                 List<RegisterOtherItem> reg = GetOtherRegisterItem(regList, i);
                 foreach (var item in reg)
                 {
-                    CombinData(position, item.Value.ToUInt16(), item.StartBit, item.StopBit);
+                    CombinData(position, item.Value.GetUInt16(NumberStyles.HexNumber), item.StartBit, item.StopBit);
                 }
                 position += 2;
             }
@@ -1741,24 +1754,29 @@ namespace TLWController.Helper
 
         private static void CombinData(int position, UInt16 newData, int startBit, int stopBit)
         {
-            string binaryVal = newData.GetBinaryString(stopBit - startBit + 1).Reverse();
+            //string binaryVal = newData.GetBinaryString(stopBit - startBit + 1).Reverse();
 
-            byte[] data1 = new byte[2];
-            data1[0] = Data[position];
-            data1[1] = Data[position + 1];
-            UInt16 uData1 = data1.GetUInt16();
-            string binaryVal1 = uData1.GetBinaryString(16).Reverse();
-            int index = 0;
-            for (int i = startBit; i <= stopBit; i++)
-            {
-                string str1 = binaryVal.Substring(index++, 1);
-                binaryVal1 = binaryVal1.Replace(i, str1);
-            }
-            binaryVal1 = binaryVal1.Reverse();
-            UInt16 data2 = Convert.ToUInt16(binaryVal1, 2);
-            byte[] data3 = data2.GetBytes();
-            Data[position] = data3[0];
-            Data[position + 1] = data3[1];
+            //byte[] data1 = new byte[2];
+            //data1[0] = Data[position];
+            //data1[1] = Data[position + 1];
+            //UInt16 uData1 = data1.GetUInt16(0);
+            //string binaryVal1 = uData1.GetBinaryString(16).Reverse();
+            //int index = 0;
+            //for (int i = startBit; i <= stopBit; i++)
+            //{
+            //    string str1 = binaryVal.Substring(index++, 1);
+            //    binaryVal1 = binaryVal1.Replace(i, str1);
+            //}
+            //binaryVal1 = binaryVal1.Reverse();
+            //UInt16 data2 = Convert.ToUInt16(binaryVal1, 2);
+            //byte[] data3 = data2.GetBytes();
+            //Data[position] = data3[0];
+            //Data[position + 1] = data3[1];
+
+            UInt16 tmp = Data.GetUInt16(position).ModifyPart(startBit, stopBit, newData);
+            byte[] tmp1 = tmp.GetBytes();
+            Data[position] = tmp1[0];
+            Data[position + 1] = tmp1[1];
         }
 
         private static List<RegisterSpectialItem> GetRegisterItem(List<RegisterItem> reg2055List, byte regAddr)
@@ -1774,7 +1792,7 @@ namespace TLWController.Helper
                         RegisterAddress = byte.Parse(item.RedAddress, System.Globalization.NumberStyles.HexNumber),
                         StartBit = item.StartBit,
                         StopBit = item.StopBit,
-                        Value = item.RedValue.ToByte(),
+                        Value = item.RedValue.GetByte(NumberStyles.HexNumber),
                         Color = EnumRegColor.Red,
                         Register = item
                     });
@@ -1786,7 +1804,7 @@ namespace TLWController.Helper
                         RegisterAddress = byte.Parse(item.GreenAddress, System.Globalization.NumberStyles.HexNumber),
                         StartBit = item.StartBit,
                         StopBit = item.StopBit,
-                        Value = item.GreenValue.ToByte(),
+                        Value = item.GreenValue.GetByte(NumberStyles.HexNumber),
                         Color = EnumRegColor.Green,
                         Register = item
                     });
@@ -1798,7 +1816,7 @@ namespace TLWController.Helper
                         RegisterAddress = byte.Parse(item.BlueAddress, System.Globalization.NumberStyles.HexNumber),
                         StartBit = item.StartBit,
                         StopBit = item.StopBit,
-                        Value = item.BlueValue.ToByte(),
+                        Value = item.BlueValue.GetByte(NumberStyles.HexNumber),
                         Color = EnumRegColor.Blue,
                         Register = item
                     });
@@ -1824,7 +1842,7 @@ namespace TLWController.Helper
             foreach (var item in regItemList)
             {
                 //string strAddr = regAddr.ToString("X2");
-                if (item.Address.ToByte() == regAddr)
+                if (item.Address.GetByte(NumberStyles.HexNumber) == regAddr)
                 {
                     result.Add(item);
                 }

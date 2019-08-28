@@ -71,9 +71,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Extentions\BytesExtention.cs" />
-    <Compile Include="Extentions\ObjectExtention.cs" />
-    <Compile Include="Extentions\SimpleTypeExtention.cs" />
     <Compile Include="FrmColorTemp.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -92,7 +89,6 @@
     <Compile Include="FrmSectionSet.Designer.cs">
       <DependentUpon>FrmSectionSet.cs</DependentUpon>
     </Compile>
-    <Compile Include="Helper\BytesDataHelper.cs" />
     <Compile Include="Helper\CalibrationHelper.cs" />
     <Compile Include="Helper\class2072Oper.cs" />
     <Compile Include="Helper\classMBParam.cs" />
@@ -191,6 +187,11 @@
       <Project>{fc81601a-1046-4168-8623-b974e6098108}</Project>
       <Name>TLWCommunication</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\TLWCommunicationSharp\TLWCommunicationSharp.csproj">
+      <Project>{5113a7ae-ad7a-441d-82bf-17c39fccf7a4}</Project>
+      <Name>TLWCommunicationSharp</Name>
+    </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

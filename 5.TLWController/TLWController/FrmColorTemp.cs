@@ -9,8 +9,8 @@ using System.Text;
 using System.Windows.Forms;
 using TLWController.Helper;
 using TLWController.Structs;
-using TLWController.Extentions;
 using TLWCommunication;
+using SFTHelper.Extentions;
 
 namespace TLWController
 {
@@ -156,28 +156,28 @@ namespace TLWController
             numGreen.ValueChanged -= numGreen_ValueChanged;
             numBlue.ValueChanged -= numBlue_ValueChanged;
 
-            int hz = cbHz1.SelectedValue.ToString().ToInit32();
+            int hz = cbHz1.SelectedValue.ToString().GetInt32(System.Globalization.NumberStyles.Number);
             colorTempGroup group = this.colorTempData.arrGroup[hz];
-            int colorTmp = cbColorTempType1.SelectedValue.ToString().ToInit32();
+            int colorTmp = cbColorTempType1.SelectedValue.ToString().GetInt32(System.Globalization.NumberStyles.Number);
             colorTemp colorTempData = group.arrData[colorTmp];
 
             byte[] tmp = new byte[2];
             //Red
             tmp[0] = colorTempData.Red_Hi;
             tmp[1] = colorTempData.Red_Lo;
-            ushort val = tmp.GetUInt16();
+            ushort val = tmp.GetUInt16(0);
             numRed.Value = val;
 
             //Green
             tmp[0] = colorTempData.Green_Hi;
             tmp[1] = colorTempData.Green_Lo;
-            val = tmp.GetUInt16();
+            val = tmp.GetUInt16(0);
             numGreen.Value = val;
 
             //Blue
             tmp[0] = colorTempData.Blue_Hi;
             tmp[1] = colorTempData.Blue_Lo;
-            val = tmp.GetUInt16();
+            val = tmp.GetUInt16(0);
             numBlue.Value = val;
 
             numRed.ValueChanged += numRed_ValueChanged;
@@ -188,9 +188,9 @@ namespace TLWController
         private void SetColorTempValue()
         {
 
-            int hz = cbHz1.SelectedValue.ToString().ToInit32();
+            int hz = cbHz1.SelectedValue.ToString().GetInt32(System.Globalization.NumberStyles.Number);
             colorTempGroup group = this.colorTempData.arrGroup[hz];
-            int colorTmp = cbColorTempType1.SelectedValue.ToString().ToInit32();
+            int colorTmp = cbColorTempType1.SelectedValue.ToString().GetInt32(System.Globalization.NumberStyles.Number);
             colorTemp colorTempData = group.arrData[colorTmp];
 
             UInt16 redVal = (UInt16)numRed.Value;

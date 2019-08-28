@@ -20,19 +20,19 @@ namespace SFTHelper.Helper
 {
     public class ArrayHelper
     {
-        public static string[,] Reverse(string[,] data)
-        {
-            int i0 = data.GetLength(0);
-            int i1 = data.GetLength(1);
-            string[,] result = new string[i0, i1];
-            for (int i = 0; i < i0; i++)
-            {
-                for (int j = 0; j < i1; j++)
-                {
-                    result[i0 - i - 1, i1 - j - 1] = data[i, j];
-                }
-            }
-            return result;
-        }
+        //public static string[,] Reverse(string[,] data)
+        //{
+        //    int i0 = data.GetLength(0);
+        //    int i1 = data.GetLength(1);
+        //    string[,] result = new string[i0, i1];
+        //    for (int i = 0; i < i0; i++)
+        //    {
+        //        for (int j = 0; j < i1; j++)
+        //        {
+        //            result[i0 - i - 1, i1 - j - 1] = data[i, j];
+        //        }
+        //    }
+        //    return result;
+        //}
     }
 }

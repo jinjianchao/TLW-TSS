@@ -505,7 +505,7 @@ namespace SFTHelper.Helper
                 target[i * nLen + 8] = 1;//默认值
                 Array.Copy(src, i * nOriginLen, target, i * nLen + 9, nOriginLen);//复制纯校正数据部分
 
-                target[i * nLen + nLen - 1] = target.CheckSum(i * nLen, nLen - 1);
+                target[i * nLen + nLen - 1] = target.CheckSumForByte(i * nLen, nLen - 1);
             }
             return true;
         }

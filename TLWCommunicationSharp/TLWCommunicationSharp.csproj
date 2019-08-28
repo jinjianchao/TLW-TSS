@@ -4,16 +4,16 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{8B5E6A3D-D374-4E3F-A11F-1BB362AB6937}</ProjectGuid>
+    <ProjectGuid>{5113A7AE-AD7A-441D-82BF-17C39FCCF7A4}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>SFTHelper</RootNamespace>
-    <AssemblyName>SFTHelper</AssemblyName>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>TLWCommunicationSharp</RootNamespace>
+    <AssemblyName>TLWCommunicationSharp</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -23,7 +23,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -31,13 +30,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <PropertyGroup>
-    <StartupObject />
-  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -45,30 +40,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Enums\EnumCALTarget.cs" />
-    <Compile Include="Enums\EnumCALType.cs" />
-    <Compile Include="Enums\EnumCommType.cs" />
-    <Compile Include="Enums\EnumPackageInOut.cs" />
-    <Compile Include="Enums\EnumSendType.cs" />
-    <Compile Include="Events\PackageEvent.cs" />
-    <Compile Include="Extentions\ByteArrayExt.cs" />
-    <Compile Include="Extentions\ByteExt.cs" />
-    <Compile Include="Extentions\ObjectExt.cs" />
-    <Compile Include="Extentions\StringExt.cs" />
-    <Compile Include="Extentions\UInt16ArrayExt.cs" />
-    <Compile Include="Extentions\UInt16Ext.cs" />
-    <Compile Include="Extentions\UInt32Ext.cs" />
-    <Compile Include="Helper\ArrayHelper.cs" />
-    <Compile Include="Helper\CalibrationHelper.cs" />
-    <Compile Include="Helper\FileHelper.cs" />
-    <Compile Include="Helper\FreePortHelper.cs" />
-    <Compile Include="Helper\SeamCalibrationHelper.cs" />
-    <Compile Include="Helper\SNHelper.cs" />
-    <Compile Include="Helper\PackageHelper.cs" />
+    <Compile Include="TLWCommandSharp.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Structs\StructSeamItem.cs" />
-    <Compile Include="Extentions\UInt64Ext.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\7.公共类\SFTHelper\SFTHelper.csproj">
+      <Project>{8b5e6a3d-d374-4e3f-a11f-1bb362ab6937}</Project>
+      <Name>SFTHelper</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

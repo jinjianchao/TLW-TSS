@@ -40,5 +40,33 @@ namespace SFTHelper.Extentions
             }
             return val;
         }
+
+        /// <summary>
+        /// 获取8位数值中的一部分
+        /// </summary>
+        /// <param name="src"></param>
+        /// <param name="nBitLow"></param>
+        /// <param name="nBitHigh"></param>
+        /// <returns></returns>
+        public static byte GetPart(this byte src, byte nBitLow, byte nBitHigh)
+        {
+            //取数
+            byte nResult = 0;
+            byte tmp = src;
+            int nLen = nBitHigh - nBitLow + 1;
+
+            byte mask = 0;
+            for (int i = 0; i < nLen; i++)
+            {
+                mask |= (byte)(1 << (nBitLow + i));
+            }
+
+            //使用掩码
+            tmp &= (byte)(mask);
+
+            nResult = (byte)(tmp >> nBitLow);
+
+            return nResult;
+        }
     }
 }
