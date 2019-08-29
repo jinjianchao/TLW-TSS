@@ -33,16 +33,13 @@ namespace TLWController
 
         private Dictionary<string, int> _DevIP = new Dictionary<string, int>();
         private Dictionary<string, int> _DevIPSharp = new Dictionary<string, int>();
+        TLWCommandSharp _commandSharp = null;
+
         private TLWCommand _TLWCommand = null;
         private bool _isBusy = false;
         private InterfaceData _InterfaceData = null;
         private string registerAddressFile = string.Empty;
 
-        #region Sharp Command
-
-        TLWCommandSharp _commandSharp = null;
-
-        #endregion
 
         #region 2072
 
@@ -172,8 +169,6 @@ namespace TLWController
             BindColorTempType();
             WriteOrReadInterfaceData(false);
 
-
-
             if (!Import2055Param(registerAddressFile, false))
             {
                 MessageBox.Show(this, "导入2055参数失败");
@@ -202,6 +197,8 @@ namespace TLWController
             _commandSharp.ProgressEvent += _commandSharp_ProgressEvent;
             _commandSharp.Sys_Initial();
             #endregion
+
+            tabTest.Parent = null;
         }
 
         #region 构造函数
@@ -239,11 +236,23 @@ namespace TLWController
             //界面控件
             List<Control> controls = new List<Control>()
             {
-                tabCommonCommand,
-                gbBrightness,
-                btnApplyBrightness
-            };
-            foreach (var item in controls)
+                tabCommonCommand,gbBrightness,btnApplyBrightness, groupBox5,btnGammaSet,btnGammaRead,btnCreateGammaFile,groupBox10,button5,groupBox11,
+                btnSendCalibrationOnOff,groupBox21,btnWriteGammaFile,gpVolumn,tabAdvance, groupBox6,label13,label15,btnSetNetwork,groupBox18,btnCreateSN,
+                btnReadSN,groupBox4,btnLoadVideoCardParam,groupBox9,label19,btnSetRegister,btnSingleRegRead,gpFirmwareUpgrade,label8,label27,label10,
+                label23,label16,btnUpgradeMCU,btnUpgradeMbFPGA,btnUpgradeFPGA,btnUpdateDistributeBoardFPGA, btnUpgradeMAP,btnReadMCU,btnReadMbFPGA,
+                btnReadFPGA,btnReadbtnDistributeBoardFPGA,btnReadMap,btnReadMCUVersion,btnReadMbVersion,btnReadBoardVersion,groupBox19,btnSetColorTemp,
+                btnReadColorTemp,groupBox20,btnSetGain,btnReadGain,label59,label50,label39,groupBox17,label31,btnUpdateCalibration,btnReadCalibration,
+                groupBox7,label38,btnBatchWriteCal,btnStopWriteCal,btnLoad2055Param,btnExport2055Param,label14,label9,ckDebugMode,btnSendAll,btnReadReg,
+                btnRegSetDefault,tabPage2,tabPage4,tab2055,tabPage3,tabPage5,tabPage6,tabPage7,btn2072Simple_ImportFile,btn2072Simple_ExportFile,
+                btn2072Simple_ResetValues,btn2072Simple_SendAll,btnRead2072,gP2072Simple7,btn2072Simple7,gP2072Simple3,btn2072Simple3,gP2072Simple2,
+                btn2072Simple2,gpSimple2072GAMMA,label205,btn2072SimpleCalcGAMMASend,btnSimple2072CreateGAMMAFile,btn2072SimpleSendGAMMAFile,
+                btn2072Simple5,btn2072Simple2_TryCalc,gP2072Simple1,gP2072Simple4,gp2072FuncTest,label150,label152,label153,label157,btn2072FuncTest,
+                gP2072Simple8,label170,label172,label185,btn2072Simple8_R,btn2072Simple8_G,btn2072Simple8_B,btn2072Simple8_All,gP2072Simple9,label188,
+                label187,label186,btn2072Simple9_R,btn2072Simple9_G,btn2072Simple9_B,btn2072Simple9_All,gP2072Simple10,label191,label190,label189,
+                btn2072Simple10_R,btn2072Simple10_G,btn2072Simple10_B,btn2072Simple10_All,gP2072Simple12,label197,label196,label195,btn2072Simple12_R,
+                btn2072Simple12_G,btn2072Simple12_B,btn2072Simple12_All,gP2072Simple13
+            };                                                                                                                               
+            foreach (var item in controls)                                                                                                   
             {
                 Trans(item);
             }
@@ -553,77 +562,6 @@ namespace TLWController
             cbColorTempType.DataSource = items;
         }
 
-        private void Bind2072Param()
-        {
-            //2072初始化
-            Initial2072();
-
-            //-------------2072Simple界面--------------
-            cb2072FuncTest2.SelectedIndex = 0;
-            cb2072FuncTest3.SelectedIndex = cb2072FuncTest3.Items.Count - 1;
-
-            cb2072Simple1.Items.Clear();
-            cb2072Simple1.Items.Add(Trans("帧同步"));
-            cb2072Simple1.Items.Add(Trans("帧间隔"));
-            cb2072Simple1.SelectedIndex = 0;
-
-            //处理类对象初始化
-            m_2072SimpleParam = new class2072Oper();
-            m_2072SimpleParam.FindCtrls(panel3);
-            m_2072SimpleParam.AddCtrl_2019(new Control[] { input2019Simple_160, input2019Simple_161, input2019Simple_162, input2019Simple_163 });
-            m_2072SimpleParam.AddCtrl_Register128(new Control[] { input2072FuncRegAddr, cb2072FuncTest2, cb2072FuncTest3, input2072FuncVal });//2019-03-25 新增寄存器128地址的控制
-
-            //50/60Hz模式切换
-            cb2072Simple5060Hz.Items.Clear();
-            cb2072Simple5060Hz.Items.Add("60Hz");
-            cb2072Simple5060Hz.Items.Add("50Hz");
-            cb2072Simple5060Hz.Items.Add("3D");
-            cb2072Simple5060Hz.SelectedIndex = 0;//默认60Hz
-
-            //GAMMA
-            cb2072SimpleGAMMA.Items.Clear();
-            cb2072SimpleGAMMA.Items.Add(Trans("全部"));
-            cb2072SimpleGAMMA.Items.Add(Trans("红色"));
-            cb2072SimpleGAMMA.Items.Add(Trans("绿色"));
-            cb2072SimpleGAMMA.Items.Add(Trans("蓝色"));
-            cb2072SimpleGAMMA.SelectedIndex = 0;
-
-            //-------------2072Simple界面 End ----------------
-
-
-            //------------------2072 Factory模式 ---------------------
-
-            //2018-09-26 2200操作类
-
-            //处理类对象初始化
-            m_2072FactoryParam = new class2072Oper();
-            m_2072FactoryParam.FindCtrls(panel4);
-            //m_2072FactoryParam.AddCtrl_2019(new Control[] { input2019Simple_160, input2019Simple_161, input2019Simple_162, input2019Simple_163 });
-            m_2072FactoryParam.AddCtrl_Register128(new Control[] { input2072FactoryRegisterAddr, cb2072FactoryRegister_StartBit, cb2072FactoryRegister_EndBit, input2072FactoryRegisterVal });//2019-03-25 新增寄存器128地址的控制
-
-            //选中某个模式 60Hz、50Hz、3D
-            cb2072Factory5060Hz.Items.Clear();
-            cb2072Factory5060Hz.Items.Add("60Hz");
-            cb2072Factory5060Hz.Items.Add("50Hz");
-            cb2072Factory5060Hz.Items.Add("3D");
-            cb2072Factory5060Hz.SelectedIndex = 0;
-
-            cb2072FactoryRegister_StartBit.Items.Clear();
-            cb2072FactoryRegister_EndBit.Items.Clear();
-            for (int i = 0; i < 16; i++)
-            {
-                cb2072FactoryRegister_StartBit.Items.Add(i.ToString());
-                cb2072FactoryRegister_EndBit.Items.Add(i.ToString());
-            }
-            cb2072FactoryRegister_StartBit.SelectedIndex = 0;
-            cb2072FactoryRegister_EndBit.SelectedIndex = 15;
-
-            input2072FactoryRegisterAddr.Text = "128";
-            input2072FactoryRegisterVal.Text = "128";
-
-            //------------------2072 Factory模式  End------------------
-        }
-
         #endregion
 
         #region 辅助方法
@@ -641,6 +579,35 @@ namespace TLWController
                 _InterfaceData.SDRAMAddress = (int)numSDRAMAddr.Value;
                 _InterfaceData.SDRAMDataLength = (int)numSDRAMDataLength.Value;
                 _InterfaceData.VideocardLoadParam = (int)cbVideocardLoadParam.SelectedIndex;
+                _InterfaceData.GammaBit = (int)numGammaBit.Value;
+                _InterfaceData.GammaColor = cbGammaColor.SelectedIndex;
+                _InterfaceData.GammaValue = (double)numGamma.Value;
+                _InterfaceData.WorkMode = cbWorkMode.SelectedIndex;
+                _InterfaceData.CalibrationOnOff = cbCalibrationOnOff.SelectedIndex;
+                _InterfaceData.GammaFileColor = cbGammFileColor.SelectedIndex;
+                _InterfaceData.GammaFile = txtGammaFile.Text;
+                _InterfaceData.IP = txtIP.Text;
+                _InterfaceData.Mask = txtMask.Text;
+                _InterfaceData.Gateway = txtGateway.Text;
+                _InterfaceData.SNPosition = cbSNPos.SelectedIndex;
+                _InterfaceData.SNCreateWay = cbSNCreate.SelectedIndex;
+                _InterfaceData.MCUFile = txtMcu.Text;
+                _InterfaceData.MBFPGAFile = txtMbFPGA.Text;
+                _InterfaceData.ModuleFPGAFile = txtFPGA.Text;
+                _InterfaceData.DistributeBoardFPGAFile = txtDistributeBoardFPGA.Text;
+                _InterfaceData.MapFile = txtMap.Text;
+                _InterfaceData.CalibrationFile = txtCalibrationFile.Text;
+                _InterfaceData.CalibrationFilePosition = cbBoardPos.SelectedIndex;
+                _InterfaceData.BatchCalibrationFile = txtBatchWriteCalibrationFolder.Text;
+                _InterfaceData.RegisterAddr = (int)numSingleRegAddr.Value;
+                _InterfaceData.RegisterValue = (int)numSingleRegValue.Value;
+                _InterfaceData.ColorTempChip = cbChip.SelectedIndex;
+                _InterfaceData.ColorTempHz = cbHz.SelectedIndex;
+                _InterfaceData.ColorTempType = cbColorTempType.SelectedIndex;
+                _InterfaceData.GainChipType = cbChipType.SelectedIndex;
+                _InterfaceData.GainRedColor = (int)numRed.Value;
+                _InterfaceData.GainGreenColor = (int)numGreen.Value;
+                _InterfaceData.GainBlueColor = (int)numBlue.Value;
                 _InterfaceData.SerializeXML<InterfaceData>(file);
             }
             else
@@ -658,6 +625,35 @@ namespace TLWController
                 numSDRAMAddr.Value = _InterfaceData.SDRAMAddress;
                 numSDRAMDataLength.Value = _InterfaceData.SDRAMDataLength;
                 cbVideocardLoadParam.SelectedIndex = _InterfaceData.VideocardLoadParam;
+                numGammaBit.Value = _InterfaceData.GammaBit;
+                cbGammaColor.SelectedIndex = _InterfaceData.GammaColor;
+                numGamma.Value = (decimal)_InterfaceData.GammaValue;
+                cbWorkMode.SelectedIndex = _InterfaceData.WorkMode;
+                cbCalibrationOnOff.SelectedIndex = _InterfaceData.CalibrationOnOff;
+                cbGammFileColor.SelectedIndex = _InterfaceData.GammaFileColor;
+                txtGammaFile.Text = _InterfaceData.GammaFile;
+                txtIP.Text = _InterfaceData.IP;
+                txtMask.Text = _InterfaceData.Mask;
+                txtGateway.Text = _InterfaceData.Gateway;
+                cbSNPos.SelectedIndex = _InterfaceData.SNPosition;
+                cbSNCreate.SelectedIndex = _InterfaceData.SNCreateWay;
+                txtMcu.Text = _InterfaceData.MCUFile;
+                txtMbFPGA.Text = _InterfaceData.MBFPGAFile;
+                txtFPGA.Text = _InterfaceData.ModuleFPGAFile;
+                txtDistributeBoardFPGA.Text = _InterfaceData.DistributeBoardFPGAFile;
+                txtMap.Text = _InterfaceData.MapFile;
+                txtCalibrationFile.Text = _InterfaceData.CalibrationFile;
+                cbBoardPos.SelectedIndex = _InterfaceData.CalibrationFilePosition;
+                txtBatchWriteCalibrationFolder.Text = _InterfaceData.BatchCalibrationFile;
+                numSingleRegAddr.Value = _InterfaceData.RegisterAddr;
+                numSingleRegValue.Value = _InterfaceData.RegisterValue;
+                cbChip.SelectedIndex = _InterfaceData.ColorTempChip;
+                cbHz.SelectedIndex = _InterfaceData.ColorTempHz;
+                cbColorTempType.SelectedIndex = _InterfaceData.ColorTempType;
+                cbChipType.SelectedIndex = _InterfaceData.GainChipType;
+                numRed.Value = _InterfaceData.GainRedColor;
+                numGreen.Value = _InterfaceData.GainGreenColor;
+                numBlue.Value = _InterfaceData.GainBlueColor;
             }
         }
 
@@ -9764,6 +9760,24 @@ namespace TLWController
 
             int percent = (int)(tbVolumn2.Value * 1.0 / 255 * 100);
             lblVolumn2.Text = $"{percent}%";
+        }
+
+        private void txtIP_TextChanged(object sender, EventArgs e)
+        {
+            if (txtIP.Text.Trim() == "advance")
+            {
+                //FrmTest frmTest = new FrmTest();
+                //frmTest.Clone(this);
+                //frmTest._TLWCommand = _TLWCommand;
+                //frmTest._commandSharp = _commandSharp;
+                //frmTest.StartPosition = FormStartPosition.CenterParent;
+                //frmTest.Show(this);
+                tabTest.Parent = tab2055Param;
+            }
+            else
+            {
+                tabTest.Parent = null;
+            }
         }
     }
 }

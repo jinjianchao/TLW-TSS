@@ -75,11 +75,105 @@ namespace SFTHelper.Helper
             for (int f = 0; f < arrFactor.Length; f++)
             {
                 double val = arrFactor[f];
-                //if (val < 100) val -= 1.5;
-                //if (val > 100) val += 2.6;
                 arrFactor[f] = val / 100;
             }
 
+            int pos = 0;//像素在箱体中的位置
+            int linePt = moduleW * NumW;//一行的点数
+            List<int>[] arrPt = new List<int>[9];
+            for (int i = 0; i < 9; i++)
+                arrPt[i] = new List<int>();
+
+
+            //寻址9个区域的位置信息
+            #region 新算法
+            //采用扫描方式，并行的获取几个区域位置
+            for (int row = 0; row < moduleH; row++)
+            {
+                pos = (rowID * moduleH + row) * linePt + colID * moduleW; //该行起始点位置  
+                for (int col = 0; col < moduleW; col++)
+                {
+                    if (row == 0)
+                    {
+                        //扫描第一行
+                        if (col == 0)
+                        {
+                            arrPt[0].Add(pos);//LT
+                        }
+                        else if (col == moduleW - 1)
+                        {
+                            arrPt[2].Add(pos + col);//RT
+                        }
+                        else
+                        {
+                            arrPt[1].Add(pos + col);//TC
+                        }
+                    }
+                    else if (row == moduleH - 1)
+                    {   //扫描最后一行
+                        if (col == 0)
+                        {
+                            arrPt[6].Add(pos);//BL
+                        }
+                        else if (col == moduleW - 1)
+                        {
+                            arrPt[8].Add(pos + col);//RL
+                        }
+                        else
+                        {
+                            arrPt[7].Add(pos + col);//BC
+                        }
+
+                    }
+                    else
+                    {
+                        //扫描中间的这些行
+                        if (col == 0)
+                        {//第一个点
+                            arrPt[3].Add(pos);//L
+                        }
+                        else if (col == moduleW - 1)
+                        {//最后一个点
+                            arrPt[5].Add(pos + col);//R
+                        }
+                        else
+                        {//中间的点
+                            arrPt[4].Add(pos + col);//C
+                        }
+                    }
+                }
+            }
+            #endregion
+
+            //原始数据乘以系数
+            for (int i = 0; i < 9; i++)
+                MultiPlayFactor2(data, arrPt[i], arrFactor[i]);
+
+            for (int i = 0; i < 9; i++)
+                arrPt[i].Clear();//释放数据
+
+        }
+
+        private static void ChangeModuleValue3(byte startGray, StructSeamItem seamItemData, int rowID, int colID, int moduleW, int moduleH, int NumW, int NumH, ushort[] data)
+        {
+            //模块的9个位置的系数
+            double[] arrFactor = { seamItemData.Top, seamItemData.Top, seamItemData.Top,
+                                  seamItemData.Left,startGray/(255*1.0f)*100,seamItemData.Right,
+                                  seamItemData.Bottom,seamItemData.Bottom,seamItemData.Bottom
+                              };
+            ////系数处理(将 0.0到100.0转换到0.0到1.0)
+            //for (int f = 0; f < arrFactor.Length; f++)
+            //{
+            //    double val = arrFactor[f];
+            //    arrFactor[f] = val / 100;
+            //}
+
+            //系数处理(将 0.0到100.0转换到0.0到1.0)
+            for (int f = 0; f < arrFactor.Length; f++)
+            {
+                double val = arrFactor[f];
+                arrFactor[f] = val / 100;
+            }
 
             int pos = 0;//像素在箱体中的位置
             int linePt = moduleW * NumW;//一行的点数
@@ -180,7 +274,7 @@ namespace SFTHelper.Helper
                 for (int col = 0; col < moduleColCount; col++)
                 {
                     StructSeamItem itemData = seamItemData[row, col];
-                    ChangeModuleValue2((byte)_startGray, itemData, row, col, _modulePixelWidth, _modulePixelHeight, moduleColCount, moduleRowCount, uValue);
+                    ChangeModuleValue3((byte)_startGray, itemData, row, col, _modulePixelWidth, _modulePixelHeight, moduleColCount, moduleRowCount, uValue);
                 }
             }
             dataOut = uValue.Clone() as ushort[];
@@ -204,7 +298,7 @@ namespace SFTHelper.Helper
 
             //每个模块都处理系数
             StructSeamItem itemData = seamItemData;
-            ChangeModuleValue2((byte)_startGray, itemData, 0, 0, _modulePixelWidth, _modulePixelHeight, moduleColCount, moduleRowCount, uValue);
+            ChangeModuleValue3((byte)_startGray, itemData, 0, 0, _modulePixelWidth, _modulePixelHeight, moduleColCount, moduleRowCount, uValue);
 
             dataOut = uValue.Clone() as ushort[];
             return true;

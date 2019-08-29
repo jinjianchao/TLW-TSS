@@ -28,8 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.tabCommonCommand = new System.Windows.Forms.TabPage();
             this.groupBox21 = new System.Windows.Forms.GroupBox();
@@ -921,7 +921,7 @@
             this.tabCommonCommand.Location = new System.Drawing.Point(4, 22);
             this.tabCommonCommand.Name = "tabCommonCommand";
             this.tabCommonCommand.Padding = new System.Windows.Forms.Padding(3);
-            this.tabCommonCommand.Size = new System.Drawing.Size(1471, 804);
+            this.tabCommonCommand.Size = new System.Drawing.Size(1513, 804);
             this.tabCommonCommand.TabIndex = 0;
             this.tabCommonCommand.Text = "常用命令";
             // 
@@ -1203,7 +1203,7 @@
             this.tab2055Param.Location = new System.Drawing.Point(0, 3);
             this.tab2055Param.Name = "tab2055Param";
             this.tab2055Param.SelectedIndex = 0;
-            this.tab2055Param.Size = new System.Drawing.Size(1479, 830);
+            this.tab2055Param.Size = new System.Drawing.Size(1521, 830);
             this.tab2055Param.TabIndex = 0;
             this.tab2055Param.SelectedIndexChanged += new System.EventHandler(this.tab2055Param_SelectedIndexChanged);
             // 
@@ -1222,7 +1222,7 @@
             this.tabAdvance.Location = new System.Drawing.Point(4, 22);
             this.tabAdvance.Name = "tabAdvance";
             this.tabAdvance.Padding = new System.Windows.Forms.Padding(3);
-            this.tabAdvance.Size = new System.Drawing.Size(1471, 804);
+            this.tabAdvance.Size = new System.Drawing.Size(1513, 804);
             this.tabAdvance.TabIndex = 3;
             this.tabAdvance.Text = "高级";
             // 
@@ -1764,6 +1764,7 @@
             this.txtIP.Size = new System.Drawing.Size(140, 21);
             this.txtIP.TabIndex = 1;
             this.txtIP.Text = "192.168.0.32";
+            this.txtIP.TextChanged += new System.EventHandler(this.txtIP_TextChanged);
             // 
             // label12
             // 
@@ -2176,7 +2177,7 @@
             this.tab2055.Location = new System.Drawing.Point(4, 22);
             this.tab2055.Name = "tab2055";
             this.tab2055.Padding = new System.Windows.Forms.Padding(3);
-            this.tab2055.Size = new System.Drawing.Size(1471, 804);
+            this.tab2055.Size = new System.Drawing.Size(1513, 804);
             this.tab2055.TabIndex = 2;
             this.tab2055.Text = "2055寄存器设置";
             // 
@@ -2201,7 +2202,7 @@
             this.tabRegister.Location = new System.Drawing.Point(0, 42);
             this.tabRegister.Name = "tabRegister";
             this.tabRegister.SelectedIndex = 0;
-            this.tabRegister.Size = new System.Drawing.Size(1545, 752);
+            this.tabRegister.Size = new System.Drawing.Size(1587, 752);
             this.tabRegister.TabIndex = 11;
             // 
             // tabPage2
@@ -2210,7 +2211,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(1537, 726);
+            this.tabPage2.Size = new System.Drawing.Size(1579, 726);
             this.tabPage2.TabIndex = 0;
             this.tabPage2.Text = "2055寄存器";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -2222,8 +2223,8 @@
             this.grid2055.AllowUserToOrderColumns = true;
             this.grid2055.AllowUserToResizeColumns = false;
             this.grid2055.AllowUserToResizeRows = false;
-            dataGridViewCellStyle5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.grid2055.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.grid2055.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
             this.grid2055.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.grid2055.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.CoCheckBox,
@@ -2252,7 +2253,7 @@
             this.grid2055.RowHeadersVisible = false;
             this.grid2055.RowTemplate.Height = 23;
             this.grid2055.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.grid2055.Size = new System.Drawing.Size(1531, 720);
+            this.grid2055.Size = new System.Drawing.Size(1573, 720);
             this.grid2055.TabIndex = 0;
             this.grid2055.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.grid2055_CellBeginEdit);
             this.grid2055.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.grid2055_CellContentClick);
@@ -2407,7 +2408,7 @@
             this.tabPage4.Location = new System.Drawing.Point(4, 22);
             this.tabPage4.Name = "tabPage4";
             this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage4.Size = new System.Drawing.Size(1537, 726);
+            this.tabPage4.Size = new System.Drawing.Size(1579, 726);
             this.tabPage4.TabIndex = 2;
             this.tabPage4.Text = "其它寄存器";
             // 
@@ -2418,8 +2419,8 @@
             this.gridOtherReg.AllowUserToOrderColumns = true;
             this.gridOtherReg.AllowUserToResizeColumns = false;
             this.gridOtherReg.AllowUserToResizeRows = false;
-            dataGridViewCellStyle6.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.gridOtherReg.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.gridOtherReg.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle2;
             this.gridOtherReg.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.gridOtherReg.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ColOtherCheckBox,
@@ -2441,7 +2442,7 @@
             this.gridOtherReg.RowHeadersVisible = false;
             this.gridOtherReg.RowTemplate.Height = 23;
             this.gridOtherReg.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.gridOtherReg.Size = new System.Drawing.Size(1531, 720);
+            this.gridOtherReg.Size = new System.Drawing.Size(1573, 720);
             this.gridOtherReg.TabIndex = 1;
             this.gridOtherReg.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.gridOtherReg_CellBeginEdit);
             this.gridOtherReg.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.gridOtherReg_CellContentClick);
@@ -2721,7 +2722,7 @@
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(1471, 804);
+            this.tabPage3.Size = new System.Drawing.Size(1513, 804);
             this.tabPage3.TabIndex = 4;
             this.tabPage3.Text = "2072寄存器设置";
             // 
@@ -2737,7 +2738,7 @@
             this.tabControl1.Location = new System.Drawing.Point(0, 6);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(1318, 790);
+            this.tabControl1.Size = new System.Drawing.Size(1360, 790);
             this.tabControl1.TabIndex = 22;
             // 
             // tabPage5
@@ -2747,7 +2748,7 @@
             this.tabPage5.Location = new System.Drawing.Point(4, 22);
             this.tabPage5.Name = "tabPage5";
             this.tabPage5.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage5.Size = new System.Drawing.Size(1310, 764);
+            this.tabPage5.Size = new System.Drawing.Size(1352, 764);
             this.tabPage5.TabIndex = 0;
             this.tabPage5.Text = "预览用，断电丢失";
             // 
@@ -2765,7 +2766,7 @@
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel2.Location = new System.Drawing.Point(3, 3);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(1304, 758);
+            this.panel2.Size = new System.Drawing.Size(1346, 758);
             this.panel2.TabIndex = 2;
             // 
             // groupBox22
@@ -6329,7 +6330,7 @@
             this.tabPage6.Location = new System.Drawing.Point(4, 22);
             this.tabPage6.Name = "tabPage6";
             this.tabPage6.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage6.Size = new System.Drawing.Size(1310, 764);
+            this.tabPage6.Size = new System.Drawing.Size(1352, 764);
             this.tabPage6.TabIndex = 2;
             this.tabPage6.Text = "简化界面";
             // 
@@ -6362,7 +6363,7 @@
             this.panel3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel3.Location = new System.Drawing.Point(3, 3);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(1304, 758);
+            this.panel3.Size = new System.Drawing.Size(1346, 758);
             this.panel3.TabIndex = 2;
             // 
             // btnRead2072
@@ -7935,7 +7936,7 @@
             this.tabPage7.Location = new System.Drawing.Point(4, 22);
             this.tabPage7.Name = "tabPage7";
             this.tabPage7.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage7.Size = new System.Drawing.Size(1310, 764);
+            this.tabPage7.Size = new System.Drawing.Size(1352, 764);
             this.tabPage7.TabIndex = 3;
             this.tabPage7.Text = "工厂界面";
             // 
@@ -7951,7 +7952,7 @@
             this.panel4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel4.Location = new System.Drawing.Point(3, 3);
             this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(1304, 758);
+            this.panel4.Size = new System.Drawing.Size(1346, 758);
             this.panel4.TabIndex = 1;
             // 
             // gp2072FactoryRegister
@@ -8490,7 +8491,7 @@
             this.tabTest.Location = new System.Drawing.Point(4, 22);
             this.tabTest.Name = "tabTest";
             this.tabTest.Padding = new System.Windows.Forms.Padding(3);
-            this.tabTest.Size = new System.Drawing.Size(1471, 804);
+            this.tabTest.Size = new System.Drawing.Size(1513, 804);
             this.tabTest.TabIndex = 1;
             this.tabTest.Text = "测试页";
             // 
@@ -8518,7 +8519,7 @@
             this.groupBox3.Controls.Add(this.gpTest);
             this.groupBox3.Location = new System.Drawing.Point(6, 6);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(1529, 790);
+            this.groupBox3.Size = new System.Drawing.Size(1571, 790);
             this.groupBox3.TabIndex = 12;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "FLASH操作";
@@ -9409,7 +9410,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1479, 833);
+            this.ClientSize = new System.Drawing.Size(1521, 833);
             this.Controls.Add(this.tab2055Param);
             this.Name = "MainForm";
             this.Text = "Form1";

@@ -27,7 +27,7 @@ namespace BatchSeamCalibration
 {
     public partial class frmMain : BaseFormV2
     {
-        bool isDebugMode = false;//是否测试模式
+        bool isDebugMode = true;//是否测试模式
 
         private string LocalCalFolder;
         private Dictionary<string, string> currentModuleFolder;
