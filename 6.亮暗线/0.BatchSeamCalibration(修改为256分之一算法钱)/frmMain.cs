@@ -27,8 +27,7 @@ namespace BatchSeamCalibration
 {
     public partial class frmMain : BaseFormV2
     {
-        int adjustRange = 256;//调试幅度
-        bool isDebugMode = false;//是否测试模式
+        bool isDebugMode = true;//是否测试模式
 
         private string LocalCalFolder;
         private Dictionary<string, string> currentModuleFolder;
@@ -164,7 +163,7 @@ namespace BatchSeamCalibration
                         ltX = (j) * width;
                     }
                     Rectangle rect = new Rectangle(ltX, ltY, width - 1, height - 1);
-                    seamData[i, j] = new StructSeamItem(adjustRange);
+                    seamData[i, j] = new StructSeamItem(100);
                     seamData[i, j].RectangleAll = rect;
 
                     //左
@@ -293,7 +292,6 @@ namespace BatchSeamCalibration
             ViewForm.SelectedIPCommand = GetSelectedIPCommand();
             ViewForm._baseCommunication = _baseCommunication;
             ViewForm.IP = "";
-            ViewForm.adjustRange = adjustRange;
             //frmMain_Move(null, null);
         }
 
@@ -582,7 +580,7 @@ namespace BatchSeamCalibration
                     }
                     else
                     {
-                        if (item.Left == adjustRange && item.Top == adjustRange && item.Right == adjustRange && item.Bottom == adjustRange) continue;
+                        if (item.Left == 100 && item.Top == 100 && item.Right == 100 && item.Bottom == 100) continue;
                         //points.Add(new StructModule(j + 1, i + 1, position));
                         points.Add(new StructModule(seamItemDatas.GetLength(1) - j, seamItemDatas.GetLength(0) - i, position));
                     }
@@ -647,7 +645,7 @@ namespace BatchSeamCalibration
                 {
                     //从文件夹读取
                     List<string> searchFiles = new List<string>();
-                    FileHelper.GetFiles(sourceFolder, $"*{timeCode}*.*", false, ref searchFiles);
+                    FileHelper.GetFiles(sourceFolder, $"*{timeCode}*.dat", false, ref searchFiles);
                     string[] files = searchFiles.ToArray();
                     if (files.Length == 0)
                     {
@@ -658,11 +656,11 @@ namespace BatchSeamCalibration
                     System.IO.File.Copy(files[0], readFile, true);
                 }
                 StructSeamItem seamItem = seamItems[_unitType.ModuleHeight - item.Y, _unitType.ModuleWidth - item.X];
-                if (seamCalibrationHelper.Modify(readFile, changedFile, adjustRange, seamItem) == false)
+                if (seamCalibrationHelper.Modify(readFile, changedFile, seamItem) == false)
                 {
                     operationResult.Message = string.Format(MultiLanguage.GetNames(Name, "WriteModuleDataFailed"), item.Y, item.X, modulePos);
                     operationResult.Status = false;
-                    return operationResult;
+                    return operationResult; 
                 }
 
                 if (calibrationHelper.ToZDat(changedFile, writeFile, EnumCALTarget.Module) == false)
@@ -924,17 +922,18 @@ namespace BatchSeamCalibration
 
         private void tbAdjustPercent_Scroll(object sender, EventArgs e)
         {
-            numAdjustPercent.Value = tbAdjustPercent.Value;
+            numAdjustPercent.Value = (decimal)(tbAdjustPercent.Value / 10 * 1.0f);
             SetSelectedBorderPercent((float)numAdjustPercent.Value);
             RefreshViewForm();
         }
 
         private void numAdjustPercent_ValueChanged(object sender, EventArgs e)
         {
-            tbAdjustPercent.Value = (int)numAdjustPercent.Value;
+            tbAdjustPercent.Value = (int)numAdjustPercent.Value * 10;
             SetSelectedBorderPercent((float)numAdjustPercent.Value);
             RefreshViewForm();
         }
+
 
         private void UserIPCommand_Click(object sender, EventArgs e)
         {
@@ -943,17 +942,6 @@ namespace BatchSeamCalibration
 
         private void frmMain_Load(object sender, EventArgs e)
         {
-            tbAdjustPercent.Scroll -= tbAdjustPercent_Scroll;
-            tbAdjustPercent.Minimum = 0;
-            tbAdjustPercent.Maximum = adjustRange * 2;
-            tbAdjustPercent.Value = adjustRange;
-            tbAdjustPercent.Scroll += tbAdjustPercent_Scroll;
-
-            numAdjustPercent.ValueChanged -= numAdjustPercent_ValueChanged;
-            numAdjustPercent.Minimum = 0;
-            numAdjustPercent.Maximum = adjustRange * 2;
-            numAdjustPercent.Value = adjustRange;
-            numAdjustPercent.ValueChanged += numAdjustPercent_ValueChanged;
             UnitTypeV2 uType = GetSelectedPanelType();
             _unitType.ModuleWidth = uType.ModuleWidth;
             _unitType.ModuleHeight = uType.ModuleHeight * 2;

@@ -45,6 +45,7 @@
       <Code name="btnUpgradeMCU" text="更新"/>
       <Code name="btnUpgradeMbFPGA" text="更新"/>
       <Code name="btnUpgradeFPGA" text="更新"/>
+      <Code name="btnUpgradeMAP" text="更新"/>
       <Code name="btnUpdateDistributeBoardFPGA" text="更新"/>
       <Code name="btnReadMCU" text="读取"/>
       <Code name="btnReadMbFPGA" text="读取"/>
@@ -145,14 +146,51 @@
       <Code name="btn2072Simple12_G" text="设置"/>
       <Code name="btn2072Simple12_B" text="设置"/>
       <Code name="btn2072Simple12_All" text="全部设置"/>
-          <Code name="gP2072Simple13" text="高低灰耦合和跨板色差"/>
-      <Code name="label197" text="红色"/>
-      <Code name="label196" text="绿色"/>
-      <Code name="label195" text="蓝色"/>
-      <Code name="btn2072Simple12_R" text="设置"/>
-      <Code name="btn2072Simple12_G" text="设置"/>
-      <Code name="btn2072Simple12_B" text="设置"/>
-      <Code name="btn2072Simple12_All" text="全部设置"/>
+      <Code name="gP2072Simple13" text="高低灰耦合和跨板色差"/>
+      <Code name="label200" text="红色"/>
+      <Code name="label199" text="绿色"/>
+      <Code name="label198" text="蓝色"/>
+      <Code name="btn2072Simple13_R" text="设置"/>
+      <Code name="btn2072Simple13_G" text="设置"/>
+      <Code name="btn2072Simple13_B" text="设置"/>
+      <Code name="btn2072Simple13_All" text="全部设置"/>
+      <Code name="gP2072Simple11" text="灰度和白平衡调节3"/>
+      <Code name="label194" text="红色"/>
+      <Code name="label193" text="绿色"/>
+      <Code name="label192" text="蓝色"/>
+      <Code name="btn2072Simple11_R" text="设置"/>
+      <Code name="btn2072Simple11_G" text="设置"/>
+      <Code name="btn2072Simple11_B" text="设置"/>
+      <Code name="btn2072Simple11_All" text="全部设置"/>
+      <Code name="gpSimple2019" text="2019寄存器设置"/>
+      <Code name="label218" text="时钟上沿起点"/>
+      <Code name="btnSet2019Simple_160" text="设置"/>
+      <Code name="label217" text="消隐强度"/>
+      <Code name="btnSet2019Simple_161" text="设置"/>
+      <Code name="label216" text="信号下沿终点"/>
+      <Code name="btnSet2019Simple_162" text="设置"/>
+      <Code name="label215" text="数据上沿起点"/>
+      <Code name="btnSet2019Simple_163" text="设置"/>
+      <Code name="btnSet2019Simple_All" text="全部设置"/>
+      <Code name="btn2072FactoryImport" text="导入文件"/>
+      <Code name="btn2072Factory_SendAll" text="全部发送"/>
+      <Code name="gp2072Factory_CurrentGain" text="电流增益调节"/>
+      <Code name="label26" text="红色"/>
+      <Code name="label25" text="绿色"/>
+      <Code name="label24" text="蓝色"/>
+      <Code name="btnSet2072FactoryCurrentGain_All" text="全部设置"/>
+      <Code name="gp2072FactoryRegister" text="特殊寄存器设置"/>
+      <Code name="lb2072FactoryRegister1" text="寄存器地址"/>
+      <Code name="lb2072FactoryRegister2" text="起始位"/>
+      <Code name="lb2072FactoryRegister3" text="终止位"/>
+      <Code name="lb2072FactoryRegister4" text="数据"/>
+      <Code name="btn2072FactoryRegisterSet" text="设置"/>
+      <Code name="btn2072FactoryExport" text="导出文件"/>
+      <Code name="btnColorTempConfig" text="色温设置"/>
+      <Code name="label26" text="红色"/>
+      <Code name="label26" text="红色"/>
+      <Code name="label26" text="红色"/>
+      <Code name="label26" text="红色"/>
     </Codes>
   </Form>
 </Resource>

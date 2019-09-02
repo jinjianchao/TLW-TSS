@@ -28,10 +28,15 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.tabCommonCommand = new System.Windows.Forms.TabPage();
+            this.gpVolumn = new System.Windows.Forms.GroupBox();
+            this.lblVolumn2 = new System.Windows.Forms.Label();
+            this.lblVolumn1 = new System.Windows.Forms.Label();
+            this.tbVolumn2 = new System.Windows.Forms.TrackBar();
+            this.tbVolumn1 = new System.Windows.Forms.TrackBar();
             this.groupBox21 = new System.Windows.Forms.GroupBox();
             this.btnChoseGammaFile = new System.Windows.Forms.Button();
             this.txtGammaFile = new System.Windows.Forms.TextBox();
@@ -761,12 +766,11 @@
             this.button1 = new System.Windows.Forms.Button();
             this.numTimeDelay = new System.Windows.Forms.NumericUpDown();
             this.button2 = new System.Windows.Forms.Button();
-            this.gpVolumn = new System.Windows.Forms.GroupBox();
-            this.tbVolumn1 = new System.Windows.Forms.TrackBar();
-            this.tbVolumn2 = new System.Windows.Forms.TrackBar();
-            this.lblVolumn2 = new System.Windows.Forms.Label();
-            this.lblVolumn1 = new System.Windows.Forms.Label();
+            this.btnBatchReadCal = new System.Windows.Forms.Button();
             this.tabCommonCommand.SuspendLayout();
+            this.gpVolumn.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.tbVolumn2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tbVolumn1)).BeginInit();
             this.groupBox21.SuspendLayout();
             this.groupBox5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numGammaBit)).BeginInit();
@@ -904,9 +908,6 @@
             this.gpTest.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numTestDataLen)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numTimeDelay)).BeginInit();
-            this.gpVolumn.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.tbVolumn1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.tbVolumn2)).BeginInit();
             this.SuspendLayout();
             // 
             // tabCommonCommand
@@ -924,6 +925,63 @@
             this.tabCommonCommand.Size = new System.Drawing.Size(1513, 804);
             this.tabCommonCommand.TabIndex = 0;
             this.tabCommonCommand.Text = "常用命令";
+            // 
+            // gpVolumn
+            // 
+            this.gpVolumn.Controls.Add(this.lblVolumn2);
+            this.gpVolumn.Controls.Add(this.lblVolumn1);
+            this.gpVolumn.Controls.Add(this.tbVolumn2);
+            this.gpVolumn.Controls.Add(this.tbVolumn1);
+            this.gpVolumn.Location = new System.Drawing.Point(8, 135);
+            this.gpVolumn.Name = "gpVolumn";
+            this.gpVolumn.Size = new System.Drawing.Size(484, 97);
+            this.gpVolumn.TabIndex = 22;
+            this.gpVolumn.TabStop = false;
+            this.gpVolumn.Text = "音量调节";
+            // 
+            // lblVolumn2
+            // 
+            this.lblVolumn2.AutoSize = true;
+            this.lblVolumn2.Location = new System.Drawing.Point(431, 69);
+            this.lblVolumn2.Name = "lblVolumn2";
+            this.lblVolumn2.Size = new System.Drawing.Size(23, 12);
+            this.lblVolumn2.TabIndex = 30;
+            this.lblVolumn2.Text = "10%";
+            // 
+            // lblVolumn1
+            // 
+            this.lblVolumn1.AutoSize = true;
+            this.lblVolumn1.Location = new System.Drawing.Point(431, 25);
+            this.lblVolumn1.Name = "lblVolumn1";
+            this.lblVolumn1.Size = new System.Drawing.Size(23, 12);
+            this.lblVolumn1.TabIndex = 31;
+            this.lblVolumn1.Text = "10%";
+            // 
+            // tbVolumn2
+            // 
+            this.tbVolumn2.AutoSize = false;
+            this.tbVolumn2.Location = new System.Drawing.Point(7, 61);
+            this.tbVolumn2.Maximum = 255;
+            this.tbVolumn2.Name = "tbVolumn2";
+            this.tbVolumn2.Size = new System.Drawing.Size(425, 30);
+            this.tbVolumn2.TabIndex = 1;
+            this.tbVolumn2.TickFrequency = 10;
+            this.tbVolumn2.Value = 25;
+            this.tbVolumn2.Scroll += new System.EventHandler(this.tbVolumn2_Scroll);
+            this.tbVolumn2.MouseUp += new System.Windows.Forms.MouseEventHandler(this.tbVolumn2_MouseUp);
+            // 
+            // tbVolumn1
+            // 
+            this.tbVolumn1.AutoSize = false;
+            this.tbVolumn1.Location = new System.Drawing.Point(7, 20);
+            this.tbVolumn1.Maximum = 255;
+            this.tbVolumn1.Name = "tbVolumn1";
+            this.tbVolumn1.Size = new System.Drawing.Size(425, 30);
+            this.tbVolumn1.TabIndex = 1;
+            this.tbVolumn1.TickFrequency = 10;
+            this.tbVolumn1.Value = 25;
+            this.tbVolumn1.Scroll += new System.EventHandler(this.tbVolumn1_Scroll);
+            this.tbVolumn1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.tbVolumn1_MouseUp);
             // 
             // groupBox21
             // 
@@ -1338,6 +1396,7 @@
             // 
             // groupBox7
             // 
+            this.groupBox7.Controls.Add(this.btnBatchReadCal);
             this.groupBox7.Controls.Add(this.btnStopWriteCal);
             this.groupBox7.Controls.Add(this.txtBatchWriteCalibrationFolder);
             this.groupBox7.Controls.Add(this.label38);
@@ -1364,7 +1423,7 @@
             // 
             this.txtBatchWriteCalibrationFolder.Location = new System.Drawing.Point(76, 24);
             this.txtBatchWriteCalibrationFolder.Name = "txtBatchWriteCalibrationFolder";
-            this.txtBatchWriteCalibrationFolder.Size = new System.Drawing.Size(467, 21);
+            this.txtBatchWriteCalibrationFolder.Size = new System.Drawing.Size(387, 21);
             this.txtBatchWriteCalibrationFolder.TabIndex = 21;
             // 
             // label38
@@ -1378,7 +1437,7 @@
             // 
             // btnBatchWriteCal
             // 
-            this.btnBatchWriteCal.Location = new System.Drawing.Point(594, 23);
+            this.btnBatchWriteCal.Location = new System.Drawing.Point(514, 22);
             this.btnBatchWriteCal.Name = "btnBatchWriteCal";
             this.btnBatchWriteCal.Size = new System.Drawing.Size(73, 23);
             this.btnBatchWriteCal.TabIndex = 23;
@@ -1388,7 +1447,7 @@
             // 
             // btnChoseBatchCalibrationFolder
             // 
-            this.btnChoseBatchCalibrationFolder.Location = new System.Drawing.Point(549, 22);
+            this.btnChoseBatchCalibrationFolder.Location = new System.Drawing.Point(468, 22);
             this.btnChoseBatchCalibrationFolder.Name = "btnChoseBatchCalibrationFolder";
             this.btnChoseBatchCalibrationFolder.Size = new System.Drawing.Size(39, 23);
             this.btnChoseBatchCalibrationFolder.TabIndex = 22;
@@ -1490,7 +1549,7 @@
             // 
             // btnUpdateCalibration
             // 
-            this.btnUpdateCalibration.Location = new System.Drawing.Point(597, 17);
+            this.btnUpdateCalibration.Location = new System.Drawing.Point(593, 16);
             this.btnUpdateCalibration.Name = "btnUpdateCalibration";
             this.btnUpdateCalibration.Size = new System.Drawing.Size(75, 23);
             this.btnUpdateCalibration.TabIndex = 7;
@@ -1581,9 +1640,9 @@
             // 
             // btnColorTempConfig
             // 
-            this.btnColorTempConfig.Location = new System.Drawing.Point(17, 21);
+            this.btnColorTempConfig.Location = new System.Drawing.Point(6, 21);
             this.btnColorTempConfig.Name = "btnColorTempConfig";
-            this.btnColorTempConfig.Size = new System.Drawing.Size(75, 23);
+            this.btnColorTempConfig.Size = new System.Drawing.Size(184, 23);
             this.btnColorTempConfig.TabIndex = 3;
             this.btnColorTempConfig.Text = "配置色温";
             this.btnColorTempConfig.UseVisualStyleBackColor = true;
@@ -1617,7 +1676,7 @@
             // label19
             // 
             this.label19.AutoSize = true;
-            this.label19.Location = new System.Drawing.Point(34, 61);
+            this.label19.Location = new System.Drawing.Point(18, 61);
             this.label19.Name = "label19";
             this.label19.Size = new System.Drawing.Size(29, 12);
             this.label19.TabIndex = 3;
@@ -1661,7 +1720,7 @@
             // label18
             // 
             this.label18.AutoSize = true;
-            this.label18.Location = new System.Drawing.Point(18, 31);
+            this.label18.Location = new System.Drawing.Point(6, 31);
             this.label18.Name = "label18";
             this.label18.Size = new System.Drawing.Size(41, 12);
             this.label18.TabIndex = 0;
@@ -2223,8 +2282,8 @@
             this.grid2055.AllowUserToOrderColumns = true;
             this.grid2055.AllowUserToResizeColumns = false;
             this.grid2055.AllowUserToResizeRows = false;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.grid2055.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.grid2055.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle3;
             this.grid2055.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.grid2055.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.CoCheckBox,
@@ -2419,8 +2478,8 @@
             this.gridOtherReg.AllowUserToOrderColumns = true;
             this.gridOtherReg.AllowUserToResizeColumns = false;
             this.gridOtherReg.AllowUserToResizeRows = false;
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.gridOtherReg.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.gridOtherReg.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle4;
             this.gridOtherReg.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.gridOtherReg.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ColOtherCheckBox,
@@ -2545,7 +2604,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(1537, 726);
+            this.tabPage1.Size = new System.Drawing.Size(1579, 726);
             this.tabPage1.TabIndex = 3;
             this.tabPage1.Text = "工程师界面";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -8277,7 +8336,7 @@
             this.tabPage8.Location = new System.Drawing.Point(4, 22);
             this.tabPage8.Name = "tabPage8";
             this.tabPage8.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage8.Size = new System.Drawing.Size(1310, 764);
+            this.tabPage8.Size = new System.Drawing.Size(1352, 764);
             this.tabPage8.TabIndex = 4;
             this.tabPage8.Text = "工程师界面";
             this.tabPage8.UseVisualStyleBackColor = true;
@@ -9349,62 +9408,15 @@
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
-            // gpVolumn
+            // btnBatchReadCal
             // 
-            this.gpVolumn.Controls.Add(this.lblVolumn2);
-            this.gpVolumn.Controls.Add(this.lblVolumn1);
-            this.gpVolumn.Controls.Add(this.tbVolumn2);
-            this.gpVolumn.Controls.Add(this.tbVolumn1);
-            this.gpVolumn.Location = new System.Drawing.Point(8, 135);
-            this.gpVolumn.Name = "gpVolumn";
-            this.gpVolumn.Size = new System.Drawing.Size(484, 97);
-            this.gpVolumn.TabIndex = 22;
-            this.gpVolumn.TabStop = false;
-            this.gpVolumn.Text = "音量调节";
-            // 
-            // tbVolumn1
-            // 
-            this.tbVolumn1.AutoSize = false;
-            this.tbVolumn1.Location = new System.Drawing.Point(7, 20);
-            this.tbVolumn1.Maximum = 255;
-            this.tbVolumn1.Name = "tbVolumn1";
-            this.tbVolumn1.Size = new System.Drawing.Size(425, 30);
-            this.tbVolumn1.TabIndex = 1;
-            this.tbVolumn1.TickFrequency = 10;
-            this.tbVolumn1.Value = 25;
-            this.tbVolumn1.Scroll += new System.EventHandler(this.tbVolumn1_Scroll);
-            this.tbVolumn1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.tbVolumn1_MouseUp);
-            // 
-            // tbVolumn2
-            // 
-            this.tbVolumn2.AutoSize = false;
-            this.tbVolumn2.Location = new System.Drawing.Point(7, 61);
-            this.tbVolumn2.Maximum = 255;
-            this.tbVolumn2.Name = "tbVolumn2";
-            this.tbVolumn2.Size = new System.Drawing.Size(425, 30);
-            this.tbVolumn2.TabIndex = 1;
-            this.tbVolumn2.TickFrequency = 10;
-            this.tbVolumn2.Value = 25;
-            this.tbVolumn2.Scroll += new System.EventHandler(this.tbVolumn2_Scroll);
-            this.tbVolumn2.MouseUp += new System.Windows.Forms.MouseEventHandler(this.tbVolumn2_MouseUp);
-            // 
-            // lblVolumn2
-            // 
-            this.lblVolumn2.AutoSize = true;
-            this.lblVolumn2.Location = new System.Drawing.Point(431, 69);
-            this.lblVolumn2.Name = "lblVolumn2";
-            this.lblVolumn2.Size = new System.Drawing.Size(23, 12);
-            this.lblVolumn2.TabIndex = 30;
-            this.lblVolumn2.Text = "10%";
-            // 
-            // lblVolumn1
-            // 
-            this.lblVolumn1.AutoSize = true;
-            this.lblVolumn1.Location = new System.Drawing.Point(431, 25);
-            this.lblVolumn1.Name = "lblVolumn1";
-            this.lblVolumn1.Size = new System.Drawing.Size(23, 12);
-            this.lblVolumn1.TabIndex = 31;
-            this.lblVolumn1.Text = "10%";
+            this.btnBatchReadCal.Location = new System.Drawing.Point(592, 22);
+            this.btnBatchReadCal.Name = "btnBatchReadCal";
+            this.btnBatchReadCal.Size = new System.Drawing.Size(75, 23);
+            this.btnBatchReadCal.TabIndex = 29;
+            this.btnBatchReadCal.Text = "读取";
+            this.btnBatchReadCal.UseVisualStyleBackColor = true;
+            this.btnBatchReadCal.Click += new System.EventHandler(this.btnBatchReadCal_Click);
             // 
             // MainForm
             // 
@@ -9420,6 +9432,10 @@
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.Shown += new System.EventHandler(this.MainForm_Shown);
             this.tabCommonCommand.ResumeLayout(false);
+            this.gpVolumn.ResumeLayout(false);
+            this.gpVolumn.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.tbVolumn2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tbVolumn1)).EndInit();
             this.groupBox21.ResumeLayout(false);
             this.groupBox21.PerformLayout();
             this.groupBox5.ResumeLayout(false);
@@ -9591,10 +9607,6 @@
             this.gpTest.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numTestDataLen)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numTimeDelay)).EndInit();
-            this.gpVolumn.ResumeLayout(false);
-            this.gpVolumn.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.tbVolumn1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.tbVolumn2)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -10336,6 +10348,7 @@
         private System.Windows.Forms.TrackBar tbVolumn1;
         private System.Windows.Forms.Label lblVolumn2;
         private System.Windows.Forms.Label lblVolumn1;
+        private System.Windows.Forms.Button btnBatchReadCal;
     }
 }
 

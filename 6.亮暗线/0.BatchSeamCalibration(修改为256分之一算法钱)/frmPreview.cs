@@ -59,11 +59,6 @@ namespace BatchSeamCalibration
             set { _cabinetType = value; Init(); }
         }
 
-        /// <summary>
-        /// 调整幅度
-        /// </summary>
-        public int adjustRange { get; set;}
-
         //public SelectedBorder GetSelectedBorder()
         //{
         //    SelectedBorder selected = new SelectedBorder();
@@ -196,22 +191,22 @@ namespace BatchSeamCalibration
                     //上
                     float percent = _seamData[i, j].Top;
                     Rectangle rect = _seamData[i, j].RectangleTop;
-                    g.DrawString(percent.ToString("F0"), font, brush, rect, format);
+                    g.DrawString(percent.ToString("F1"), font, brush, rect, format);
 
                     //下
                     percent = _seamData[i, j].Bottom;
                     rect = _seamData[i, j].RectangleBottom;
-                    g.DrawString(percent.ToString("F0"), font, brush, rect, format);
+                    g.DrawString(percent.ToString("F1"), font, brush, rect, format);
 
                     //右
                     percent = _seamData[i, j].Right;
                     rect = _seamData[i, j].RectangleRight;
-                    g.DrawString(percent.ToString("F0"), font, brush, rect, format);
+                    g.DrawString(percent.ToString("F1"), font, brush, rect, format);
 
                     //左
                     percent = _seamData[i, j].Left;
                     rect = _seamData[i, j].RectangleLeft;
-                    g.DrawString(percent.ToString("F0"), font, brush, rect, format);
+                    g.DrawString(percent.ToString("F1"), font, brush, rect, format);
                 }
             }
             g.Dispose();
@@ -248,9 +243,9 @@ namespace BatchSeamCalibration
                     float percent = _seamData[i, j].Left;
                     //if (percent != 100)
 
-                    int r = (int)(backgroundColor.R * _seamData[i, j].Left / adjustRange);
-                    int gC = (int)(backgroundColor.B * _seamData[i, j].Left / adjustRange);
-                    int b = (int)(backgroundColor.G * _seamData[i, j].Left / adjustRange);
+                    int r = (int)(backgroundColor.R * _seamData[i, j].Left / 100);
+                    int gC = (int)(backgroundColor.B * _seamData[i, j].Left / 100);
+                    int b = (int)(backgroundColor.G * _seamData[i, j].Left / 100);
                     if (r > 255) r = 255;
                     if (r < 0) r = 0;
                     if (gC > 255) gC = 255;
@@ -261,9 +256,9 @@ namespace BatchSeamCalibration
                     Pen p = new Pen(color);
                     g.DrawLines(p, _seamData[i, j].PreviewLineLeft.ToArray());
 
-                    r = (int)(backgroundColor.R * _seamData[i, j].Top / adjustRange);
-                    gC = (int)(backgroundColor.B * _seamData[i, j].Top / adjustRange);
-                    b = (int)(backgroundColor.G * _seamData[i, j].Top / adjustRange);
+                    r = (int)(backgroundColor.R * _seamData[i, j].Top / 100);
+                    gC = (int)(backgroundColor.B * _seamData[i, j].Top / 100);
+                    b = (int)(backgroundColor.G * _seamData[i, j].Top / 100);
                     if (r > 255) r = 255;
                     if (r < 0) r = 0;
                     if (gC > 255) gC = 255;
@@ -274,9 +269,9 @@ namespace BatchSeamCalibration
                     p = new Pen(color);
                     g.DrawLines(p, _seamData[i, j].PreviewLineTop.ToArray());
 
-                    r = (int)(backgroundColor.R * _seamData[i, j].Right / adjustRange);
-                    gC = (int)(backgroundColor.B * _seamData[i, j].Right / adjustRange);
-                    b = (int)(backgroundColor.G * _seamData[i, j].Right / adjustRange);
+                    r = (int)(backgroundColor.R * _seamData[i, j].Right / 100);
+                    gC = (int)(backgroundColor.B * _seamData[i, j].Right / 100);
+                    b = (int)(backgroundColor.G * _seamData[i, j].Right / 100);
                     if (r > 255) r = 255;
                     if (r < 0) r = 0;
                     if (gC > 255) gC = 255;
@@ -287,9 +282,9 @@ namespace BatchSeamCalibration
                     p = new Pen(color);
                     g.DrawLines(p, _seamData[i, j].PreviewLineRight.ToArray());
 
-                    r = (int)(backgroundColor.R * _seamData[i, j].Bottom / adjustRange);
-                    gC = (int)(backgroundColor.B * _seamData[i, j].Bottom / adjustRange);
-                    b = (int)(backgroundColor.G * _seamData[i, j].Bottom / adjustRange);
+                    r = (int)(backgroundColor.R * _seamData[i, j].Bottom / 100);
+                    gC = (int)(backgroundColor.B * _seamData[i, j].Bottom / 100);
+                    b = (int)(backgroundColor.G * _seamData[i, j].Bottom / 100);
                     if (r > 255) r = 255;
                     if (r < 0) r = 0;
                     if (gC > 255) gC = 255;
@@ -318,19 +313,19 @@ namespace BatchSeamCalibration
 
                         if (_seamDataTopSelectedFlag[i, j] == 1)
                         {
-                            _seamData[i, j].Top += 1f;
+                            _seamData[i, j].Top += 0.1f;
                         }
                         if (_seamDataLeftSelectedFlag[i, j] == 1)
                         {
-                            _seamData[i, j].Left += 1f;
+                            _seamData[i, j].Left += 0.1f;
                         }
                         if (_seamDataBottomSelectedFlag[i, j] == 1)
                         {
-                            _seamData[i, j].Bottom += 1f;
+                            _seamData[i, j].Bottom += 0.1f;
                         }
                         if (_seamDataRightSelectedFlag[i, j] == 1)
                         {
-                            _seamData[i, j].Right += 1f;
+                            _seamData[i, j].Right += 0.1f;
                         }
                     }
                 }
@@ -349,19 +344,19 @@ namespace BatchSeamCalibration
                     {
                         if (_seamDataTopSelectedFlag[i, j] == 1)
                         {
-                            _seamData[i, j].Top -= 1f;
+                            _seamData[i, j].Top -= 0.1f;
                         }
                         if (_seamDataLeftSelectedFlag[i, j] == 1)
                         {
-                            _seamData[i, j].Left -= 1f;
+                            _seamData[i, j].Left -= 0.1f;
                         }
                         if (_seamDataBottomSelectedFlag[i, j] == 1)
                         {
-                            _seamData[i, j].Bottom -= 1f;
+                            _seamData[i, j].Bottom -= 0.1f;
                         }
                         if (_seamDataRightSelectedFlag[i, j] == 1)
                         {
-                            _seamData[i, j].Right -= 1f;
+                            _seamData[i, j].Right -= 0.1f;
                         }
                     }
                 }
@@ -710,13 +705,13 @@ namespace BatchSeamCalibration
                 _baseCommunication.tlw_ConnectCardLoadParam(dev, GetMBAddr(addrX, addrY), 0, 1);
                 if (y % 2 == 0)
                 {
-                    SeamData[y, x].Left = SeamData[y, x].Top = SeamData[y, x].Bottom = SeamData[y, x].Right = adjustRange;
-                    SeamData[y + 1, x].Left = SeamData[y + 1, x].Top = SeamData[y + 1, x].Bottom = SeamData[y + 1, x].Right = adjustRange;
+                    SeamData[y, x].Left = SeamData[y, x].Top = SeamData[y, x].Bottom = SeamData[y, x].Right = 100;
+                    SeamData[y + 1, x].Left = SeamData[y + 1, x].Top = SeamData[y + 1, x].Bottom = SeamData[y + 1, x].Right = 100;
                 }
                 else
                 {
-                    SeamData[y, x].Left = SeamData[y, x].Top = SeamData[y, x].Bottom = SeamData[y, x].Right = adjustRange;
-                    SeamData[y - 1, x].Left = SeamData[y - 1, x].Top = SeamData[y - 1, x].Bottom = SeamData[y - 1, x].Right = adjustRange;
+                    SeamData[y, x].Left = SeamData[y, x].Top = SeamData[y, x].Bottom = SeamData[y, x].Right = 100;
+                    SeamData[y - 1, x].Left = SeamData[y - 1, x].Top = SeamData[y - 1, x].Bottom = SeamData[y - 1, x].Right = 100;
                 }
                 Draw();
             }

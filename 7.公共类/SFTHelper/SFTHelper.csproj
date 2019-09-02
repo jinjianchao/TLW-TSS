@@ -62,6 +62,7 @@
     <Compile Include="Helper\CalibrationHelper.cs" />
     <Compile Include="Helper\FileHelper.cs" />
     <Compile Include="Helper\FreePortHelper.cs" />
+    <Compile Include="Helper\NetworkHelper.cs" />
     <Compile Include="Helper\SeamCalibrationHelper.cs" />
     <Compile Include="Helper\SNHelper.cs" />
     <Compile Include="Helper\PackageHelper.cs" />

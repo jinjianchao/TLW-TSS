@@ -250,9 +250,9 @@ namespace TLWController
                 gP2072Simple8,label170,label172,label185,btn2072Simple8_R,btn2072Simple8_G,btn2072Simple8_B,btn2072Simple8_All,gP2072Simple9,label188,
                 label187,label186,btn2072Simple9_R,btn2072Simple9_G,btn2072Simple9_B,btn2072Simple9_All,gP2072Simple10,label191,label190,label189,
                 btn2072Simple10_R,btn2072Simple10_G,btn2072Simple10_B,btn2072Simple10_All,gP2072Simple12,label197,label196,label195,btn2072Simple12_R,
-                btn2072Simple12_G,btn2072Simple12_B,btn2072Simple12_All,gP2072Simple13
-            };                                                                                                                               
-            foreach (var item in controls)                                                                                                   
+                btn2072Simple12_G,btn2072Simple12_B,btn2072Simple12_All,gP2072Simple13,btnColorTempConfig,label18
+            };
+            foreach (var item in controls)
             {
                 Trans(item);
             }
@@ -2477,7 +2477,7 @@ namespace TLWController
                     break;
                 }
             }
-            if (nReg128 != item128.Value.GetUInt32(System.Globalization.NumberStyles.HexNumber))
+            if (nReg128 != item128.Value.GetUInt32(System.Globalization.NumberStyles.Number))
             {
                 if (MessageBox.Show(this, $"自动计算得出128寄存器值为:{nReg128},当前128寄存器值为:{item128.Value},是否采用自动计算结果？", "", MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
@@ -7628,6 +7628,7 @@ namespace TLWController
                             else
                             {
                                 data1 = SNHelper.CreateSN(out szSerial1);
+                                System.Threading.Thread.Sleep(100);
                                 data2 = SNHelper.CreateSN(out szSerial2);
                             }
 
@@ -7755,7 +7756,7 @@ namespace TLWController
                                     {
                                         WriteMessage($"IP:{item.Key} 地址(x={col},y={row})读取上方灯板时间码失败");
                                     }
-                                    Thread.Sleep(50);
+                                    Thread.Sleep(100);
                                     if (_TLWCommand.tlw_ReadSerialNumber(item.Value, GetMBAddr(col, row), GetId(), (byte)1, data) == 0)
                                     {
                                         string szSerial;
@@ -7773,7 +7774,7 @@ namespace TLWController
                                     {
                                         WriteMessage($"IP:{item.Key} 地址(x={col},y={row})读取下方灯板时间码失败");
                                     }
-                                    Thread.Sleep(50);
+                                    Thread.Sleep(100);
                                     cx += 1;
                                     percent = (int)(cx / (uType.ModuleWidth * uType.ModuleHeight * 1.0f) * 100);
                                     SetPrograss("", "读取时间码:", percent);
@@ -7792,7 +7793,7 @@ namespace TLWController
                             {
                                 WriteMessage($"IP:{item.Key} 地址(x={GetUnitAddr().X},y={GetUnitAddr().Y})读取上方灯板时间码失败.");
                             }
-                            Thread.Sleep(50);
+                            Thread.Sleep(100);
                             if (_TLWCommand.tlw_ReadSerialNumber(item.Value, GetMBAddr(), GetId(), (byte)1, data) == 0)
                             {
                                 string szSerial;
@@ -7829,7 +7830,7 @@ namespace TLWController
                                         WriteMessage($"IP:{item.Key}读取时间码失败");
                                         WriteMessage($"IP:{item.Key} 地址(x={col},y={row})读取{posStr}灯板时间码失败.");
                                     }
-                                    Thread.Sleep(50);
+                                    Thread.Sleep(100);
                                     cx += 1;
                                     percent = (int)(cx / (uType.ModuleWidth * uType.ModuleHeight * 1.0f) * 100);
                                     SetPrograss("", "读取时间码:", percent);
@@ -8154,18 +8155,12 @@ namespace TLWController
             UnitTypeV2 uType = GetSelectedPanelType();
             InvokeAsync(() =>
             {
-                bStopBatchWriteCal = false;
-                EnableControl(sender as Control, false);
-
-                foreach (var item in _DevIP)
+                try
                 {
-                    if (bStopBatchWriteCal)
-                    {
-                        EnableControl(sender as Control, true);
-                        WriteMessage("用户取消批量写入校正数据");
-                        return;
-                    }
-                    for (int row = 1; row <= uType.ModuleHeight; row++)
+                    bStopBatchWriteCal = false;
+                    EnableControl(sender as Control, false);
+
+                    foreach (var item in _DevIP)
                     {
                         if (bStopBatchWriteCal)
                         {
@@ -8173,7 +8168,7 @@ namespace TLWController
                             WriteMessage("用户取消批量写入校正数据");
                             return;
                         }
-                        for (int col = 1; col <= uType.ModuleWidth; col++)
+                        for (int row = 1; row <= uType.ModuleHeight; row++)
                         {
                             if (bStopBatchWriteCal)
                             {
@@ -8181,8 +8176,7 @@ namespace TLWController
                                 WriteMessage("用户取消批量写入校正数据");
                                 return;
                             }
-                            byte[] sn = new byte[1024];
-                            if (_TLWCommand.tlw_ReadSerialNumber(item.Value, GetMBAddr(col, row), GetId(), (byte)0, sn) == 0)
+                            for (int col = 1; col <= uType.ModuleWidth; col++)
                             {
                                 if (bStopBatchWriteCal)
                                 {
@@ -8190,106 +8184,127 @@ namespace TLWController
                                     WriteMessage("用户取消批量写入校正数据");
                                     return;
                                 }
-                                string szSerial;
-                                if (SNHelper.AnalayzeSN(sn, out szSerial) == false)
+                                byte[] sn = new byte[1024];
+                                if (_TLWCommand.tlw_ReadSerialNumber(item.Value, GetMBAddr(col, row), GetId(), (byte)0, sn) == 0)
                                 {
-                                    string fileName = $"*{szSerial}*.zdat";
-                                    //bool bFind = FileHelper.Find(folder, fileName, true, out string file);
-                                    bool bFind = true;
-                                    List<string> files = new List<string>();
-                                    FileHelper.GetFiles(folder, fileName, false, ref files);
-                                    if (files.Count == 0) bFind = false;
-                                    if (bFind)
+                                    System.Threading.Thread.Sleep(100);
+                                    if (bStopBatchWriteCal)
                                     {
-                                        //if (_TLWCommand.tlw_WriteCalibrationFileToSDRAM(item.Value, GetMBAddr(col, row), GetId(), 0, uType.GetSize().Width, uType.GetSize().Height, files[0]) == 0)
-                                        if (_TLWCommand.tlw_WriteCalibrationFileToSDRAM(item.Value, GetMBAddr(col, row), GetId(), 0, uType.ModulePixelWidth, uType.ModulePixelHeight, files[0]) == 0)
+                                        EnableControl(sender as Control, true);
+                                        WriteMessage("用户取消批量写入校正数据");
+                                        return;
+                                    }
+                                    string szSerial;
+                                    if (SNHelper.AnalayzeSN(sn, out szSerial) == true)
+                                    {
+                                        string fileName = $"*{szSerial}*.zdat";
+                                        //bool bFind = FileHelper.Find(folder, fileName, true, out string file);
+                                        bool bFind = true;
+                                        List<string> files = new List<string>();
+                                        FileHelper.GetFiles(folder, fileName, false, ref files);
+                                        if (files.Count == 0) bFind = false;
+                                        if (bFind)
                                         {
-                                            WriteMessage($"IP:{item.Key} 地址(x={col},y={row})上灯板写校正数据成功");
+                                            //if (_TLWCommand.tlw_WriteCalibrationFileToSDRAM(item.Value, GetMBAddr(col, row), GetId(), 0, uType.GetSize().Width, uType.GetSize().Height, files[0]) == 0)
+                                            if (_TLWCommand.tlw_WriteCalibrationFileToSDRAM(item.Value, GetMBAddr(col, row), GetId(), 0, uType.ModulePixelWidth, uType.ModulePixelHeight, files[0]) == 0)
+                                            {
+                                                WriteMessage($"IP:{item.Key} 地址(x={col},y={row})上灯板写校正数据成功");
+                                            }
+                                            else
+                                            {
+                                                WriteMessage($"IP:{item.Key} 地址(x={col},y={row})上灯板写校正数据失败");
+                                            }
+
                                         }
                                         else
                                         {
-                                            WriteMessage($"IP:{item.Key} 地址(x={col},y={row})上灯板写校正数据失败");
+                                            WriteMessage($"IP:{item.Key} 地址(x={col},y={row})上灯板校时间码{szSerial}对应的校正数据不存在");
                                         }
                                     }
-                                    else
-                                    {
-                                        WriteMessage($"IP:{item.Key} 地址(x={col},y={row})上灯板校时间码{szSerial}对应的校正数据不存在");
-                                    }
+                                    System.Threading.Thread.Sleep(100);
                                 }
-                            }
-                            else
-                            {
-                                WriteMessage($"IP:{item.Key} 地址(x={col},y={row})上灯板读取时间码失败");
-                            }
+                                else
+                                {
+                                    WriteMessage($"IP:{item.Key} 地址(x={col},y={row})上灯板读取时间码失败");
+                                }
 
-                            if (bStopBatchWriteCal)
-                            {
-                                EnableControl(sender as Control, true);
-                                WriteMessage("用户取消批量写入校正数据");
-                                return;
-                            }
-
-                            if (_TLWCommand.tlw_ReadSerialNumber(item.Value, GetMBAddr(col, row), GetId(), (byte)1, sn) == 0)
-                            {
                                 if (bStopBatchWriteCal)
                                 {
                                     EnableControl(sender as Control, true);
                                     WriteMessage("用户取消批量写入校正数据");
                                     return;
                                 }
-                                string szSerial;
-                                if (SNHelper.AnalayzeSN(sn, out szSerial) == false)
+
+                                if (_TLWCommand.tlw_ReadSerialNumber(item.Value, GetMBAddr(col, row), GetId(), (byte)1, sn) == 0)
                                 {
-                                    string fileName = $"*{szSerial}*.zdat";
-                                    //bool bFind = FileHelper.Find(folder, fileName, true, out string file);
-                                    bool bFind = true;
-                                    List<string> files = new List<string>();
-                                    FileHelper.GetFiles(folder, fileName, false, ref files);
-                                    if (bFind)
+                                    System.Threading.Thread.Sleep(100);
+                                    if (bStopBatchWriteCal)
                                     {
-                                        if (_TLWCommand.tlw_WriteCalibrationFileToSDRAM(item.Value, GetMBAddr(col, row), GetId(), 1, uType.GetSize().Width, uType.GetSize().Height, files[0]) == 0)
+                                        EnableControl(sender as Control, true);
+                                        WriteMessage("用户取消批量写入校正数据");
+                                        return;
+                                    }
+                                    string szSerial;
+                                    if (SNHelper.AnalayzeSN(sn, out szSerial) == true)
+                                    {
+                                        string fileName = $"*{szSerial}*.zdat";
+                                        //bool bFind = FileHelper.Find(folder, fileName, true, out string file);
+                                        bool bFind = true;
+                                        List<string> files = new List<string>();
+                                        FileHelper.GetFiles(folder, fileName, false, ref files);
+                                        if (bFind)
                                         {
-                                            WriteMessage($"IP:{item.Key} 地址(x={col},y={row})下灯板写校正数据成功");
+                                            if (_TLWCommand.tlw_WriteCalibrationFileToSDRAM(item.Value, GetMBAddr(col, row), GetId(), 1, uType.ModulePixelWidth, uType.ModulePixelHeight, files[0]) == 0)
+                                                {
+                                                WriteMessage($"IP:{item.Key} 地址(x={col},y={row})下灯板写校正数据成功");
+                                            }
+                                            else
+                                            {
+                                                WriteMessage($"IP:{item.Key} 地址(x={col},y={row})下灯板写校正数据失败");
+                                            }
                                         }
                                         else
                                         {
-                                            WriteMessage($"IP:{item.Key} 地址(x={col},y={row})下灯板写校正数据成功");
+                                            WriteMessage($"IP:{item.Key} 地址(x={col},y={row})下灯板校时间码{szSerial}对应的校正数据不存在");
                                         }
                                     }
-                                    else
-                                    {
-                                        WriteMessage($"IP:{item.Key} 地址(x={col},y={row})下灯板校时间码{szSerial}对应的校正数据不存在");
-                                    }
                                 }
-                            }
-                            else
-                            {
-                                WriteMessage($"IP:{item.Key} 地址(x={col},y={row})下灯板读取时间码失败");
+                                else
+                                {
+                                    WriteMessage($"IP:{item.Key} 地址(x={col},y={row})下灯板读取时间码失败");
+                                }
+                                System.Threading.Thread.Sleep(100);
                             }
                         }
-                    }
-                    if (bStopBatchWriteCal)
-                    {
-                        EnableControl(sender as Control, true);
-                        WriteMessage("用户取消批量写入校正数据");
-                        return;
-                    }
-                    //设置尺寸
-                    _TLWCommand.tlw_WriteCalibrationFileLength(item.Value, 0, 0, 4096 * 108);
+                        if (bStopBatchWriteCal)
+                        {
+                            EnableControl(sender as Control, true);
+                            WriteMessage("用户取消批量写入校正数据");
+                            return;
+                        }
+                        //设置尺寸
+                        _TLWCommand.tlw_WriteCalibrationFileLength(item.Value, 0, 0, 4096 * 108);
 
-                    //固化到FLASH
-                    WriteMessage($"IP:{item.Key}开始固化数据到FLASH");
-                    if (_TLWCommand.tlw_SDRAM_WriteToFLASH(item.Value, 0, 0) == 0)
-                    {
-                        WriteMessage($"IP:{item.Key}固化数据到FLASH成功");
+                        //固化到FLASH
+                        WriteMessage($"IP:{item.Key}开始固化数据到FLASH");
+                        if (_TLWCommand.tlw_SDRAM_WriteToFLASH(item.Value, 0, 0) == 0)
+                        {
+                            WriteMessage($"IP:{item.Key}固化数据到FLASH成功");
+                        }
+                        else
+                        {
+                            WriteMessage($"IP:{item.Key}固化数据到FLASH失败");
+                        }
+                        Thread.Sleep(24 * 1000);
                     }
-                    else
-                    {
-                        WriteMessage($"IP:{item.Key}固化数据到FLASH失败");
-                    }
-                    Thread.Sleep(24 * 1000);
+                    EnableControl(sender as Control, true);
                 }
-                EnableControl(sender as Control, true);
+                catch (Exception ex)
+                {
+
+                    WriteMessage("错误:" + ex.InnerException);
+                    EnableControl(sender as Control, true);
+                }
             });
         }
 
@@ -9778,6 +9793,146 @@ namespace TLWController
             {
                 tabTest.Parent = null;
             }
+        }
+
+        private void btnBatchReadCal_Click(object sender, EventArgs e)
+        {
+            if (CheckIsBusy()) return;
+
+            FolderBrowserDialog folderBrowser = new FolderBrowserDialog();
+            if (folderBrowser.ShowDialog(this) == DialogResult.Cancel) return;
+            string folder = folderBrowser.SelectedPath;
+            UnitTypeV2 uType = GetSelectedPanelType();
+            InvokeAsync(() =>
+            {
+                bStopBatchWriteCal = false;
+                EnableControl(sender as Control, false);
+
+                foreach (var item in _DevIP)
+                {
+                    if (bStopBatchWriteCal)
+                    {
+                        EnableControl(sender as Control, true);
+                        WriteMessage("用户取消批量读取校正数据");
+                        return;
+                    }
+                    for (int row = 1; row <= uType.ModuleHeight; row++)
+                    {
+                        if (bStopBatchWriteCal)
+                        {
+                            EnableControl(sender as Control, true);
+                            WriteMessage("用户取消批量读取校正数据");
+                            return;
+                        }
+                        for (int col = 1; col <= uType.ModuleWidth; col++)
+                        {
+                            if (bStopBatchWriteCal)
+                            {
+                                EnableControl(sender as Control, true);
+                                WriteMessage("用户取消批量读取校正数据");
+                                return;
+                            }
+                            byte[] sn = new byte[1024];
+                            if (_TLWCommand.tlw_ReadSerialNumber(item.Value, GetMBAddr(col, row), GetId(), (byte)0, sn) == 0)
+                            {
+                                System.Threading.Thread.Sleep(100);
+                                if (bStopBatchWriteCal)
+                                {
+                                    EnableControl(sender as Control, true);
+                                    WriteMessage("用户取消批量读取校正数据");
+                                    return;
+                                }
+                                string szSerial;
+                                if (SNHelper.AnalayzeSN(sn, out szSerial) == true)
+                                {
+                                    string fileName = System.IO.Path.Combine(folder, $"{row}_{col}_up_{szSerial}.zdat");
+
+                                    if (_TLWCommand.tlw_ReadCalibrationFile(item.Value, GetMBAddr(col, row), GetId(), 0, uType.ModulePixelWidth, uType.ModulePixelHeight, fileName) == 0)
+                                    {
+                                        WriteMessage($"IP:{item.Key} 地址(x={col},y={row})上灯板读取正数据成功");
+                                    }
+                                    else
+                                    {
+                                        WriteMessage($"IP:{item.Key} 地址(x={col},y={row})上灯板读取正数据失败");
+                                    }
+                                    System.Threading.Thread.Sleep(100);
+                                }
+                                else
+                                {
+                                    string fileName = System.IO.Path.Combine(folder, $"{row}_{col}_up_error.zdat");
+
+                                    if (_TLWCommand.tlw_ReadCalibrationFile(item.Value, GetMBAddr(col, row), GetId(), 0, uType.ModulePixelWidth, uType.ModulePixelHeight, fileName) == 0)
+                                    {
+                                        WriteMessage($"IP:{item.Key} 地址(x={col},y={row})上灯板读取正数据成功");
+                                    }
+                                    else
+                                    {
+                                        WriteMessage($"IP:{item.Key} 地址(x={col},y={row})上灯板读取正数据失败");
+                                    }
+                                    System.Threading.Thread.Sleep(100);
+                                }
+                            }
+                            else
+                            {
+                                WriteMessage($"IP:{item.Key} 地址(x={col},y={row})上灯板读取时间码失败");
+                            }
+
+                            if (bStopBatchWriteCal)
+                            {
+                                EnableControl(sender as Control, true);
+                                WriteMessage("用户取消批量写入校正数据");
+                                return;
+                            }
+                            if (_TLWCommand.tlw_ReadSerialNumber(item.Value, GetMBAddr(col, row), GetId(), (byte)1, sn) == 0)
+                            {
+                                System.Threading.Thread.Sleep(100);
+                                if (bStopBatchWriteCal)
+                                {
+                                    EnableControl(sender as Control, true);
+                                    WriteMessage("用户取消批量读取校正数据");
+                                    return;
+                                }
+                                string szSerial;
+                                if (SNHelper.AnalayzeSN(sn, out szSerial) == true)
+                                {
+                                    string fileName = System.IO.Path.Combine(folder, $"{row}_{col}_down_{szSerial}.zdat");
+
+                                    if (_TLWCommand.tlw_ReadCalibrationFile(item.Value, GetMBAddr(col, row), GetId(), 1, uType.ModulePixelWidth, uType.ModulePixelHeight, fileName) == 0)
+                                    {
+                                        WriteMessage($"IP:{item.Key} 地址(x={col},y={row})下灯板读取正数据成功");
+                                    }
+                                    else
+                                    {
+                                        WriteMessage($"IP:{item.Key} 地址(x={col},y={row})下灯板读取正数据失败");
+                                    }
+                                    System.Threading.Thread.Sleep(100);
+                                }
+                                else
+                                {
+                                    string fileName = System.IO.Path.Combine(folder, $"{row}_{col}_down_error.zdat");
+
+                                    if (_TLWCommand.tlw_ReadCalibrationFile(item.Value, GetMBAddr(col, row), GetId(), 1, uType.ModulePixelWidth, uType.ModulePixelHeight, fileName) == 0)
+                                    {
+                                        WriteMessage($"IP:{item.Key} 地址(x={col},y={row})下灯板读取正数据成功");
+                                    }
+                                    else
+                                    {
+                                        WriteMessage($"IP:{item.Key} 地址(x={col},y={row})下灯板读取正数据失败");
+                                    }
+                                    System.Threading.Thread.Sleep(100);
+                                }
+                            }
+                            if (bStopBatchWriteCal)
+                            {
+                                EnableControl(sender as Control, true);
+                                WriteMessage("用户取消批量读取校正数据");
+                                return;
+                            }
+                        }
+                    }
+                }
+                EnableControl(sender as Control, true);
+            });
         }
     }
 }

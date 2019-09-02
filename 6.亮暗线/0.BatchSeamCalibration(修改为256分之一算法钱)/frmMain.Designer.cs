@@ -133,6 +133,12 @@
             // 
             // numAdjustPercent
             // 
+            this.numAdjustPercent.DecimalPlaces = 1;
+            this.numAdjustPercent.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            65536});
             this.numAdjustPercent.Location = new System.Drawing.Point(231, 20);
             this.numAdjustPercent.Name = "numAdjustPercent";
             this.numAdjustPercent.Size = new System.Drawing.Size(52, 21);

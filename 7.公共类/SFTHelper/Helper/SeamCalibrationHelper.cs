@@ -154,25 +154,41 @@ namespace SFTHelper.Helper
 
         }
 
-        private static void ChangeModuleValue3(byte startGray, StructSeamItem seamItemData, int rowID, int colID, int moduleW, int moduleH, int NumW, int NumH, ushort[] data)
+        /// <summary>
+        /// 采用256分之一进行调节
+        /// </summary>
+        /// <param name="adjustRange">调整幅度</param>
+        /// <param name="startGray"></param>
+        /// <param name="seamItemData"></param>
+        /// <param name="rowID"></param>
+        /// <param name="colID"></param>
+        /// <param name="moduleW"></param>
+        /// <param name="moduleH"></param>
+        /// <param name="NumW"></param>
+        /// <param name="NumH"></param>
+        /// <param name="data"></param>
+        private static void ChangeModuleValue3(int adjustRange, byte startGray, StructSeamItem seamItemData, int rowID, int colID, int moduleW, int moduleH, int NumW, int NumH, ushort[] data)
         {
             //模块的9个位置的系数
             double[] arrFactor = { seamItemData.Top, seamItemData.Top, seamItemData.Top,
-                                  seamItemData.Left,startGray/(255*1.0f)*100,seamItemData.Right,
+                                  seamItemData.Left,startGray/(255*1.0f)*adjustRange,seamItemData.Right,
                                   seamItemData.Bottom,seamItemData.Bottom,seamItemData.Bottom
                               };
-            ////系数处理(将 0.0到100.0转换到0.0到1.0)
-            //for (int f = 0; f < arrFactor.Length; f++)
-            //{
-            //    double val = arrFactor[f];
-            //    arrFactor[f] = val / 100;
-            //}
 
             //系数处理(将 0.0到100.0转换到0.0到1.0)
             for (int f = 0; f < arrFactor.Length; f++)
             {
+                if (f != 4)
+                {
+                    if (arrFactor[f] > 256)
+                        arrFactor[f] *=1.01;
+                    else if (arrFactor[f] < 256)
+                        arrFactor[f] *= 0.99;
+                }
                 double val = arrFactor[f];
-                arrFactor[f] = val / 100;
+
+                arrFactor[f] = val / 256;
+
             }
 
             int pos = 0;//像素在箱体中的位置
@@ -252,7 +268,7 @@ namespace SFTHelper.Helper
 
         }
 
-        private bool ChangCalibrationFile(StructSeamItem[,] seamItemData, ushort[] dataIn, out ushort[] dataOut)
+        private bool ChangCalibrationFile(int adjustrange, StructSeamItem[,] seamItemData, ushort[] dataIn, out ushort[] dataOut)
         {
             dataOut = null;
             if (seamItemData == null) return false;
@@ -274,14 +290,14 @@ namespace SFTHelper.Helper
                 for (int col = 0; col < moduleColCount; col++)
                 {
                     StructSeamItem itemData = seamItemData[row, col];
-                    ChangeModuleValue3((byte)_startGray, itemData, row, col, _modulePixelWidth, _modulePixelHeight, moduleColCount, moduleRowCount, uValue);
+                    ChangeModuleValue3(adjustrange, (byte)_startGray, itemData, row, col, _modulePixelWidth, _modulePixelHeight, moduleColCount, moduleRowCount, uValue);
                 }
             }
             dataOut = uValue.Clone() as ushort[];
             return true;
         }
 
-        private bool ChangCalibrationFile(StructSeamItem seamItemData, ushort[] dataIn, out ushort[] dataOut)
+        private bool ChangCalibrationFile(int adjustRange, StructSeamItem seamItemData, ushort[] dataIn, out ushort[] dataOut)
         {
             dataOut = null;
 
@@ -298,7 +314,7 @@ namespace SFTHelper.Helper
 
             //每个模块都处理系数
             StructSeamItem itemData = seamItemData;
-            ChangeModuleValue3((byte)_startGray, itemData, 0, 0, _modulePixelWidth, _modulePixelHeight, moduleColCount, moduleRowCount, uValue);
+            ChangeModuleValue3(adjustRange, (byte)_startGray, itemData, 0, 0, _modulePixelWidth, _modulePixelHeight, moduleColCount, moduleRowCount, uValue);
 
             dataOut = uValue.Clone() as ushort[];
             return true;
@@ -311,7 +327,7 @@ namespace SFTHelper.Helper
         /// <param name="fileOut">输出SDat</param>
         /// <param name="seamItemDatas"></param>
         /// <returns></returns>
-        public bool Modify(string fileIn, string fileOut, StructSeamItem[,] seamItemDatas)
+        public bool Modify(string fileIn, string fileOut, int adjustRange, StructSeamItem[,] seamItemDatas)
         {
             CalibrationHelper calibrationHelper = new CalibrationHelper(_moduleWidth, _moduleHeight, _modulePixelWidth, _modulePixelHeight);
 
@@ -342,7 +358,7 @@ namespace SFTHelper.Helper
 
             if (calibrationHelper.ConvertToUshort(data, out ushort[] uDataIn, EnumCALTarget.Cabinet) == false) return false;
             ushort[] uDataOut = null;
-            isOK = ChangCalibrationFile(seamItemDatas, uDataIn, out uDataOut);
+            isOK = ChangCalibrationFile(adjustRange, seamItemDatas, uDataIn, out uDataOut);
             if (!isOK)
             {
                 //修改校正数据失败
@@ -361,7 +377,7 @@ namespace SFTHelper.Helper
         /// <param name="seamItemDatas"></param>
         /// <param name="style"></param>
         /// <returns></returns>
-        public bool Modify(string fileIn, string fileOut, StructSeamItem seamItemData)
+        public bool Modify(string fileIn, string fileOut, int adjustRange, StructSeamItem seamItemData)
         {
             CalibrationHelper calibrationHelper = new CalibrationHelper(_moduleWidth, _moduleHeight, _modulePixelWidth, _modulePixelHeight);
 
@@ -392,7 +408,7 @@ namespace SFTHelper.Helper
             if (calibrationHelper.ConvertToUshort(data, out ushort[] uDataIn, EnumCALTarget.Module) == false) return false;
             ushort[] uDataOut = null;
 
-            isOK = ChangCalibrationFile(seamItemData, uDataIn, out uDataOut);
+            isOK = ChangCalibrationFile(adjustRange, seamItemData, uDataIn, out uDataOut);
 
             if (!isOK)
             {

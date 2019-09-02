@@ -228,5 +228,17 @@ namespace CalibrationTools
                 calibrationHelper.ToDat(item, dfile, SFTHelper.Enums.EnumCALTarget.Module);
             });
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            if(SFTHelper.Helper.NetworkHelper.Ping("192.168.0.32"))
+            {
+                MessageBox.Show("OK");
+            }
+            else
+            {
+                MessageBox.Show("false");
+            }
+        }
     }
 }
