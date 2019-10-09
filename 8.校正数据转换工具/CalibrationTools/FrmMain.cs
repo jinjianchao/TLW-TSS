@@ -14,10 +14,10 @@ namespace CalibrationTools
 {
     public partial class FrmMain : Form
     {
-        private int _moduleWidth = 4;
-        private int _moduleHeight = 3;
-        private int _modulePixelWith = 192;
-        private int _modulePixelHeight = 108;
+        private int _moduleWidth = 2;
+        private int _moduleHeight = 2;
+        private int _modulePixelWith = 320;
+        private int _modulePixelHeight = 180;
 
         public FrmMain()
         {
@@ -26,10 +26,11 @@ namespace CalibrationTools
 
         private void btnConvertDatToSdat_Click(object sender, EventArgs e)
         {
-            string fileIn = @"C:\Users\Jinjianchao\Desktop\0808\0_0.dat";
-            string fileOut = @"C:\Users\Jinjianchao\Desktop\0808\dtos.sdat";
+            string fileIn = @"C:\Users\Jinjianchao\Desktop\新建文件夹 (4)\新建文件夹\0.9(big).dat";
+            string fileOut = @"C:\Users\Jinjianchao\Desktop\新建文件夹 (4)\新建文件夹\0.9(big).sdat";
+
             CalibrationHelper calibrationHelper = new CalibrationHelper(_moduleWidth, _moduleHeight, _modulePixelWith, _modulePixelHeight);
-            bool isOk = calibrationHelper.ToSDat(fileIn, fileOut, SFTHelper.Enums.EnumCALTarget.Module);
+            bool isOk = calibrationHelper.ToSDat(fileIn, fileOut, SFTHelper.Enums.EnumCALTarget.Cabinet);
             if (isOk == false)
             {
                 MessageBox.Show("error");
@@ -50,10 +51,39 @@ namespace CalibrationTools
 
         private void btnDatToZDat_Click(object sender, EventArgs e)
         {
-            string fileIn = @"C:\Users\Jinjianchao\Desktop\0808\0_0.dat";
-            string fileOut = @"C:\Users\Jinjianchao\Desktop\0808\dtoz.zdat";
+            //string fileIn = @"C:\Users\Jinjianchao\Desktop\0808\0_0.dat";
+            //string fileOut = @"C:\Users\Jinjianchao\Desktop\0808\dtoz.zdat";
+
             CalibrationHelper calibrationHelper = new CalibrationHelper(_moduleWidth, _moduleHeight, _modulePixelWith, _modulePixelHeight);
+
+
+            string fileIn = @"C:\Users\Jinjianchao\Desktop\新建文件夹 (4)\新建文件夹\split\0_0.dat";
+            string fileOut = @"C:\Users\Jinjianchao\Desktop\新建文件夹 (4)\新建文件夹\split\0_0.zdat";
             bool isOk = calibrationHelper.ToZDat(fileIn, fileOut, SFTHelper.Enums.EnumCALTarget.Module);
+            if (isOk == false)
+            {
+                MessageBox.Show("error");
+            }
+
+            fileIn = @"C:\Users\Jinjianchao\Desktop\新建文件夹 (4)\新建文件夹\split\0_1.dat";
+            fileOut = @"C:\Users\Jinjianchao\Desktop\新建文件夹 (4)\新建文件夹\split\0_1.zdat";
+            isOk = calibrationHelper.ToZDat(fileIn, fileOut, SFTHelper.Enums.EnumCALTarget.Module);
+            if (isOk == false)
+            {
+                MessageBox.Show("error");
+            }
+
+            fileIn = @"C:\Users\Jinjianchao\Desktop\新建文件夹 (4)\新建文件夹\split\1_0.dat";
+            fileOut = @"C:\Users\Jinjianchao\Desktop\新建文件夹 (4)\新建文件夹\split\1_0.zdat";
+            isOk = calibrationHelper.ToZDat(fileIn, fileOut, SFTHelper.Enums.EnumCALTarget.Module);
+            if (isOk == false)
+            {
+                MessageBox.Show("error");
+            }
+
+            fileIn = @"C:\Users\Jinjianchao\Desktop\新建文件夹 (4)\新建文件夹\split\1_1.dat";
+            fileOut = @"C:\Users\Jinjianchao\Desktop\新建文件夹 (4)\新建文件夹\split\1_1.zdat";
+            isOk = calibrationHelper.ToZDat(fileIn, fileOut, SFTHelper.Enums.EnumCALTarget.Module);
             if (isOk == false)
             {
                 MessageBox.Show("error");
@@ -126,8 +156,8 @@ namespace CalibrationTools
         {
             CalibrationHelper calibrationHelper = new CalibrationHelper(_moduleWidth, _moduleHeight, _modulePixelWith, _modulePixelHeight);
 
-            string sz = @"C:\Users\Jinjianchao\Desktop\0808\merge.sdat";
-            string target = @"C:\Users\Jinjianchao\Desktop\0808\split";
+            string sz = @"C:\Users\Jinjianchao\Desktop\新建文件夹 (4)\新建文件夹\0.9(big).sdat";
+            string target = @"C:\Users\Jinjianchao\Desktop\新建文件夹 (4)\新建文件夹\split";
             bool isOk = calibrationHelper.Divide(sz, target);
             if (isOk == false)
             {

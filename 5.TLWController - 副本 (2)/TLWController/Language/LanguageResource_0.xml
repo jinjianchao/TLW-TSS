@@ -1,0 +1,192 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Resource>
+  <Form>
+    <Name>MainForm</Name>
+    <Controls>
+    </Controls>
+    <Codes>
+      <Code name="tabCommonCommand" text="Normal"/>
+      <Code name="gbBrightness" text="Brightness"/>
+      <Code name="btnApplyBrightness" text="Set"/>
+      <Code name="btnAdvanceBrightness" text="Advance"/>
+      <Code name="initsyslibfailed" text="Communication Library Initialization Failed"/>
+      <Code name="groupBox5" text="GAMMA"/>
+      <Code name="btnGammaSet" text="Write"/>
+      <Code name="btnGammaRead" text="Read"/>
+      <Code name="btnCreateGammaFile" text="Create File"/>
+      <Code name="groupBox10" text="Work Mode"/>
+      <Code name="button5" text="Set"/>
+      <Code name="groupBox11" text="Calibration ON/OFF"/>
+      <Code name="btnSendCalibrationOnOff" text="Set"/>
+      <Code name="groupBox21" text="Upload GAMMA File"/>
+      <Code name="btnWriteGammaFile" text="Write"/>
+      <Code name="gpVolumn" text="Volumn"/>
+      <Code name="tabAdvance" text="Advance"/>
+      <Code name="groupBox6" text="Network"/>
+      <Code name="label13" text="Mask:"/>
+      <Code name="label15" text="Gateway:"/>
+      <Code name="btnSetNetwork" text="Set"/>
+      <Code name="groupBox18" text="SN R/W"/>
+      <Code name="btnCreateSN" text="Write"/>
+      <Code name="btnReadSN" text="Read"/>
+      <Code name="groupBox4" text="Reload Parameter"/>
+      <Code name="btnLoadVideoCardParam" text="Reload"/>
+      <Code name="groupBox9" text="Register"/>
+      <Code name="label18" text="Address："/>
+      <Code name="label19" text="Value："/>
+      <Code name="btnSetRegister" text="Set"/>
+      <Code name="btnSingleRegRead" text="Read"/>
+      <Code name="gpFirmwareUpgrade" text="Firmware Upgrade"/>
+      <Code name="label8" text="MCU:"/>
+      <Code name="label27" text="MB.FPGA:"/>
+      <Code name="label10" text="Module FPGA:"/>
+      <Code name="label23" text="Distribute Board FPGA:"/>
+      <Code name="label16" text="MAP:"/>
+      <Code name="btnUpgradeMCU" text="Upload"/>
+      <Code name="btnUpgradeMbFPGA" text="Upload"/>
+      <Code name="btnUpgradeFPGA" text="Upload"/>
+      <Code name="btnUpgradeMAP" text="Upload"/>
+      <Code name="btnUpdateDistributeBoardFPGA" text="Upload"/>
+      <Code name="btnReadMCU" text="Read"/>
+      <Code name="btnReadMbFPGA" text="Read"/>
+      <Code name="btnReadFPGA" text="Read"/>
+      <Code name="btnReadbtnDistributeBoardFPGA" text="Read"/>
+      <Code name="btnReadMap" text="Read"/>
+      <Code name="btnReadMCUVersion" text="Read Version"/>
+      <Code name="btnReadMbVersion" text="Read Version"/>
+      <Code name="btnReadBoardVersion" text="Read Version"/>
+      <Code name="groupBox19" text="Color TEMP."/>
+      <Code name="btnSetColorTemp" text="Set"/>
+      <Code name="btnReadColorTemp" text="Read"/>
+      <Code name="groupBox20" text="Current Gain"/>
+      <Code name="btnSetGain" text="Set"/>
+      <Code name="btnReadGain" text="Read"/>
+      <Code name="label59" text="Red："/>
+      <Code name="label50" text="Green："/>
+      <Code name="label39" text="Blue："/>
+      <Code name="groupBox17" text="Upload Calibration"/>
+      <Code name="label31" text="File:"/>
+      <Code name="btnUpdateCalibration" text="Upload"/>
+      <Code name="btnReadCalibration" text="Read"/>
+      <Code name="groupBox7" text="Batch Write Calibration"/>
+      <Code name="label38" text="Folder:"/>
+      <Code name="btnBatchWriteCal" text="Write"/>
+      <Code name="btnStopWriteCal" text="Stop"/>
+      <Code name="btnLoad2055Param" text="Import"/>
+      <Code name="btnExport2055Param" text="Export"/>
+      <Code name="label14" text="Target："/>
+      <Code name="label9" text="Color："/>
+      <Code name="ckDebugMode" text="Debug"/>
+      <Code name="btnSendAll" text="Set All"/>
+      <Code name="btnReadReg" text="Read"/>
+      <Code name="btnRegSetDefault" text="Restore"/>
+      <Code name="tabPage2" text="2055"/>
+      <Code name="tabPage4" text="Other"/>
+      <Code name="tab2055" text="Register 2055"/>
+      <Code name="tabPage3" text="Register 2072"/>
+      <Code name="tabPage5" text="Preview Form(Parameter no save)"/>
+      <Code name="tabPage6" text="Simple Form"/>
+      <Code name="tabPage7" text="Factory Form"/>
+      <Code name="btn2072Simple_ImportFile" text="Export"/>
+      <Code name="btn2072Simple_ExportFile" text="Import"/>
+      <Code name="btn2072Simple_ResetValues" text="Restore"/>
+      <Code name="btn2072Simple_SendAll" text="Set All"/>
+      <Code name="btnRead2072" text="Read"/>
+      <Code name="gP2072Simple7" text="PWM Display Time"/>
+      <Code name="btn2072Simple7" text="Set"/>
+      <Code name="gP2072Simple3" text="Line Scan"/>
+      <Code name="btn2072Simple3" text="Set"/>
+      <Code name="gP2072Simple2" text="Refresh Group"/>
+      <Code name="btn2072Simple2" text="Set"/>
+      <Code name="gpSimple2072GAMMA" text="GAMMA"/>
+      <Code name="label205" text="Color"/>
+      <Code name="btn2072SimpleCalcGAMMASend" text="Write"/>
+      <Code name="btnSimple2072CreateGAMMAFile" text="Create File"/>
+      <Code name="btn2072SimpleSendGAMMAFile" text="Write File"/>
+      <Code name="btn2072Simple5" text="Set"/>
+      <Code name="btn2072Simple6" text="Set"/>
+      <Code name="btn2072Simple2_TryCalc" text="Input Parameters validity check"/>
+      <Code name="gP2072Simple1" text="Frame Sync/Frame Interval"/>
+      <Code name="gP2072Simple4" text="Low Gray Level Pockmark Reduce"/>
+      <Code name="gp2072FuncTest" text="Write Special Register"/>
+      <Code name="label150" text="Register Address"/>
+      <Code name="label152" text="Start Bit"/>
+      <Code name="label153" text="End Bit"/>
+      <Code name="label157" text="Value"/>
+      <Code name="btn2072FuncTest" text="Set"/>
+      <Code name="gP2072Simple8" text="PWM Widening Modify"/>
+      <Code name="label170" text="Red"/>
+      <Code name="label172" text="Green"/>
+      <Code name="label185" text="Blue"/>
+      <Code name="btn2072Simple8_R" text="Set"/>
+      <Code name="btn2072Simple8_G" text="Set"/>
+      <Code name="btn2072Simple8_B" text="Set"/>
+      <Code name="btn2072Simple8_All" text="Set All"/>
+      <Code name="gP2072Simple9" text="Gray Level And White Balance1"/>
+      <Code name="label188" text="Red"/>
+      <Code name="label187" text="Green"/>
+      <Code name="label186" text="Blue"/>
+      <Code name="btn2072Simple9_R" text="Set"/>
+      <Code name="btn2072Simple9_G" text="Set"/>
+      <Code name="btn2072Simple9_B" text="Set"/>
+      <Code name="btn2072Simple9_All" text="Set All"/>
+      <Code name="gP2072Simple10" text="Gray Level And White Balance2"/>
+      <Code name="label191" text="Red"/>
+      <Code name="label190" text="Green"/>
+      <Code name="label189" text="Blue"/>
+      <Code name="btn2072Simple10_R" text="Set"/>
+      <Code name="btn2072Simple10_G" text="Set"/>
+      <Code name="btn2072Simple10_B" text="Set"/>
+      <Code name="btn2072Simple10_All" text="Set All"/>
+      <Code name="gP2072Simple12" text="Current Gain"/>
+      <Code name="label197" text="Red"/>
+      <Code name="label196" text="Green"/>
+      <Code name="label195" text="Blue"/>
+      <Code name="btn2072Simple12_R" text="Set"/>
+      <Code name="btn2072Simple12_G" text="Set"/>
+      <Code name="btn2072Simple12_B" text="Set"/>
+      <Code name="btn2072Simple12_All" text="Set All"/>
+      <Code name="gP2072Simple13" text="High Low Gray Level Coupling And Chromatic Aberration"/>
+      <Code name="label200" text="Red"/>
+      <Code name="label199" text="Green"/>
+      <Code name="label198" text="Blue"/>
+      <Code name="btn2072Simple13_R" text="Set"/>
+      <Code name="btn2072Simple13_G" text="Set"/>
+      <Code name="btn2072Simple13_B" text="Set"/>
+      <Code name="btn2072Simple13_All" text="Set All"/>
+      <Code name="gP2072Simple11" text="Gray Level And White Balance3"/>
+      <Code name="label194" text="Red"/>
+      <Code name="label193" text="Green"/>
+      <Code name="label192" text="Blue"/>
+      <Code name="btn2072Simple11_R" text="Set"/>
+      <Code name="btn2072Simple11_G" text="Set"/>
+      <Code name="btn2072Simple11_B" text="Set"/>
+      <Code name="btn2072Simple11_All" text="Set All"/>
+      <Code name="gpSimple2019" text="2019 Register Config"/>
+      <Code name="label218" text="Clock Rising Edge Start Point"/>
+      <Code name="btnSet2019Simple_160" text="Set"/>
+      <Code name="label217" text="Blanking Intensity"/>
+      <Code name="btnSet2019Simple_161" text="Set"/>
+      <Code name="label216" text="Signal Fall Edge End Point"/>
+      <Code name="btnSet2019Simple_162" text="Set"/>
+      <Code name="label215" text="Data Rising Edge Start Point"/>
+      <Code name="btnSet2019Simple_163" text="Set"/>
+      <Code name="btnSet2019Simple_All" text="Set All"/>
+      <Code name="btn2072FactoryImport" text="Import"/>
+      <Code name="btn2072Factory_SendAll" text="Set All"/>
+      <Code name="gp2072Factory_CurrentGain" text="Current Gain"/>
+      <Code name="label26" text="Red"/>
+      <Code name="label25" text="Green"/>
+      <Code name="label24" text="Blue"/>
+      <Code name="btnSet2072FactoryCurrentGain_All" text="Set All"/>
+      <Code name="gp2072FactoryRegister" text="Write Special Register"/>
+      <Code name="lb2072FactoryRegister1" text="Register Address"/>
+      <Code name="lb2072FactoryRegister2" text="Start Bit"/>
+      <Code name="lb2072FactoryRegister3" text="End Bit"/>
+      <Code name="lb2072FactoryRegister4" text="Data"/>
+      <Code name="btn2072FactoryRegisterSet" text="Set"/>
+      <Code name="btn2072FactoryExport" text="Export"/>
+      <Code name="btnColorTempConfig" text="Color TEMP."/>
+    </Codes>
+  </Form>
+</Resource>

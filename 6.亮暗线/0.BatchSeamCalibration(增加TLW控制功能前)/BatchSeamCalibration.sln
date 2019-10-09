@@ -1,0 +1,43 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2046
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BatchSeamCalibration", "BatchSeamCalibration.csproj", "{A99522FF-5C2F-4936-A82A-3B314779C5DE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SFTHelper", "..\..\7.公共类\SFTHelper\SFTHelper.csproj", "{8B5E6A3D-D374-4E3F-A11F-1BB362AB6937}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CalibrationTools", "..\..\8.校正数据转换工具\CalibrationTools\CalibrationTools.csproj", "{406F4874-FA63-4E55-A082-66CDCAF79B1F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TLWCommunication", "..\..\7.公共类\TLWCommand\TLWCommunication.csproj", "{FC81601A-1046-4168-8623-B974E6098108}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A99522FF-5C2F-4936-A82A-3B314779C5DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A99522FF-5C2F-4936-A82A-3B314779C5DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A99522FF-5C2F-4936-A82A-3B314779C5DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A99522FF-5C2F-4936-A82A-3B314779C5DE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8B5E6A3D-D374-4E3F-A11F-1BB362AB6937}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8B5E6A3D-D374-4E3F-A11F-1BB362AB6937}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8B5E6A3D-D374-4E3F-A11F-1BB362AB6937}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8B5E6A3D-D374-4E3F-A11F-1BB362AB6937}.Release|Any CPU.Build.0 = Release|Any CPU
+		{406F4874-FA63-4E55-A082-66CDCAF79B1F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{406F4874-FA63-4E55-A082-66CDCAF79B1F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{406F4874-FA63-4E55-A082-66CDCAF79B1F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{406F4874-FA63-4E55-A082-66CDCAF79B1F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FC81601A-1046-4168-8623-B974E6098108}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FC81601A-1046-4168-8623-B974E6098108}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FC81601A-1046-4168-8623-B974E6098108}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FC81601A-1046-4168-8623-B974E6098108}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {75258D2B-C2DC-41CD-B71A-D03C03A0FC39}
+	EndGlobalSection
+EndGlobal

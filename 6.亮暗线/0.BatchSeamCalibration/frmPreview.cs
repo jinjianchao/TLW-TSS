@@ -62,7 +62,7 @@ namespace BatchSeamCalibration
         /// <summary>
         /// 调整幅度
         /// </summary>
-        public int adjustRange { get; set;}
+        public int adjustRange { get; set; }
 
         //public SelectedBorder GetSelectedBorder()
         //{
@@ -665,15 +665,30 @@ namespace BatchSeamCalibration
             else
             {
                 int tmpY = y;
-                if (y % 2 == 0)
+                int tmpX = x;
+                if (this.CabinetType.Serial == "TSS")
                 {
-                    tmpY = y / 2;
+                    if (y % CabinetType.ConnectModuleCount == 0)
+                    {
+                        tmpY = y / CabinetType.ConnectModuleCount;
+                    }
+                    else
+                    {
+                        tmpY = y / CabinetType.ConnectModuleCount + 1;
+                    }
                 }
-                else
+                else if (this.CabinetType.Serial == "TLW")
                 {
-                    tmpY = y / 2 + 1;
+                    if (x % CabinetType.ConnectModuleCount == 0)
+                    {
+                        tmpX = x / CabinetType.ConnectModuleCount;
+                    }
+                    else
+                    {
+                        tmpX = x / CabinetType.ConnectModuleCount + 1;
+                    }
                 }
-                cardAddr = (ushort)(x << 8 | tmpY);
+                cardAddr = (ushort)(tmpX << 8 | tmpY);
             }
             return cardAddr;
         }

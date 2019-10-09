@@ -11,6 +11,7 @@
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -51,6 +52,7 @@
     <Compile Include="Enums\EnumPackageInOut.cs" />
     <Compile Include="Enums\EnumSendType.cs" />
     <Compile Include="Events\PackageEvent.cs" />
+    <Compile Include="ExtentionAttribute.cs" />
     <Compile Include="Extentions\ByteArrayExt.cs" />
     <Compile Include="Extentions\ByteExt.cs" />
     <Compile Include="Extentions\ObjectExt.cs" />
@@ -62,6 +64,7 @@
     <Compile Include="Helper\CalibrationHelper.cs" />
     <Compile Include="Helper\FileHelper.cs" />
     <Compile Include="Helper\FreePortHelper.cs" />
+    <Compile Include="Helper\ImageHelper.cs" />
     <Compile Include="Helper\NetworkHelper.cs" />
     <Compile Include="Helper\SeamCalibrationHelper.cs" />
     <Compile Include="Helper\SNHelper.cs" />

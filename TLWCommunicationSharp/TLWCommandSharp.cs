@@ -6,6 +6,7 @@ using System.Text;
 using SFTHelper.Extentions;
 using SFTHelper.Events;
 using SFTHelper.Enums;
+using System.IO;
 
 namespace TLWCommunicationSharp
 {
@@ -84,7 +85,7 @@ namespace TLWCommunicationSharp
                     //4 = 校验错误
                     //5 = 长度错误
                     //6 = 地址错误  MCU反馈命令执行情况
-                    packageItem[position] = 1;
+                    packageItem[position] = 0;
                     position += 1;
                     //数据段[20到LEN - 6] 
                     //数据段以外的长度为25字节。
@@ -252,5 +253,105 @@ namespace TLWCommunicationSharp
             System.Threading.Thread.Sleep(_sendWait);
             return 0;
         }
+
+        public int TLW_SetBrightness(int dev, UInt16 addr, UInt16 id, byte color, ushort red, ushort green, ushort blue)
+        {
+            ushort commandId = 0x0002;
+            byte[] data = new byte[7];
+            int offset = 0;
+            data[0] = color;
+            offset += 1;
+            Array.Copy(red.GetBytes(), 0, data, offset, 2);
+            offset += 2;
+            Array.Copy(green.GetBytes(), 0, data, offset, 2);
+            offset += 2;
+            Array.Copy(blue.GetBytes(), 0, data, offset, 2);
+
+            List<byte[]> sendData = CreatePackage(addr, 0xAA8E42, 0x5571BD, id, commandId, data);
+
+            int packageCount = sendData.Count;
+            int packageNum = 1;
+            foreach (var item in sendData)
+            {
+                if (_showPackage && PackageEvent != null)
+                {
+                    PackageEvent(this, new PackageEventArgs { Data = item, Dev = dev, PackageFlag = EnumPackageInOut.Input });
+                }
+                int result = base.Send(dev, item, out byte[] rev);
+                if (result == 0 && _showPackage && PackageEvent != null)
+                {
+                    PackageEvent(this, new PackageEventArgs { Data = rev, Dev = dev, PackageFlag = EnumPackageInOut.Output });
+                }
+                if (result == 0 && CheckRevPackage(addr, 0xAA8E42, 0x5571BD, id, 0x0022, (ushort)sendData.Count, (ushort)packageNum, item) == false)
+                {
+                    return -1;
+                }
+                if (result != 0) return -1;
+                if (packageCount > 1 && packageNum != packageCount)
+                {
+                    System.Threading.Thread.Sleep(_packageDelay);
+                }
+                packageNum++;
+            }
+            System.Threading.Thread.Sleep(_sendWait);
+            return 0;
+        }
+
+        public int TLW_WriteCalibrationFileToSDRAM(int dev, UInt16 addr, UInt16 id, byte chipPos, int mPixelWidth, int mPixelHeight, string file)
+        {
+            ushort commandId = 0x0006;
+            byte[] data = ReadCalibrationData(file, mPixelWidth, mPixelHeight);
+            List<byte[]> sendData = CreatePackage(addr, 0xAA8E42, 0x5571BD, id, commandId, data);
+
+            int packageCount = sendData.Count;
+            int packageNum = 1;
+            foreach (var item in sendData)
+            {
+                if (_showPackage && PackageEvent != null)
+                {
+                    PackageEvent(this, new PackageEventArgs { Data = item, Dev = dev, PackageFlag = EnumPackageInOut.Input });
+                }
+                int result = base.Send(dev, item, out byte[] rev);
+                if (result == 0 && _showPackage && PackageEvent != null)
+                {
+                    PackageEvent(this, new PackageEventArgs { Data = rev, Dev = dev, PackageFlag = EnumPackageInOut.Output });
+                }
+                if (result == 0 && CheckRevPackage(addr, 0xAA8E42, 0x5571BD, id, 0x0022, (ushort)sendData.Count, (ushort)packageNum, item) == false)
+                {
+                    return -1;
+                }
+                if (result != 0) return -1;
+                if (packageCount > 1 && packageNum != packageCount)
+                {
+                    System.Threading.Thread.Sleep(_packageDelay);
+                }
+                packageNum++;
+            }
+            System.Threading.Thread.Sleep(_sendWait);
+            return 0;
+        }
+
+        #region 辅助方法
+
+        private byte[] ReadCalibrationData(string file, int mPixelWidth, int mPixelHeight)
+        {
+            int len = mPixelWidth * mPixelHeight * 16;
+            FileStream fsIn = new FileStream(file, FileMode.Open);
+            if (fsIn.Length != len)
+            {
+                return null;
+            }
+            byte[] outData = new byte[len];
+            //读取整个文件
+            if (fsIn.Read(outData, 0, outData.Length) != outData.Length)
+            {
+                fsIn.Close();
+                return null;
+            }
+            fsIn.Close();//关闭文件
+            return outData;
+        }
+
+        #endregion
     }
 }

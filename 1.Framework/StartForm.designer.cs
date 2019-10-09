@@ -623,6 +623,7 @@
             this.expandModule.TitleStyle.GradientAngle = 90;
             this.expandModule.TitleStyle.MarginLeft = 10;
             this.expandModule.TitleText = "模块地址";
+            this.expandModule.Visible = false;
             // 
             // btnAllModule
             // 
@@ -1351,12 +1352,13 @@
             // 
             this.buttonX3.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
             this.buttonX3.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
-            this.buttonX3.Location = new System.Drawing.Point(158, 58);
+            this.buttonX3.Location = new System.Drawing.Point(158, 69);
             this.buttonX3.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.buttonX3.Name = "buttonX3";
             this.buttonX3.Size = new System.Drawing.Size(117, 24);
             this.buttonX3.TabIndex = 1;
             this.buttonX3.Text = "全255";
+            this.buttonX3.Visible = false;
             this.buttonX3.Click += new System.EventHandler(this.buttonX3_Click);
             // 
             // addr_X
@@ -1438,7 +1440,7 @@
             // 
             this.buttonX2.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
             this.buttonX2.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
-            this.buttonX2.Location = new System.Drawing.Point(48, 58);
+            this.buttonX2.Location = new System.Drawing.Point(166, 58);
             this.buttonX2.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.buttonX2.Name = "buttonX2";
             this.buttonX2.Size = new System.Drawing.Size(103, 24);
@@ -1590,7 +1592,7 @@
             // 
             // 
             this.checkBoxX1.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.checkBoxX1.Location = new System.Drawing.Point(90, 815);
+            this.checkBoxX1.Location = new System.Drawing.Point(90, 812);
             this.checkBoxX1.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.checkBoxX1.Name = "checkBoxX1";
             this.checkBoxX1.Size = new System.Drawing.Size(88, 18);

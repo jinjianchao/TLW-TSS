@@ -88,6 +88,11 @@ namespace UnitInfo
             get { return _subType; }
             set { _subType = value; }
         }
+
+        /// <summary>
+        /// 每个连接板连接的灯板数量
+        /// </summary>
+        public int ConnectModuleCount { get; set; }
     }
     //箱体类型
     public class UnitMainType

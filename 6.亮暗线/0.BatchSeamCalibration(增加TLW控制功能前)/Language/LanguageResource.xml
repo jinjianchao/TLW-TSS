@@ -1,0 +1,77 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Resource>
+  <Form>
+    <Name>frmMain</Name>
+    <Controls>
+    </Controls>
+    <Codes>
+      <Code name="Initialization" text="初始化"/>
+      <Code name="ResetPreviewWindow" text="复位预览窗口"/>
+      <Code name="View" text="预览"/>
+      <Code name="PreviewBackground" text="预览背景"/>
+      <Code name="DataModification" text="数据调整"/>
+      <Code name="DataLocation" text="数据位置"/>
+      <Code name="DisplaySetting" text="显示设置"/>
+      <Code name="DataRestore" text="数据还原(仅在从文件夹读取校正数据时有效)"/>
+      <Code name="IPList" text="IP列表"/>
+      <Code name="Comment" text="说明:&#x000A;按住鼠标左键拖动选中边缘&#x000A;按住Ctrl键，同时按住鼠标左键拖动可实现多选&#x000A;按住Shift键，同时按住鼠标左键拖动可移动预览窗口&#x000A;按住&quot;A、W、S、D&quot;键不放可实现预览窗口位置的微调"/>
+      <Code name="Folder" text="文件夹"/>
+      <Code name="Cabinet" text="箱体"/>
+      <Code name="Module" text="模组"/>
+      <Code name="Send" text="发送"/>
+      <Code name="Stop" text="停止"/>
+      <Code name="Stoping" text="正在停止..."/>
+      <Code name="Video" text="视频"/>
+      <Code name="Red" text="红"/>
+      <Code name="Green" text="绿"/>
+      <Code name="Blue" text="蓝"/>
+      <Code name="White" text="白"/>
+      <Code name="WaitTaskComplete" text="当前有任务正在执行,请等待任务执行完毕再执行此操作"/>
+      <Code name="ReadTimeCodeFailed" text="读取时间码失败(地址:X={0},Y={1},位置:{2})"/>
+      <Code name="FileForTimeCodeNotFound" text="时间码{0}对应的校正数据未找到"/>
+      <Code name="TranslateZdat2DatFailed" text="Zdat-->Dat数据转换失败"/>
+      <Code name="TranslateDat2SdatFailed" text="Dat-->Sdat数据转换失败"/>
+      <Code name="TranslateZdat2SdatFailed" text="Zdat-->Sdat数据转换失败"/>
+      <Code name="TranslateSdat2DatFailed" text="Sdat-->Dat数据转换失败"/>
+      <Code name="MergeCalibrationDataFailed " text="合并校正数据失败"/>
+      <Code name="DataFolderNotExist " text="数据文件夹不存在"/>
+      <Code name="ReadPureDataFailed" text="读取纯校正数据失败"/>
+      <Code name="ModifyCoefficientFailed" text="调整校正数据系数失败"/>
+      <Code name="OutputPureCalibrationDataFailed" text="输出纯校正数据文件失败"/>
+      <Code name="ModifyCalibrationFailed" text="修改校正数据失败"/>
+      <Code name="OutputSdatFileFailed" text="输出Sdat格式失败"/>
+      <Code name="DivideFileFailed" text="拆分校正数据失败"/>
+      <Code name="ModuleFileData2ZdatFailed" text="灯板数据转zdat格式失败"/>
+      <Code name="WriteModuleData" text="开始写入灯板校正数据(地址:X={0},Y={1},位置:{2})"/>
+      <Code name="WriteModuleDataFailed" text="写入灯板校正数据失败(地址:X={0},Y={1},位置:{2})"/>
+      <Code name="WriteModuleDataSuccess" text="写入灯板校正数据成功(地址:X={0},Y={1},位置:{2})"/>
+      <Code name="OpenDeviceFailed" text="设备打开失败"/>
+      <Code name="OpenDeviceSuccess" text="设备打开成功"/>
+      <Code name="IsLoadLocalCalibrationDataFile" text="本地已经存在校正数据文件，是否从本地加载?"/>
+      <Code name="CanceledByUser" text="用户取消操作"/>
+      <Code name="ReadCalibrationDataFromCabinet" text="开始从箱体读取校正数据"/>
+      <Code name="ReadCalibrationDataFromFolder" text="开始从文件夹读取校正数据"/>
+      <Code name="ReadCalibrationFailed" text="校正数据读取失败"/>
+      <Code name="ReadCalibrationSuccess" text="校正数据读取成功"/>
+      <Code name="WriteCalibrationData" text="开始写入校正数据"/>
+      <Code name="WriteCalibrationDataSuccess" text="校正数据写入成功"/>
+      <Code name="SwitchDisplayModeFailed" text="切换工作模式失败"/>
+      <Code name="SwitchDisplayModeSuccess" text="切换工作模式成功"/>
+      <Code name="upmodule" text="上灯板"/>
+      <Code name="bottommodule" text="下灯板"/>
+      <Code name="writeToFlashfailed" text="固化到Flash失败"/>
+      <Code name="writeToFlashsuccess" text="固化到Flash成功"/>
+      <Code name="writeToFlash" text="保存"/>
+    </Codes>
+  </Form>
+  <Form>
+    <Name>frmPreview</Name>
+    <Controls>
+    </Controls>
+    <Codes>
+      <Code name="showborder" text="显示边框"/>
+      <Code name="showpercent" text="显示百分比数据"/>
+      <Code name="close" text="关闭"/>
+    </Codes>
+  </Form>
+</Resource>

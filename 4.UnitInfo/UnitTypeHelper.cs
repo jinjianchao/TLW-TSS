@@ -55,6 +55,11 @@ namespace UnitInfo
                         subType.BoardPixelH = int.Parse(subTypeItem.Attributes["modalXPixelCount"].Value);
                         subType.BoardPixelV = int.Parse(subTypeItem.Attributes["modalYPixelCount"].Value);
 
+                        if (subTypeItem.Attributes["mCount"] != null)
+                        {
+                            subType.ConnectModuleCount = int.Parse(subTypeItem.Attributes["mCount"].Value);
+                        }
+
                         unitType.SubType.Add(subType);
                     }
                     if (unitType.SubType.Count > 0)

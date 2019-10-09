@@ -13,7 +13,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 
 namespace SFTHelper.Extentions
@@ -315,6 +314,26 @@ namespace SFTHelper.Extentions
             for (int i = 0; i < source.Length; i++)
             {
                 source[i] = value;
+            }
+            return source;
+        }
+
+        public static byte[] Fill(this byte[] source, int start, int len, byte value)
+        {
+            for (int i = start; i < start + len; i++)
+            {
+                source[i] = value;
+            }
+            return source;
+        }
+
+        public static byte[] Fill(this byte[] source, int start, int len, byte[] fillWithData)
+        {
+            int cx = 0;
+            for (int i = start; i < start + len; i++)
+            {
+                source[i] = fillWithData[cx];
+                cx++;
             }
             return source;
         }

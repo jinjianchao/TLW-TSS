@@ -1,0 +1,77 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Resource>
+  <Form>
+    <Name>frmMain</Name>
+    <Controls>
+    </Controls>
+    <Codes>
+      <Code name="Initialization" text="Initialize"/>
+      <Code name="ResetPreviewWindow" text="Reset Preview Window"/>
+      <Code name="View" text="Preview"/>
+      <Code name="PreviewBackground" text="Preview Background"/>
+      <Code name="DataModification" text="Data Modify"/>
+      <Code name="DataLocation" text="Data Location"/>
+      <Code name="DisplaySetting" text="Display Set"/>
+      <Code name="DataRestore" text="Data Restore(Valid only when read from folders)"/>
+      <Code name="IPList" text="IP List"/>
+      <Code name="Comment" text="Comment:&#x000A;Hold the left mouse button and drag can select the light or dark line&#x000A;Multi-selection can be achieved by holding down the Ctrl key and dragging the left mouse button at the same time.&#x000A;Hold down the Shift key while holding down the left mouse button to drag the movable preview window&#x000A;Press the &quot;A, W, S, D&quot; button to adjust the position of the preview window "/>
+      <Code name="Folder" text="Folder"/>
+      <Code name="Cabinet" text="Cabinet"/>
+      <Code name="Module" text="Module"/>
+      <Code name="Send" text="Send"/>
+      <Code name="Stop" text="Stop"/>
+      <Code name="Stoping" text="Stoping..."/>
+      <Code name="Video" text="Video"/>
+      <Code name="Red" text="Red"/>
+      <Code name="Green" text="Green"/>
+      <Code name="Blue" text="Blue"/>
+      <Code name="White" text="White"/>
+      <Code name="WaitTaskComplete" text="Tasks are currently being executed. Please wait until the task complete"/>
+      <Code name="ReadTimeCodeFailed" text="Failure to read time code(ADDR:X={0},Y={1},Position:{2})"/>
+      <Code name="FileForTimeCodeNotFound" text="File for time code {0} not found"/>
+      '<Code name="TranslateZdat2DatFailed" text="Convert Zdat-->Dat failed"/>
+      <Code name="TranslateDat2SdatFailed" text="Convert Dat-->Sdat failed"/>
+      <Code name="TranslateZdat2SdatFailed" text="Convert Zdat-->Sdat failed"/>
+      <Code name="TranslateSdat2DatFailed" text="Convert Sdat-->Dat failed"/>
+      <Code name="MergeCalibrationDataFailed " text="Merger calibration data failed"/>
+      <Code name="DataFolderNotExist " text="Data folder does not exist"/>
+      <Code name="ReadPureDataFailed" text="Failure pure calibration data"/>
+      <Code name="ModifyCoefficientFailed" text="Failure to modify calibration data coefficient"/>
+      <Code name="OutputPureCalibrationDataFailed" text="Output pure calibration data file failed"/>
+      <Code name="ModifyCalibrationFailed" text="Modify calibration data file failed"/>
+      <Code name="OutputSdatFileFailed" text="Output sdat file failed"/>
+      <Code name="DivideFileFailed" text="Divide calibration file failed"/>
+      <Code name="ModuleFileData2ZdatFailed" text="Convert module file to zdat type failed"/>
+      <Code name="WriteModuleData" text="Start writing module calibration data(ADDR:X={0},Y={1},Position:{2})"/>
+      <Code name="WriteModuleDataFailed" text="Write module calibration data failed(ADDR:X={0},Y={1},Position:{2})"/>
+      <Code name="WriteModuleDataSuccess" text="Write module calibration data success(ADDR:X={0},Y={1},Position:{2})"/>
+      <Code name="OpenDeviceFailed" text="Open device failed"/>
+      <Code name="OpenDeviceSuccess" text="Open device success"/>
+      <Code name="IsLoadLocalCalibrationDataFile" text="Calibration data file already exist.Do you load local file"/>
+      <Code name="CanceledByUser" text="Canceld by user"/>
+      <Code name="ReadCalibrationDataFromCabinet" text="Start reading calibration data from cabinet"/>
+      <Code name="ReadCalibrationDataFromFolder" text="Start reading calibration data from folder"/>
+      <Code name="ReadCalibrationFailed" text="Read calibration file failed"/>
+      <Code name="ReadCalibrationSuccess" text="Read calibration file success"/>
+      <Code name="WriteCalibrationData" text="Start writting calibration data"/>
+      <Code name="WriteCalibrationDataSuccess" text="Write calibration data success"/>
+      <Code name="SwitchDisplayModeFailed" text="Switch display mode failed"/>
+      <Code name="SwitchDisplayModeSuccess" text="Switch display mode success"/>
+      <Code name="upmodule" text="Top module"/>
+      <Code name="bottommodule" text="Bottom module"/>
+      <Code name="writeToFlashfailed" text="Save to flash failed"/>
+      <Code name="writeToFlashsuccess" text="Save to Flash success"/>
+      <Code name="writeToFlash" text="Save"/>
+    </Codes>
+  </Form>
+  <Form>
+    <Name>frmPreview</Name>
+    <Controls>
+    </Controls>
+    <Codes>
+      <Code name="showborder" text="Show Border"/>
+      <Code name="showpercent" text="Show Value"/>
+      <Code name="close" text="Close"/>
+    </Codes>
+  </Form>
+</Resource>

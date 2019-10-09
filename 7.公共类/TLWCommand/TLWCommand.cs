@@ -219,39 +219,39 @@ namespace TLWCommunication
 
         #region 异步执行
 
-        public void tlw_SetBrightness(ushort addrMB, ushort id, ushort mode, ushort r, ushort g, ushort b, Dictionary<string, int> ips, Action<ReturnParam[]> action)
-        {
-            Task<ReturnParam[]> task = new Task<ReturnParam[]>(obj =>
-            {
-                ReturnParam[] returnParam = new ReturnParam[ips.Count];
-                int i = 0;
-                foreach (var item in ips)
-                {
-                    new Task((inParam) =>
-                    {
-                        InParam param = (inParam as InParam);
-                        returnParam[param.Index] = new ReturnParam();
-                        returnParam[param.Index].IP = param.IP;
-                        returnParam[param.Index].Dev = param.Dev;
-                        returnParam[param.Index].ResultCode = _Command.tlw_SetBrightness(param.Dev, addrMB, id, mode, r, g, b);
-                    },
-                    new InParam()
-                    {
-                        Index = i,
-                        IP = item.Key,
-                        Dev = item.Value
-                    },
-                    TaskCreationOptions.AttachedToParent).Start();
-                    i++;
-                }
-                return returnParam;
-            }, null);
-            task.ContinueWith(t =>
-            {
-                action(t.Result);
-            });
-            task.Start();
-        }
+        //public void tlw_SetBrightness(ushort addrMB, ushort id, ushort mode, ushort r, ushort g, ushort b, Dictionary<string, int> ips, Action<ReturnParam[]> action)
+        //{
+        //    Task<ReturnParam[]> task = new Task<ReturnParam[]>(obj =>
+        //    {
+        //        ReturnParam[] returnParam = new ReturnParam[ips.Count];
+        //        int i = 0;
+        //        foreach (var item in ips)
+        //        {
+        //            new Task((inParam) =>
+        //            {
+        //                InParam param = (inParam as InParam);
+        //                returnParam[param.Index] = new ReturnParam();
+        //                returnParam[param.Index].IP = param.IP;
+        //                returnParam[param.Index].Dev = param.Dev;
+        //                returnParam[param.Index].ResultCode = _Command.tlw_SetBrightness(param.Dev, addrMB, id, mode, r, g, b);
+        //            },
+        //            new InParam()
+        //            {
+        //                Index = i,
+        //                IP = item.Key,
+        //                Dev = item.Value
+        //            },
+        //            TaskCreationOptions.AttachedToParent).Start();
+        //            i++;
+        //        }
+        //        return returnParam;
+        //    }, null);
+        //    task.ContinueWith(t =>
+        //    {
+        //        action(t.Result);
+        //    });
+        //    task.Start();
+        //}
 
         /// <summary>
         /// 写入FLASH
@@ -262,110 +262,110 @@ namespace TLWCommunication
         /// <param name="startAddr">FLASH地址</param>
         /// <param name="pData">数组指针</param>
         /// <returns>0 成功 ,其他值 失败</returns>
-        public void tlw_FLASH_Write(ushort addrMB, ushort id, byte chipPos, UInt32 startAddr, byte[] pData, uint sectorSize, Dictionary<string, int> ips, Action<ReturnParam[]> action)
-        {
-            Task<ReturnParam[]> task = new Task<ReturnParam[]>(obj =>
-            {
-                ReturnParam[] returnParam = new ReturnParam[ips.Count];
-                int i = 0;
-                foreach (var item in ips)
-                {
-                    new Task((inParam) =>
-                    {
-                        InParam param = (inParam as InParam);
-                        returnParam[param.Index] = new ReturnParam();
-                        returnParam[param.Index].IP = param.IP;
-                        returnParam[param.Index].Dev = param.Dev;
+        //public void tlw_FLASH_Write(ushort addrMB, ushort id, byte chipPos, UInt32 startAddr, byte[] pData, uint sectorSize, Dictionary<string, int> ips, Action<ReturnParam[]> action)
+        //{
+        //    Task<ReturnParam[]> task = new Task<ReturnParam[]>(obj =>
+        //    {
+        //        ReturnParam[] returnParam = new ReturnParam[ips.Count];
+        //        int i = 0;
+        //        foreach (var item in ips)
+        //        {
+        //            new Task((inParam) =>
+        //            {
+        //                InParam param = (inParam as InParam);
+        //                returnParam[param.Index] = new ReturnParam();
+        //                returnParam[param.Index].IP = param.IP;
+        //                returnParam[param.Index].Dev = param.Dev;
 
-                        //TODO:暂时不擦出
-                        //returnParam[param.Index].ResultCode = tlw_FLASH_EraseSector(param.Dev, addrMB, 0, chipPos, startAddr, sectorSize, pData.Length);
-                        returnParam[param.Index].ResultCode = 0;
-                        if (returnParam[param.Index].ResultCode == 0)
-                        {
-                            if (pData.Length <= 1024)
-                            {
-                                returnParam[param.Index].ResultCode = _Command.tlw_FLASH_Write(param.Dev, addrMB, 0, chipPos, startAddr, pData, 0, pData.Length);
-                            }
-                            else
-                            {
-                                returnParam[param.Index].ResultCode = _Command.tlw_FLASH_BatchWrite(param.Dev, addrMB, 0, chipPos, startAddr, pData, 0, pData.Length, ProgressCallBackFunc);
+        //                //TODO:暂时不擦出
+        //                //returnParam[param.Index].ResultCode = tlw_FLASH_EraseSector(param.Dev, addrMB, 0, chipPos, startAddr, sectorSize, pData.Length);
+        //                returnParam[param.Index].ResultCode = 0;
+        //                if (returnParam[param.Index].ResultCode == 0)
+        //                {
+        //                    if (pData.Length <= 1024)
+        //                    {
+        //                        returnParam[param.Index].ResultCode = _Command.tlw_FLASH_Write(param.Dev, addrMB, 0, chipPos, startAddr, pData, 0, pData.Length);
+        //                    }
+        //                    else
+        //                    {
+        //                        returnParam[param.Index].ResultCode = _Command.tlw_FLASH_BatchWrite(param.Dev, addrMB, 0, chipPos, startAddr, pData, 0, pData.Length, ProgressCallBackFunc);
 
-                                int count = pData.Length / 1024;
-                                for (int j = 0; j < count; j++)
-                                {
-                                    byte[] tmpData = new byte[1024];
-                                    Array.Copy(pData, j * 1024, tmpData, 0, 1024);
-                                    returnParam[param.Index].ResultCode = _Command.tlw_FLASH_Write(param.Dev, addrMB, 0, chipPos, (uint)(startAddr + j * 1024), tmpData, 0, tmpData.Length);
-                                    int percent = (j + 1) / count * 100;
-                                    ProgressCallBackFunc(param.Dev, percent, $"{j + 1}/{count}");
-                                    System.Threading.Thread.Sleep(100);
-                                }
-                            }
-                        }
-                    },
-                    new InParam()
-                    {
-                        Index = i,
-                        IP = item.Key,
-                        Dev = item.Value
-                    },
-                    TaskCreationOptions.AttachedToParent).Start();
-                    i++;
-                }
-                return returnParam;
-            }, null);
-            task.ContinueWith(t =>
-            {
-                action(t.Result);
-            });
-            task.Start();
-        }
+        //                        int count = pData.Length / 1024;
+        //                        for (int j = 0; j < count; j++)
+        //                        {
+        //                            byte[] tmpData = new byte[1024];
+        //                            Array.Copy(pData, j * 1024, tmpData, 0, 1024);
+        //                            returnParam[param.Index].ResultCode = _Command.tlw_FLASH_Write(param.Dev, addrMB, 0, chipPos, (uint)(startAddr + j * 1024), tmpData, 0, tmpData.Length);
+        //                            int percent = (j + 1) / count * 100;
+        //                            ProgressCallBackFunc(param.Dev, percent, $"{j + 1}/{count}");
+        //                            System.Threading.Thread.Sleep(100);
+        //                        }
+        //                    }
+        //                }
+        //            },
+        //            new InParam()
+        //            {
+        //                Index = i,
+        //                IP = item.Key,
+        //                Dev = item.Value
+        //            },
+        //            TaskCreationOptions.AttachedToParent).Start();
+        //            i++;
+        //        }
+        //        return returnParam;
+        //    }, null);
+        //    task.ContinueWith(t =>
+        //    {
+        //        action(t.Result);
+        //    });
+        //    task.Start();
+        //}
 
-        public void tlw_FLASH_Read(ushort addr, ushort id, byte chipPos, UInt32 startAddr, int dataLen, Dictionary<string, int> ips, Action<ReturnParam[]> action)
-        {
-            Task<ReturnParam[]> task = new Task<ReturnParam[]>(obj =>
-            {
-                ReturnParam[] returnParam = new ReturnParam[ips.Count];
-                int i = 0;
-                foreach (var item in ips)
-                {
-                    new Task((inParam) =>
-                    {
-                        InParam param = (inParam as InParam);
-                        returnParam[param.Index] = new ReturnParam();
-                        returnParam[param.Index].IP = param.IP;
-                        returnParam[param.Index].Dev = param.Dev;
-                        byte[] pData = new byte[dataLen];
-                        if (pData.Length <= 1024)
-                        {
-                            returnParam[param.Index].ResultCode = _Command.tlw_FLASH_Read(param.Dev, addr, id, chipPos, startAddr, pData, 0, pData.Length);
-                        }
-                        else
-                        {
-                            returnParam[param.Index].ResultCode = _Command.tlw_FLASH_BatchRead(param.Dev, addr, id, chipPos, startAddr, pData, 0, pData.Length, ProgressCallBackFunc);
-                        }
-                        if (returnParam[param.Index].ResultCode == 0)
-                        {
-                            returnParam[param.Index].Data = pData;
-                        }
-                    },
-                    new InParam()
-                    {
-                        Index = i,
-                        IP = item.Key,
-                        Dev = item.Value
-                    },
-                    TaskCreationOptions.AttachedToParent).Start();
-                    i++;
-                }
-                return returnParam;
-            }, null);
-            task.ContinueWith(t =>
-            {
-                action(t.Result);
-            });
-            task.Start();
-        }
+        //public void tlw_FLASH_Read(ushort addr, ushort id, byte chipPos, UInt32 startAddr, int dataLen, Dictionary<string, int> ips, Action<ReturnParam[]> action)
+        //{
+        //    Task<ReturnParam[]> task = new Task<ReturnParam[]>(obj =>
+        //    {
+        //        ReturnParam[] returnParam = new ReturnParam[ips.Count];
+        //        int i = 0;
+        //        foreach (var item in ips)
+        //        {
+        //            new Task((inParam) =>
+        //            {
+        //                InParam param = (inParam as InParam);
+        //                returnParam[param.Index] = new ReturnParam();
+        //                returnParam[param.Index].IP = param.IP;
+        //                returnParam[param.Index].Dev = param.Dev;
+        //                byte[] pData = new byte[dataLen];
+        //                if (pData.Length <= 1024)
+        //                {
+        //                    returnParam[param.Index].ResultCode = _Command.tlw_FLASH_Read(param.Dev, addr, id, chipPos, startAddr, pData, 0, pData.Length);
+        //                }
+        //                else
+        //                {
+        //                    returnParam[param.Index].ResultCode = _Command.tlw_FLASH_BatchRead(param.Dev, addr, id, chipPos, startAddr, pData, 0, pData.Length, ProgressCallBackFunc);
+        //                }
+        //                if (returnParam[param.Index].ResultCode == 0)
+        //                {
+        //                    returnParam[param.Index].Data = pData;
+        //                }
+        //            },
+        //            new InParam()
+        //            {
+        //                Index = i,
+        //                IP = item.Key,
+        //                Dev = item.Value
+        //            },
+        //            TaskCreationOptions.AttachedToParent).Start();
+        //            i++;
+        //        }
+        //        return returnParam;
+        //    }, null);
+        //    task.ContinueWith(t =>
+        //    {
+        //        action(t.Result);
+        //    });
+        //    task.Start();
+        //}
 
         /// <summary>
         /// 写入MAP数据
@@ -377,40 +377,40 @@ namespace TLWCommunication
         /// <param name="offset">数据偏移量</param>
         /// <param name="nLen">数据长度,默认为4096</param>
         /// <returns>0 —— 成功，其他值失败</returns>
-        public void tlw_WriteMAP(ushort addr, ushort id, byte[] src, Dictionary<string, int> ips, Action<ReturnParam[]> action)
-        {
-            Task<ReturnParam[]> task = new Task<ReturnParam[]>(obj =>
-            {
-                ReturnParam[] returnParam = new ReturnParam[ips.Count];
-                int i = 0;
-                foreach (var item in ips)
-                {
-                    new Task((inParam) =>
-                    {
-                        InParam param = (inParam as InParam);
-                        returnParam[param.Index] = new ReturnParam();
-                        returnParam[param.Index].IP = param.IP;
-                        returnParam[param.Index].Dev = param.Dev;
-                        returnParam[param.Index].ResultCode = _Command.tlw_WriteMAP(param.Dev, addr, id, src, 0, src.Length);
-                        _Command.sys_PacketDelay(param.Dev, 1);
-                    },
-                    new InParam()
-                    {
-                        Index = i,
-                        IP = item.Key,
-                        Dev = item.Value
-                    },
-                    TaskCreationOptions.AttachedToParent).Start();
-                    i++;
-                }
-                return returnParam;
-            }, null);
-            task.ContinueWith(t =>
-            {
-                action(t.Result);
-            });
-            task.Start();
-        }
+        //public void tlw_WriteMAP(ushort addr, ushort id, byte[] src, Dictionary<string, int> ips, Action<ReturnParam[]> action)
+        //{
+        //    Task<ReturnParam[]> task = new Task<ReturnParam[]>(obj =>
+        //    {
+        //        ReturnParam[] returnParam = new ReturnParam[ips.Count];
+        //        int i = 0;
+        //        foreach (var item in ips)
+        //        {
+        //            new Task((inParam) =>
+        //            {
+        //                InParam param = (inParam as InParam);
+        //                returnParam[param.Index] = new ReturnParam();
+        //                returnParam[param.Index].IP = param.IP;
+        //                returnParam[param.Index].Dev = param.Dev;
+        //                returnParam[param.Index].ResultCode = _Command.tlw_WriteMAP(param.Dev, addr, id, src, 0, src.Length);
+        //                _Command.sys_PacketDelay(param.Dev, 1);
+        //            },
+        //            new InParam()
+        //            {
+        //                Index = i,
+        //                IP = item.Key,
+        //                Dev = item.Value
+        //            },
+        //            TaskCreationOptions.AttachedToParent).Start();
+        //            i++;
+        //        }
+        //        return returnParam;
+        //    }, null);
+        //    task.ContinueWith(t =>
+        //    {
+        //        action(t.Result);
+        //    });
+        //    task.Start();
+        //}
 
         /// <summary>
         /// 读取MAP数据
@@ -422,44 +422,44 @@ namespace TLWCommunication
         /// <param name="offset">数据偏移量</param>
         /// <param name="nLen">数据长度,默认为4096</param>
         /// <returns>0 —— 成功，其他值失败</returns>
-        public void tlw_ReadMAP(ushort addr, ushort id, Dictionary<string, int> ips, Action<ReturnParam[]> action)
-        {
-            Task<ReturnParam[]> task = new Task<ReturnParam[]>(obj =>
-            {
-                ReturnParam[] returnParam = new ReturnParam[ips.Count];
-                int i = 0;
-                foreach (var item in ips)
-                {
-                    new Task((inParam) =>
-                    {
-                        InParam param = (inParam as InParam);
-                        returnParam[param.Index] = new ReturnParam();
-                        returnParam[param.Index].IP = param.IP;
-                        returnParam[param.Index].Dev = param.Dev;
-                        byte[] pData = new byte[4096];
-                        returnParam[param.Index].ResultCode = _Command.tlw_ReadMAP(param.Dev, addr, id, pData, 0, pData.Length);
-                        if (returnParam[param.Index].ResultCode == 0)
-                        {
-                            returnParam[param.Index].Data = pData;
-                        }
-                    },
-                    new InParam()
-                    {
-                        Index = i,
-                        IP = item.Key,
-                        Dev = item.Value
-                    },
-                    TaskCreationOptions.AttachedToParent).Start();
-                    i++;
-                }
-                return returnParam;
-            }, null);
-            task.ContinueWith(t =>
-            {
-                action(t.Result);
-            });
-            task.Start();
-        }
+        //public void tlw_ReadMAP(ushort addr, ushort id, Dictionary<string, int> ips, Action<ReturnParam[]> action)
+        //{
+        //    Task<ReturnParam[]> task = new Task<ReturnParam[]>(obj =>
+        //    {
+        //        ReturnParam[] returnParam = new ReturnParam[ips.Count];
+        //        int i = 0;
+        //        foreach (var item in ips)
+        //        {
+        //            new Task((inParam) =>
+        //            {
+        //                InParam param = (inParam as InParam);
+        //                returnParam[param.Index] = new ReturnParam();
+        //                returnParam[param.Index].IP = param.IP;
+        //                returnParam[param.Index].Dev = param.Dev;
+        //                byte[] pData = new byte[4096];
+        //                returnParam[param.Index].ResultCode = _Command.tlw_ReadMAP(param.Dev, addr, id, pData, 0, pData.Length);
+        //                if (returnParam[param.Index].ResultCode == 0)
+        //                {
+        //                    returnParam[param.Index].Data = pData;
+        //                }
+        //            },
+        //            new InParam()
+        //            {
+        //                Index = i,
+        //                IP = item.Key,
+        //                Dev = item.Value
+        //            },
+        //            TaskCreationOptions.AttachedToParent).Start();
+        //            i++;
+        //        }
+        //        return returnParam;
+        //    }, null);
+        //    task.ContinueWith(t =>
+        //    {
+        //        action(t.Result);
+        //    });
+        //    task.Start();
+        //}
 
         /// <summary>
         /// 数据写入SDRAM
@@ -494,10 +494,6 @@ namespace TLWCommunication
                         else
                         {
                             returnParam[param.Index].ResultCode = _Command.tlw_SDRAM_BatchWrite(param.Dev, addr, 0, startAddr, pData, 0, pData.Length, ProgressCallBackFunc);
-
-
-
-
 
                             //startAddr = 0x1e0000;
                             //for (int j = 0; j < 216; j++)
@@ -652,50 +648,50 @@ namespace TLWCommunication
         /// <param name="offset">偏移量</param>
         /// <param name="len">需要保存到数组的长度</param>
         /// <returns>0 —— 成功，其他值失败</returns>
-        public void tlw_WriteGAMMA(ushort addr, ushort id, byte mode, byte color, byte[] src, Dictionary<string, int> ips, Action<ReturnParam[]> action)
-        {
-            //return _Command.tlw_SDRAM_WriteToFLASH(hDevice, addr, id);
+        //public void tlw_WriteGAMMA(ushort addr, ushort id, byte mode, byte color, byte[] src, Dictionary<string, int> ips, Action<ReturnParam[]> action)
+        //{
+        //    //return _Command.tlw_SDRAM_WriteToFLASH(hDevice, addr, id);
 
-            Task<ReturnParam[]> task = new Task<ReturnParam[]>(obj =>
-            {
-                ReturnParam[] returnParam = new ReturnParam[ips.Count];
-                int i = 0;
-                foreach (var item in ips)
-                {
-                    new Task((inParam) =>
-                    {
-                        InParam param = (inParam as InParam);
-                        returnParam[param.Index] = new ReturnParam();
-                        returnParam[param.Index].IP = param.IP;
-                        returnParam[param.Index].Dev = param.Dev;
-                        if (color == 0)
-                        {
-                            returnParam[param.Index].ResultCode = _Command.tlw_WriteGAMMA(param.Dev, addr, id, mode, 1, src, 0, src.Length);
-                            if (returnParam[param.Index].ResultCode == 0) returnParam[param.Index].ResultCode = _Command.tlw_WriteGAMMA(param.Dev, addr, id, mode, 2, src, 0, src.Length);
-                            if (returnParam[param.Index].ResultCode == 0) returnParam[param.Index].ResultCode = _Command.tlw_WriteGAMMA(param.Dev, addr, id, mode, 3, src, 0, src.Length);
-                        }
-                        else
-                        {
-                            returnParam[param.Index].ResultCode = _Command.tlw_WriteGAMMA(param.Dev, addr, id, mode, color, src, 0, src.Length);
-                        }
-                    },
-                    new InParam()
-                    {
-                        Index = i,
-                        IP = item.Key,
-                        Dev = item.Value
-                    },
-                    TaskCreationOptions.AttachedToParent).Start();
-                    i++;
-                }
-                return returnParam;
-            }, null);
-            task.ContinueWith(t =>
-            {
-                action(t.Result);
-            });
-            task.Start();
-        }
+        //    Task<ReturnParam[]> task = new Task<ReturnParam[]>(obj =>
+        //    {
+        //        ReturnParam[] returnParam = new ReturnParam[ips.Count];
+        //        int i = 0;
+        //        foreach (var item in ips)
+        //        {
+        //            new Task((inParam) =>
+        //            {
+        //                InParam param = (inParam as InParam);
+        //                returnParam[param.Index] = new ReturnParam();
+        //                returnParam[param.Index].IP = param.IP;
+        //                returnParam[param.Index].Dev = param.Dev;
+        //                if (color == 0)
+        //                {
+        //                    returnParam[param.Index].ResultCode = _Command.tlw_WriteGAMMA(param.Dev, addr, id, mode, 1, src, 0, src.Length);
+        //                    if (returnParam[param.Index].ResultCode == 0) returnParam[param.Index].ResultCode = _Command.tlw_WriteGAMMA(param.Dev, addr, id, mode, 2, src, 0, src.Length);
+        //                    if (returnParam[param.Index].ResultCode == 0) returnParam[param.Index].ResultCode = _Command.tlw_WriteGAMMA(param.Dev, addr, id, mode, 3, src, 0, src.Length);
+        //                }
+        //                else
+        //                {
+        //                    returnParam[param.Index].ResultCode = _Command.tlw_WriteGAMMA(param.Dev, addr, id, mode, color, src, 0, src.Length);
+        //                }
+        //            },
+        //            new InParam()
+        //            {
+        //                Index = i,
+        //                IP = item.Key,
+        //                Dev = item.Value
+        //            },
+        //            TaskCreationOptions.AttachedToParent).Start();
+        //            i++;
+        //        }
+        //        return returnParam;
+        //    }, null);
+        //    task.ContinueWith(t =>
+        //    {
+        //        action(t.Result);
+        //    });
+        //    task.Start();
+        //}
 
         /// <summary>
         /// 读取GAMMA数据
@@ -1331,6 +1327,18 @@ namespace TLWCommunication
             return 0;
         }
 
+        /// <summary>
+        /// 写入FLASH
+        /// </summary>
+        /// <param name="hDevice">设备句柄</param>
+        /// <param name="addr">设备地址</param>
+        /// <param name="id">数据包识别号</param>
+        /// <param name="chipPos">芯片位置 0默认位置  1连接卡FLASH  2上方灯板FLASH  3下方灯板FLASH</param>
+        /// <param name="startAddr">FLASH地址</param>
+        /// <param name="pData">数组指针</param>
+        /// <param name="offset">数组内偏移</param>
+        /// <param name="len">写入的数据量,默认1024</param>
+        /// <returns>0 成功 ,其他值 失败</returns>
         public int tlw_FLASH_Write(int device, ushort addrMB, ushort id, byte chipPos, UInt32 startAddr, byte[] pData, uint sectorSize)
         {
             int result = 0;
@@ -1347,14 +1355,36 @@ namespace TLWCommunication
 
         public int tlw_FLASH_Read(int device, ushort addrMB, ushort id, byte chipPos, UInt32 startAddr, byte[] pData, uint sectorSize)
         {
+            //int result = 0;
+            //if (pData.Length <= 1024)
+            //{
+            //    result = _Command.tlw_FLASH_Read(device, addrMB, id, chipPos, startAddr, pData, 0, pData.Length);
+            //}
+            //else
+            //{
+            //    result = _Command.tlw_FLASH_BatchRead(device, addrMB, id, chipPos, startAddr, pData, 0, pData.Length, ProgressCallBackFunc);
+            //}
+            //return result;
+
             int result = 0;
-            if (pData.Length <= 1024)
+            //if (pData.Length <= 1024)
+            //{
+            //    result = _Command.tlw_FLASH_Read(device, addrMB, id, chipPos, startAddr, pData, 0, pData.Length);
+            //}
+            //else
+            //{
+            //    result = _Command.tlw_FLASH_BatchRead(device, addrMB, id, chipPos, startAddr, pData, 0, pData.Length, ProgressCallBackFunc);
+            //}
+            int count = pData.Length / 1024;
+            uint offset = 0;
+            for (int i = 0; i < count; i++)
             {
-                result = _Command.tlw_FLASH_Read(device, addrMB, id, chipPos, startAddr, pData, 0, pData.Length);
-            }
-            else
-            {
-                result = _Command.tlw_FLASH_BatchRead(device, addrMB, id, chipPos, startAddr, pData, 0, pData.Length, ProgressCallBackFunc);
+                byte[] tmpData = new byte[1024];
+                result = _Command.tlw_FLASH_Read(device, addrMB, id, chipPos, startAddr + offset, tmpData, 0, 1024);
+                Array.Copy(tmpData, 0, pData, offset, 1024);
+                offset += 1024;
+                int percent = (int)((i + 1) * 1.0 / count * 100);
+                ProgressCallBackFunc(device, percent, $"{i}/{count}");
             }
             return result;
         }
@@ -1543,6 +1573,13 @@ namespace TLWCommunication
             return result;
         }
 
+        public int tlw_ReadGAMMA(int hDevice, ushort addr, ushort id, byte mode, byte color, byte[] src, int len)
+        {
+            int result = 0;
+            result = _Command.tlw_ReadGAMMA(hDevice, addr, id, mode, color, src, 0, src.Length);
+            return result;
+        }
+
         /// <summary>
         /// 写入校正数据文件
         /// </summary>
@@ -1576,8 +1613,8 @@ namespace TLWCommunication
         /// <returns>0 —— 成功，其他值失败</returns>
         public int tlw_ReadCalibrationFile(int hDevice, ushort addr, ushort id, byte chipPos, int width, int height, string path)
         {
-            int result = 0;
-            result = _Command.tlw_ReadCalibrationFile(hDevice, addr, id, chipPos, width, height, path, ProgressCallBackFunc);
+            int result = 0; 
+             result = _Command.tlw_ReadCalibrationFile(hDevice, addr, id, chipPos, width, height, path, ProgressCallBackFunc);
             return result;
         }
 
@@ -1650,7 +1687,6 @@ namespace TLWCommunication
             result = _Command.tlw_ConnectCardLoadParam(hDevice, addr, id, mode);
             return result;
         }
-
 
         public int tlw_ReadRegister(int hDevice, ushort addr, ushort id, byte chip, UInt32 regAddr, UInt32[] pData)
         {
@@ -1807,6 +1843,76 @@ namespace TLWCommunication
         {
             int result = 0;
             result = _Command.tlw_SetDisplayMode(hDevice, addr, id, mode);
+            return result;
+        }
+
+        public int tlw_SetBrightness(int hDevice, ushort addrMB, ushort id, ushort mode, ushort r, ushort g, ushort b)
+        {
+            int result = 0;
+            result = _Command.tlw_SetBrightness(hDevice, addrMB, id, mode, r, g, b);
+            return result;
+        }
+
+        public int tlw_WriteMAP(int hDevice, ushort addr, ushort id, byte[] src)
+        {
+            int result = 0;
+            result = _Command.tlw_WriteMAP(hDevice, addr, id, src, 0, src.Length);
+            return result;
+        }
+
+        public int tlw_ReadMAP(int hDevice, ushort addr, ushort id, byte[] src, int nLen)
+        {
+            int result = 0;
+            result = _Command.tlw_ReadMAP(hDevice, addr, id, src, 0, src.Length);
+            return result;
+        }
+
+        public int tlw_SetNetworkParam(int hDevice, ushort addr, ushort id, byte[] dat, int nLen)
+        {
+            int result = 0;
+            result = _Command.tlw_SetNetworkParam(hDevice, addr, id, dat, 0, nLen);
+            return result;
+        }
+
+        public int tlw_Firmware_Read(int hDevice, ushort addr, ushort id, byte chip, byte mode, int dataLen, string path)
+        {
+            int result = 0;
+            result = _Command.tlw_Firmware_Read(hDevice, addr, id, chip, mode, dataLen, path, ProgressCallBackFunc);
+            return result;
+        }
+
+        /// <summary>
+        /// 写入校正数据文件(整个连接板驱动的区域)
+        /// </summary>
+        /// <param name="hDevice">设备句柄</param>
+        /// <param name="addr">设备地址</param>
+        /// <param name="id">数据包识别号</param>
+        /// <param name="width">连接板区域的像素宽度</param>
+        /// <param name="height">连接板区域的像素高度</param>
+        /// <param name="path">输入的zdat格式文件的路径</param>
+        /// <returns></returns>
+        public int tlw_WriteWholeCalibrationFileToSDRAM(int hDevice, ushort addr, ushort id, int width, int height, string path)
+        {
+            int result = 0;
+            result = _Command.tlw_WriteWholeCalibrationFileToSDRAM(hDevice, addr, id, width, height, path, ProgressCallBackFunc);
+            return result;
+        }
+
+        /// <summary>
+        /// 读取校正数据文件(整个连接板驱动的区域)
+        /// </summary>
+        /// <param name="hDevice">设备句柄</param>
+        /// <param name="addr">设备地址</param>
+        /// <param name="id">数据包识别号</param>
+        /// <param name="width">连接板区域的像素宽度</param>
+        /// <param name="height">连接板区域的像素高度</param>
+        /// <param name="path">输出的zdat格式文件的路径</param>
+        /// <param name="func">进度回调函数</param>
+        /// <returns></returns>
+        public int tlw_ReadWholeCalibrationFileFromSDRAM(int hDevice, ushort addr, ushort id, int width, int height, string path)
+        {
+            int result = 0;
+            result = _Command.tlw_ReadWholeCalibrationFileFromSDRAM(hDevice, addr, id, width, height, path, ProgressCallBackFunc);
             return result;
         }
         #endregion

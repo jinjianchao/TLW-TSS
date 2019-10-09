@@ -122,6 +122,11 @@ namespace PluginLib
         public HalfUnitType HalfUnitType { get; set; }
 
         public HalfUnit HalfUnit { get; set; }
+
+        /// <summary>
+        /// 每个连接板连接的灯板数量
+        /// </summary>
+        public int ConnectModuleCount { get; set; }
     }
 
     public struct CommunicationType

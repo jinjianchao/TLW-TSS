@@ -128,8 +128,9 @@
     <Reference Include="LanguageLib">
       <HintPath>..\..\..\..\1.Lib\LanguageLib.dll</HintPath>
     </Reference>
-    <Reference Include="PluginLib">
-      <HintPath>..\..\..\..\1.Lib\PluginLib.dll</HintPath>
+    <Reference Include="PluginLib, Version=3.0.0.1, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\1.Framework\lib\PluginLib.dll</HintPath>
     </Reference>
     <Reference Include="System">
       <HintPath>C:\Windows\Microsoft.NET\Framework\v2.0.50727\System.dll</HintPath>
@@ -141,8 +142,9 @@
     <Reference Include="TLWComm">
       <HintPath>..\..\5.TLWController\TLWController\Lib\TLWComm.dll</HintPath>
     </Reference>
-    <Reference Include="UnitInfo">
-      <HintPath>..\..\..\..\1.Lib\UnitInfo.dll</HintPath>
+    <Reference Include="UnitInfo, Version=3.0.0.1, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\1.Framework\lib\UnitInfo.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

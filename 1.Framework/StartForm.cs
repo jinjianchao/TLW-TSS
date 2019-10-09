@@ -880,6 +880,7 @@ namespace LYDTOPDP
                 unitType.ModuleHeight = cbSubType.SelectedIndex != -1 ? (cbSubType.SelectedItem as UnitSubType).UnitSizeV : 0;
                 unitType.ModulePixelWidth = cbSubType.SelectedIndex != -1 ? (cbSubType.SelectedItem as UnitSubType).BoardPixelH : 0;
                 unitType.ModulePixelHeight = cbSubType.SelectedIndex != -1 ? (cbSubType.SelectedItem as UnitSubType).BoardPixelV : 0;
+                unitType.ConnectModuleCount = cbSubType.SelectedIndex != -1 ? (cbSubType.SelectedItem as UnitSubType).ConnectModuleCount : 0;
                 return unitType;
             }
         }

@@ -20,14 +20,22 @@ namespace BatchSeamCalibration.Structs
 {
     public struct StructModule
     {
-        public StructModule(int x,int y,byte position)
+        public StructModule(int x, int y, byte position, byte modulePosition)
         {
             X = x;
             Y = y;
             Position = position;
+            ModulePosition = modulePosition;
         }
         public int X { get; set; }
         public int Y { get; set; }
+        /// <summary>
+        /// 连接板中的第几个模组
+        /// </summary>
         public byte Position { get; set; }
+        /// <summary>
+        /// 模组的坐标
+        /// </summary>
+        public byte ModulePosition { get; set; }
     }
 }

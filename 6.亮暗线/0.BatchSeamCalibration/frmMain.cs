@@ -59,24 +59,24 @@ namespace BatchSeamCalibration
         ushort GetMBAddr(int x, int y)
         {
             ushort cardAddr = (ushort)(x << 8 | y);
-            if (x >= 241 || x >= 241)
-            {
-                //主板地址
-                cardAddr = (ushort)(x << 8 | y);
-            }
-            else
-            {
-                int tmpY = y;
-                if (y % 2 == 0)
-                {
-                    tmpY = y / 2;
-                }
-                else
-                {
-                    tmpY = y / 2 + 1;
-                }
-                cardAddr = (ushort)(x << 8 | tmpY);
-            }
+            //if (x >= 241 || x >= 241)
+            //{
+            //    //主板地址
+            //    cardAddr = (ushort)(x << 8 | y);
+            //}
+            //else
+            //{
+            //    int tmpY = y;
+            //    if (y % 2 == 0)
+            //    {
+            //        tmpY = y / 2;
+            //    }
+            //    else
+            //    {
+            //        tmpY = y / 2 + 1;
+            //    }
+            //    cardAddr = (ushort)(x << 8 | tmpY);
+            //}
             return cardAddr;
         }
 
@@ -569,22 +569,62 @@ namespace BatchSeamCalibration
 
         StructModule[] GetChangedModuleAddress(StructSeamItem[,] seamItemDatas, bool isReset)
         {
+            UnitTypeV2 uType = GetSelectedPanelType();
             List<StructModule> points = new List<StructModule>();
             for (int i = 0; i < seamItemDatas.GetLength(0); i++)
             {
                 for (int j = 0; j < seamItemDatas.GetLength(1); j++)
                 {
-                    byte position = (byte)((i) % 2);
+                    byte position = 0;
+                    byte modulePosition = 0;
                     StructSeamItem item = seamItemDatas[i, j];
                     if (isReset)
                     {
-                        points.Add(new StructModule(j + 1, i + 1, position));
+                        if (uType.Serial == "TSS")
+                        {
+                            points.Add(new StructModule(j + 1, i + 1, position, modulePosition));
+                        }
+                        else if (uType.Serial == "TLW")
+                        {
+                            points.Add(new StructModule(j + 1, i + 1, position, modulePosition));
+                        }
                     }
                     else
                     {
                         if (item.Left == adjustRange && item.Top == adjustRange && item.Right == adjustRange && item.Bottom == adjustRange) continue;
-                        //points.Add(new StructModule(j + 1, i + 1, position));
-                        points.Add(new StructModule(seamItemDatas.GetLength(1) - j, seamItemDatas.GetLength(0) - i, position));
+                        int x, y;
+                        x = y = 0;
+                        if (uType.Serial == "TSS")
+                        {
+                            position = (byte)((i) % uType.ConnectModuleCount + 1);
+                            modulePosition = (byte)((i) % uType.ConnectModuleCount);
+
+                            if ((seamItemDatas.GetLength(0) - i) % uType.ConnectModuleCount == 0)
+                            {
+                                y = (seamItemDatas.GetLength(0) - i) / uType.ConnectModuleCount;
+                            }
+                            else
+                            {
+                                y = (seamItemDatas.GetLength(0) - i) / uType.ConnectModuleCount + 1;
+                            }
+                            x = (seamItemDatas.GetLength(1) - j);
+                        }
+                        else if (uType.Serial == "TLW")
+                        {
+                            position = (byte)(j % uType.ConnectModuleCount + 1);
+                            modulePosition = (byte)((j) % uType.ConnectModuleCount + 2);
+                            if ((seamItemDatas.GetLength(1) - j) % uType.ConnectModuleCount == 0)
+                            {
+                                x = (seamItemDatas.GetLength(1) - j) / uType.ConnectModuleCount;
+                            }
+                            else
+                            {
+                                x = (seamItemDatas.GetLength(1) - j) / uType.ConnectModuleCount + 1;
+                            }
+                            y = (seamItemDatas.GetLength(0) - i);
+                        }
+                        points.Add(new StructModule(x, y, position, modulePosition));
+
                     }
                 }
             }
@@ -599,17 +639,18 @@ namespace BatchSeamCalibration
             foreach (var item in changedModuleAddress)
             {
                 ushort addr = GetMBAddr(item.X, item.Y);
-                string modulePos = item.Position == 0 ? MultiLanguage.GetNames(Name, "upmodule") : MultiLanguage.GetNames(Name, "bottommodule");
+                //string modulePos = item.Position == 0 ? MultiLanguage.GetNames(Name, "upmodule") : MultiLanguage.GetNames(Name, "bottommodule");
+                string modulePos = MultiLanguage.GetNames(Name, "Module") + (item.Position);
 
                 byte[] sz = new byte[1024];
                 string timeCode = "";
                 if (!isDebugMode)
                 {
-                    int result = _baseCommunication.tlw_ReadSerialNumber(devNum, addr, 0, item.Position, sz);
+                    int result = _baseCommunication.tlw_ReadSerialNumber(devNum, addr, 0, item.ModulePosition, sz);
                     if (result != 0)
                     {
                         //读取时间码失败
-                        Log(ip, string.Format(MultiLanguage.GetNames(Name, "ReadTimeCodeFailed"), 1, 1, modulePos));
+                        Log(ip, string.Format(MultiLanguage.GetNames(Name, "ReadTimeCodeFailed"), item.X, item.Y, modulePos));
                         operationResult.Status = false;
                         SetCommandStatus(ip, false);
                         return operationResult;
@@ -617,7 +658,7 @@ namespace BatchSeamCalibration
                     if (SNHelper.AnalayzeSN(sz, out timeCode) == false)
                     {
                         //读取时间码失败
-                        Log(ip, string.Format(MultiLanguage.GetNames(Name, "ReadTimeCodeFailed"), 1, 1, modulePos));
+                        Log(ip, string.Format(MultiLanguage.GetNames(Name, "ReadTimeCodeFailed"), item.X, item.Y, modulePos));
                         operationResult.Status = false;
                         SetCommandStatus(ip, false);
                         return operationResult;
@@ -635,7 +676,7 @@ namespace BatchSeamCalibration
                 if (readFrom == 0)
                 {
                     //从箱体读取
-                    int readResult = _baseCommunication.tlw_ReadCalibrationFile(devNum, addr, 0, item.Position, _unitType.ModulePixelWidth, _unitType.ModulePixelHeight, readFile);
+                    int readResult = _baseCommunication.tlw_ReadCalibrationFile(devNum, addr, 0, item.ModulePosition, _unitType.ModulePixelWidth, _unitType.ModulePixelHeight, readFile);
                     if (readResult != 0)
                     {
                         operationResult.Message = string.Format(MultiLanguage.GetNames(Name, "ReadCalibrationFailed"), item.Y, item.X, modulePos);
@@ -672,12 +713,12 @@ namespace BatchSeamCalibration
                     return operationResult;
                 }
 
-                Log(ip, String.Format(MultiLanguage.GetNames(Name, "WriteModuleData"), GetMBTrueAddr(item.X, item.Y).X, GetMBTrueAddr(item.X, item.Y).Y, modulePos));
+                Log(ip, String.Format(MultiLanguage.GetNames(Name, "WriteModuleData"), item.X, item.Y, modulePos));
                 int isOk = 0;
                 if (!isDebugMode)
                 {
                     //isOk = _baseCommunication.tlw_WriteCalibrationFile(devNum, addr, 0, item.Position, _unitType.ModulePixelWidth, _unitType.ModulePixelHeight, writeFile);
-                    isOk = _baseCommunication.tlw_WriteCalibrationFileToSDRAM(devNum, addr, 0, item.Position, _unitType.ModulePixelWidth, _unitType.ModulePixelHeight, writeFile);
+                    isOk = _baseCommunication.tlw_WriteCalibrationFileToSDRAM(devNum, addr, 0, item.ModulePosition, _unitType.ModulePixelWidth, _unitType.ModulePixelHeight, writeFile);
                 }
                 operationResult.Status = isOk == 0 ? true : false;
                 if (!operationResult.Status)
@@ -687,7 +728,7 @@ namespace BatchSeamCalibration
                     return operationResult;
                 }
                 Thread.Sleep(50);
-                Log(ip, String.Format(MultiLanguage.GetNames(Name, "WriteModuleDataSuccess"), GetMBTrueAddr(item.X, item.Y).X, GetMBTrueAddr(item.X, item.Y).Y, modulePos));
+                Log(ip, String.Format(MultiLanguage.GetNames(Name, "WriteModuleDataSuccess"), item.X, item.Y, item.X, item.Y, modulePos));
                 Thread.Sleep(200);
                 File.Delete(readFile);
                 File.Delete(changedFile);
@@ -724,6 +765,12 @@ namespace BatchSeamCalibration
                     try
                     {
                         StructModule[] changedModuleAddress = GetChangedModuleAddress(arg.SeamData, isReset);
+                        //foreach (var item in changedModuleAddress)
+                        //{
+                        //    WriteLine($"x={item.X},y={item.Y},position={item.Position},moduleposition={item.ModulePosition}", false);
+                        //}
+                        //SetCommandStatus(arg.IP, false);
+                        //return;
                         operationResult = WriteModuleFiles(ip, devNum, arg.SeamData, changedModuleAddress, arg.StartGray, arg.LocalCalDataPath, LocalCalFolder, arg.ReadCalFrom);
                         if (!operationResult.Status)
                         {
@@ -955,8 +1002,17 @@ namespace BatchSeamCalibration
             numAdjustPercent.Value = adjustRange;
             numAdjustPercent.ValueChanged += numAdjustPercent_ValueChanged;
             UnitTypeV2 uType = GetSelectedPanelType();
-            _unitType.ModuleWidth = uType.ModuleWidth;
-            _unitType.ModuleHeight = uType.ModuleHeight * 2;
+            if (uType.Serial == "TSS")
+            {
+                _unitType.ModuleWidth = uType.ModuleWidth;
+                _unitType.ModuleHeight = uType.ModuleHeight * uType.ConnectModuleCount;
+            }
+            else if (uType.Serial == "TLW")
+            {
+                _unitType.ModuleWidth = uType.ModuleWidth * uType.ConnectModuleCount;
+                _unitType.ModuleHeight = uType.ModuleHeight;
+            }
+
             _unitType.ModulePixelWidth = uType.ModulePixelWidth;
             _unitType.ModulePixelHeight = uType.ModulePixelHeight;
             _unitType.MainName = uType.MainName;
@@ -964,6 +1020,8 @@ namespace BatchSeamCalibration
             _unitType.Title = uType.Title;
             _unitType.Serial = uType.Serial;
             _unitType.Bit = uType.Bit;
+            _unitType.ConnectModuleCount = uType.ConnectModuleCount;
+
             LocalCalFolder = System.IO.Path.Combine(Path, "CAL");
             if (System.IO.Directory.Exists(LocalCalFolder) == false) System.IO.Directory.CreateDirectory(LocalCalFolder);
 
@@ -1178,8 +1236,16 @@ namespace BatchSeamCalibration
 
         private void frmMain_UnitTypeChanged(UnitTypeV2 unitType)
         {
-            _unitType.ModuleWidth = unitType.ModuleWidth;
-            _unitType.ModuleHeight = unitType.ModuleHeight * 2;
+            if (unitType.Serial == "TSS")
+            {
+                _unitType.ModuleWidth = unitType.ModuleWidth;
+                _unitType.ModuleHeight = unitType.ModuleHeight * unitType.ConnectModuleCount;
+            }
+            else if (unitType.Serial == "TLW")
+            {
+                _unitType.ModuleWidth = unitType.ModuleWidth * unitType.ConnectModuleCount;
+                _unitType.ModuleHeight = unitType.ModuleHeight;
+            }
             _unitType.ModulePixelWidth = unitType.ModulePixelWidth;
             _unitType.ModulePixelHeight = unitType.ModulePixelHeight;
             _unitType.MainName = unitType.MainName;

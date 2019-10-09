@@ -75,6 +75,7 @@
             this.btnReadGain = new System.Windows.Forms.Button();
             this.btnSetGain = new System.Windows.Forms.Button();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
+            this.btnBatchReadCal = new System.Windows.Forms.Button();
             this.btnStopWriteCal = new System.Windows.Forms.Button();
             this.txtBatchWriteCalibrationFolder = new System.Windows.Forms.TextBox();
             this.label38 = new System.Windows.Forms.Label();
@@ -689,6 +690,15 @@
             this.rt2072 = new System.Windows.Forms.RichTextBox();
             this.tabTest = new System.Windows.Forms.TabPage();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.button18 = new System.Windows.Forms.Button();
+            this.groupBox23 = new System.Windows.Forms.GroupBox();
+            this.numCustomDateLen = new System.Windows.Forms.NumericUpDown();
+            this.label164 = new System.Windows.Forms.Label();
+            this.cbCustomDataType = new System.Windows.Forms.ComboBox();
+            this.label149 = new System.Windows.Forms.Label();
+            this.numCount = new System.Windows.Forms.NumericUpDown();
+            this.btnSet1 = new System.Windows.Forms.Button();
+            this.cbsdramdatastyle = new System.Windows.Forms.ComboBox();
             this.label103 = new System.Windows.Forms.Label();
             this.label36 = new System.Windows.Forms.Label();
             this.tbVol2 = new System.Windows.Forms.TrackBar();
@@ -742,6 +752,7 @@
             this.numRegAddr = new System.Windows.Forms.NumericUpDown();
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.btnSetDataLen = new System.Windows.Forms.Button();
             this.btnOnekeyDownSDRAM = new System.Windows.Forms.Button();
             this.btnReadSDRAM = new System.Windows.Forms.Button();
             this.btnSDRAMWriteToFlash = new System.Windows.Forms.Button();
@@ -766,7 +777,9 @@
             this.button1 = new System.Windows.Forms.Button();
             this.numTimeDelay = new System.Windows.Forms.NumericUpDown();
             this.button2 = new System.Windows.Forms.Button();
-            this.btnBatchReadCal = new System.Windows.Forms.Button();
+            this.groupBox24 = new System.Windows.Forms.GroupBox();
+            this.btnParamCalOnOff = new System.Windows.Forms.Button();
+            this.cbParamCalOnOff = new System.Windows.Forms.ComboBox();
             this.tabCommonCommand.SuspendLayout();
             this.gpVolumn.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tbVolumn2)).BeginInit();
@@ -891,6 +904,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.numGainR)).BeginInit();
             this.tabTest.SuspendLayout();
             this.groupBox3.SuspendLayout();
+            this.groupBox23.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numCustomDateLen)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numCount)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tbVol2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tbVol)).BeginInit();
             this.groupBox12.SuspendLayout();
@@ -908,6 +924,7 @@
             this.gpTest.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numTestDataLen)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numTimeDelay)).BeginInit();
+            this.groupBox24.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabCommonCommand
@@ -982,6 +999,7 @@
             this.tbVolumn1.Value = 25;
             this.tbVolumn1.Scroll += new System.EventHandler(this.tbVolumn1_Scroll);
             this.tbVolumn1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.tbVolumn1_MouseUp);
+            this.tbVolumn1.Move += new System.EventHandler(this.tbVolumn1_Move);
             // 
             // groupBox21
             // 
@@ -1409,6 +1427,16 @@
             this.groupBox7.TabStop = false;
             this.groupBox7.Text = "校正数据批量写入";
             // 
+            // btnBatchReadCal
+            // 
+            this.btnBatchReadCal.Location = new System.Drawing.Point(589, 23);
+            this.btnBatchReadCal.Name = "btnBatchReadCal";
+            this.btnBatchReadCal.Size = new System.Drawing.Size(75, 23);
+            this.btnBatchReadCal.TabIndex = 29;
+            this.btnBatchReadCal.Text = "读取";
+            this.btnBatchReadCal.UseVisualStyleBackColor = true;
+            this.btnBatchReadCal.Click += new System.EventHandler(this.btnBatchReadCal_Click);
+            // 
             // btnStopWriteCal
             // 
             this.btnStopWriteCal.Location = new System.Drawing.Point(673, 23);
@@ -1437,7 +1465,7 @@
             // 
             // btnBatchWriteCal
             // 
-            this.btnBatchWriteCal.Location = new System.Drawing.Point(514, 22);
+            this.btnBatchWriteCal.Location = new System.Drawing.Point(510, 23);
             this.btnBatchWriteCal.Name = "btnBatchWriteCal";
             this.btnBatchWriteCal.Size = new System.Drawing.Size(73, 23);
             this.btnBatchWriteCal.TabIndex = 23;
@@ -1447,7 +1475,7 @@
             // 
             // btnChoseBatchCalibrationFolder
             // 
-            this.btnChoseBatchCalibrationFolder.Location = new System.Drawing.Point(468, 22);
+            this.btnChoseBatchCalibrationFolder.Location = new System.Drawing.Point(467, 23);
             this.btnChoseBatchCalibrationFolder.Name = "btnChoseBatchCalibrationFolder";
             this.btnChoseBatchCalibrationFolder.Size = new System.Drawing.Size(39, 23);
             this.btnChoseBatchCalibrationFolder.TabIndex = 22;
@@ -6396,6 +6424,7 @@
             // panel3
             // 
             this.panel3.BackColor = System.Drawing.Color.LightGray;
+            this.panel3.Controls.Add(this.groupBox24);
             this.panel3.Controls.Add(this.btnRead2072);
             this.panel3.Controls.Add(this.btn2072Simple2_TryCalc);
             this.panel3.Controls.Add(this.gpSimple2019);
@@ -8180,6 +8209,8 @@
             this.btn2072FactoryExport.Tag = "";
             this.btn2072FactoryExport.Text = "导出文件";
             this.btn2072FactoryExport.UseVisualStyleBackColor = true;
+            this.btn2072FactoryExport.Visible = false;
+            this.btn2072FactoryExport.Click += new System.EventHandler(this.btn2072FactoryExport_Click);
             // 
             // btn2072FactoryImport
             // 
@@ -8559,6 +8590,9 @@
             this.groupBox3.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox3.Controls.Add(this.button18);
+            this.groupBox3.Controls.Add(this.groupBox23);
+            this.groupBox3.Controls.Add(this.cbsdramdatastyle);
             this.groupBox3.Controls.Add(this.label103);
             this.groupBox3.Controls.Add(this.label36);
             this.groupBox3.Controls.Add(this.tbVol2);
@@ -8578,15 +8612,140 @@
             this.groupBox3.Controls.Add(this.gpTest);
             this.groupBox3.Location = new System.Drawing.Point(6, 6);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(1571, 790);
+            this.groupBox3.Size = new System.Drawing.Size(1501, 790);
             this.groupBox3.TabIndex = 12;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "FLASH操作";
             // 
+            // button18
+            // 
+            this.button18.Location = new System.Drawing.Point(678, 140);
+            this.button18.Name = "button18";
+            this.button18.Size = new System.Drawing.Size(75, 23);
+            this.button18.TabIndex = 31;
+            this.button18.Text = "button18";
+            this.button18.UseVisualStyleBackColor = true;
+            this.button18.Click += new System.EventHandler(this.button18_Click);
+            // 
+            // groupBox23
+            // 
+            this.groupBox23.Controls.Add(this.numCustomDateLen);
+            this.groupBox23.Controls.Add(this.label164);
+            this.groupBox23.Controls.Add(this.cbCustomDataType);
+            this.groupBox23.Controls.Add(this.label149);
+            this.groupBox23.Controls.Add(this.numCount);
+            this.groupBox23.Controls.Add(this.btnSet1);
+            this.groupBox23.Location = new System.Drawing.Point(635, 394);
+            this.groupBox23.Name = "groupBox23";
+            this.groupBox23.Size = new System.Drawing.Size(525, 210);
+            this.groupBox23.TabIndex = 30;
+            this.groupBox23.TabStop = false;
+            this.groupBox23.Text = "自定义数据";
+            // 
+            // numCustomDateLen
+            // 
+            this.numCustomDateLen.Location = new System.Drawing.Point(77, 45);
+            this.numCustomDateLen.Maximum = new decimal(new int[] {
+            999999999,
+            0,
+            0,
+            0});
+            this.numCustomDateLen.Name = "numCustomDateLen";
+            this.numCustomDateLen.Size = new System.Drawing.Size(97, 21);
+            this.numCustomDateLen.TabIndex = 23;
+            this.numCustomDateLen.Value = new decimal(new int[] {
+            1024,
+            0,
+            0,
+            0});
+            // 
+            // label164
+            // 
+            this.label164.AutoSize = true;
+            this.label164.Location = new System.Drawing.Point(11, 49);
+            this.label164.Name = "label164";
+            this.label164.Size = new System.Drawing.Size(65, 12);
+            this.label164.TabIndex = 22;
+            this.label164.Text = "数据长度：";
+            // 
+            // cbCustomDataType
+            // 
+            this.cbCustomDataType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbCustomDataType.FormattingEnabled = true;
+            this.cbCustomDataType.Items.AddRange(new object[] {
+            "随机数据",
+            "全0",
+            "全FF",
+            "0-FF"});
+            this.cbCustomDataType.Location = new System.Drawing.Point(180, 19);
+            this.cbCustomDataType.Name = "cbCustomDataType";
+            this.cbCustomDataType.Size = new System.Drawing.Size(79, 20);
+            this.cbCustomDataType.TabIndex = 21;
+            // 
+            // label149
+            // 
+            this.label149.AutoSize = true;
+            this.label149.Location = new System.Drawing.Point(36, 20);
+            this.label149.Name = "label149";
+            this.label149.Size = new System.Drawing.Size(35, 12);
+            this.label149.TabIndex = 20;
+            this.label149.Text = "次数:";
+            // 
+            // numCount
+            // 
+            this.numCount.Location = new System.Drawing.Point(77, 18);
+            this.numCount.Maximum = new decimal(new int[] {
+            1410065407,
+            2,
+            0,
+            0});
+            this.numCount.Name = "numCount";
+            this.numCount.Size = new System.Drawing.Size(97, 21);
+            this.numCount.TabIndex = 1;
+            this.numCount.Value = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
+            // 
+            // btnSet1
+            // 
+            this.btnSet1.Location = new System.Drawing.Point(180, 42);
+            this.btnSet1.Name = "btnSet1";
+            this.btnSet1.Size = new System.Drawing.Size(79, 23);
+            this.btnSet1.TabIndex = 0;
+            this.btnSet1.Text = "发送";
+            this.btnSet1.UseVisualStyleBackColor = true;
+            this.btnSet1.Click += new System.EventHandler(this.btnSet1_Click);
+            // 
+            // cbsdramdatastyle
+            // 
+            this.cbsdramdatastyle.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbsdramdatastyle.FormattingEnabled = true;
+            this.cbsdramdatastyle.Items.AddRange(new object[] {
+            "随机数据",
+            "全0",
+            "全FF",
+            "全1",
+            "全2",
+            "全3",
+            "全4",
+            "1-FF循环",
+            "特殊数据1",
+            "特殊数据2",
+            "特殊数据3",
+            "特殊数据4",
+            "特殊数据5",
+            "特殊数据6"});
+            this.cbsdramdatastyle.Location = new System.Drawing.Point(77, 46);
+            this.cbsdramdatastyle.Name = "cbsdramdatastyle";
+            this.cbsdramdatastyle.Size = new System.Drawing.Size(139, 20);
+            this.cbsdramdatastyle.TabIndex = 16;
+            // 
             // label103
             // 
             this.label103.AutoSize = true;
-            this.label103.Location = new System.Drawing.Point(894, 429);
+            this.label103.Location = new System.Drawing.Point(1670, 356);
             this.label103.Name = "label103";
             this.label103.Size = new System.Drawing.Size(47, 12);
             this.label103.TabIndex = 29;
@@ -8595,7 +8754,7 @@
             // label36
             // 
             this.label36.AutoSize = true;
-            this.label36.Location = new System.Drawing.Point(894, 385);
+            this.label36.Location = new System.Drawing.Point(1670, 312);
             this.label36.Name = "label36";
             this.label36.Size = new System.Drawing.Size(47, 12);
             this.label36.TabIndex = 29;
@@ -8604,7 +8763,7 @@
             // tbVol2
             // 
             this.tbVol2.AutoSize = false;
-            this.tbVol2.Location = new System.Drawing.Point(635, 428);
+            this.tbVol2.Location = new System.Drawing.Point(1411, 355);
             this.tbVol2.Maximum = 255;
             this.tbVol2.Name = "tbVol2";
             this.tbVol2.Size = new System.Drawing.Size(259, 30);
@@ -8614,7 +8773,7 @@
             // 
             // btnSetVol
             // 
-            this.btnSetVol.Location = new System.Drawing.Point(970, 380);
+            this.btnSetVol.Location = new System.Drawing.Point(1746, 307);
             this.btnSetVol.Name = "btnSetVol";
             this.btnSetVol.Size = new System.Drawing.Size(75, 23);
             this.btnSetVol.TabIndex = 27;
@@ -8625,7 +8784,7 @@
             // tbVol
             // 
             this.tbVol.AutoSize = false;
-            this.tbVol.Location = new System.Drawing.Point(635, 380);
+            this.tbVol.Location = new System.Drawing.Point(1411, 307);
             this.tbVol.Maximum = 255;
             this.tbVol.Name = "tbVol";
             this.tbVol.Size = new System.Drawing.Size(259, 30);
@@ -8636,7 +8795,7 @@
             // 
             // button16
             // 
-            this.button16.Location = new System.Drawing.Point(635, 180);
+            this.button16.Location = new System.Drawing.Point(635, 216);
             this.button16.Name = "button16";
             this.button16.Size = new System.Drawing.Size(778, 56);
             this.button16.TabIndex = 25;
@@ -8647,7 +8806,7 @@
             // 
             // button10
             // 
-            this.button10.Location = new System.Drawing.Point(635, 150);
+            this.button10.Location = new System.Drawing.Point(635, 186);
             this.button10.Name = "button10";
             this.button10.Size = new System.Drawing.Size(291, 23);
             this.button10.TabIndex = 13;
@@ -8657,7 +8816,7 @@
             // 
             // button11
             // 
-            this.button11.Location = new System.Drawing.Point(635, 354);
+            this.button11.Location = new System.Drawing.Point(1411, 281);
             this.button11.Name = "button11";
             this.button11.Size = new System.Drawing.Size(75, 23);
             this.button11.TabIndex = 24;
@@ -8679,7 +8838,7 @@
             this.groupBox12.Controls.Add(this.btnChoseBatchFolder);
             this.groupBox12.Controls.Add(this.label20);
             this.groupBox12.Controls.Add(this.btnSelectBatchCalibrationFolder);
-            this.groupBox12.Location = new System.Drawing.Point(6, 200);
+            this.groupBox12.Location = new System.Drawing.Point(6, 236);
             this.groupBox12.Name = "groupBox12";
             this.groupBox12.Size = new System.Drawing.Size(621, 89);
             this.groupBox12.TabIndex = 21;
@@ -8803,7 +8962,7 @@
             this.groupBox14.Controls.Add(this.button12);
             this.groupBox14.Controls.Add(this.txtPathLabelNameFile);
             this.groupBox14.Controls.Add(this.label35);
-            this.groupBox14.Location = new System.Drawing.Point(633, 281);
+            this.groupBox14.Location = new System.Drawing.Point(633, 317);
             this.groupBox14.Name = "groupBox14";
             this.groupBox14.Size = new System.Drawing.Size(527, 71);
             this.groupBox14.TabIndex = 23;
@@ -8856,7 +9015,7 @@
             this.groupBox13.Controls.Add(this.btnCompareChose2);
             this.groupBox13.Controls.Add(this.btnCompare);
             this.groupBox13.Controls.Add(this.btnCompareChose1);
-            this.groupBox13.Location = new System.Drawing.Point(6, 300);
+            this.groupBox13.Location = new System.Drawing.Point(6, 336);
             this.groupBox13.Name = "groupBox13";
             this.groupBox13.Size = new System.Drawing.Size(621, 274);
             this.groupBox13.TabIndex = 22;
@@ -8942,7 +9101,7 @@
             this.groupBox8.Controls.Add(this.btnUpgradeCalibration);
             this.groupBox8.Controls.Add(this.txtCalibration);
             this.groupBox8.Controls.Add(this.label17);
-            this.groupBox8.Location = new System.Drawing.Point(6, 139);
+            this.groupBox8.Location = new System.Drawing.Point(6, 175);
             this.groupBox8.Name = "groupBox8";
             this.groupBox8.Size = new System.Drawing.Size(621, 55);
             this.groupBox8.TabIndex = 18;
@@ -9042,7 +9201,7 @@
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.numRegAddr);
             this.groupBox1.Controls.Add(this.label1);
-            this.groupBox1.Location = new System.Drawing.Point(6, 47);
+            this.groupBox1.Location = new System.Drawing.Point(6, 76);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(254, 86);
             this.groupBox1.TabIndex = 0;
@@ -9119,6 +9278,7 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.btnSetDataLen);
             this.groupBox2.Controls.Add(this.btnOnekeyDownSDRAM);
             this.groupBox2.Controls.Add(this.btnReadSDRAM);
             this.groupBox2.Controls.Add(this.btnSDRAMWriteToFlash);
@@ -9129,14 +9289,24 @@
             this.groupBox2.Controls.Add(this.label4);
             this.groupBox2.Location = new System.Drawing.Point(266, 49);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(361, 84);
+            this.groupBox2.Size = new System.Drawing.Size(395, 113);
             this.groupBox2.TabIndex = 1;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "读写SDRAN";
             // 
+            // btnSetDataLen
+            // 
+            this.btnSetDataLen.Location = new System.Drawing.Point(156, 75);
+            this.btnSetDataLen.Name = "btnSetDataLen";
+            this.btnSetDataLen.Size = new System.Drawing.Size(87, 23);
+            this.btnSetDataLen.TabIndex = 17;
+            this.btnSetDataLen.Text = "设置数据长度";
+            this.btnSetDataLen.UseVisualStyleBackColor = true;
+            this.btnSetDataLen.Click += new System.EventHandler(this.btnSetDataLen_Click);
+            // 
             // btnOnekeyDownSDRAM
             // 
-            this.btnOnekeyDownSDRAM.Location = new System.Drawing.Point(254, 49);
+            this.btnOnekeyDownSDRAM.Location = new System.Drawing.Point(254, 48);
             this.btnOnekeyDownSDRAM.Name = "btnOnekeyDownSDRAM";
             this.btnOnekeyDownSDRAM.Size = new System.Drawing.Size(101, 23);
             this.btnOnekeyDownSDRAM.TabIndex = 4;
@@ -9239,9 +9409,9 @@
             this.gpTest.Controls.Add(this.button1);
             this.gpTest.Controls.Add(this.numTimeDelay);
             this.gpTest.Controls.Add(this.button2);
-            this.gpTest.Location = new System.Drawing.Point(633, 49);
+            this.gpTest.Location = new System.Drawing.Point(667, 49);
             this.gpTest.Name = "gpTest";
-            this.gpTest.Size = new System.Drawing.Size(890, 84);
+            this.gpTest.Size = new System.Drawing.Size(845, 84);
             this.gpTest.TabIndex = 9;
             this.gpTest.TabStop = false;
             this.gpTest.Text = "稳定性测试";
@@ -9408,15 +9578,54 @@
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
-            // btnBatchReadCal
+            // groupBox24
             // 
-            this.btnBatchReadCal.Location = new System.Drawing.Point(592, 22);
-            this.btnBatchReadCal.Name = "btnBatchReadCal";
-            this.btnBatchReadCal.Size = new System.Drawing.Size(75, 23);
-            this.btnBatchReadCal.TabIndex = 29;
-            this.btnBatchReadCal.Text = "读取";
-            this.btnBatchReadCal.UseVisualStyleBackColor = true;
-            this.btnBatchReadCal.Click += new System.EventHandler(this.btnBatchReadCal_Click);
+            this.groupBox24.Controls.Add(this.cbParamCalOnOff);
+            this.groupBox24.Controls.Add(this.btnParamCalOnOff);
+            this.groupBox24.Location = new System.Drawing.Point(586, 209);
+            this.groupBox24.Name = "groupBox24";
+            this.groupBox24.Size = new System.Drawing.Size(190, 49);
+            this.groupBox24.TabIndex = 445;
+            this.groupBox24.TabStop = false;
+            this.groupBox24.Text = "校正开关";
+            this.groupBox24.Visible = false;
+            // 
+            // btnParamCalOnOff
+            // 
+            this.btnParamCalOnOff.Location = new System.Drawing.Point(87, 17);
+            this.btnParamCalOnOff.Name = "btnParamCalOnOff";
+            this.btnParamCalOnOff.Size = new System.Drawing.Size(64, 23);
+            this.btnParamCalOnOff.TabIndex = 8;
+            this.btnParamCalOnOff.Tag = "input2072Simple5|4,8,12";
+            this.btnParamCalOnOff.Text = "设置";
+            this.btnParamCalOnOff.UseVisualStyleBackColor = true;
+            this.btnParamCalOnOff.Click += new System.EventHandler(this.btnParamCalOnOff_Click);
+            // 
+            // cbParamCalOnOff
+            // 
+            this.cbParamCalOnOff.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbParamCalOnOff.FormattingEnabled = true;
+            this.cbParamCalOnOff.Items.AddRange(new object[] {
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7",
+            "8",
+            "9",
+            "10",
+            "11",
+            "12",
+            "13",
+            "14",
+            "15"});
+            this.cbParamCalOnOff.Location = new System.Drawing.Point(6, 18);
+            this.cbParamCalOnOff.Name = "cbParamCalOnOff";
+            this.cbParamCalOnOff.Size = new System.Drawing.Size(75, 20);
+            this.cbParamCalOnOff.TabIndex = 9;
             // 
             // MainForm
             // 
@@ -9583,6 +9792,10 @@
             this.tabTest.ResumeLayout(false);
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
+            this.groupBox23.ResumeLayout(false);
+            this.groupBox23.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numCustomDateLen)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numCount)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tbVol2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tbVol)).EndInit();
             this.groupBox12.ResumeLayout(false);
@@ -9607,6 +9820,7 @@
             this.gpTest.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numTestDataLen)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numTimeDelay)).EndInit();
+            this.groupBox24.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -10349,6 +10563,19 @@
         private System.Windows.Forms.Label lblVolumn2;
         private System.Windows.Forms.Label lblVolumn1;
         private System.Windows.Forms.Button btnBatchReadCal;
+        private System.Windows.Forms.ComboBox cbsdramdatastyle;
+        private System.Windows.Forms.GroupBox groupBox23;
+        private System.Windows.Forms.Button btnSet1;
+        private System.Windows.Forms.Label label149;
+        private System.Windows.Forms.NumericUpDown numCount;
+        private System.Windows.Forms.ComboBox cbCustomDataType;
+        private System.Windows.Forms.NumericUpDown numCustomDateLen;
+        private System.Windows.Forms.Label label164;
+        private System.Windows.Forms.Button btnSetDataLen;
+        private System.Windows.Forms.Button button18;
+        private System.Windows.Forms.GroupBox groupBox24;
+        private System.Windows.Forms.ComboBox cbParamCalOnOff;
+        private System.Windows.Forms.Button btnParamCalOnOff;
     }
 }
 

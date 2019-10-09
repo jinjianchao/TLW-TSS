@@ -14,7 +14,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
 
 namespace SFTHelper.Helper
@@ -89,6 +88,25 @@ namespace SFTHelper.Helper
                     }
                 }
             }
+        }
+
+        public static void WriteFile(byte[] data, string file, int lineDataCount)
+        {
+            FileStream fs = new FileStream(file, FileMode.Create, FileAccess.Write);
+            TextWriter writer = new StreamWriter(fs);
+            int cx = 0;
+            for (int i = 0; i < data.Length; i++)
+            {
+                writer.Write(data[i].ToString("X2") + " ");
+                cx++;
+                if (cx % lineDataCount == 0)
+                {
+                    writer.WriteLine();
+                }
+            }
+            writer.Flush();
+            writer.Close();
+            fs.Close();
         }
     }
 }

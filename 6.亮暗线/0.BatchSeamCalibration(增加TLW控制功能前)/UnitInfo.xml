@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<units>
+  <serial>
+    <item name="TWA" alias="TWA"/>
+    <item name="CE" alias="CE1"/>
+    <item name="TWS" alias="TWS/DL2"/>
+  </serial>
+  <unit name="BAC" id="0" alias="移植版" serial="TWA">
+    <subType>
+      <!--<item id="4" name="TWA0.9(A)" alias="TWA0.9(A)" modalXCount="10" modalYCount="4" modalXPixelCount="128" modalYPixelCount="180" />-->
+      <item id="5" name="TWA1.2(A)" alias="TWA1.2(A)" modalXCount="1" modalYCount="1" modalXPixelCount="192" modalYPixelCount="135" />
+      <item id="6" name="TWA1.8(A)" alias="TWA1.8(A)" modalXCount="5" modalYCount="4" modalXPixelCount="128" modalYPixelCount="90" />
+      <item id="7" name="TSS1.5_1x1" alias="TSS1.5_1x1" modalXCount="1" modalYCount="1" modalXPixelCount="192" modalYPixelCount="108"/>
+    </subType>
+  </unit>
+  <unit name="BCC" id="0" alias="新版" serial="TWA">
+    <subType>
+      <item id="0" name="TWA0.9" alias="TWA0.9" modalXCount="10" modalYCount="4" modalXPixelCount="128" modalYPixelCount="180"/>
+      <item id="1" name="TWA1.2" alias="TWA1.2" modalXCount="5" modalYCount="4" modalXPixelCount="192" modalYPixelCount="135"/>
+      <item id="2" name="TWA1.4" alias="TWA1.4" modalXCount="5" modalYCount="4" modalXPixelCount="165" modalYPixelCount="116"/>
+      <item id="3" name="TWA1.8" alias="TWA1.8" modalXCount="5" modalYCount="4" modalXPixelCount="128" modalYPixelCount="90"/>
+    </subType>
+  </unit>
+  <unit name="BCC" id="2" alias="新版" serial="CE">
+    <subType>
+      <!--modalXCount宽    modalYCount高-->
+      <item id="1" name="2.5mm" alias="2.5mm" modalXCount="2" modalYCount="3" modalXPixelCount="128" modalYPixelCount="120"/>
+      <item id="2" name="3.3mm" alias="3.3mm" modalXCount="2" modalYCount="3" modalXPixelCount="96" modalYPixelCount="90"/>
+      <item id="3" name="4.0mm" alias="4.0mm" modalXCount="2" modalYCount="3" modalXPixelCount="80" modalYPixelCount="75"/>
+      <item id="4" name="5.0mm" alias="5.0mm" modalXCount="2" modalYCount="3" modalXPixelCount="64" modalYPixelCount="60"/>
+    </subType>
+  </unit>
+  <unit name="BAC" id="3" alias="移植版" serial="TWS">
+    <subType>
+      <item id="1" name="0.9mm(A)" alias="0.9mm" modalXCount="4" modalYCount="2" modalXPixelCount="160" modalYPixelCount="180"/>
+    </subType>
+  </unit>
+  <unit name="BCC" id="3" alias="新版" serial="TWS">
+    <subType>
+      <item id="1" name="0.7mm" alias="0.7mm" modalXCount="4" modalYCount="2" modalXPixelCount="192" modalYPixelCount="216"/>
+      <item id="2" name="0.9mm" alias="0.9mm" modalXCount="4" modalYCount="2" modalXPixelCount="160" modalYPixelCount="180"/>
+      <item id="4" name="1.2mm" alias="1.2mm" modalXCount="2" modalYCount="2" modalXPixelCount="240" modalYPixelCount="135"/>
+      <item id="5" name="1.5mm" alias="1.5mm" modalXCount="2" modalYCount="2" modalXPixelCount="192" modalYPixelCount="108"/>
+      <item id="6" name="1.8mm" alias="1.8mm" modalXCount="2" modalYCount="2" modalXPixelCount="160" modalYPixelCount="90"/>
+      <item id="7" name="2.5mm" alias="2.5mm" modalXCount="2" modalYCount="1" modalXPixelCount="120" modalYPixelCount="135"/>
+    </subType>
+  </unit>
+  <unit name="Customize" alias="Customize" id="7" customize="true" serial="Customize">
+    <subType>
+
+    </subType>
+  </unit>
+</units>
